@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 import { User, UserCredential, UserInfo } from "firebase/auth";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserDetails } from "./db";
+import { deleteSession, getUserDetails, setSession } from "./db";
 import firebase from "./firebase";
 
 //TODO: Imporve the interface
@@ -10,7 +10,7 @@ interface AuthContextInterface {
   user: User | null;
   loading: boolean;
   signIn: (user: User, redirect: string, phoneNumber: string) => Promise<any>;
-  signOut?: () => Promise<User | null>;
+  signOut?: () => Promise<void>;
 }
 
 const authContext = createContext<AuthContextInterface>({
@@ -33,15 +33,21 @@ function useFirebaseAuth() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleUser = (rawUser: User | null) => {
+  const handleUser = (
+    rawUser: User | null,
+    token: string,
+    phoneNumber: string
+  ) => {
     if (rawUser) {
       setUser(rawUser);
       console.log(rawUser);
-
+      //TODO:update User session
+      setSession(token, phoneNumber);
       setLoading(false);
       return user;
     } else {
-      //TODO:clear the
+      //TODO:remove user session
+      deleteSession(token, phoneNumber);
       setUser(null);
       setLoading(false);
       return null;
@@ -50,14 +56,13 @@ function useFirebaseAuth() {
 
   const signIn = async (user: User, redirect: string, phoneNumber: string) => {
     const token = await user.getIdToken();
-    handleUser(user);
+    handleUser(user, token, phoneNumber);
     return await getUserDetails(token, phoneNumber);
   };
 
-  const signOut = async () => {
-    await firebase.auth().signOut();
-
-    return handleUser(null);
+  const signOut = async (token: string, phoneNumber: string) => {
+    handleUser(null, token, phoneNumber);
+    return await firebase.auth().signOut();
   };
 
   useEffect(() => {

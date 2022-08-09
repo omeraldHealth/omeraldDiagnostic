@@ -41,3 +41,23 @@ export async function getReportTypes(token: string) {
     return error.resp;
   }
 }
+export async function setSession(token: string, userId: string) {
+  try {
+    const resp = await axios.get(`/api/session/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return resp;
+  } catch (error: AxiosError) {
+    return error.response;
+  }
+}
+export async function deleteSession(token: string, userId: string) {
+  try {
+    const resp = await axios.delete(`/api/session/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return resp;
+  } catch (error: AxiosError) {
+    return error.response;
+  }
+}
