@@ -9,7 +9,7 @@ export async function testWorking(token: string) {
 }
 export async function getUserDetails(token: string, userId: string) {
   try {
-    const resp = await axios.get(`/api/user/${userId}`, {
+    const resp = await axios.get(`/api/user/${encodeURIComponent(userId)}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return resp;
@@ -20,7 +20,7 @@ export async function getUserDetails(token: string, userId: string) {
 export async function setUserDetails(token: string, userDetails: UserDetails) {
   try {
     const resp = await axios.post(
-      `/api/user/${userDetails.phoneNumber}`,
+      `/api/user/${encodeURIComponent(userDetails.phoneNumber)}`,
       userDetails,
       {
         headers: { Authorization: `Bearer ${token}` },
