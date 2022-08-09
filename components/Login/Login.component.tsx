@@ -1,7 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import PhoneInputWithCountrySelect, {
-  isPossiblePhoneNumber,
   isValidPhoneNumber,
 } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
@@ -9,10 +8,10 @@ import {
   getAuth,
   RecaptchaVerifier,
   signInWithPhoneNumber,
+  UserCredential,
 } from "firebase/auth";
-import { sign } from "crypto";
-import firebase from "../../lib/firebase";
-import { useAuth } from "../../lib/auth";
+import { useAuth } from "@/lib/auth";
+import { useRouter } from "next/router";
 
 const LoginComponent = () => {
   // const {
@@ -24,11 +23,11 @@ const LoginComponent = () => {
   // console.log(control);
   const auth = getAuth();
   auth.languageCode = "en";
-  const { user, loading, signInWithOtp } = useAuth();
+  const { user, loading, signIn } = useAuth();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [expandForm, setExpandForm] = useState(false);
   const [otp, setOtp] = useState("");
-
+  const router = useRouter();
   const generateRecaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
@@ -42,7 +41,7 @@ const LoginComponent = () => {
       auth
     );
   };
-  const requestOTP = (e) => {
+  const requestOTP: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     if (isValidPhoneNumber(phoneNumber)) {
       console.log("aachs");
@@ -62,19 +61,29 @@ const LoginComponent = () => {
       console.log("enter valid phone number");
     }
   };
-  const verifyOTP = (e) => {
+  const verifyOTP: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (otp.length === 6) {
-      signInWithOtp(otp);
-      //   let confirmationResult = window.confirmationResult;
-      //   confirmationResult
-      //     .confirm(Number(otp))
-      //     .then((result) => {
-      //       console.log(result);
-      //     })
-      //     .catch((error) => {
-      //       console.error(error);
-      //     });
+      let confirmationResult = window.confirmationResult;
+      confirmationResult
+        .confirm(otp)
+        .then(async (result: UserCredential) => {
+          const res = await signIn(result.user, "/dashboard", phoneNumber);
+          console.log(res);
+          if (res.data.user) {
+            router.push("/dashboard");
+          } else {
+            // router.push("/onboard");
+          }
+
+          // if (res.status == 200) {
+          // } else if (res.status == 404) {
+          //   router.push("/onboard");
+          // }
+        })
+        .catch((error: Error) => {
+          console.error(error);
+        });
     }
   };
 
