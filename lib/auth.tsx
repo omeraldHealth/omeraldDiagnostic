@@ -42,7 +42,7 @@ function useFirebaseAuth() {
       setUser(rawUser);
       console.log(rawUser);
       //TODO:update User session
-      setSession(token, phoneNumber);
+      setSession(token, String(phoneNumber));
       setLoading(false);
       return user;
     } else {
@@ -68,7 +68,9 @@ function useFirebaseAuth() {
   useEffect(() => {
     const unsubscribe = firebase
       .auth()
-      .onIdTokenChanged((user) => handleUser(user));
+      .onIdTokenChanged(async (user) =>
+        handleUser(user, await user?.getIdToken(), user?.phoneNumber)
+      );
     return () => unsubscribe();
   }, []);
 

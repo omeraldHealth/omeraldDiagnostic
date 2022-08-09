@@ -73,7 +73,7 @@ const LoginComponent = () => {
           if (res.data.user) {
             router.push("/dashboard");
           } else {
-            // router.push("/onboard");
+            router.push("/onboard");
           }
 
           // if (res.status == 200) {
