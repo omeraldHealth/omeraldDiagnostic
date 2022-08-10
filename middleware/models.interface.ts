@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId, Timestamp } from "mongodb";
 
 export interface UserDetails {
   diagnosticName: string;
@@ -7,8 +7,36 @@ export interface UserDetails {
   email: string;
   address?: string;
   reports?: string[];
+  updatedAt?: Date;
 }
 export interface UserSession {
   userId: string;
   token: string;
 }
+export type ReportTypes = {
+  _id: ObjectId;
+  testName: string;
+  keywords: ReportParamsType[];
+};
+export type ReportParamsType = {
+  _id: ObjectId;
+  keyword: string;
+  aliases: string[];
+  normalRange: string;
+  unit: string;
+};
+export type ReportParamsData = Pick<
+  ReportParamsType,
+  "keyword" | "unit" | "normalRange"
+> & { value: string };
+
+export type ReportDetails = {
+  userId: string;
+  reportId?: string;
+  reportUrl: string;
+  status: "parsed" | "parsing";
+  testName: string;
+  parsedData: ReportParamsData[];
+  createdAt?: Date;
+  updatedAt?: Date;
+};

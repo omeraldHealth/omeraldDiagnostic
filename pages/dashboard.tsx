@@ -1,30 +1,25 @@
 import { useAuth } from "@/lib/auth";
 import React, { useEffect, useState } from "react";
-import { getReportTypes, testWorking } from "@/lib/db";
-import { ObjectId } from "mongodb";
+import { createReport, getReportTypes } from "@/lib/db";
 import CustomFormComponent from "@/components/CustomForm/CustomForm.component";
-
-//TODO: Centralized this types.
-export type ReportTypes = {
-  _id: ObjectId;
-  testName: string;
-  keywords: Reportparams[];
-};
-export type Reportparams = {
-  _id: ObjectId;
-  keyword: string;
-  aliases: string[];
-  normalRange: string;
-  unit: string;
-};
+import BasicReportDetailsForm from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.component";
+import { BasicFormType } from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.interface";
+import {
+  ReportDetails,
+  ReportParamsData,
+  ReportTypes,
+} from "middleware/models.interface";
 
 const Dashboard = () => {
-  const auth = useAuth();
+  const { user, signOut } = useAuth();
+  const [isBasicFormVisible, setIsBasicFormVisible] = useState(true);
   const [reportTypes, setReportTypes] = useState<ReportTypes[]>([]);
   const [selectedType, setSelectedType] = useState(-1);
+  const [basicFormData, setBasicFormData] = useState<BasicFormType>(null);
+
   useEffect(() => {
     (async () => {
-      const token = await auth?.user?.getIdToken();
+      const token = await user?.getIdToken();
       if (token) {
         const resp = await getReportTypes(token);
         console.log(resp);
@@ -33,26 +28,64 @@ const Dashboard = () => {
         }
       }
     })();
-  }, [auth]);
+  }, [user]);
+
+  const handleReportSubmitForm = async (reportData: ReportParamsData[]) => {
+    const { phoneNumberInput, ...restBasicForm } = basicFormData;
+    const reportDetails: ReportDetails = {
+      userId: phoneNumberInput,
+      reportUrl: "addUrl",
+      status: "parsed",
+      testName: reportTypes[selectedType].testName,
+      parsedData: reportData,
+      ...restBasicForm,
+    };
+    const token = (await user?.getIdToken()) || "";
+    await createReport(token, user?.phoneNumber, reportDetails);
+    console.log(reportDetails);
+  };
+
+  const handleBasicFormSubmit = (basicFormData: BasicFormType) => {
+    setBasicFormData(basicFormData);
+    setIsBasicFormVisible(false);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
   return (
     <div className="grid h-screen place-content-center">
-      <div>
-        <select
-          value={selectedType}
-          onChange={(e) => setSelectedType(Number(e.target.value))}
-          className="border-2 border-black-2 block"
-        >
-          <option value={-1}>Select Report Type</option>
-          {reportTypes.map((val, index) => (
-            <option key={val.testName} value={index}>
-              {val.testName}
-            </option>
-          ))}
-        </select>
-        {selectedType > -1 && (
-          <CustomFormComponent form={reportTypes[selectedType]} />
-        )}
-      </div>
+      <button
+        onClick={handleSignOut}
+        className="border-2 border-black-2 bg-red-300 active:bg-red-500"
+      >
+        Log Out
+      </button>
+      {isBasicFormVisible && (
+        <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
+      )}
+      {!isBasicFormVisible && (
+        <div>
+          <select
+            value={selectedType}
+            onChange={(e) => setSelectedType(Number(e.target.value))}
+            className="border-2 border-black-2 block"
+          >
+            <option value={-1}>Select Report Type</option>
+            {reportTypes.map((val, index) => (
+              <option key={val.testName} value={index}>
+                {val.testName}
+              </option>
+            ))}
+          </select>
+          {selectedType > -1 && (
+            <CustomFormComponent
+              formType={reportTypes[selectedType]}
+              onReportSubmitForm={handleReportSubmitForm}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 };

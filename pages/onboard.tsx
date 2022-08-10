@@ -7,6 +7,7 @@ import { ObjectId } from "mongodb";
 import { setUserDetails } from "@/lib/db";
 import * as yup from "yup";
 import { useRouter } from "next/router";
+import Allowed from "hocs/Allowed";
 
 type FormData = {
   fullName: string;

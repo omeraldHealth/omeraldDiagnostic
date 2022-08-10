@@ -1,24 +1,34 @@
-import { AxiosResponse } from "axios";
-import { User, UserCredential, UserInfo } from "firebase/auth";
+import {
+  getAuth,
+  onIdTokenChanged,
+  User,
+  UserCredential,
+  UserInfo,
+} from "firebase/auth";
+import { UserDetails } from "middleware/models.interface";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { deleteSession, getUserDetails, setSession } from "./db";
-import firebase from "./firebase";
+import firebaseApp from "./firebase";
 
 //TODO: Imporve the interface
+
 interface AuthContextInterface {
   user: User | null;
+  diagnosticDetails: UserDetails | null;
   loading: boolean;
-  signIn: (user: User, redirect: string, phoneNumber: string) => Promise<any>;
-  signOut?: () => Promise<void>;
+  signIn: (user: User, redirect: string) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const authContext = createContext<AuthContextInterface>({
   user: null,
-  loading: false,
-  signIn: () => {},
+  diagnosticDetails: null,
+  loading: true,
+  signIn: (user: User, redirect: string) => {},
   signOut: () => {},
 });
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const auth = useFirebaseAuth();
   return <authContext.Provider value={auth}>{children} </authContext.Provider>;
@@ -29,55 +39,59 @@ export const useAuth = () => {
 };
 
 function useFirebaseAuth() {
+  const auth = getAuth(firebaseApp);
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [diagnosticDetails, setDiagnosticDetails] =
+    useState<UserDetails | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const handleUser = (
-    rawUser: User | null,
-    token: string,
-    phoneNumber: string
-  ) => {
+  const handleUser = async (rawUser: User | null) => {
     if (rawUser) {
+      const token = await rawUser.getIdToken();
+      const phoneNumber = rawUser.phoneNumber || "";
       setUser(rawUser);
-      console.log(rawUser);
-      //TODO:update User session
-      setSession(token, String(phoneNumber));
+      await setSession(token, phoneNumber);
       setLoading(false);
-      return user;
     } else {
-      //TODO:remove user session
-      deleteSession(token, phoneNumber);
       setUser(null);
       setLoading(false);
-      return null;
     }
   };
 
-  const signIn = async (user: User, redirect: string, phoneNumber: string) => {
+  const signIn = async (user: User, redirect: string) => {
     const token = await user.getIdToken();
-    handleUser(user, token, phoneNumber);
-    return await getUserDetails(token, phoneNumber);
+    const phoneNumber = user.phoneNumber || "";
+    // await handleUser(user, token, phoneNumber); DO NOT call handleUser, because when user logs in , it will automatically get called.
+    const resp = await getUserDetails(token, phoneNumber);
+    if (resp.status == 200) {
+      setDiagnosticDetails(resp.data.user);
+      router.push(redirect);
+    } else if (resp.status == 404) {
+      router.push("/onboard");
+    }
   };
 
-  const signOut = async (token: string, phoneNumber: string) => {
-    handleUser(null, token, phoneNumber);
-    return await firebase.auth().signOut();
+  const signOut = async () => {
+    if (user) {
+      const token = await user.getIdToken();
+      const phoneNumber = user.phoneNumber || "";
+      await deleteSession(token, phoneNumber);
+    }
+    await auth.signOut();
+    router.push("/");
   };
 
   useEffect(() => {
-    const unsubscribe = firebase
-      .auth()
-      .onIdTokenChanged(async (user) =>
-        handleUser(user, await user?.getIdToken(), user?.phoneNumber)
-      );
+    const unsubscribe = onIdTokenChanged(auth, handleUser);
     return () => unsubscribe();
   }, []);
 
-  /* TBA: some log in and log out function that will also call handleUser */
+  /* TODO: some log in and log out function that will also call handleUser */
 
   return {
     user,
+    diagnosticDetails,
     loading,
     signIn,
     signOut,

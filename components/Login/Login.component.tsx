@@ -14,20 +14,15 @@ import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
 
 const LoginComponent = () => {
-  // const {
-  //   register,
-  //   control,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm();
-  // console.log(control);
   const auth = getAuth();
   auth.languageCode = "en";
+
   const { user, loading, signIn } = useAuth();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [expandForm, setExpandForm] = useState(false);
   const [otp, setOtp] = useState("");
   const router = useRouter();
+
   const generateRecaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
@@ -41,6 +36,7 @@ const LoginComponent = () => {
       auth
     );
   };
+
   const requestOTP: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     if (isValidPhoneNumber(phoneNumber)) {
@@ -61,6 +57,7 @@ const LoginComponent = () => {
       console.log("enter valid phone number");
     }
   };
+
   const verifyOTP: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (otp.length === 6) {
@@ -68,18 +65,7 @@ const LoginComponent = () => {
       confirmationResult
         .confirm(otp)
         .then(async (result: UserCredential) => {
-          const res = await signIn(result.user, "/dashboard", phoneNumber);
-          console.log(res);
-          if (res.data.user) {
-            router.push("/dashboard");
-          } else {
-            router.push("/onboard");
-          }
-
-          // if (res.status == 200) {
-          // } else if (res.status == 404) {
-          //   router.push("/onboard");
-          // }
+          signIn(result.user, "/dashboard");
         })
         .catch((error: Error) => {
           console.error(error);

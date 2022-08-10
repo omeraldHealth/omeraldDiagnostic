@@ -1,4 +1,5 @@
 import { withAuth } from "@/lib/middlewares";
+import { time } from "console";
 import { connectToDatabase } from "middleware/database";
 import { NextApiRequest, NextApiResponse } from "next";
 import { UserDetails } from "../../../middleware/models.interface";
@@ -13,7 +14,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .collection("diagnosticusers")
         .findOne({ phoneNumber: userId });
 
-      return res.status(200).json({ user });
+      if (user) {
+        return res.status(200).json({ user });
+      } else {
+        return res.status(404).send("NoT FOund");
+      }
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }
@@ -22,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     try {
       const userDetails = req.body as UserDetails;
-
+      userDetails.updatedAt = new Date();
       const isUserExists = await db
         .collection("diagnosticusers")
         .findOne({ phoneNumber: userDetails.phoneNumber });
@@ -32,7 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .collection("diagnosticusers")
           .insertOne({ ...userDetails });
 
-        return res.status(201).json(user);
+        return res.status(201).json({ user });
       } else {
         return res.status(409).send("User already exists");
       }
