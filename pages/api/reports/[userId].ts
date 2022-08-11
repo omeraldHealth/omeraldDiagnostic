@@ -9,6 +9,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { userId } = req.query;
   if (req.method === "GET") {
     try {
+      console.log(userId);
+      const user = await db
+        .collection("diagnosticusers")
+        .findOne({ phoneNumber: userId });
+      console.log(user);
+      if (user.reports) {
+        const reportsList = await db
+          .collection("reports")
+          .find({ reportId: { $in: user.reports } })
+          .toArray();
+        console.log(reportsList);
+
+        return res.status(200).json(reportsList);
+      } else {
+        return res.status(404).send("No Reports Found");
+      }
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }

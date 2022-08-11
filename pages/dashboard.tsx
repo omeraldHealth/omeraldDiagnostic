@@ -11,13 +11,14 @@ import {
 } from "middleware/models.interface";
 
 const Dashboard = () => {
-  const { user, signOut } = useAuth();
+  const { user, diagnosticDetails } = useAuth();
   const [isBasicFormVisible, setIsBasicFormVisible] = useState(true);
   const [reportTypes, setReportTypes] = useState<ReportTypes[]>([]);
   const [selectedType, setSelectedType] = useState(-1);
   const [basicFormData, setBasicFormData] = useState<BasicFormType>(null);
 
   useEffect(() => {
+    console.log(diagnosticDetails);
     (async () => {
       const token = await user?.getIdToken();
       if (token) {
@@ -50,17 +51,11 @@ const Dashboard = () => {
     setIsBasicFormVisible(false);
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-  };
+  // const handleSignOut = async () => {
+  //   await signOut();
+  // };
   return (
     <div className="grid h-screen place-content-center">
-      <button
-        onClick={handleSignOut}
-        className="border-2 border-black-2 bg-red-300 active:bg-red-500"
-      >
-        Log Out
-      </button>
       {isBasicFormVisible && (
         <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
       )}

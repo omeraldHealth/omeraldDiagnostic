@@ -13,7 +13,7 @@ import firebaseApp from "./firebase";
 
 //TODO: Imporve the interface
 
-interface AuthContextInterface {
+export interface AuthContextInterface {
   user: User | null;
   diagnosticDetails: UserDetails | null;
   loading: boolean;
@@ -21,13 +21,7 @@ interface AuthContextInterface {
   signOut: () => Promise<void>;
 }
 
-const authContext = createContext<AuthContextInterface>({
-  user: null,
-  diagnosticDetails: null,
-  loading: true,
-  signIn: (user: User, redirect: string) => {},
-  signOut: () => {},
-});
+const authContext = createContext<AuthContextInterface>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const auth = useFirebaseAuth();
@@ -51,6 +45,10 @@ function useFirebaseAuth() {
       const token = await rawUser.getIdToken();
       const phoneNumber = rawUser.phoneNumber || "";
       setUser(rawUser);
+      const resp = await getUserDetails(token, phoneNumber);
+      if (resp.status == 200) {
+        setDiagnosticDetails(resp.data.user);
+      }
       await setSession(token, phoneNumber);
       setLoading(false);
     } else {
@@ -65,7 +63,7 @@ function useFirebaseAuth() {
     // await handleUser(user, token, phoneNumber); DO NOT call handleUser, because when user logs in , it will automatically get called.
     const resp = await getUserDetails(token, phoneNumber);
     if (resp.status == 200) {
-      setDiagnosticDetails(resp.data.user);
+      // setDiagnosticDetails(resp.data.user);
       router.push(redirect);
     } else if (resp.status == 404) {
       router.push("/onboard");
@@ -79,7 +77,7 @@ function useFirebaseAuth() {
       await deleteSession(token, phoneNumber);
     }
     await auth.signOut();
-    router.push("/");
+    router.push("");
   };
 
   useEffect(() => {

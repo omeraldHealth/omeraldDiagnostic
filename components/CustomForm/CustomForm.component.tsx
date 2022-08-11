@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { formatFormData } from "@/utils/helper";
 import { ReportParamsData } from "middleware/models.interface";
+import InputGroup from "../core/InputGroup/InputGroup.component";
+import Button from "../core/Button/Button.component";
 
 const CustomFormComponent = ({
   formType,
@@ -38,29 +40,40 @@ const CustomFormComponent = ({
         {formType.keywords.map((val) => (
           <div key={val.keyword}>
             <div className="block">
-              <label className="">{val.keyword}</label>
-              <input
+              <div className="flex items-center">
+                <div className="w-[500px]">
+                  <InputGroup
+                    labelName={val.keyword}
+                    inputName={val.keyword}
+                    inputType="number"
+                    placeholder="Add value"
+                    register={register}
+                    error={errors[val.keyword]?.message as string}
+                  />
+                </div>
+
+                <span className="border-2 border-md bg-gray-400 max-w-10 max-h-10 ">
+                  {val.unit}
+                </span>
+                <span className="border-2 border-md bg-gray-400 max-w-10 max-h-10">
+                  {val.normalRange}
+                </span>
+              </div>
+
+              {/* <label className="">{val.keyword}</label> */}
+              {/* <input
                 {...register(val.keyword)}
                 name={val.keyword}
                 className="border-2 border-black-2 mx-2 "
                 placeholder={val.keyword}
                 type="number"
-              />
-              <span className="border-2 border-md bg-gray-400 ">
-                {val.unit}
-              </span>
-              <span className="border-2 border-md bg-gray-400 ">
-                {val.normalRange}
-              </span>
+              /> */}
             </div>
-            <span className={"text-red-500"}>
-              {errors[val.keyword]?.message}
-            </span>{" "}
           </div>
         ))}
-        <button className="border-2 border-md bg-blue-400 active:bg-blue-700">
-          Submit
-        </button>
+        <div className="w-full flex justify-center pt-2">
+          <Button name="Submit" type="submit" />
+        </div>
       </form>
     </div>
   );

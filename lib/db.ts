@@ -81,3 +81,13 @@ export async function createReport(
     return { status: error.response.status || error.request.code, data: null };
   }
 }
+export async function getReports(token: string, userId: string) {
+  try {
+    const resp = await axios.get(`/api/reports/${encodeURIComponent(userId)}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response.status || error.request.code, data: null };
+  }
+}

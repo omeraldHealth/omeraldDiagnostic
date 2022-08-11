@@ -10,6 +10,9 @@ import PhoneInputWithCountrySelect from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 
 import "yup-phone";
+import InputGroup from "../core/InputGroup/InputGroup.component";
+import TextArea from "../core/TextArea/TextArea.component";
+import Button from "../core/Button/Button.component";
 const styles = {
   inputStyle: "border-2 border-black-2 mx-2 block ",
   btnStyle: "border-2 border-md bg-blue-400 active:bg-blue-700",
@@ -49,24 +52,39 @@ const BasicReportDetailsForm = ({
   };
 
   return (
-    <div>
-      <h2 className="text-center">Basic Details</h2>
-      <form onSubmit={handleSubmit(handleSubmitForm)}>
-        <input
+    <div className="md:w-[500px]">
+      <h1 className="text-center">Basic Details</h1>
+      <form className="w-full" onSubmit={handleSubmit(handleSubmitForm)}>
+        <InputGroup
+          labelName="Full Name"
+          inputName="fullName"
+          error={errors.fullName?.message}
+          placeholder="Add Your Name"
+          register={register}
+        />
+        <InputGroup
+          labelName="Email"
+          inputName="email"
+          error={errors.email?.message}
+          placeholder="example@example.com"
+          register={register}
+        />
+        {/* <input
           {...register("fullName")}
           name="fullName"
           className={styles.inputStyle}
           placeholder="Full Name"
-        />
-        <span className={styles.errorStyle}>{errors.fullName?.message}</span>{" "}
-        <input
+        /> */}
+        {/* <span className={styles.errorStyle}>{errors.fullName?.message}</span>{" "} */}
+        {/* <input
           {...register("email")}
           name="email"
           className={styles.inputStyle}
           placeholder="Email"
         />
-        <span className={styles.errorStyle}>{errors.email?.message}</span>
+        <span className={styles.errorStyle}>{errors.email?.message}</span> */}
         <PhoneInputWithCountrySelect
+          // inputClass="block w-full pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md"
           international={true}
           onCountryChange={(country) =>
             country === undefined
@@ -86,38 +104,70 @@ const BasicReportDetailsForm = ({
         <span className={styles.errorStyle}>
           {errors.phoneNumberInput?.message}
         </span>
-        <input
+        <InputGroup
+          labelName="Booking Date"
+          inputName="bookingDate"
+          inputType={"date"}
+          error={errors.bookingDate?.message}
+          placeholder="Add Your Report Date"
+          register={register}
+        />
+        {/* <input
           {...register("bookingDate")}
           name="bookingDate"
           className={styles.inputStyle}
           type="date"
           placeholder="Booking Date"
         />
-        <span className={styles.errorStyle}>{errors.bookingDate?.message}</span>
-        <input
+        <span className={styles.errorStyle}>{errors.bookingDate?.message}</span> */}
+        <InputGroup
+          labelName="Department"
+          inputName="department"
+          error={errors.department?.message}
+          placeholder="Add Report Department"
+          register={register}
+        />
+        <InputGroup
+          labelName="Doctor Name"
+          inputName="doctorName"
+          error={errors.doctorName?.message}
+          placeholder="Add your doctor"
+          register={register}
+        />
+        {/* <input
           {...register("department")}
           name="department"
           className={styles.inputStyle}
           placeholder="Department"
         />
-        <span className={styles.errorStyle}>{errors.department?.message}</span>
-        <input
+        <span className={styles.errorStyle}>{errors.department?.message}</span> */}
+        {/* <input
           {...register("doctorName")}
           name="doctorName"
           className={styles.inputStyle}
           placeholder="Doctor Name"
         />
-        <span className={styles.errorStyle}>{errors.doctorName?.message}</span>
-        <textarea
+        <span className={styles.errorStyle}>{errors.doctorName?.message}</span> */}
+        <TextArea
+          labelName="Message"
+          inputName="message"
+          error={errors.message?.message}
+          placeholder={"Add message"}
+          register={register}
+        />
+        {/* <textarea
           {...register("message")}
           name="message"
           className={styles.inputStyle}
           placeholder="Message"
         />
-        <span className={styles.errorStyle}>{errors.message?.message}</span>
-        <button type="submit" className={styles.btnStyle}>
+        <span className={styles.errorStyle}>{errors.message?.message}</span> */}
+        <span className="w-full flex place-content-center pt-2">
+          <Button type="submit" name="Submit User Details" />
+        </span>
+        {/* <button type="submit" className={styles.btnStyle}>
           Submit User Details
-        </button>
+        </button> */}
       </form>
     </div>
   );

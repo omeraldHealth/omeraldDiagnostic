@@ -32,8 +32,11 @@ export type ReportParamsData = Pick<
 
 export type ReportDetails = {
   userId: string;
+  fullName: string;
+  email: string;
   reportId?: string;
   reportUrl: string;
+  bookingDate: Date;
   status: "parsed" | "parsing";
   testName: string;
   parsedData: ReportParamsData[];
