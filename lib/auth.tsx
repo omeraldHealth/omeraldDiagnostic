@@ -1,18 +1,9 @@
-import {
-  getAuth,
-  onIdTokenChanged,
-  User,
-  UserCredential,
-  UserInfo,
-} from "firebase/auth";
+import { getAuth, onIdTokenChanged, User } from "firebase/auth";
 import { UserDetails } from "middleware/models.interface";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { deleteSession, getUserDetails, setSession } from "./db";
 import firebaseApp from "./firebase";
-
-//TODO: Imporve the interface
-
 export interface AuthContextInterface {
   user: User | null;
   diagnosticDetails: UserDetails | null;
@@ -63,7 +54,6 @@ function useFirebaseAuth() {
     // await handleUser(user, token, phoneNumber); DO NOT call handleUser, because when user logs in , it will automatically get called.
     const resp = await getUserDetails(token, phoneNumber);
     if (resp.status == 200) {
-      // setDiagnosticDetails(resp.data.user);
       router.push(redirect);
     } else if (resp.status == 404) {
       router.push("/onboard");
