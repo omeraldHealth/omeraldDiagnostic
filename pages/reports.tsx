@@ -1,6 +1,5 @@
 import ReportsTable from "@/components/ReportsTable/ReportsTable.component";
 import { getReports } from "@/lib/db";
-import { getAuth } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../lib/auth";
 import { ReportDetails } from "middleware/models.interface";
