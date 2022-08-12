@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import PhoneInputWithCountrySelect, {
   isValidPhoneNumber,
 } from "react-phone-number-input";
@@ -21,7 +20,8 @@ const LoginComponent = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [expandForm, setExpandForm] = useState(false);
   const [otp, setOtp] = useState("");
-  const router = useRouter();
+  const [error, setError] = useState("");
+  const [isPhoneNumberDisabled, setPhoneNumberDisabled] = useState(false);
 
   const generateRecaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
@@ -40,26 +40,23 @@ const LoginComponent = () => {
   const requestOTP: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
     if (isValidPhoneNumber(phoneNumber)) {
-      console.log("aachs");
       generateRecaptcha();
       let appVerifier = window.recaptchaVerifier;
       signInWithPhoneNumber(auth, phoneNumber, appVerifier)
         .then((confirmationResult) => {
-          console.log("aachs2");
-
           window.confirmationResult = confirmationResult;
           setExpandForm(true);
+          setPhoneNumberDisabled(true);
         })
         .catch((error) => {
           console.error(error);
         });
-    } else {
-      console.log("enter valid phone number");
     }
   };
 
   const verifyOTP: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    setError("");
     if (otp.length === 6) {
       let confirmationResult = window.confirmationResult;
       confirmationResult
@@ -67,9 +64,14 @@ const LoginComponent = () => {
         .then(async (result: UserCredential) => {
           signIn(result.user, "/dashboard");
         })
-        .catch((error: Error) => {
-          console.error(error);
+        .catch((error: any) => {
+          if (error?.code === "auth/invalid-verification-code") {
+            setError("Invalid OTP");
+          }
+          console.log(JSON.stringify(error));
         });
+    } else {
+      setError("Length should be of 6 digits");
     }
   };
 
@@ -79,14 +81,13 @@ const LoginComponent = () => {
         <label>Phone Number</label>
 
         <PhoneInputWithCountrySelect
-          // {...register("phoneNumberInput", {})}
+          disabled={isPhoneNumberDisabled}
           name="phoneNumberInput"
           defaultCountry="IN"
           value={phoneNumber}
           onChange={(value) =>
             value === undefined ? setPhoneNumber("") : setPhoneNumber(value)
           }
-          rules={{ required: true, validate: isValidPhoneNumber }}
         />
 
         {isValidPhoneNumber(phoneNumber) ? null : (
@@ -116,6 +117,7 @@ const LoginComponent = () => {
             </button>
           </>
         )}
+        {error.length > 0 && <span className="text-red-500">{error}</span>}
 
         <div id="recaptcha-container"></div>
       </form>
