@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 // };
 
 //TODO: ADD EXCEPTIONS HERE
-const allowedPaths = ["/", "/login"];
+const allowedPaths = ["", "/", "/login"];
 
 const Allowed = ({
   children,
@@ -26,8 +26,13 @@ const Allowed = ({
     return <>{children}</>;
   } else if (auth?.loading) {
     return <h1 className="grid h-screen place-content-center">Loading...</h1>;
-  } else if (auth?.user) {
+  } else if (auth?.user && router.pathname == "/onboard") {
     return cloneElement(children, { auth: auth });
+  } else if (auth?.user && auth?.diagnosticDetails) {
+    return cloneElement(children, { auth: auth });
+  } else if (auth?.user) {
+    router.push("/onboard");
+    return null;
   } else {
     router.push("/");
     return null;

@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .collection("diagnosticusers")
         .findOne({ phoneNumber: userId });
       console.log(user);
-      if (user.reports) {
+      if (user?.reports) {
         const reportsList = await db
           .collection("reports")
           .find({ reportId: { $in: user.reports } })

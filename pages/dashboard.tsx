@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [reportTypes, setReportTypes] = useState<ReportTypes[]>([]);
   const [selectedType, setSelectedType] = useState(-1);
   const [basicFormData, setBasicFormData] = useState<BasicFormType>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     console.log(diagnosticDetails);
@@ -32,6 +33,7 @@ const Dashboard = () => {
   }, [user]);
 
   const handleReportSubmitForm = async (reportData: ReportParamsData[]) => {
+    setIsLoading(true);
     const { phoneNumberInput, ...restBasicForm } = basicFormData;
     const reportDetails: ReportDetails = {
       userId: phoneNumberInput,
@@ -42,7 +44,11 @@ const Dashboard = () => {
       ...restBasicForm,
     };
     const token = (await user?.getIdToken()) || "";
-    await createReport(token, user?.phoneNumber, reportDetails);
+    const resp = await createReport(token, user?.phoneNumber, reportDetails);
+    if (resp.status === 201) {
+      setIsLoading(false);
+      setIsBasicFormVisible(true);
+    }
     console.log(reportDetails);
   };
 
@@ -54,35 +60,39 @@ const Dashboard = () => {
   // const handleSignOut = async () => {
   //   await signOut();
   // };
-  return (
-    <div className="grid h-screen place-content-center">
-      {isBasicFormVisible && (
-        <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
-      )}
-      {!isBasicFormVisible && (
-        <div>
-          <select
-            value={selectedType}
-            onChange={(e) => setSelectedType(Number(e.target.value))}
-            className="border-2 border-black-2 block"
-          >
-            <option value={-1}>Select Report Type</option>
-            {reportTypes.map((val, index) => (
-              <option key={val.testName} value={index}>
-                {val.testName}
-              </option>
-            ))}
-          </select>
-          {selectedType > -1 && (
-            <CustomFormComponent
-              formType={reportTypes[selectedType]}
-              onReportSubmitForm={handleReportSubmitForm}
-            />
-          )}
-        </div>
-      )}
-    </div>
-  );
+  if (isLoading) {
+    return <div className="grid h-screen place-content-center">Loading...</div>;
+  } else {
+    return (
+      <div className="grid h-screen place-content-center">
+        {isBasicFormVisible && (
+          <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
+        )}
+        {!isBasicFormVisible && (
+          <div>
+            <select
+              value={selectedType}
+              onChange={(e) => setSelectedType(Number(e.target.value))}
+              className="border-2 border-black-2 block"
+            >
+              <option value={-1}>Select Report Type</option>
+              {reportTypes.map((val, index) => (
+                <option key={val.testName} value={index}>
+                  {val.testName}
+                </option>
+              ))}
+            </select>
+            {selectedType > -1 && (
+              <CustomFormComponent
+                formType={reportTypes[selectedType]}
+                onReportSubmitForm={handleReportSubmitForm}
+              />
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
 };
 
 export default Dashboard;

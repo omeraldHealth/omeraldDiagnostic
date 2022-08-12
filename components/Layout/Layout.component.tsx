@@ -29,7 +29,7 @@ const navigation = [
 const exceptions = ["/onboard", "/", "/login"];
 
 const Layout = ({ children }: LayoutProps) => {
-  const { signOut } = useAuth();
+  const { diagnosticDetails, signOut } = useAuth();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentNavigation, setCurrentNavigation] = useState<NavigationType>(
@@ -146,7 +146,7 @@ const Layout = ({ children }: LayoutProps) => {
                           </div>
                           <div className="ml-3">
                             <p className="text-base font-medium text-white">
-                              Tom Cook
+                              {diagnosticDetails?.fullName}
                             </p>
                             <p className="text-sm font-medium text-indigo-200 group-hover:text-white">
                               View profile
@@ -213,7 +213,9 @@ const Layout = ({ children }: LayoutProps) => {
                       />
                     </div>
                     <div className="ml-3">
-                      <p className="text-sm font-medium text-white">Tom Cook</p>
+                      <p className="text-sm font-medium text-white">
+                        {diagnosticDetails?.fullName}
+                      </p>
                       <p className="text-xs font-medium text-indigo-200 group-hover:text-white">
                         View profile
                       </p>
