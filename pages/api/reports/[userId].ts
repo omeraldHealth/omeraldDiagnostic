@@ -6,7 +6,6 @@ import { randomUUID } from "crypto";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { client, db } = await connectToDatabase();
-  const session = client.startSession();
   const { userId } = req.query;
   if (req.method === "GET") {
     try {
@@ -33,6 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === "POST") {
     const reportDetails = req.body as ReportDetails;
+    const session = client.startSession();
 
     try {
       let report;
