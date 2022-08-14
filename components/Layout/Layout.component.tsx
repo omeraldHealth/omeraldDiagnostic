@@ -78,7 +78,7 @@ const Layout = ({ children }: LayoutProps) => {
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative flex-1 flex flex-col max-w-xs w-full bg-indigo-700">
+                <Dialog.Panel className="relative flex-1 flex flex-col max-w-xs w-full bg-primary">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-300"
@@ -107,7 +107,7 @@ const Layout = ({ children }: LayoutProps) => {
                       <img
                         className="h-8 w-auto"
                         src="https://tailwindui.com/img/logos/workflow-logo-indigo-300-mark-white-text.svg"
-                        alt="Workflow"
+                        alt="Omerald"
                       />
                     </div>
                     <nav className="mt-5 px-2 space-y-1">
@@ -117,13 +117,13 @@ const Layout = ({ children }: LayoutProps) => {
                             onClick={() => handleNavigationChange(item)}
                             className={classNames(
                               item.name === currentNavigation.name
-                                ? "bg-indigo-800 text-white"
-                                : "text-white hover:bg-indigo-600 hover:bg-opacity-75",
+                                ? "bg-btnPrimary-500 text-white"
+                                : "text-white hover:bg-btnPrimary-300  hover:bg-opacity-75",
                               "group flex items-center px-2 py-2 text-base font-medium rounded-md"
                             )}
                           >
                             <item.icon
-                              className="mr-4 flex-shrink-0 h-6 w-6 text-indigo-300"
+                              className="mr-4 flex-shrink-0 h-6 w-6 text-btnPrimary-300"
                               aria-hidden="true"
                             />
                             {item.name}
@@ -132,8 +132,8 @@ const Layout = ({ children }: LayoutProps) => {
                       ))}
                     </nav>
                   </div>
-                  <Button name="Sign Out" onClick={handleSignOut} />
-                  <div className="flex-shrink-0 flex border-t border-indigo-800 p-4">
+                  {/* <Button name="Sign Out" onClick={handleSignOut} /> */}
+                  <div className="flex-shrink-0 flex border-t border-btnPrimary-500 p-4">
                     <Link href="#">
                       <a className="flex-shrink-0 group block">
                         <div className="flex items-center">
@@ -148,9 +148,12 @@ const Layout = ({ children }: LayoutProps) => {
                             <p className="text-base font-medium text-white">
                               {diagnosticDetails?.fullName}
                             </p>
-                            <p className="text-sm font-medium text-indigo-200 group-hover:text-white">
-                              View profile
-                            </p>
+                            <button
+                              onClick={handleSignOut}
+                              className="text-sm font-medium text-btnPrimary-300 group-hover:text-white"
+                            >
+                              Sign Out
+                            </button>
                           </div>
                         </div>
                       </a>
@@ -168,7 +171,7 @@ const Layout = ({ children }: LayoutProps) => {
         {/* Static sidebar for desktop */}
         <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex-1 flex flex-col min-h-0 bg-indigo-700">
+          <div className="flex-1 flex flex-col min-h-0 bg-primary">
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-4">
                 <img
@@ -184,13 +187,13 @@ const Layout = ({ children }: LayoutProps) => {
                       onClick={() => handleNavigationChange(item)}
                       className={classNames(
                         item.name === currentNavigation.name
-                          ? "bg-indigo-800 text-white"
-                          : "text-white hover:bg-indigo-600 hover:bg-opacity-75",
+                          ? "bg-btnPrimary-500 text-white"
+                          : "text-white hover:bg-btnPrimary-300 hover:bg-opacity-75",
                         "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                       )}
                     >
                       <item.icon
-                        className="mr-3 flex-shrink-0 h-6 w-6 text-indigo-300"
+                        className="mr-3 flex-shrink-0 h-6 w-6 text-btnPrimary-300 "
                         aria-hidden="true"
                       />
                       {item.name}
@@ -199,9 +202,9 @@ const Layout = ({ children }: LayoutProps) => {
                 ))}
               </nav>
             </div>
-            <Button name="Sign Out" onClick={handleSignOut} />
+            {/* <Button name="Sign Out" onClick={handleSignOut} /> */}
 
-            <div className="flex-shrink-0 flex border-t border-indigo-800 p-4">
+            <div className="flex-shrink-0 flex border-t border-btnPrimary-500 p-4">
               <Link href="#">
                 <a className="flex-shrink-0 w-full group block">
                   <div className="flex items-center">
@@ -216,9 +219,12 @@ const Layout = ({ children }: LayoutProps) => {
                       <p className="text-sm font-medium text-white">
                         {diagnosticDetails?.fullName}
                       </p>
-                      <p className="text-xs font-medium text-indigo-200 group-hover:text-white">
-                        View profile
-                      </p>
+                      <button
+                        onClick={handleSignOut}
+                        className="text-xs font-medium text-btnPrimary-500 group-hover:text-white"
+                      >
+                        Sign Out
+                      </button>
                     </div>
                   </div>
                 </a>

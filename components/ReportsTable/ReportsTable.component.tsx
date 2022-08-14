@@ -1,16 +1,6 @@
 import { ReportDetails } from "middleware/models.interface";
 import dayjs from "dayjs";
 
-const people = [
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  // More people...
-];
-
 type ReportTableProps = {
   reports: Required<ReportDetails>[];
   onSelectReport: (val: string) => void;

@@ -9,17 +9,18 @@ import {
   ReportParamsData,
   ReportTypes,
 } from "middleware/models.interface";
+import Button from "@/components/core/Button/Button.component";
 
 const Dashboard = () => {
-  const { user, diagnosticDetails } = useAuth();
+  const { user } = useAuth();
   const [isBasicFormVisible, setIsBasicFormVisible] = useState(true);
   const [reportTypes, setReportTypes] = useState<ReportTypes[]>([]);
   const [selectedType, setSelectedType] = useState(-1);
   const [basicFormData, setBasicFormData] = useState<BasicFormType>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    console.log(diagnosticDetails);
     (async () => {
       const token = await user?.getIdToken();
       if (token) {
@@ -48,6 +49,8 @@ const Dashboard = () => {
     if (resp.status === 201) {
       setIsLoading(false);
       setIsBasicFormVisible(true);
+      setIsSuccess(true);
+      setSelectedType(-1);
     }
     console.log(reportDetails);
   };
@@ -57,11 +60,15 @@ const Dashboard = () => {
     setIsBasicFormVisible(false);
   };
 
-  // const handleSignOut = async () => {
-  //   await signOut();
-  // };
   if (isLoading) {
     return <div className="grid h-screen place-content-center">Loading...</div>;
+  } else if (isSuccess) {
+    return (
+      <div className="grid h-screen bg-primary place-content-center">
+        <span>Success</span>
+        <Button name="Go To Home" onClick={() => setIsSuccess(false)} />
+      </div>
+    );
   } else {
     return (
       <div className="grid h-screen place-content-center">

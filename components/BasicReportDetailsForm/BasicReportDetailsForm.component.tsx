@@ -14,8 +14,6 @@ import InputGroup from "../core/InputGroup/InputGroup.component";
 import TextArea from "../core/TextArea/TextArea.component";
 import Button from "../core/Button/Button.component";
 const styles = {
-  inputStyle: "border-2 border-black-2 mx-2 block ",
-  btnStyle: "border-2 border-md bg-blue-400 active:bg-blue-700",
   errorStyle: "text-red-500",
 };
 
