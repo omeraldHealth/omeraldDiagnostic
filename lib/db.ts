@@ -91,3 +91,27 @@ export async function getReports(token: string, userId: string) {
     return { status: error.response.status || error.request.code, data: null };
   }
 }
+export async function uploadReport(
+  token: string,
+  userId: string,
+  file: string | number | readonly string[],
+  testName: string
+) {
+  try {
+    const resp = await axios.post(
+      `https://calm-tor-77784.herokuapp.com/uploadReport`,
+      {
+        file: file,
+        userId: userId,
+        token: token,
+        testName: testName,
+      },
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response.status || error.request.code, data: null };
+  }
+}

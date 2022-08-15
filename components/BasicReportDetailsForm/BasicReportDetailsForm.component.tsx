@@ -23,13 +23,13 @@ const BasicReportDetailsForm = ({
   const [countryCode, setCountryCode] = useState("IN");
 
   const schema = yup.object().shape({
-    fullName: yup.string().strict().required(),
+    userName: yup.string().required().strict(),
     email: yup.string().email().required(),
     phoneNumberInput: yup
       .string()
-      .phone(countryCode, true, "Invalid Phone Number")
-      .required(),
-    bookingDate: yup.date().required(),
+      .required("Phone no is required")
+      .phone(countryCode, true, "Invalid Phone Number"),
+    reportDate: yup.date().required(),
     department: yup.string(),
     doctorName: yup.string().strict(),
     message: yup.string(),
@@ -54,9 +54,9 @@ const BasicReportDetailsForm = ({
       <h1 className="text-center">Basic Details</h1>
       <form className="w-full" onSubmit={handleSubmit(handleSubmitForm)}>
         <InputGroup
-          labelName="Full Name"
-          inputName="fullName"
-          error={errors.fullName?.message}
+          labelName="User Name"
+          inputName="userName"
+          error={errors.userName?.message}
           placeholder="Add Your Name"
           register={register}
         />
@@ -70,10 +70,10 @@ const BasicReportDetailsForm = ({
         {/* <input
           {...register("fullName")}
           name="fullName"
-          className={styles.inputStyle}
+          // className={styles.inputStyle}
           placeholder="Full Name"
-        /> */}
-        {/* <span className={styles.errorStyle}>{errors.fullName?.message}</span>{" "} */}
+        />
+        <span className={styles.errorStyle}>{errors.fullName?.message}</span> */}
         {/* <input
           {...register("email")}
           name="email"
@@ -102,11 +102,12 @@ const BasicReportDetailsForm = ({
         <span className={styles.errorStyle}>
           {errors.phoneNumberInput?.message}
         </span>
+
         <InputGroup
-          labelName="Booking Date"
-          inputName="bookingDate"
+          labelName="Report Date"
+          inputName="reportDate"
           inputType={"date"}
-          error={errors.bookingDate?.message}
+          error={errors.reportDate?.message}
           placeholder="Add Your Report Date"
           register={register}
         />

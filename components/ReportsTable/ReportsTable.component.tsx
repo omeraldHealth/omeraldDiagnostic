@@ -74,7 +74,7 @@ export default function ReportsTable({
                   {reports.map((person) => (
                     <tr key={person.email}>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {person.fullName}
+                        {person.userName}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {person.email}
@@ -83,7 +83,7 @@ export default function ReportsTable({
                         {person.testName}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {dayjs(person.bookingDate).format("MMMM D, YYYY")}
+                        {dayjs(person.reportDate).format("MMMM D, YYYY")}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <button
@@ -91,7 +91,7 @@ export default function ReportsTable({
                           className="text-indigo-600 hover:text-indigo-900"
                         >
                           View
-                          <span className="sr-only">, {person.fullName}</span>
+                          <span className="sr-only">, {person.userName}</span>
                         </button>
                       </td>
                     </tr>

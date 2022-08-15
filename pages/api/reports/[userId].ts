@@ -2,7 +2,6 @@ import { withAuth } from "@/lib/middlewares";
 import { connectToDatabase } from "middleware/database";
 import { ReportDetails } from "middleware/models.interface";
 import { NextApiRequest, NextApiResponse } from "next";
-import { randomUUID } from "crypto";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { client, db } = await connectToDatabase();
@@ -38,11 +37,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let report;
       let addReportId;
       await session.withTransaction(async () => {
-        reportDetails.reportId = randomUUID();
         // reportDetails.createdAt = new Date(); because createdAt timestamp can be retrived be ObjectId("sdfdf").getTimestamp()
         reportDetails.updatedAt = new Date();
         report = await db.collection("reports").insertOne(reportDetails);
-
         const filter = { phoneNumber: userId };
         const options = { upsert: true };
         const updateDoc = {
