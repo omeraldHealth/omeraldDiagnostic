@@ -33,7 +33,7 @@ const schema = yup.object().shape({
   address: yup.string().required(),
 });
 const Onboard = () => {
-  const { user } = useAuth();
+  const { user, diagnosticDetails, signIn } = useAuth();
   const {
     setValue,
     register,
@@ -46,15 +46,13 @@ const Onboard = () => {
 
   const router = useRouter();
 
-  // useEffect(() => {}, [user]);
-
   const submitForm = async (data: FormData) => {
-    console.log(data);
     const token = (await user?.getIdToken()) || "invalid";
     const res = await setUserDetails(token, data);
     console.log(res);
-    if (res.status === 201) {
-      router.push("/dashboard");
+    if (res.status == 201 && user) {
+      signIn(user, "/dashboard");
+      // router.push("/dashboard");
     }
 
     if (res.status === 409) {

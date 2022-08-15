@@ -12,6 +12,7 @@ import {
 import Button from "@/components/core/Button/Button.component";
 import UploadInput from "@/components/UploadReport/UploadReport.component";
 import { randomUUID } from "crypto";
+const crypto = require("crypto");
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -50,7 +51,7 @@ const Dashboard = () => {
       parsedData: reportData,
       ...restBasicForm,
     };
-    reportDetails.reportId = randomUUID();
+    reportDetails.reportId = crypto.randomBytes(20).toString("hex");
 
     const token = (await user?.getIdToken()) || "";
     const resp = await createReport(token, user?.phoneNumber, reportDetails);

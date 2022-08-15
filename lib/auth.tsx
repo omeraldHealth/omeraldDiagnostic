@@ -54,6 +54,7 @@ function useFirebaseAuth() {
     // await handleUser(user, token, phoneNumber); DO NOT call handleUser, because when user logs in , it will automatically get called.
     const resp = await getUserDetails(token, phoneNumber);
     if (resp.status == 200) {
+      setDiagnosticDetails(resp.data.user);
       router.push(redirect);
     } else if (resp.status == 404) {
       router.push("/onboard");
