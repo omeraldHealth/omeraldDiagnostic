@@ -1,4 +1,3 @@
-import { uploadReport } from "@/lib/db";
 import React, { useState } from "react";
 
 type UploadInputProps = {
@@ -7,14 +6,9 @@ type UploadInputProps = {
   setFile: (val: string) => void;
 };
 const UploadInput = ({ labelName, file, setFile }: UploadInputProps) => {
-  // const [file, setFile] = useState<
-  //   string | number | readonly string[] | undefined
-  // >();
-
-  const handleFileChange = async (e: React.FormEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: any) => {
     console.log(e);
     setFile(e.target.files[0]);
-    // console.log(e.target.files[0]);
   };
 
   return (
@@ -26,7 +20,6 @@ const UploadInput = ({ labelName, file, setFile }: UploadInputProps) => {
         {labelName}
       </label>
       <input
-        // value={file}
         onChange={handleFileChange}
         className="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
         id={labelName}
