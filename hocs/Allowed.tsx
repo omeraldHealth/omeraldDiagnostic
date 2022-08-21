@@ -26,9 +26,11 @@ const Allowed = ({
     return <>{children}</>;
   } else if (auth?.loading) {
     return <h1 className="grid h-screen place-content-center">Loading...</h1>;
-  } else if (auth?.user && router.pathname == "/onboard") {
-    return cloneElement(children, { auth: auth });
   } else if (auth?.user && auth?.diagnosticDetails) {
+    if (router.pathname === "/onboard") {
+      router.push("/dashboard");
+      return null;
+    }
     return cloneElement(children, { auth: auth });
   } else if (auth?.user) {
     router.push("/onboard");
