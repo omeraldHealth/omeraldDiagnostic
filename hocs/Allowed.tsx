@@ -33,6 +33,9 @@ const Allowed = ({
     }
     return cloneElement(children, { auth: auth });
   } else if (auth?.user) {
+    if (router.pathname === "/onboard") {
+      return cloneElement(children);
+    }
     router.push("/onboard");
     return null;
   } else {
