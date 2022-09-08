@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
-  BasicFormType,
+  ReportUserDetails,
   BasicReportFormProps,
 } from "./BasicReportDetailsForm.interface";
 import PhoneInputWithCountrySelect from "react-phone-number-input";
@@ -40,11 +40,11 @@ const BasicReportDetailsForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<BasicFormType>({
+  } = useForm<ReportUserDetails>({
     resolver: yupResolver(schema),
   });
 
-  const handleSubmitForm = (data: BasicFormType) => {
+  const handleSubmitForm = (data: ReportUserDetails) => {
     console.log(data);
     onBasicFormSubmit(data);
   };

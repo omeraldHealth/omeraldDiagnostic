@@ -2,12 +2,9 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "@/lib/auth";
-import { UserDetails } from "../middleware/models.interface";
-import { ObjectId } from "mongodb";
 import { setUserDetails } from "@/lib/db";
 import * as yup from "yup";
 import { useRouter } from "next/router";
-import Allowed from "hocs/Allowed";
 import InputGroup from "@/components/core/InputGroup/InputGroup.component";
 import TextArea from "@/components/core/TextArea/TextArea.component";
 import Button from "@/components/core/Button/Button.component";
@@ -52,7 +49,6 @@ const Onboard = () => {
     console.log(res);
     if (res.status == 201 && user) {
       signIn(user, "/dashboard");
-      // router.push("/dashboard");
     }
 
     if (res.status === 409) {
@@ -104,49 +100,6 @@ const Onboard = () => {
           register={register}
         />
 
-        {/* <input
-          {...register("diagnosticName")}
-          // ref={register}
-          className={styles.inputStyles}
-          name="diagnosticName"
-          placeholder="Diagnostic Name"
-        />
-        <span className={styles.errorStyle}>
-          {errors.diagnosticName?.message}
-        </span> */}
-        {/* <input
-          {...register("fullName")}
-          // ref={register}
-          className={styles.inputStyles}
-          name="fullName"
-          placeholder="Full Name"
-        />
-        <span className={styles.errorStyle}>{errors.fullName?.message}</span> */}
-
-        {/* <input
-          {...register("email")}
-          className={styles.inputStyles}
-          name="email"
-          placeholder="Email"
-        />
-        <span className={styles.errorStyle}>{errors.email?.message}</span> */}
-
-        {/* <input
-          {...register("phoneNumber")}
-          className={styles.inputStyles}
-          disabled
-          // value={user && user.phoneNumber ? user.phoneNumber : ""}
-          name="phoneNumber"
-          placeholder="Phone Number"
-        /> */}
-        {/* <textarea
-          {...register("address")}
-          // ref={register}
-          className={styles.inputStyles}
-          name="address"
-          placeholder="Address"
-        />
-        <span className={styles.errorStyle}>{errors.address?.message}</span> */}
         <div className="flex justify-center pt-2">
           <Button type="submit" name="Submit" />
         </div>

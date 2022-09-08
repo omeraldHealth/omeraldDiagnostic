@@ -1,9 +1,9 @@
 import { useAuth } from "@/lib/auth";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { createReport, getReportTypes, uploadReport } from "@/lib/db";
 import CustomFormComponent from "@/components/CustomForm/CustomForm.component";
 import BasicReportDetailsForm from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.component";
-import { BasicFormType } from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.interface";
+import { ReportUserDetails } from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.interface";
 import {
   ReportDetails,
   ReportParamsData,
@@ -11,19 +11,74 @@ import {
 } from "middleware/models.interface";
 import Button from "@/components/core/Button/Button.component";
 import UploadInput from "@/components/UploadReport/UploadReport.component";
-import { randomUUID } from "crypto";
 const crypto = require("crypto");
-
+interface stateType {
+  loading: boolean;
+  success: boolean;
+  error: string;
+  reportUserDetails: ReportUserDetails | null;
+  reportTypes: ReportTypes[];
+}
+interface actionType {
+  type: string;
+  value?: any;
+}
+//TODO: Update Types
+function UserReportReducer(state: stateType, action: actionType): stateType {
+  if (action.type === "success") {
+    return {
+      ...state,
+      loading: false,
+      success: true, //can be change to something like report successfully created.
+      error: "",
+      reportUserDetails: null,
+    };
+  } else if (action.type === "error") {
+    return {
+      ...state,
+      loading: false,
+      error: action.value as string,
+    };
+  } else if (action.type === "loading") {
+    return {
+      ...state,
+      loading: true,
+      error: "",
+    };
+  } else if (action.type === "addReportUserDetails") {
+    return {
+      ...state,
+      reportUserDetails: action.value as ReportUserDetails,
+      loading: false,
+      error: "",
+    };
+  } else if (action.type === "addReportTypes") {
+    return {
+      ...state,
+      reportTypes: action.value,
+      loading: false,
+      error: "",
+    };
+  } else if (action.type === "reset") {
+    return {
+      ...intialState,
+      reportTypes: state.reportTypes,
+    };
+  } else {
+    return state;
+  }
+}
+const intialState: stateType = {
+  loading: false,
+  success: false,
+  error: "",
+  reportUserDetails: null,
+  reportTypes: [],
+};
 const Dashboard = () => {
   const { user } = useAuth();
-  //TODO: Update to useReducer
-  const [isBasicFormVisible, setIsBasicFormVisible] = useState(true);
-  const [reportTypes, setReportTypes] = useState<ReportTypes[]>([]);
+  const [state, dispatch] = useReducer(UserReportReducer, intialState);
   const [selectedType, setSelectedType] = useState(-1);
-  const [basicFormData, setBasicFormData] = useState<BasicFormType>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isUploadError, setIsUploadError] = useState(false);
   const [file, setFile] = useState<string>("");
 
   useEffect(() => {
@@ -33,36 +88,41 @@ const Dashboard = () => {
         const resp = await getReportTypes(token);
         console.log(resp);
         if (resp.status == 200) {
-          setReportTypes(resp.data.reportTypes);
+          dispatch({ type: "addReportTypes", value: resp.data.reportTypes });
         }
       }
     })();
   }, [user]);
-
+  const handleGoToHome = () => {
+    dispatch({ type: "reset" });
+  };
   const handleManualReportSubmitForm = async (
     reportData: ReportParamsData[]
   ) => {
-    setIsLoading(true);
-    const { phoneNumberInput, ...restBasicForm } = basicFormData;
+    dispatch({ type: "loading" });
+    const { phoneNumberInput, ...restBasicForm } =
+      state.reportUserDetails as ReportUserDetails;
     const reportDetails: ReportDetails = {
       userId: phoneNumberInput,
       reportUrl: "addUrl",
       status: "parsed",
-      testName: reportTypes[selectedType].testName,
+      testName: state.reportTypes[selectedType].testName,
       parsedData: reportData,
       ...restBasicForm,
     };
     reportDetails.reportId = crypto.randomBytes(20).toString("hex");
 
     const token = (await user?.getIdToken()) || "";
-    const resp = await createReport(token, user?.phoneNumber, reportDetails);
+    const resp = await createReport(
+      token,
+      user?.phoneNumber as string,
+      reportDetails
+    );
     if (resp.status === 201) {
-      setIsLoading(false);
-      setIsBasicFormVisible(true);
-      setIsSuccess(true);
+      dispatch({ type: "success" });
       setSelectedType(-1);
     }
-    console.log(reportDetails);
+    // console.log(reportDetails);
   };
   const getUploadedReportDetails = async (
     token: string,
@@ -81,14 +141,14 @@ const Dashboard = () => {
 
   const handleUploadReport = async () => {
     if (!file) {
-      setIsUploadError(true);
+      dispatch({ type: "error", value: "Please select PDF file! " });
       return;
     }
 
     if (file) {
-      setIsUploadError(false);
-      setIsLoading(true);
-      const { phoneNumberInput, ...restBasicForm } = basicFormData;
+      dispatch({ type: "loading" });
+      const { phoneNumberInput, ...restBasicForm } =
+        state.reportUserDetails as ReportUserDetails;
       const reportDetails: ReportDetails = {
         userId: phoneNumberInput,
         status: "parsing",
@@ -96,7 +156,7 @@ const Dashboard = () => {
         ...restBasicForm,
       };
       const token = (await user?.getIdToken()) || "";
-      const userId = user?.phoneNumber || "";
+      const userId = user?.phoneNumber as string;
       const uploadedReportDetail = await getUploadedReportDetails(
         token,
         userId,
@@ -109,40 +169,37 @@ const Dashboard = () => {
         reportDetails.reportId = uploadedReportDetail.result.id;
         const resp = await createReport(
           token,
-          user?.phoneNumber,
+          user?.phoneNumber as string,
           reportDetails
         );
         if (resp.status === 201) {
-          setIsLoading(false);
-          setIsBasicFormVisible(true);
-          setIsSuccess(true);
+          dispatch({ type: "success" });
           setSelectedType(-1);
         }
       }
     }
   };
 
-  const handleBasicFormSubmit = (basicFormData: BasicFormType) => {
-    setBasicFormData(basicFormData);
-    setIsBasicFormVisible(false);
+  const handleBasicFormSubmit = (basicFormData: ReportUserDetails) => {
+    dispatch({ type: "addReportUserDetails", value: basicFormData });
   };
 
-  if (isLoading) {
+  if (state.loading) {
     return <div className="grid h-screen place-content-center">Loading...</div>;
-  } else if (isSuccess) {
+  } else if (state.success) {
     return (
       <div className="grid h-screen bg-primary place-content-center">
         <span>Success</span>
-        <Button name="Go To Home" onClick={() => setIsSuccess(false)} />
+        <Button name="Go To Home" onClick={handleGoToHome} />
       </div>
     );
   } else {
     return (
       <div className="grid h-screen place-content-center">
-        {isBasicFormVisible && (
+        {state.reportUserDetails == null && (
           <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
         )}
-        {!isBasicFormVisible && (
+        {state.reportUserDetails && (
           <div>
             <select
               value={selectedType}
@@ -150,7 +207,7 @@ const Dashboard = () => {
               className="border-2 border-black-2 block"
             >
               <option value={-1}>Select Report Type</option>
-              {reportTypes.map((val, index) => (
+              {state.reportTypes.map((val, index) => (
                 <option key={val.testName} value={index}>
                   {val.testName}
                 </option>
@@ -158,7 +215,7 @@ const Dashboard = () => {
             </select>
             {selectedType > -1 && (
               <CustomFormComponent
-                formType={reportTypes[selectedType]}
+                formType={state.reportTypes[selectedType]}
                 onReportSubmitForm={handleManualReportSubmitForm}
               />
             )}
@@ -170,8 +227,8 @@ const Dashboard = () => {
                   file={file}
                   setFile={setFile}
                 />
-                {isUploadError && (
-                  <span className="text-red-500">Please select pdf file</span>
+                {state.error && (
+                  <span className="text-red-500">{state.error}</span>
                 )}
                 <div className="block pt-2">
                   <Button name="Upload Report" onClick={handleUploadReport} />

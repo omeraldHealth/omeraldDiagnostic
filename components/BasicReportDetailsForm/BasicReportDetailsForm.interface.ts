@@ -1,7 +1,7 @@
 export type BasicReportFormProps = {
-  onBasicFormSubmit: (val: BasicFormType) => void;
+  onBasicFormSubmit: (val: ReportUserDetails) => void;
 };
-export type BasicFormType = {
+export type ReportUserDetails = {
   userName: string;
   email: string;
   phoneNumberInput: string;
