@@ -16,6 +16,7 @@ const crypto = require("crypto");
 
 const Dashboard = () => {
   const { user } = useAuth();
+  //TODO: Update to useReducer
   const [isBasicFormVisible, setIsBasicFormVisible] = useState(true);
   const [reportTypes, setReportTypes] = useState<ReportTypes[]>([]);
   const [selectedType, setSelectedType] = useState(-1);

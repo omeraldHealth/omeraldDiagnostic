@@ -67,6 +67,9 @@ function useFirebaseAuth() {
       const phoneNumber = user.phoneNumber || "";
       await deleteSession(token, phoneNumber);
     }
+    //Check it once does setUser and setDiagnostic details to null required for this step
+    setUser(null);
+    setDiagnosticDetails(null);
     await auth.signOut();
     router.push("");
   };
