@@ -25,6 +25,7 @@ type InputGroupProps = {
   register: (val: any) => any; //TODO: Imporve this useForm Type
 };
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
+import { classNames } from "@/utils/helper";
 
 export default function InputGroup({
   value,
@@ -44,7 +45,7 @@ export default function InputGroup({
       >
         {labelName}
       </label>
-      <div className="mt-1 relative rounded-md shadow-sm">
+      <div className="mt-1 relative rounded-md shadow-sm mb-2">
         <input
           value={value}
           disabled={disabled}
@@ -52,7 +53,24 @@ export default function InputGroup({
           type={inputType}
           name={inputName}
           id={inputName}
-          className="block w-full pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md"
+          className={`block w-full pr-10 sm:text-sm rounded-md placeholder:text-xs file:mr-4 file:py-2 file:px-4
+          file:rounded-full file:border-0
+          file:text-xs 
+          file:bg-indigo-700 file:text-white
+          hover:file:bg-primary  ${
+            inputType === "file" && "border border-solid p-1 "
+          }
+          ${
+            inputType === "file" &&
+            (error
+              ? " focus:outline-red-500"
+              : " border-gray-500 p-1 focus:outline-primary ")
+          }
+          ${
+            error
+              ? " border-red-300 text-red-900  focus:ring-red-500 focus:border-red-500 placeholder-red-300"
+              : "focus:border-primary focus:ring-primary "
+          }`}
           placeholder={placeholder}
           aria-invalid="true"
           aria-describedby={`${inputName}-error`}
