@@ -23,11 +23,33 @@ type BrandDetailsForm = {
   facebookUrl?: string;
   instaUrl?: string;
 };
+type ReportDetailsForm = {
+  managerName: string;
+  managerRole: string;
+  managerSignature: FileList;
+};
 
 const styles = {
   errorStyle: "text-red-500",
   inputStyles: "border-2 border-black block",
   button: "border-2 border-black mt-10 bg-blue-400 active:bg-blue-700",
+};
+const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+
+const checkDimensions = async (imageFile: FileList) => {
+  let dimensions = await imageWidthAndHeight(imageFile[0]);
+  if (
+    dimensions.width >= 200 &&
+    dimensions.height >= 67 &&
+    dimensions.width <= 900 &&
+    dimensions.height <= 300 &&
+    Number(dimensions.height / dimensions.width).toFixed(1) ===
+      Number(1 / 3).toFixed(1)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
 
 const steps = [
@@ -47,7 +69,7 @@ const schema = yup.object().shape({
 const schemaStep2 = yup.object().shape({
   brandLogo: yup
     .mixed()
-    .test("length", "Logo is Required", (value) => value.length == 1)
+    .test("length", "Logo is Required", (value) => value?.length == 1)
     .test(
       "type",
       "Unsupported File Format (Only jpg, jpeg, png format are allowed)",
@@ -59,42 +81,68 @@ const schemaStep2 = yup.object().shape({
     .test(
       "size",
       "File Size is too large",
-      (value) => value && value[0]?.size <= 10000
+      (value) => value && value[0]?.size <= 10000000
+    )
+    .test(
+      "dimensions",
+      "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
+      function (value) {
+        return new Promise((res, rej) => {
+          console.log("async validation");
+          res(
+            value &&
+              validImageTypes.includes(value && value[0]?.type) &&
+              checkDimensions(value)
+          );
+        });
+      }
     ),
-  // .test(
-  //   "dimensions",
-  //   "Minimum dimension should be 200 pixels x 67 pixels or the maximum dimensions should be 900 pixels width x 300 pixels height maintaining the aspectRatio of 1:3",
-  //   async (value) => {
-  //     if (value?.length === 1) {
-  //       const dimensions = (await imageWidthAndHeight(value[0])) as {
-  //         width: number;
-  //         height: number;
-  //       };
-  //       if (
-  //         dimensions.width >= 200 &&
-  //         dimensions.height >= 67 &&
-  //         dimensions.width <= 900 &&
-  //         dimensions.height <= 300 &&
-  //         Number(dimensions.width / dimensions.height) === Number(1 / 3)
-  //       ) {
-  //         return true;
-  //       }
-  //       return false;
-  //     } else {
-  //       return false;
-  //     }
-  //   }
-  // )
   facebookUrl: yup.string().url("Please Enter a valid Url"),
   instaUrl: yup.string().url("Please Enter a valid Url"),
 });
 
+const schemaStep3 = yup.object().shape({
+  managerSignature: yup
+    .mixed()
+    .test("length", "Logo is Required", (value) => value?.length == 1)
+    .test(
+      "type",
+      "Unsupported File Format (Only jpg, jpeg, png format are allowed)",
+      (value) => validImageTypes.includes(value && value[0]?.type)
+    )
+    .test(
+      "size",
+      "File Size is too large",
+      (value) => value && value[0]?.size <= 1000000
+    )
+    .test(
+      "dimensions",
+      "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
+      function (value) {
+        return new Promise((res, rej) => {
+          console.log("async validation");
+          res(
+            value &&
+              validImageTypes.includes(value && value[0]?.type) &&
+              checkDimensions(value)
+          );
+        });
+      }
+    ),
+  managerName: yup.string().required().strict(true),
+  managerRole: yup.string().required().strict(true),
+});
+
 const Onboard = () => {
   const { user, diagnosticDetails, signIn } = useAuth();
+  const router = useRouter();
 
-  const [currentStep, setCurrentStep] = useState(steps[1]);
+  const [currentStep, setCurrentStep] = useState(steps[2]);
+  const [managerDetails, setManagerDetails] = useState<FormData[]>([]);
+  const [showStep3ContinueError, setShowStep3ContinueError] = useState(false);
 
   const {
+    getValues: getValuesStep1,
     setValue,
     register,
     handleSubmit,
@@ -107,16 +155,78 @@ const Onboard = () => {
   const {
     register: registerStep2,
     getValues: getValuesStep2,
+    setError: setErrorStep2,
     handleSubmit: handleSubmitStep2,
     formState: { errors: errorsStep2, isValid: isValidStep2 },
   } = useForm<BrandDetailsForm>({
     mode: "onChange",
     resolver: yupResolver(schemaStep2),
   });
-  const brandLogoFile = getValuesStep2("brandLogo");
-  // console.log(isValidStep2);
-  console.log(errorsStep2.brandLogo);
-  const router = useRouter();
+  const {
+    setError: setErrorStep3,
+    register: registerStep3,
+    reset: resetStep3,
+    handleSubmit: handleStep3AddManager,
+    formState: { errors: errorsStep3 },
+  } = useForm<ReportDetailsForm>({
+    mode: "onChange",
+    resolver: yupResolver(schemaStep3),
+  });
+
+  // const handleBrandLogoFileChange = async (
+  //   e: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   let imageFile = e.target.files as FileList;
+  //   let isValidDimensions = await checkDimensions(imageFile);
+  //   if (!isValidDimensions) {
+  //     setErrorStep2(
+  //       "brandLogo",
+  //       {
+  //         type: "invalidDimensions",
+  //         message:
+  //           "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
+  //       },
+  //       { shouldFocus: true }
+  //     );
+  //   }
+  // };
+
+  // const handleSignatureFileChange = async (
+  //   e: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   let imageFile = e.target.files as FileList;
+  //   let isValidDimensions = await checkDimensions(imageFile);
+  //   if (!isValidDimensions) {
+  //     setErrorStep3(
+  //       "managerSignature",
+  //       {
+  //         type: "invalidDimensions",
+  //         message:
+  //           "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
+  //       },
+  //       { shouldFocus: true }
+  //     );
+  //   }
+  // };
+
+  const handleAddManager = async (data: ReportDetailsForm, e: any) => {
+    const newData = new FormData();
+    newData.append("managerName", data.managerName);
+    newData.append("managerRole", data.managerRole);
+    newData.append("managerSignature", data.managerSignature[0]);
+    setShowStep3ContinueError(false);
+    setManagerDetails((val) => val.concat(newData));
+    e.target.reset();
+  };
+
+  const handleSubmitStep3 = (handler: () => void) => {
+    if (managerDetails.length > 0) {
+      setShowStep3ContinueError(false);
+      return handler();
+    } else {
+      setShowStep3ContinueError(true);
+    }
+  };
 
   const handleOnSubmitForm = async (data: BasicDetailsForm) => {
     const token = (await user?.getIdToken()) || "invalid";
@@ -243,6 +353,7 @@ const Onboard = () => {
               onSubmit={handleSubmitStep2(handleOnContinue)}
             >
               <InputGroup
+                // onChange={handleBrandLogoFileChange}
                 labelName="Upload Brand Logo"
                 inputName="brandLogo"
                 placeholder="Upload Brand Logo"
@@ -252,7 +363,7 @@ const Onboard = () => {
               />
 
               {!Boolean(errorsStep2.brandLogo) &&
-                brandLogoFile?.length == 1 && (
+                getValuesStep2("brandLogo")?.length == 1 && (
                   <img
                     src={URL.createObjectURL(getValuesStep2("brandLogo")[0])}
                   />
@@ -285,8 +396,54 @@ const Onboard = () => {
             </form>
           )}
           {currentStep.id === 3 && (
-            <form id="reportDetails" onSubmit={handleSubmit(handleOnContinue)}>
-              <h1>Report Details form</h1>
+            <div id="reportDetails">
+              <div className="flex justify-between  mb-10">
+                <div className="flex-1">
+                  <form
+                    id="reportDetails"
+                    onSubmit={handleStep3AddManager(handleAddManager)}
+                  >
+                    <InputGroup
+                      labelName="Manager Name"
+                      inputName="managerName"
+                      placeholder="Add operations manager name"
+                      error={errorsStep3.managerName?.message}
+                      register={registerStep3}
+                    />
+                    <InputGroup
+                      labelName="Manager Role"
+                      inputName="managerRole"
+                      placeholder="Add operations manager role"
+                      error={errorsStep3.managerRole?.message}
+                      register={registerStep3}
+                    />
+
+                    <InputGroup
+                      // validate={checkDimensions}
+                      // onChange={handleSignatureFileChange}
+                      labelName="Manager Signature"
+                      inputName="managerSignature"
+                      placeholder="Add operations manager signature"
+                      error={errorsStep3.managerSignature?.message}
+                      register={registerStep3}
+                      inputType="file"
+                    />
+                    <div className="flex justify-end pt-2">
+                      <Button styles="basic" type="submit" name="Add" />
+                    </div>
+                  </form>
+                </div>
+                <div className="flex flex-col items-center justify-between flex-1">
+                  {managerDetails.map((manager, index) => (
+                    <SignatureBlock
+                      key={String(index)}
+                      name={manager.get("managerName") as string}
+                      role={manager.get("managerRole") as string}
+                      signature={manager.get("managerSignature") as File}
+                    />
+                  ))}
+                </div>
+              </div>
               <div className="flex justify-between pt-2">
                 <Button
                   styles="basic"
@@ -294,14 +451,41 @@ const Onboard = () => {
                   classNames="bg-white"
                   onClick={handleGoBack}
                 />
-                <Button styles="basic" type="submit" name="Continue" />
+                {showStep3ContinueError && (
+                  <span className="text-sm text-red-600">
+                    Please add atleast one manager details!
+                  </span>
+                )}
+
+                <Button
+                  styles="basic"
+                  type="submit"
+                  name="Continue"
+                  onClick={() => handleSubmitStep3(handleOnContinue)}
+                />
               </div>
-            </form>
+            </div>
           )}
           {currentStep.id == 4 && (
             <form id="summary" onSubmit={handleSubmit(handleOnContinue)}>
-              <h1> Summaryform</h1>
               <div className="flex justify-between pt-2">
+                <div className="flex justify-between  mb-10">
+                  <div className="flex-1">
+                    <h1>Basic Details</h1>
+                  </div>
+                  <div className="flex flex-col items-center justify-between flex-1">
+                    <h2>Brand Details</h2>
+                    {/* {managerDetails.map((manager, index) => (
+                    <SignatureBlock
+                      key={String(index)}
+                      name={manager.get("managerName") as string}
+                      role={manager.get("managerRole") as string}
+                      signature={manager.get("managerSignature") as File}
+                    />
+                  ))} */}
+                  </div>
+                </div>
+
                 <Button
                   styles="basic"
                   name="Back"
@@ -319,3 +503,25 @@ const Onboard = () => {
 };
 
 export default Onboard;
+
+type SignatureBlockProps = {
+  name: string;
+  role: string;
+  signature: File;
+};
+const SignatureBlock = ({ name, role, signature }: SignatureBlockProps) => {
+  return (
+    <div>
+      <img
+        className="shadow-lg"
+        src={URL.createObjectURL(signature)}
+        width={150}
+        height={25}
+      />
+      <span className="text-xs font-semibold block font-mono text-slate-700">
+        {name}
+      </span>
+      <span className="text-xs block font-semibold text-slate-700">{role}</span>
+    </div>
+  );
+};

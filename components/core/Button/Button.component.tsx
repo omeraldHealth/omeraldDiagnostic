@@ -12,11 +12,11 @@ type ButtonProps = {
 const ButtonStyles = {
   basic: {
     btnStyle:
-      " px-6 py-3 shadow-sm text-base text-xs rounded-md text-white bg-indigo-700 hover:bg-primary active:shadow-lg ",
+      " px-6 py-3 shadow-sm text-xs rounded-md text-white bg-indigo-700 hover:bg-primary active:shadow-lg ",
   },
   default: {
     btnStyle:
-      "inline-flex items-center px-6 py-3 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-btnPrimary-500 hover:bg-btnPrimary-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+      "inline-flex items-center px-6 py-3 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-btnPrimary-500 hover:bg-btnPrimary-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
   },
 };
 const Button = ({ type = "button", ...props }: ButtonProps) => {

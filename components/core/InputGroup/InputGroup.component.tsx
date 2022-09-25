@@ -14,7 +14,7 @@
   }
   ```
 */
-type InputGroupProps = {
+interface InputGroupProps {
   disabled?: boolean;
   value?: string;
   labelName: string;
@@ -22,10 +22,13 @@ type InputGroupProps = {
   error: string | undefined;
   placeholder: string;
   inputType?: string;
-  register: (val: any) => any; //TODO: Imporve this useForm Type
-};
+  register: UseFormRegister<any>; //TODO: Imporve this useForm Type
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  validate?: (val?: any) => boolean;
+}
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
 import { classNames } from "@/utils/helper";
+import { UseFormRegister } from "react-hook-form";
 
 export default function InputGroup({
   value,
@@ -36,6 +39,7 @@ export default function InputGroup({
   placeholder = "",
   inputType = "text",
   register,
+  ...props
 }: InputGroupProps) {
   return (
     <div>
@@ -47,9 +51,13 @@ export default function InputGroup({
       </label>
       <div className="mt-1 relative rounded-md shadow-sm mb-2">
         <input
+          // {...props}
           value={value}
           disabled={disabled}
-          {...register(inputName)}
+          {...register(inputName, {
+            onChange: props.onChange,
+            validate: props.validate,
+          })}
           type={inputType}
           name={inputName}
           id={inputName}
@@ -85,7 +93,10 @@ export default function InputGroup({
         )}
       </div>
       {error && (
-        <p className="mt-2 text-sm text-red-600" id={`${inputName}-error`}>
+        <p
+          className="mt-2 text-sm text-red-600 w-full block"
+          id={`${inputName}-error`}
+        >
           {error}
         </p>
       )}

@@ -17,14 +17,18 @@ export const formatFormData = (
 export function classNames(...classes: [string, string]) {
   return classes.filter(Boolean).join(" ");
 }
+type ImageDimensionType = {
+  width: number;
+  height: number;
+};
 export const imageWidthAndHeight = (provideFile: File) => {
   // take the given file (which should be an image) and return the width and height
-  const imgDimensions: { width: Number | null; height: Number | null } = {
+  const imgDimensions: ImageDimensionType = {
     width: null,
     height: null,
   };
 
-  return new Promise((resolve) => {
+  return new Promise<ImageDimensionType>((resolve) => {
     const reader = new FileReader();
 
     reader.readAsDataURL(provideFile);

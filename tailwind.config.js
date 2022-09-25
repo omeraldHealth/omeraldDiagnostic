@@ -9,7 +9,7 @@ module.exports = {
   theme: {
     colors: {
       primary: "#45A19E",
-      secondary: "#FAE596",
+      secondary: "#4438ca",
       btnPrimary: {
         100: "#D0D8D9",
         200: "#A2B1B3",
