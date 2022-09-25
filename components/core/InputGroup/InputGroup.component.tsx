@@ -1,19 +1,4 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
-*/
+
 interface InputGroupProps {
   disabled?: boolean;
   value?: string;
@@ -27,7 +12,6 @@ interface InputGroupProps {
   validate?: (val?: any) => boolean;
 }
 import { ExclamationCircleIcon } from "@heroicons/react/solid";
-import { classNames } from "@/utils/helper";
 import { UseFormRegister } from "react-hook-form";
 
 export default function InputGroup({

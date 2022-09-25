@@ -173,42 +173,6 @@ const Onboard = () => {
     resolver: yupResolver(schemaStep3),
   });
 
-  // const handleBrandLogoFileChange = async (
-  //   e: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   let imageFile = e.target.files as FileList;
-  //   let isValidDimensions = await checkDimensions(imageFile);
-  //   if (!isValidDimensions) {
-  //     setErrorStep2(
-  //       "brandLogo",
-  //       {
-  //         type: "invalidDimensions",
-  //         message:
-  //           "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
-  //       },
-  //       { shouldFocus: true }
-  //     );
-  //   }
-  // };
-
-  // const handleSignatureFileChange = async (
-  //   e: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   let imageFile = e.target.files as FileList;
-  //   let isValidDimensions = await checkDimensions(imageFile);
-  //   if (!isValidDimensions) {
-  //     setErrorStep3(
-  //       "managerSignature",
-  //       {
-  //         type: "invalidDimensions",
-  //         message:
-  //           "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
-  //       },
-  //       { shouldFocus: true }
-  //     );
-  //   }
-  // };
-
   const handleAddManager = async (data: ReportDetailsForm, e: any) => {
     const newData = new FormData();
     newData.append("managerName", data.managerName);
@@ -353,7 +317,6 @@ const Onboard = () => {
               onSubmit={handleSubmitStep2(handleOnContinue)}
             >
               <InputGroup
-                // onChange={handleBrandLogoFileChange}
                 labelName="Upload Brand Logo"
                 inputName="brandLogo"
                 placeholder="Upload Brand Logo"
@@ -419,8 +382,6 @@ const Onboard = () => {
                     />
 
                     <InputGroup
-                      // validate={checkDimensions}
-                      // onChange={handleSignatureFileChange}
                       labelName="Manager Signature"
                       inputName="managerSignature"
                       placeholder="Add operations manager signature"
@@ -468,24 +429,63 @@ const Onboard = () => {
           )}
           {currentStep.id == 4 && (
             <form id="summary" onSubmit={handleSubmit(handleOnContinue)}>
-              <div className="flex justify-between pt-2">
-                <div className="flex justify-between  mb-10">
-                  <div className="flex-1">
-                    <h1>Basic Details</h1>
-                  </div>
-                  <div className="flex flex-col items-center justify-between flex-1">
-                    <h2>Brand Details</h2>
-                    {/* {managerDetails.map((manager, index) => (
-                    <SignatureBlock
-                      key={String(index)}
-                      name={manager.get("managerName") as string}
-                      role={manager.get("managerRole") as string}
-                      signature={manager.get("managerSignature") as File}
-                    />
-                  ))} */}
-                  </div>
+              <div className="flex justify-between  mb-10">
+                <div className="flex-1 mr-10">
+                  <h1>Basic Details</h1>
+                  <LabelNameandValue
+                    labelName="Diagnostic Centre Name"
+                    value={getValuesStep1("diagnosticName")}
+                  />
+                  <LabelNameandValue
+                    labelName="Full Name"
+                    value={getValuesStep1("fullName")}
+                  />
+                  <LabelNameandValue
+                    labelName="Email"
+                    value={getValuesStep1("email")}
+                  />
+                  <LabelNameandValue
+                    labelName="Department"
+                    value={getValuesStep1("department")}
+                  />
+                  <LabelNameandValue
+                    labelName="Phone Number"
+                    value={getValuesStep1("phoneNumber")}
+                  />
+                  <LabelNameandValue
+                    labelName="Address"
+                    value={getValuesStep1("address")}
+                  />
                 </div>
-
+                <div className="flex-1">
+                  <h2>Brand Details</h2>
+                  <LabelNameandValue
+                    labelName="Brand Logo"
+                    value=""
+                    imgFile={getValuesStep2("brandLogo")[0]}
+                  />
+                  <LabelNameandValue
+                    labelName="Facebook Url"
+                    value={getValuesStep2("facebookUrl")}
+                  />
+                  <LabelNameandValue
+                    labelName="Instagram Url"
+                    value={getValuesStep2("instaUrl")}
+                  />
+                </div>
+              </div>
+              <h2 className="my-5">Report Details</h2>
+              <div className="flex justify-start space-x-2 mb-10">
+                {managerDetails.map((manager, index) => (
+                  <SignatureBlock
+                    key={String(index)}
+                    name={manager.get("managerName") as string}
+                    role={manager.get("managerRole") as string}
+                    signature={manager.get("managerSignature") as File}
+                  />
+                ))}
+              </div>
+              <div className="flex justify-between pt-2">
                 <Button
                   styles="basic"
                   name="Back"
@@ -522,6 +522,30 @@ const SignatureBlock = ({ name, role, signature }: SignatureBlockProps) => {
         {name}
       </span>
       <span className="text-xs block font-semibold text-slate-700">{role}</span>
+    </div>
+  );
+};
+const LabelNameandValue = ({
+  labelName,
+  value,
+  imgFile,
+}: {
+  labelName: string;
+  value: string | undefined;
+  imgFile?: File;
+}) => {
+  return (
+    <div className="flex justify-between shadow-sm p-4">
+      <span className=" text-sm text-secondary">{labelName}:</span>
+      {value && <span className="text-sm ">{value}</span>}
+      {imgFile && (
+        <img
+          className="shadow-lg"
+          src={URL.createObjectURL(imgFile)}
+          width={150}
+          height={25}
+        />
+      )}
     </div>
   );
 };
