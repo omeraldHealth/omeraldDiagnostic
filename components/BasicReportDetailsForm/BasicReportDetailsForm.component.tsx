@@ -13,6 +13,7 @@ import "yup-phone";
 import InputGroup from "../core/InputGroup/InputGroup.component";
 import TextArea from "../core/TextArea/TextArea.component";
 import Button from "../core/Button/Button.component";
+import { useAuth } from "../../lib/auth";
 const styles = {
   errorStyle: "text-red-500",
 };
@@ -21,15 +22,33 @@ const BasicReportDetailsForm = ({
   onBasicFormSubmit,
 }: BasicReportFormProps) => {
   const [countryCode, setCountryCode] = useState("IN");
+  const { diagnosticDetails } = useAuth();
 
   const schema = yup.object().shape({
     userName: yup.string().required().strict(),
     email: yup.string().email().required(),
+    dob: yup
+      .date()
+      .required()
+      .max(new Date(), "Please choose past date!")
+      .nullable()
+      .typeError("Invalid Date"),
+    gender: yup
+      .string()
+      .nullable()
+      .required()
+      .oneOf(["Male", "Female", "Others"]),
     phoneNumberInput: yup
       .string()
       .required("Phone no is required")
       .phone(countryCode, true, "Invalid Phone Number"),
-    reportDate: yup.date().required(),
+    reportDate: yup
+      .date()
+      .required()
+      .max(new Date(), "Please choose past date!")
+      .nullable()
+      .typeError("Invalid Date"),
+
     department: yup.string(),
     doctorName: yup.string().strict(),
     message: yup.string(),
@@ -60,6 +79,67 @@ const BasicReportDetailsForm = ({
           placeholder="Add Your Name"
           register={register}
         />
+        <InputGroup
+          labelName="Date of Birth"
+          inputName="dob"
+          inputType={"date"}
+          error={errors.dob?.message}
+          placeholder="Add Your Date of Birth"
+          register={register}
+        />
+        <label
+          htmlFor="gender"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Gender
+        </label>
+        <div className="flex flex-1 justify-between ">
+          <span>
+            <input
+              {...register("gender")}
+              type="radio"
+              value="Male"
+              id="male"
+              name="gender"
+            />{" "}
+            <label className=" text-sm font-medium " htmlFor="male">
+              Male
+            </label>
+          </span>
+          <span>
+            <input
+              {...register("gender")}
+              type="radio"
+              value="Female"
+              id="female"
+              name="gender"
+            />{" "}
+            <label className=" text-sm font-medium " htmlFor="female">
+              Female
+            </label>
+          </span>
+          <span>
+            <input
+              {...register("gender")}
+              type="radio"
+              value="Others"
+              id="others"
+              name="gender"
+            />{" "}
+            <label className=" text-sm font-medium " htmlFor="others">
+              Others
+            </label>
+          </span>
+        </div>
+        {errors.gender?.message && (
+          <p
+            className="mt-2 text-sm text-red-600 w-full block"
+            id={`gender-error`}
+          >
+            {errors.gender?.message}
+          </p>
+        )}
+
         <InputGroup
           labelName="Email"
           inputName="email"
@@ -102,7 +182,6 @@ const BasicReportDetailsForm = ({
         <span className={styles.errorStyle}>
           {errors.phoneNumberInput?.message}
         </span>
-
         <InputGroup
           labelName="Report Date"
           inputName="reportDate"
@@ -120,10 +199,12 @@ const BasicReportDetailsForm = ({
         />
         <span className={styles.errorStyle}>{errors.bookingDate?.message}</span> */}
         <InputGroup
+          disabled
           labelName="Department"
           inputName="department"
           error={errors.department?.message}
           placeholder="Add Report Department"
+          value={diagnosticDetails?.department}
           register={register}
         />
         <InputGroup

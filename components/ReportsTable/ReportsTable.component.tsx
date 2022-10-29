@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import Router, { useRouter } from "next/router";
 
 type ReportTableProps = {
-  reports: Required<ReportDetails>[];
+  reports: ReportDetails[];
   onSelectReport: (val: string) => void;
 };
 
@@ -14,7 +14,7 @@ export default function ReportsTable({
   const router = useRouter();
 
   const handleOnClick = () => {
-    router.push("/dashboard");
+    router.push("/addReports");
   };
   return (
     <div className="px-4 sm:px-6 lg:px-8 mt-12">
@@ -90,7 +90,7 @@ export default function ReportsTable({
                         {person.testName}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {dayjs(person.reportDate).format("MMMM D, YYYY")}
+                        {dayjs(person.reportDate).format("MMM D, YYYY")}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <button

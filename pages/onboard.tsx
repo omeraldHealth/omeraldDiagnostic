@@ -2,13 +2,15 @@ import React, { Fragment, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuth } from "@/lib/auth";
-import { setUserDetails } from "@/lib/db";
+import { setUserDetails, uploadImage } from "@/lib/db";
 import * as yup from "yup";
 import { useRouter } from "next/router";
 import InputGroup from "@/components/core/InputGroup/InputGroup.component";
 import TextArea from "@/components/core/TextArea/TextArea.component";
 import Button from "@/components/core/Button/Button.component";
 import { imageWidthAndHeight } from "@/utils/helper";
+import { IManagerDetails, UserDetails } from "middleware/models.interface";
+import Loading from "@/components/core/LoadingIcon/Loading.component";
 
 type BasicDetailsForm = {
   fullName: string;
@@ -22,11 +24,6 @@ type BrandDetailsForm = {
   brandLogo: FileList;
   facebookUrl?: string;
   instaUrl?: string;
-};
-type ReportDetailsForm = {
-  managerName: string;
-  managerRole: string;
-  managerSignature: FileList;
 };
 
 const styles = {
@@ -88,7 +85,6 @@ const schemaStep2 = yup.object().shape({
       "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
       function (value) {
         return new Promise((res, rej) => {
-          console.log("async validation");
           res(
             value &&
               validImageTypes.includes(value && value[0]?.type) &&
@@ -102,6 +98,8 @@ const schemaStep2 = yup.object().shape({
 });
 
 const schemaStep3 = yup.object().shape({
+  managerName: yup.string().required().strict(true),
+  managerRole: yup.string().required().strict(true),
   managerSignature: yup
     .mixed()
     .test("length", "Logo is Required", (value) => value?.length == 1)
@@ -129,17 +127,16 @@ const schemaStep3 = yup.object().shape({
         });
       }
     ),
-  managerName: yup.string().required().strict(true),
-  managerRole: yup.string().required().strict(true),
 });
 
 const Onboard = () => {
   const { user, diagnosticDetails, signIn } = useAuth();
   const router = useRouter();
 
-  const [currentStep, setCurrentStep] = useState(steps[2]);
+  const [currentStep, setCurrentStep] = useState(steps[0]);
   const [managerDetails, setManagerDetails] = useState<FormData[]>([]);
   const [showStep3ContinueError, setShowStep3ContinueError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     getValues: getValuesStep1,
@@ -168,19 +165,21 @@ const Onboard = () => {
     reset: resetStep3,
     handleSubmit: handleStep3AddManager,
     formState: { errors: errorsStep3 },
-  } = useForm<ReportDetailsForm>({
+  } = useForm<IManagerDetails>({
     mode: "onChange",
     resolver: yupResolver(schemaStep3),
   });
 
-  const handleAddManager = async (data: ReportDetailsForm, e: any) => {
+  const handleAddManager = async (data: IManagerDetails) => {
+    console.log(getValuesStep1());
     const newData = new FormData();
     newData.append("managerName", data.managerName);
     newData.append("managerRole", data.managerRole);
     newData.append("managerSignature", data.managerSignature[0]);
+    console.log(newData.values());
     setShowStep3ContinueError(false);
     setManagerDetails((val) => val.concat(newData));
-    e.target.reset();
+    resetStep3();
   };
 
   const handleSubmitStep3 = (handler: () => void) => {
@@ -192,11 +191,34 @@ const Onboard = () => {
     }
   };
 
-  const handleOnSubmitForm = async (data: BasicDetailsForm) => {
-    const token = (await user?.getIdToken()) || "invalid";
+  const handleOnSubmitForm = async () => {
+    // setIsLoading(true);
+
+    let data: UserDetails = {
+      ...getValuesStep1(),
+      brandDetails: {
+        // ...getValuesStep2(),
+        facebookUrl: getValuesStep2("facebookUrl") as string,
+        instaUrl: getValuesStep2("instaUrl") as string,
+        brandLogo: await uploadImage(getValuesStep2("brandLogo")[0]),
+      },
+      managersDetail: await Promise.all(
+        managerDetails.map(async (manager) => {
+          return {
+            managerName: manager.get("managerName") as string,
+            managerRole: manager.get("managerRole") as string,
+            managerSignature: await uploadImage(
+              manager.get("managerSignature") as File
+            ),
+          };
+        })
+      ),
+    };
+    const token = (await user?.getIdToken()) as string;
     const res = await setUserDetails(token, data);
     console.log(res);
     if (res.status == 201 && user) {
+      setIsLoading(false);
       signIn(user, "/dashboard");
     }
 
@@ -216,6 +238,11 @@ const Onboard = () => {
       current.id == 4 ? current : steps[current.id]
     );
   };
+  console.log(getValuesStep2("brandLogo")[0]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="grid  h-screen place-content-center">
@@ -311,6 +338,7 @@ const Onboard = () => {
               </div>
             </form>
           )}
+
           {currentStep.id === 2 && (
             <form
               id="brandDetails"
@@ -492,7 +520,11 @@ const Onboard = () => {
                   classNames="bg-white"
                   onClick={handleGoBack}
                 />
-                <Button type="submit" name="Submit" />
+                <Button
+                  type="submit"
+                  name="Submit"
+                  onClick={handleOnSubmitForm}
+                />
               </div>
             </form>
           )}

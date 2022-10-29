@@ -4,6 +4,8 @@ export type BasicReportFormProps = {
 export type ReportUserDetails = {
   userName: string;
   email: string;
+  dob: Date;
+  gender: "Male" | "Female" | "Others";
   phoneNumberInput: string;
   reportDate: Date;
   department?: string;

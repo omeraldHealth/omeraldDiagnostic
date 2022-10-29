@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import {
   CalendarIcon,
   ChartBarIcon,
+  ClipboardListIcon,
   FolderIcon,
   HomeIcon,
   InboxIcon,
@@ -17,26 +18,42 @@ import Link from "next/link";
 import Button from "../core/Button/Button.component";
 import { useAuth } from "../../lib/auth";
 
-const navigation = [
+const privateRoutes = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
   // { name: "Team", href: "#", icon: UsersIcon, current: false },
   // { name: "Projects", href: "#", icon: FolderIcon, current: false },
   // { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
   // { name: "Documents", href: "#", icon: InboxIcon, current: false },
-  { name: "Reports", href: "/reports", icon: ChartBarIcon, current: false },
+  {
+    name: "Add Reports",
+    href: "/addReports",
+    icon: ChartBarIcon,
+    current: false,
+  },
+  {
+    name: "Get Reports",
+    href: "/reports",
+    icon: ClipboardListIcon,
+    current: false,
+  },
 ];
 
-const exceptions = ["/onboard", "/", "/login"];
+const publicRoutes = ["/onboard", "/", "/login"];
 
 const Layout = ({ children }: LayoutProps) => {
   const { diagnosticDetails, signOut } = useAuth();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentNavigation, setCurrentNavigation] = useState<NavigationType>(
-    navigation.find((val) => val.href === router.pathname) || navigation[0]
+    privateRoutes[0]
   );
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setCurrentNavigation(
+      privateRoutes.find((val) => val.href === router.pathname) ||
+        privateRoutes[0]
+    );
+  }, [router.pathname]);
 
   const handleNavigationChange = (nav: NavigationType) => {
     setCurrentNavigation(nav);
@@ -45,7 +62,10 @@ const Layout = ({ children }: LayoutProps) => {
     await signOut();
   };
 
-  if (exceptions.includes(router.pathname)) {
+  if (
+    publicRoutes.includes(router.pathname) ||
+    privateRoutes.find((val) => val.href === router.pathname) === undefined
+  ) {
     return <>{children}</>;
   } else {
     return (
@@ -105,25 +125,28 @@ const Layout = ({ children }: LayoutProps) => {
                   <div className="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
                     <div className="flex-shrink-0 flex items-center px-4">
                       <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/workflow-logo-indigo-300-mark-white-text.svg"
+                        className="h-10 w-10 rounded-full"
+                        src="/icons/onlyOmeraldLogo.png"
                         alt="Omerald"
                       />
+                      <span className="text-white font-semibold text-2xl ml-4 tracking-wider">
+                        Omerald
+                      </span>
                     </div>
-                    <nav className="mt-5 px-2 space-y-1">
-                      {navigation.map((item) => (
+                    <nav className="mt-20 px-2 space-y-4">
+                      {privateRoutes.map((item) => (
                         <Link key={item.name} href={item.href}>
                           <a
                             onClick={() => handleNavigationChange(item)}
                             className={classNames(
                               item.name === currentNavigation.name
-                                ? "bg-btnPrimary-500 text-white"
+                                ? "bg-secondary text-white"
                                 : "text-white hover:bg-btnPrimary-300  hover:bg-opacity-75",
                               "group flex items-center px-2 py-2 text-base font-medium rounded-md"
                             )}
                           >
                             <item.icon
-                              className="mr-4 flex-shrink-0 h-6 w-6 text-btnPrimary-300"
+                              className="mr-4 flex-shrink-0 h-6 w-6 text-white"
                               aria-hidden="true"
                             />
                             {item.name}
@@ -175,25 +198,28 @@ const Layout = ({ children }: LayoutProps) => {
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-4">
                 <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/workflow-logo-indigo-300-mark-white-text.svg"
+                  className="h-10 w-10 rounded-full"
+                  src="/icons/onlyOmeraldLogo.png"
                   alt="Workflow"
                 />
+                <span className="text-white font-semibold text-2xl ml-4 tracking-wider">
+                  Omerald
+                </span>
               </div>
-              <nav className="mt-5 flex-1 px-2 space-y-1">
-                {navigation.map((item) => (
+              <nav className="mt-20 flex-1 px-2 space-y-6">
+                {privateRoutes.map((item) => (
                   <Link key={item.name} href={item.href}>
                     <a
                       onClick={() => handleNavigationChange(item)}
                       className={classNames(
                         item.name === currentNavigation.name
-                          ? "bg-btnPrimary-500 text-white"
+                          ? "bg-secondary text-white"
                           : "text-white hover:bg-btnPrimary-300 hover:bg-opacity-75",
                         "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
                       )}
                     >
                       <item.icon
-                        className="mr-3 flex-shrink-0 h-6 w-6 text-btnPrimary-300 "
+                        className="mr-3 flex-shrink-0 h-6 w-6 text-white "
                         aria-hidden="true"
                       />
                       {item.name}

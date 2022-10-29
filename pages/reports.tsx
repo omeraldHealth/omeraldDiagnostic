@@ -2,10 +2,12 @@ import ReportsTable from "@/components/ReportsTable/ReportsTable.component";
 import { getReports } from "@/lib/db";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../lib/auth";
-import { ReportDetails } from "middleware/models.interface";
+import { ReportDetails, UserDetails } from "middleware/models.interface";
+import PdfTesting from "@/components/PdfTesting/PdfTesting";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 const Reports = () => {
-  const { user } = useAuth();
+  const { user, diagnosticDetails } = useAuth();
   const [reportList, setReportList] = useState<ReportDetails[]>([]);
   const [selectedReport, setSelectedReport] = useState<ReportDetails | null>(
     null
@@ -15,7 +17,10 @@ const Reports = () => {
     (async () => {
       const token = await user?.getIdToken();
 
-      const resp = await getReports(token, user?.phoneNumber);
+      const resp = await getReports(
+        token as string,
+        user?.phoneNumber as string
+      );
       console.log(resp);
       if (resp.status === 200) {
         setReportList(resp.data);
@@ -30,7 +35,24 @@ const Reports = () => {
   return (
     <div>
       <ReportsTable reports={reportList} onSelectReport={handleSelectReport} />
-      {selectedReport && <span>{JSON.stringify(selectedReport)}</span>}
+      {/* {selectedReport && <span>{JSON.stringify(selectedReport)}</span>} */}
+      {selectedReport && (
+        <div>
+          <PDFDownloadLink
+            document={
+              <PdfTesting
+                report={selectedReport}
+                diagnosticDetails={diagnosticDetails as UserDetails}
+              />
+            }
+            fileName="someone.pdf"
+          >
+            {({ blob, url, loading, error }) =>
+              loading ? "Loading document..." : "Download now!"
+            }
+          </PDFDownloadLink>
+        </div>
+      )}
     </div>
   );
 };

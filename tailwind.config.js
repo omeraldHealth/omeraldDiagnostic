@@ -17,7 +17,7 @@ module.exports = {
         400: "#456468",
         500: "#173e43",
       },
-      btnSecondary: colors.green,
+      btnSecondary: "#4438ca",
       ...colors,
     },
     animation: {
