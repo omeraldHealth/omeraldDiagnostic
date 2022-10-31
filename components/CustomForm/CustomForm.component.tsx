@@ -35,7 +35,9 @@ const CustomFormComponent = ({
   };
   return (
     <div>
-      <h2 className="text-center">{formType.testName}</h2>
+      <label className="block text-sm font-medium text-gray-700 pb-5">
+        {formType.testName}
+      </label>
       <form onSubmit={handleSubmit(handleSubmitForm)}>
         {formType.keywords.map((val) => (
           <div key={val.keyword}>
@@ -71,7 +73,7 @@ const CustomFormComponent = ({
             </div>
           </div>
         ))}
-        <div className="w-full flex justify-center pt-2">
+        <div className=" pt-4 flex justify-center">
           <Button name="Submit" type="submit" />
         </div>
       </form>

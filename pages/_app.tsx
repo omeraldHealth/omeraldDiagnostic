@@ -3,6 +3,16 @@ import type { AppProps } from "next/app";
 import { AuthProvider } from "../lib/auth";
 import { NextComponentType, NextPage } from "next";
 import Layout from "@/components/Layout/Layout.component";
+// import {
+//   CalendarIcon,
+//   ChartBarIcon,
+//   FolderIcon,
+//   HomeIcon,
+//   InboxIcon,
+//   UsersIcon,
+// } from "@heroicons/react/outline";
+import { ReactElement, ReactNode } from "react";
+import Allowed from "hocs/Allowed";
 import {
   CalendarIcon,
   ChartBarIcon,
@@ -10,9 +20,7 @@ import {
   HomeIcon,
   InboxIcon,
   UsersIcon,
-} from "@heroicons/react/outline";
-import { ReactElement, ReactNode } from "react";
-import Allowed from "hocs/Allowed";
+} from "@heroicons/react/20/solid";
 
 // export type NextPageWithLayout = NextPage & {
 //   getLayout?: (page: ReactElement) => ReactNode;

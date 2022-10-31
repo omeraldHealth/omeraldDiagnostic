@@ -1,22 +1,18 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  CalendarIcon,
-  ChartBarIcon,
-  ClipboardListIcon,
-  FolderIcon,
-  HomeIcon,
-  InboxIcon,
-  MenuIcon,
-  UsersIcon,
-  XIcon,
-} from "@heroicons/react/outline";
 import { classNames } from "@/utils/helper";
 import { LayoutProps, NavigationType } from "./Layout.interface";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Button from "../core/Button/Button.component";
 import { useAuth } from "../../lib/auth";
+import {
+  Bars3Icon,
+  ChartBarIcon,
+  ClipboardDocumentListIcon,
+  HomeIcon,
+  XMarkIcon,
+} from "@heroicons/react/20/solid";
 
 const privateRoutes = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
@@ -33,7 +29,7 @@ const privateRoutes = [
   {
     name: "Get Reports",
     href: "/reports",
-    icon: ClipboardListIcon,
+    icon: ClipboardDocumentListIcon,
     current: false,
   },
 ];
@@ -115,7 +111,7 @@ const Layout = ({ children }: LayoutProps) => {
                         onClick={() => setSidebarOpen(false)}
                       >
                         <span className="sr-only">Close sidebar</span>
-                        <XIcon
+                        <XMarkIcon
                           className="h-6 w-6 text-white"
                           aria-hidden="true"
                         />
@@ -156,14 +152,14 @@ const Layout = ({ children }: LayoutProps) => {
                     </nav>
                   </div>
                   {/* <Button name="Sign Out" onClick={handleSignOut} /> */}
-                  <div className="flex-shrink-0 flex border-t border-btnPrimary-500 p-4">
+                  <div className="flex-shrink-0 flex border-t  p-4">
                     <Link href="#">
                       <a className="flex-shrink-0 group block">
                         <div className="flex items-center">
                           <div>
                             <img
-                              className="inline-block h-10 w-10 rounded-full"
-                              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                              className="inline-block w-10"
+                              src={diagnosticDetails?.brandDetails.brandLogo}
                               alt=""
                             />
                           </div>
@@ -230,14 +226,14 @@ const Layout = ({ children }: LayoutProps) => {
             </div>
             {/* <Button name="Sign Out" onClick={handleSignOut} /> */}
 
-            <div className="flex-shrink-0 flex border-t border-btnPrimary-500 p-4">
+            <div className="flex-shrink-0 flex border-t  p-4">
               <Link href="#">
                 <a className="flex-shrink-0 w-full group block">
                   <div className="flex items-center">
                     <div>
                       <img
-                        className="inline-block h-9 w-9 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        className="inline-block w-10"
+                        src={diagnosticDetails?.brandDetails.brandLogo}
                         alt=""
                       />
                     </div>
@@ -266,7 +262,7 @@ const Layout = ({ children }: LayoutProps) => {
               onClick={() => setSidebarOpen(true)}
             >
               <span className="sr-only">Open sidebar</span>
-              <MenuIcon className="h-6 w-6" aria-hidden="true" />
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
           <main className="flex-1">

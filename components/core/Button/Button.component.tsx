@@ -1,6 +1,6 @@
-import { MailIcon } from "@heroicons/react/solid";
 import React, { ReactEventHandler } from "react";
 import { classNames } from "@/utils/helper";
+import { EnvelopeIcon } from "@heroicons/react/20/solid";
 
 type ButtonProps = {
   name: string;
@@ -16,7 +16,7 @@ const ButtonStyles = {
   },
   default: {
     btnStyle:
-      "inline-flex items-center px-6 py-3 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-btnPrimary-500 hover:bg-btnPrimary-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500",
+      "inline-flex items-center px-6 py-3 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-primary hover:bg-btnPrimary-500 active:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-btnPrimary-500",
   },
 };
 const Button = ({ type = "button", ...props }: ButtonProps) => {
@@ -34,7 +34,7 @@ const Button = ({ type = "button", ...props }: ButtonProps) => {
       `}
     >
       {props.styles !== "basic" && (
-        <MailIcon className="-ml-1 mr-3 h-5 w-5" aria-hidden="true" />
+        <EnvelopeIcon className="-ml-1 mr-3 h-5 w-5" aria-hidden="true" />
       )}
       {props.name}
     </button>

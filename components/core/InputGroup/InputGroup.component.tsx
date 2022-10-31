@@ -11,7 +11,8 @@ interface InputGroupProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   validate?: (val?: any) => boolean;
 }
-import { ExclamationCircleIcon } from "@heroicons/react/solid";
+import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
+// import { ExclamationCircleIcon } from "@heroicons/react/solid";
 import { UseFormRegister } from "react-hook-form";
 
 export default function InputGroup({

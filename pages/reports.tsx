@@ -36,23 +36,6 @@ const Reports = () => {
     <div>
       <ReportsTable reports={reportList} onSelectReport={handleSelectReport} />
       {/* {selectedReport && <span>{JSON.stringify(selectedReport)}</span>} */}
-      {selectedReport && (
-        <div>
-          <PDFDownloadLink
-            document={
-              <PdfTesting
-                report={selectedReport}
-                diagnosticDetails={diagnosticDetails as UserDetails}
-              />
-            }
-            fileName="someone.pdf"
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? "Loading document..." : "Download now!"
-            }
-          </PDFDownloadLink>
-        </div>
-      )}
     </div>
   );
 };

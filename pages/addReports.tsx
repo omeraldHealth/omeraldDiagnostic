@@ -12,6 +12,8 @@ import {
 import Button from "@/components/core/Button/Button.component";
 import UploadInput from "@/components/UploadReport/UploadReport.component";
 import Loading from "@/components/core/LoadingIcon/Loading.component";
+import InputGroup from "@/components/core/InputGroup/InputGroup.component";
+import SelectComponent from "../components/core/SelectComponent/SelectComponent";
 const crypto = require("crypto");
 interface stateType {
   loading: boolean;
@@ -79,8 +81,14 @@ const intialState: stateType = {
 const AddReports = () => {
   const { user } = useAuth();
   const [state, dispatch] = useReducer(UserReportReducer, intialState);
-  const [selectedType, setSelectedType] = useState(-1);
+  const [selectedType, setSelectedType] = useState<{
+    id: number;
+    name: string;
+  }>({ id: -1, name: "Select report type" });
   const [file, setFile] = useState<string>("");
+  const [isUploadReportSelected, setIsUploadReportSelected] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     (async () => {
@@ -105,7 +113,8 @@ const AddReports = () => {
       userId: phoneNumberInput,
       reportUrl: "addUrl",
       status: "parsed",
-      testName: state.reportTypes[selectedType].testName,
+      testName: selectedType.name,
+      // testName: state.reportTypes[selectedType].testName,
       parsedData: reportData,
       isManualReport: true,
       ...restBasicForm,
@@ -120,7 +129,7 @@ const AddReports = () => {
     );
     if (resp.status === 201) {
       dispatch({ type: "success" });
-      setSelectedType(-1);
+      setSelectedType({ id: -1, name: "Select report type" });
     }
     // console.log(reportDetails);
   };
@@ -175,7 +184,7 @@ const AddReports = () => {
         );
         if (resp.status === 201) {
           dispatch({ type: "success" });
-          setSelectedType(-1);
+          setSelectedType({ id: -1, name: "Select report type" });
         }
       }
     }
@@ -183,6 +192,10 @@ const AddReports = () => {
 
   const handleBasicFormSubmit = (basicFormData: ReportUserDetails) => {
     dispatch({ type: "addReportUserDetails", value: basicFormData });
+  };
+
+  const handleUploadReportChange = (e: any) => {
+    setIsUploadReportSelected(e.target.value);
   };
 
   if (state.loading) {
@@ -196,46 +209,119 @@ const AddReports = () => {
     );
   } else {
     return (
-      <div className="grid h-screen place-content-center">
+      <div className="">
         {state.reportUserDetails == null && (
-          <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
+          <div className="px-4 sm:px-6 lg:px-8 mt-12">
+            <div className="sm:flex sm:items-center pb-8">
+              <div className="sm:flex-auto">
+                <h1 className="text-xl font-semibold text-gray-900">Step 1</h1>
+                <p className="mt-2 text-sm text-gray-700">
+                  Add User Details to be updated in the report.
+                </p>
+              </div>
+              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"></div>
+            </div>
+            <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
+          </div>
         )}
         {state.reportUserDetails && (
-          <div>
-            <select
-              value={selectedType}
-              onChange={(e) => setSelectedType(Number(e.target.value))}
-              className="border-2 border-black-2 block"
-            >
-              <option value={-1}>Select Report Type</option>
-              {state.reportTypes.map((val, index) => (
-                <option key={val.testName} value={index}>
-                  {val.testName}
-                </option>
-              ))}
-            </select>
-            {selectedType > -1 && (
-              <CustomFormComponent
-                formType={state.reportTypes[selectedType]}
-                onReportSubmitForm={handleManualReportSubmit}
-              />
-            )}
-            {selectedType === -1 && <span>OR</span>}
-            {selectedType === -1 && (
-              <div className="flex flex-col space-between">
-                <UploadInput
-                  labelName="Upload Report"
-                  file={file}
-                  setFile={setFile}
-                />
-                {state.error && (
-                  <span className="text-red-500">{state.error}</span>
-                )}
-                <div className="block pt-2">
-                  <Button name="Upload Report" onClick={handleUploadReport} />
+          <div className="px-4 sm:px-6 lg:px-8 mt-12">
+            <div className="sm:flex sm:items-center pb-8">
+              <div className="sm:flex-auto">
+                <h1 className="text-xl font-semibold text-gray-900">Step 2</h1>
+                <p className="mt-2 text-sm text-gray-700">
+                  Select report type and fill the data or upload already
+                  existing report and we will parse it for you.
+                </p>
+              </div>
+              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"></div>
+            </div>
+            <div className="grid md:grid-cols-3 md:gap-10">
+              <div className="col-span-1">
+                <div id="" className="pb-8">
+                  <label
+                    htmlFor="query1"
+                    className="block text-sm font-medium text-gray-700 pb-3"
+                  >
+                    Do you want to upload a report?
+                  </label>
+                  <div className="-mt-1 ml-2">
+                    <span className="mr-8">
+                      <input
+                        className=""
+                        type="radio"
+                        value="yes"
+                        id="yes"
+                        name="query1"
+                        onChange={handleUploadReportChange}
+                      />{" "}
+                      <label className=" text-xs font-medium " htmlFor="yes">
+                        Yes
+                      </label>
+                    </span>
+                    <span>
+                      <input
+                        type="radio"
+                        value="no"
+                        id="no"
+                        name="query1"
+                        onChange={handleUploadReportChange}
+                      />{" "}
+                      <label className=" text-xs font-medium " htmlFor="no">
+                        No
+                      </label>
+                    </span>
+                  </div>
+                </div>
+                <div className=" pb-8">
+                  <SelectComponent
+                    labelName="Please select the type of report"
+                    selected={selectedType}
+                    setSelected={setSelectedType}
+                    data={state.reportTypes.map((val, index) => {
+                      return {
+                        id: index,
+                        name: val.testName,
+                      };
+                    })}
+                  />
                 </div>
               </div>
-            )}
+              {isUploadReportSelected === "yes" && (
+                <div className="col-span-2">
+                  {selectedType.id > -1 && (
+                    <div className="">
+                      <div className="">
+                        <UploadInput
+                          labelName="Upload Report"
+                          file={file}
+                          setFile={setFile}
+                        />
+                      </div>
+                      {state.error && (
+                        <span className="text-red-500">{state.error}</span>
+                      )}
+                      <div className="flex justify-center pt-6 ">
+                        <Button
+                          name="Upload Report"
+                          onClick={handleUploadReport}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {isUploadReportSelected === "no" && (
+                <div className="col-span-2">
+                  {selectedType.id > -1 && (
+                    <CustomFormComponent
+                      formType={state.reportTypes[selectedType.id]}
+                      onReportSubmitForm={handleManualReportSubmit}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

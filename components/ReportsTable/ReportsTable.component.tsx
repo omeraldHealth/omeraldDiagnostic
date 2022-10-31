@@ -1,6 +1,12 @@
-import { ReportDetails } from "middleware/models.interface";
+import { ReportDetails, UserDetails } from "middleware/models.interface";
 import dayjs from "dayjs";
 import Router, { useRouter } from "next/router";
+import { ShareIcon } from "@heroicons/react/20/solid";
+import { RWebShare } from "react-web-share";
+import Link from "next/link";
+import { usePDF } from "@react-pdf/renderer";
+import PdfTesting from "../PdfTesting/PdfTesting";
+import { useAuth } from "@/lib/auth";
 
 type ReportTableProps = {
   reports: ReportDetails[];
@@ -12,6 +18,7 @@ export default function ReportsTable({
   onSelectReport,
 }: ReportTableProps) {
   const router = useRouter();
+  const { user, diagnosticDetails } = useAuth();
 
   const handleOnClick = () => {
     router.push("/addReports");
@@ -75,6 +82,12 @@ export default function ReportsTable({
                     >
                       <span className="sr-only">Click to View</span>
                     </th>
+                    <th
+                      scope="col"
+                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                    >
+                      <span className="sr-only">Click to Share</span>
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
@@ -93,13 +106,28 @@ export default function ReportsTable({
                         {dayjs(person.reportDate).format("MMM D, YYYY")}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <button
-                          onClick={() => onSelectReport(person.reportId)}
+                        <ViewPdf
+                          report={person}
+                          diagnosticDetails={diagnosticDetails as UserDetails}
+                        />
+                      </td>
+                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                        {/* <button
+                          // onClick={() => onSelectReport(person.reportId)}
                           className="text-indigo-600 hover:text-indigo-900"
+                        > */}
+                        <RWebShare
+                          data={{
+                            text: `Hi ${person.userName}! Welcome to Omerald. Please login with us to get your report`,
+                            url: "https://omerald.com",
+                            title: "Omerald Diagnostic Centre",
+                          }}
+                          onClick={() => console.log("shared successfully!")}
                         >
-                          View
-                          <span className="sr-only">, {person.userName}</span>
-                        </button>
+                          <ShareIcon className="text-indigo-600 w-4 h-4 hover:text-indigo-900 active:shadow-lg" />
+                        </RWebShare>
+                        {/* <span className="sr-only">, {person.userName}</span>
+                        </button> */}
                       </td>
                     </tr>
                   ))}
@@ -112,3 +140,31 @@ export default function ReportsTable({
     </div>
   );
 }
+
+const ViewPdf = ({
+  report,
+  diagnosticDetails,
+}: {
+  report: ReportDetails;
+  diagnosticDetails: UserDetails;
+}) => {
+  const [instance, updateInstance] = usePDF({
+    document: (
+      <PdfTesting report={report} diagnosticDetails={diagnosticDetails} />
+    ),
+  });
+
+  if (instance.loading) return <div>Loading ...</div>;
+
+  if (instance.error) return <div>Something went wrong: {instance.error}</div>;
+
+  return (
+    <a
+      href={instance.url as string}
+      download={`${report.userName}-${report.testName}.pdf`}
+      className="text-indigo-600 hover:text-indigo-900"
+    >
+      View
+    </a>
+  );
+};
