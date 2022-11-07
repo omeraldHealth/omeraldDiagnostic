@@ -218,7 +218,7 @@ const BasicReportDetailsForm = ({
               className={`border rounded-md pl-2 border-gray-500
           ${
             errors.phoneNumberInput?.message
-              ? " border-red-300 text-red-900  focus:ring-red-500 focus:border-red-500 placeholder-red-300"
+              ? " !border-red-300 text-red-900  focus:ring-red-500 focus:border-red-500 placeholder-red-300"
               : "focus:border-primary focus:ring-primary "
           }`}
             >
