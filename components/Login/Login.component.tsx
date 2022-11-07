@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import PhoneInputWithCountrySelect, {
   isValidPhoneNumber,
 } from "react-phone-number-input";
@@ -19,6 +19,8 @@ const LoginComponent = () => {
   auth.languageCode = "en";
 
   const { user, loading, signIn } = useAuth();
+  const phoneInputRef = useRef(null);
+  const [isPhoneInputFocusedOnce, setIsPhoneInputFocusedOnce] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [expandForm, setExpandForm] = useState(false);
   const [otp, setOtp] = useState("");
@@ -37,6 +39,17 @@ const LoginComponent = () => {
       },
       auth
     );
+  };
+  const checkIfFocused = () => {
+    if (
+      typeof window !== "undefined" &&
+      document.activeElement === phoneInputRef.current
+    ) {
+      if (!isPhoneInputFocusedOnce) {
+        setIsPhoneInputFocusedOnce(true);
+      }
+      return true;
+    } else return false;
   };
 
   const requestOTP: React.MouseEventHandler<HTMLButtonElement> = (e) => {
@@ -94,17 +107,35 @@ const LoginComponent = () => {
             Phone number
           </label>
           <div id="phoneNumber" className="pb-4">
-            <PhoneInputWithCountrySelect
-              disabled={isPhoneNumberDisabled}
-              name="phoneNumberInput"
-              defaultCountry="IN"
-              value={phoneNumber}
-              onChange={(value) =>
-                value === undefined ? setPhoneNumber("") : setPhoneNumber(value)
+            <div
+              className={`border-2 rounded-md pl-2 
+              ${
+                isPhoneInputFocusedOnce
+                  ? isValidPhoneNumber(phoneNumber)
+                    ? " border-primary "
+                    : " border-red-500"
+                  : " border-gray-500"
               }
-            />
+              `}
+            >
+              <PhoneInputWithCountrySelect
+                ref={phoneInputRef}
+                // containerClass=" PhoneInputContainerStyle "
+                // inputClass="border-2 border-primary"
+                // containerStyle={{ border: "10px solid #45A19E" }}
+                disabled={isPhoneNumberDisabled}
+                name="phoneNumberInput"
+                defaultCountry="IN"
+                value={phoneNumber}
+                onChange={(value) =>
+                  value === undefined
+                    ? setPhoneNumber("")
+                    : setPhoneNumber(value)
+                }
+              />
+            </div>
 
-            {isValidPhoneNumber(phoneNumber) ? null : (
+            {!isValidPhoneNumber(phoneNumber) && checkIfFocused() && (
               <span className="text-red-500">Please Enter a valid Number</span>
             )}
           </div>

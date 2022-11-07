@@ -2,13 +2,4 @@
 @tailwind components;
 @tailwind utilities;
 
-.PhoneInput {
-  border: 2px solid red;
-  border-radius: 5px;
-}
-.PhoneInputCountry {
-  padding-left: 5px;
-}
-.PhoneInputInput {
-  border: none;
-}
+
