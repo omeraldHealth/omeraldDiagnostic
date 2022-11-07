@@ -161,7 +161,7 @@ const AddReports = () => {
       const reportDetails: ReportDetails = {
         userId: phoneNumberInput,
         status: "parsing",
-        testName: "Blodd Report",
+        testName: selectedType.name,
         isManualReport: false,
         ...restBasicForm,
       };
