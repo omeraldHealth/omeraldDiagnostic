@@ -238,7 +238,6 @@ const Onboard = () => {
       current.id == 4 ? current : steps[current.id]
     );
   };
-  console.log(getValuesStep2("brandLogo")[0]);
 
   if (isLoading) {
     return <Loading />;
