@@ -3,3 +3,10 @@
 @tailwind utilities;
 
 
+.PhoneInputInput {
+  border: none;
+} 
+.PhoneInputInput:focus {
+  border: none !important;
+} 
+

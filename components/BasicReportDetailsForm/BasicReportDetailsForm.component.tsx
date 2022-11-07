@@ -15,7 +15,7 @@ import TextArea from "../core/TextArea/TextArea.component";
 import Button from "../core/Button/Button.component";
 import { useAuth } from "../../lib/auth";
 const styles = {
-  errorStyle: "text-red-500",
+  errorStyle: "mt-2 text-sm text-red-600 w-full block",
 };
 
 const BasicReportDetailsForm = ({
@@ -214,24 +214,33 @@ const BasicReportDetailsForm = ({
         />
         <span className={styles.errorStyle}>{errors.doctorName?.message}</span> */}
           <div>
-            <PhoneInputWithCountrySelect
-              // inputClass="block w-full pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md"
-              international={true}
-              onCountryChange={(country) =>
-                country === undefined
-                  ? setCountryCode("IN")
-                  : setCountryCode(country)
-              }
-              {...register("phoneNumberInput")}
-              //   value={phoneNumberInput}
-              name="phoneNumberInput"
-              defaultCountry="IN"
-              onChange={(value) => {
-                value === undefined
-                  ? setValue("phoneNumberInput", "")
-                  : setValue("phoneNumberInput", value);
-              }}
-            />
+            <div
+              className={`border rounded-md pl-2 border-gray-500
+          ${
+            errors.phoneNumberInput?.message
+              ? " border-red-300 text-red-900  focus:ring-red-500 focus:border-red-500 placeholder-red-300"
+              : "focus:border-primary focus:ring-primary "
+          }`}
+            >
+              <PhoneInputWithCountrySelect
+                // inputClass="block w-full pr-10 border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md"
+                international={true}
+                onCountryChange={(country) =>
+                  country === undefined
+                    ? setCountryCode("IN")
+                    : setCountryCode(country)
+                }
+                {...register("phoneNumberInput")}
+                //   value={phoneNumberInput}
+                name="phoneNumberInput"
+                defaultCountry="IN"
+                onChange={(value) => {
+                  value === undefined
+                    ? setValue("phoneNumberInput", "")
+                    : setValue("phoneNumberInput", value);
+                }}
+              />
+            </div>
             <span className={styles.errorStyle}>
               {errors.phoneNumberInput?.message}
             </span>

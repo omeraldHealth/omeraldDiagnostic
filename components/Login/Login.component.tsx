@@ -136,7 +136,9 @@ const LoginComponent = () => {
             </div>
 
             {!isValidPhoneNumber(phoneNumber) && checkIfFocused() && (
-              <span className="text-red-500">Please Enter a valid Number</span>
+              <span className="mt-1 text-sm text-red-600 w-full block">
+                Please Enter a valid Number
+              </span>
             )}
           </div>
 
