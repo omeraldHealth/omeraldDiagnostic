@@ -78,17 +78,20 @@ const LoginComponent = () => {
   };
 
   return (
-    <div className="grid grid-cols-2  m-20 border-primary border-2 rounded-md">
-      <div className="rounded-md">
+    <div className="grid grid-cols-3 gap-10 m-20 border-primary border-2 rounded-md">
+      <div className="rounded-md col-span-2 ">
         <img src="/icons/diagnosticLogin.webp" />
       </div>
-      <div className="p-10 ">
+      <div className="py-10 pr-10">
         <div id="heading" className="pb-10">
-          <h2 className="font-medium text-3xl text-gray-600">Login</h2>
+          <h2 className="font-medium text-3xl text-gray-600 pb-2">Login</h2>
+          <span className="font-extralight text-sm text-gray-500">
+            Enter your phone number to proceed
+          </span>
         </div>
         <form onSubmit={verifyOTP}>
-          <label className="block text-sm font-medium text-gray-700">
-            Phone Number
+          <label className="block text-sm font-medium text-gray-700 pb-1">
+            Phone number
           </label>
           <div id="phoneNumber" className="pb-4">
             <PhoneInputWithCountrySelect
