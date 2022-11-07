@@ -36,7 +36,7 @@ export default function InputGroup({
       </label>
       <div className="mt-1 relative rounded-md shadow-sm mb-2">
         <input
-          // {...props}
+          {...props}
           value={value}
           disabled={disabled}
           {...register(inputName, {

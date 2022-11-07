@@ -34,7 +34,7 @@ const Button = ({ type = "button", ...props }: ButtonProps) => {
       `}
     >
       {props.styles !== "basic" && (
-        <EnvelopeIcon className="-ml-1 mr-3 h-5 w-5" aria-hidden="true" />
+        <EnvelopeIcon className="-ml-1 mr-3 h-4 w-4" aria-hidden="true" />
       )}
       {props.name}
     </button>

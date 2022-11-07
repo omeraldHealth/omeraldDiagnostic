@@ -11,6 +11,8 @@ import {
 } from "firebase/auth";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
+import Button from "../core/Button/Button.component";
+import InputGroup from "../core/InputGroup/InputGroup.component";
 
 const LoginComponent = () => {
   const auth = getAuth();
@@ -76,51 +78,71 @@ const LoginComponent = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={verifyOTP}>
-        <label>Phone Number</label>
-
-        <PhoneInputWithCountrySelect
-          disabled={isPhoneNumberDisabled}
-          name="phoneNumberInput"
-          defaultCountry="IN"
-          value={phoneNumber}
-          onChange={(value) =>
-            value === undefined ? setPhoneNumber("") : setPhoneNumber(value)
-          }
-        />
-
-        {isValidPhoneNumber(phoneNumber) ? null : (
-          <span className="text-red-500">Please Enter a valid Number</span>
-        )}
-        {!expandForm && (
-          <button
-            onClick={(e) => requestOTP(e)}
-            className="block border-2 border-black bg-blue-500 active:bg-blue-900"
-          >
-            Send OTP
-          </button>
-        )}
-        {expandForm && (
-          <>
-            <input
-              className="block border-2 border-black"
-              type={"number"}
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+    <div className="grid grid-cols-2  m-20 border-primary border-2 rounded-md">
+      <div className="rounded-md">
+        <img src="/icons/diagnosticLogin.webp" />
+      </div>
+      <div className="p-10 ">
+        <div id="heading" className="pb-10">
+          <h2 className="font-medium text-3xl text-gray-600">Login</h2>
+        </div>
+        <form onSubmit={verifyOTP}>
+          <label className="block text-sm font-medium text-gray-700">
+            Phone Number
+          </label>
+          <div id="phoneNumber" className="pb-4">
+            <PhoneInputWithCountrySelect
+              disabled={isPhoneNumberDisabled}
+              name="phoneNumberInput"
+              defaultCountry="IN"
+              value={phoneNumber}
+              onChange={(value) =>
+                value === undefined ? setPhoneNumber("") : setPhoneNumber(value)
+              }
             />
-            <button
-              type="submit"
-              className="border-2 border-black bg-blue-500 active:bg-blue-900"
-            >
-              Submit
-            </button>
-          </>
-        )}
-        {error.length > 0 && <span className="text-red-500">{error}</span>}
 
-        <div id="recaptcha-container"></div>
-      </form>
+            {isValidPhoneNumber(phoneNumber) ? null : (
+              <span className="text-red-500">Please Enter a valid Number</span>
+            )}
+          </div>
+
+          {!expandForm && (
+            <div>
+              <Button
+                name="Send OTP"
+                styles="basic"
+                onClick={(e) => requestOTP(e)}
+                // className="block border-2 border-black bg-blue-500 active:bg-blue-900"
+              />
+            </div>
+          )}
+          {expandForm && (
+            <div>
+              <InputGroup
+                value={otp}
+                labelName="OTP"
+                inputName="otp"
+                inputType="number"
+                error={error}
+                register={() => {}}
+                onChange={(e) => setOtp(e.target.value)}
+              />
+              {/* <input
+                className="block border-2 border-black"
+                type={"number"}
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+              /> */}
+              <div className="pt-2">
+                <Button name="Submit" type="submit" />
+              </div>
+            </div>
+          )}
+          {/* {error.length > 0 && <span className="text-red-500">{error}</span>} */}
+
+          <div id="recaptcha-container"></div>
+        </form>
+      </div>
     </div>
   );
 };
