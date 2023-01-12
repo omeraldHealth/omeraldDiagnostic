@@ -19,6 +19,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {errorAlert, successAlert} from "../../components/alerts/alert"
 import { contains } from "@firebase/util";
+import {LoaderComp} from "../../components/alerts/loader" 
 
 const LoginComponent = () => {
   const auth = getAuth();
@@ -29,8 +30,10 @@ const LoginComponent = () => {
   const [isPhoneInputFocusedOnce, setIsPhoneInputFocusedOnce] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [expandForm, setExpandForm] = useState(false);
+  const [loadOtp, setLoadOtp] = useState(false);
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+
   const [isPhoneNumberDisabled, setPhoneNumberDisabled] = useState(false);
 
   const generateRecaptcha = () => {
@@ -61,7 +64,7 @@ const LoginComponent = () => {
 
   const requestOTP: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-  
+    setLoadOtp(true)
     if (isValidPhoneNumber(phoneNumber)) {
       if(!window.recaptchaVerifier){
         generateRecaptcha();
@@ -72,11 +75,12 @@ const LoginComponent = () => {
           window.confirmationResult = confirmationResult;
           successAlert("OTP Sent")
           setExpandForm(true);
+          setLoadOtp(false)
           setPhoneNumberDisabled(true);
         })
         .catch((error) => {
           console.error(error);
-
+          setLoadOtp(false)
           errorAlert("Error sending otp "+error )
         });
     }
@@ -84,20 +88,23 @@ const LoginComponent = () => {
 
   const verifyOTP: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+    setLoadOtp(true)
     setError("");
     if (otp.length === 6) {
       let confirmationResult = window.confirmationResult;
       confirmationResult
         .confirm(otp)
         .then(async (result: UserCredential) => {
-          signIn(result.user, "/dashboard");
+          setLoadOtp(false)
           successAlert("User logged in succesfully")
+          signIn(result.user, "/dashboard");
         })
         .catch((error: any) => {
           if (error?.code === "auth/invalid-verification-code") {
             setError("Invalid OTP");
             errorAlert("Invalid OTP ")
           }
+          setLoadOtp(false)
           console.log(JSON.stringify(error));
         });
     } else {
@@ -196,6 +203,7 @@ const LoginComponent = () => {
               </form>
           </div>
         </div>
+        {loadOtp? <LoaderComp/>:<></>}
     </div>
   );
 };
