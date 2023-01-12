@@ -112,7 +112,7 @@ const LoginComponent = () => {
 
   return (
     <div className="w-[100vw] h-[100vh] bg-signBanner content-between flex" >
-        <div className="w-[60%] h-[70vh] m-auto grid grid-cols-3 bg-white">
+        <div className="w-[60vw] xl:w-[50vw] h-[70vh] xl:h-[55vh] m-auto grid grid-cols-3 bg-white">
           <div className="col-span-1 text-center px-4 xl:px-8 border-r-2">
             <img className="my-10" src={signDoctorImage} alt="banner-doctor-img" />
             <p className="text-orange-500 font-bold mb-3 font-serif">Reporting Simplified</p>

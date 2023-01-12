@@ -16,6 +16,7 @@ import {
 } from "recharts";
 import { getReports } from "@/lib/db";
 import ReportSharedVsTime from "@/components/Graphs/ReportSharedVsTime";
+import { LoaderComp } from "@/components/alerts/loader";
 interface stateType {
   loading: boolean;
   success: boolean;
@@ -150,7 +151,7 @@ const Dashboard = () => {
   }, [reportList]);
 
   if (state.loading) {
-    return <Loading />;
+    return <LoaderComp />;
   } else if (state.success) {
     return (
       <div className="grid h-screen bg-primary place-content-center">
