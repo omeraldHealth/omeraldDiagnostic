@@ -2,6 +2,7 @@ import React, { cloneElement, ReactElement, ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
 import Loading from "@/components/core/LoadingIcon/Loading.component";
+import { LoaderComp } from "@/components/alerts/loader";
 
 // export type NextPageWithLayout = NextPage & {
 //   auth: AuthContextInterface;
@@ -26,7 +27,7 @@ const Allowed = ({
   if (allowedPaths.includes(router.pathname)) {
     return <>{children}</>;
   } else if (auth?.loading) {
-    return <Loading />;
+    return <LoaderComp />;
   } else if (auth?.user && auth?.diagnosticDetails) {
     if (router.pathname === "/onboard") {
       router.push("/dashboard");

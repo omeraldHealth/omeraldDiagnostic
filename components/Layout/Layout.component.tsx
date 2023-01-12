@@ -37,7 +37,7 @@ const privateRoutes = [
 const publicRoutes = ["/onboard", "/", "/login"];
 
 const Layout = ({ children }: LayoutProps) => {
-  const { diagnosticDetails, signOut } = useAuth();
+  const {diagnosticDetails, signOut } = useAuth();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [currentNavigation, setCurrentNavigation] = useState<NavigationType>(
@@ -190,8 +190,9 @@ const Layout = ({ children }: LayoutProps) => {
         {/* Static sidebar for desktop */}
         <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex-1 flex flex-col min-h-0 bg-primary">
+          <div className="flex-1 flex flex-col min-h-0 bg-orangeBg">
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+              <a href="/" >
               <div className="flex items-center flex-shrink-0 px-4">
                 <img
                   className="h-10 w-10 rounded-full"
@@ -202,20 +203,22 @@ const Layout = ({ children }: LayoutProps) => {
                   Omerald
                 </span>
               </div>
-              <nav className="mt-20 flex-1 px-2 space-y-6">
+              </a>
+             
+              <nav className="mt-16 flex-1 pl-2 space-y-6">
                 {privateRoutes.map((item) => (
                   <Link key={item.name} href={item.href}>
                     <a
                       onClick={() => handleNavigationChange(item)}
                       className={classNames(
                         item.name === currentNavigation.name
-                          ? "bg-secondary text-white"
+                          ? "bg-white text-gray-400 border-0"
                           : "text-white hover:bg-btnPrimary-300 hover:bg-opacity-75",
-                        "group flex items-center px-2 py-2 text-sm font-medium rounded-md"
+                        "group flex items-center px-2 py-2 text-sm font-medium rounded-l-md"
                       )}
                     >
                       <item.icon
-                        className="mr-3 flex-shrink-0 h-6 w-6 text-white "
+                        className="mr-3 flex-shrink-0 h-6 w-6 text-green-900 "
                         aria-hidden="true"
                       />
                       {item.name}
@@ -225,7 +228,6 @@ const Layout = ({ children }: LayoutProps) => {
               </nav>
             </div>
             {/* <Button name="Sign Out" onClick={handleSignOut} /> */}
-
             <div className="flex-shrink-0 flex border-t  p-4">
               <Link href="#">
                 <a className="flex-shrink-0 w-full group block">

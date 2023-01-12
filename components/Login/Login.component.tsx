@@ -64,8 +64,9 @@ const LoginComponent = () => {
 
   const requestOTP: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    setLoadOtp(true)
+ 
     if (isValidPhoneNumber(phoneNumber)) {
+      setLoadOtp(true)
       generateRecaptcha();
       let appVerifier = window.recaptchaVerifier;
       signInWithPhoneNumber(auth, phoneNumber, appVerifier)
@@ -81,6 +82,8 @@ const LoginComponent = () => {
           setLoadOtp(false)
           errorAlert("Error sending otp "+error )
         });
+    }else{
+      errorAlert("Length should be of min 8 digits");
     }
   };
 
