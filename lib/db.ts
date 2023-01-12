@@ -118,17 +118,17 @@ export async function uploadReport(
 }
 export async function uploadImage(file: File) {
   try {
-    console.log(file);
+    // console.log(file);
     // const imageData = Buffer.from(file, "base64");
     const { data } = await axios.get(`/api/getUploadLink`);
     const resp = await axios.put(data.url, file, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     const imageUrl = data.url.split("?")[0];
-    console.log(imageUrl);
+    // console.log(imageUrl);
     return imageUrl;
   } catch (error: any) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 }

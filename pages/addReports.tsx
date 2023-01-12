@@ -140,7 +140,7 @@ const AddReports = () => {
     testName: string
   ) => {
     const response = await uploadReport(token, userId, file, testName);
-    console.log(response);
+    // console.log(response);
     if (response.status == 200 && response.data.success) {
       return response.data;
     } else {

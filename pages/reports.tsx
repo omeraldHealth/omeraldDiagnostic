@@ -21,7 +21,7 @@ const Reports = () => {
         token as string,
         user?.phoneNumber as string
       );
-      console.log(resp);
+      // console.log(resp);
       if (resp.status === 200) {
         setReportList(resp.data);
       }

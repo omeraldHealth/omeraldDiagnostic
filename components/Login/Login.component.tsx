@@ -103,7 +103,7 @@ const LoginComponent = () => {
             errorAlert("Invalid OTP ")
           }
           setLoadOtp(false)
-          console.log(JSON.stringify(error));
+          // console.log(JSON.stringify(error));
         });
     } else {
       setError("Length should be of 6 digits");

@@ -7,7 +7,7 @@ type UploadInputProps = {
 };
 const UploadInput = ({ labelName, file, setFile }: UploadInputProps) => {
   const handleFileChange = async (e: any) => {
-    console.log(e);
+    // console.log(e);
     setFile(e.target.files[0]);
   };
 

@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
 });
 
 const PdfTesting = ({ report, diagnosticDetails }: PdfTestingProps) => {
-  console.log(diagnosticDetails);
+  // console.log(diagnosticDetails);
   return (
     <Document>
       <Page size="A4" style={styles.page}>

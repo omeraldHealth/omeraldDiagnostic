@@ -171,12 +171,12 @@ const Onboard = () => {
   });
 
   const handleAddManager = async (data: IManagerDetails) => {
-    console.log(getValuesStep1());
+    // console.log(getValuesStep1());
     const newData = new FormData();
     newData.append("managerName", data.managerName);
     newData.append("managerRole", data.managerRole);
     newData.append("managerSignature", data.managerSignature[0]);
-    console.log(newData.values());
+    // console.log(newData.values());
     setShowStep3ContinueError(false);
     setManagerDetails((val) => val.concat(newData));
     resetStep3();
@@ -216,14 +216,14 @@ const Onboard = () => {
     };
     const token = (await user?.getIdToken()) as string;
     const res = await setUserDetails(token, data);
-    console.log(res);
+    // console.log(res);
     if (res.status == 201 && user) {
       setIsLoading(false);
       signIn(user, "/dashboard");
     }
 
     if (res.status === 409) {
-      console.log("changing route");
+      // console.log("changing route");
       router.push("/");
     }
   };

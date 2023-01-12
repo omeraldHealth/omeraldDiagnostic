@@ -5,7 +5,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     try {
       const url = await generateUploadURL();
-      console.log(url);
+      // console.log(url);
       return res.status(200).send({ url });
     } catch (error: any) {
       return res.status(500).json({ error: error.message });

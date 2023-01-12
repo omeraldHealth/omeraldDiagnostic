@@ -64,7 +64,6 @@ const BasicReportDetailsForm = ({
   });
 
   const handleSubmitForm = (data: ReportUserDetails) => {
-    console.log(data);
     onBasicFormSubmit(data);
   };
 
