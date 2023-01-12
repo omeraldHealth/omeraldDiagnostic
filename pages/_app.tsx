@@ -21,6 +21,7 @@ import {
   InboxIcon,
   UsersIcon,
 } from "@heroicons/react/20/solid";
+import { ToastContainer } from "react-toastify";
 
 // export type NextPageWithLayout = NextPage & {
 //   getLayout?: (page: ReactElement) => ReactNode;
@@ -47,6 +48,17 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Allowed>
         <Layout>
           <Component {...pageProps} />
+          <ToastContainer position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </Layout>
       </Allowed>
     </AuthProvider>

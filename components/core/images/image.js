@@ -1,0 +1,3 @@
+export const signDoctorImage ="https://res.cloudinary.com/drjut62wv/image/upload/v1673491895/omerald/diagnosticCenter/medical-doctor_ctn9gp.svg"
+export const logoIcon = "https://res.cloudinary.com/drjut62wv/image/upload/v1673492398/omerald/diagnosticCenter/logoIcon_hzhein.webp"
+export const thoughtsImage = "https://res.cloudinary.com/drjut62wv/image/upload/v1673493208/omerald/diagnosticCenter/though_process_t3o6mg.svg"

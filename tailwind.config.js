@@ -28,7 +28,11 @@ module.exports = {
       bounce: "bounce 1s infinite",
     },
     // fontFamily: {},
-    extend: {},
+    extend: {
+      backgroundImage: theme => ({
+        'signBanner': "url('/images/sign-banner.png')",
+      })
+    },
   },
   plugins: [require("@tailwindcss/forms")],
 };

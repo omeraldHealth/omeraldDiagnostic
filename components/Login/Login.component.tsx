@@ -13,6 +13,12 @@ import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
 import Button from "../core/Button/Button.component";
 import InputGroup from "../core/InputGroup/InputGroup.component";
+import {logoIcon, signDoctorImage, thoughtsImage} from "../../components/core/images/image"
+import OtpInput from "react-otp-input";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {errorAlert, successAlert} from "../../components/alerts/alert"
+import { contains } from "@firebase/util";
 
 const LoginComponent = () => {
   const auth = getAuth();
@@ -39,6 +45,7 @@ const LoginComponent = () => {
       },
       auth
     );
+
   };
   const checkIfFocused = () => {
     if (
@@ -54,17 +61,23 @@ const LoginComponent = () => {
 
   const requestOTP: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
+  
     if (isValidPhoneNumber(phoneNumber)) {
-      generateRecaptcha();
+      if(!window.recaptchaVerifier){
+        generateRecaptcha();
+      }
       let appVerifier = window.recaptchaVerifier;
       signInWithPhoneNumber(auth, phoneNumber, appVerifier)
         .then((confirmationResult) => {
           window.confirmationResult = confirmationResult;
+          successAlert("OTP Sent")
           setExpandForm(true);
           setPhoneNumberDisabled(true);
         })
         .catch((error) => {
           console.error(error);
+
+          errorAlert("Error sending otp "+error )
         });
     }
   };
@@ -78,10 +91,12 @@ const LoginComponent = () => {
         .confirm(otp)
         .then(async (result: UserCredential) => {
           signIn(result.user, "/dashboard");
+          successAlert("User logged in succesfully")
         })
         .catch((error: any) => {
           if (error?.code === "auth/invalid-verification-code") {
             setError("Invalid OTP");
+            errorAlert("Invalid OTP ")
           }
           console.log(JSON.stringify(error));
         });
@@ -91,94 +106,96 @@ const LoginComponent = () => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-10 m-20 border-primary border-2 rounded-md">
-      <div className="rounded-md col-span-2 ">
-        <img src="/icons/diagnosticLogin.webp" />
-      </div>
-      <div className="py-10 pr-10">
-        <div id="heading" className="pb-10">
-          <h2 className="font-medium text-3xl text-gray-600 pb-2">Login</h2>
-          <span className="font-extralight text-sm text-gray-500">
-            Enter your phone number to proceed
-          </span>
-        </div>
-        <form onSubmit={verifyOTP}>
-          <label className="block text-sm font-medium text-gray-700 pb-1">
-            Phone number
-          </label>
-          <div id="phoneNumber" className="pb-4">
-            <div
-              className={`border-2 rounded-md pl-2 
-              ${
-                isPhoneInputFocusedOnce
-                  ? isValidPhoneNumber(phoneNumber)
-                    ? " border-primary "
-                    : " border-red-500"
-                  : " border-gray-500"
-              }
-              `}
-            >
-              <PhoneInputWithCountrySelect
-                ref={phoneInputRef}
-                // containerClass=" PhoneInputContainerStyle "
-                // inputClass="border-2 border-primary"
-                // containerStyle={{ border: "10px solid #45A19E" }}
-                disabled={isPhoneNumberDisabled}
-                name="phoneNumberInput"
-                defaultCountry="IN"
-                value={phoneNumber}
-                onChange={(value) =>
-                  value === undefined
-                    ? setPhoneNumber("")
-                    : setPhoneNumber(value)
-                }
-              />
-            </div>
-
-            {!isValidPhoneNumber(phoneNumber) && checkIfFocused() && (
-              <span className="mt-1 text-sm text-red-600 w-full block">
-                Please Enter a valid Number
-              </span>
-            )}
+    <div className="w-[100vw] h-[100vh] bg-signBanner content-between flex" >
+        <div className="w-[60%] h-[75vh] m-auto grid grid-cols-3 bg-white">
+          <div className="col-span-1 text-center px-4 xl:px-8 border-r-2">
+            <img className="my-10" src={signDoctorImage} alt="banner-doctor-img" />
+            <p className="text-orange-500 font-bold mb-3 font-serif">Reporting Simplified</p>
+            <p className="font-extralight text-sm">Store, Analyse and share test reports with omerald at your fingertips </p>
+            <a href={process.env.NEXT_PUBLIC_OMERALD_PROD} target="_blank">
+              <button className="bg-orange-100 text-sm p-2 my-5 font-light text-orange-500 rounded-xl">Know more</button>
+            </a>
           </div>
-
-          {!expandForm && (
-            <div>
-              <Button
-                name="Send OTP"
-                styles="basic"
-                onClick={(e) => requestOTP(e)}
-                // className="block border-2 border-black bg-blue-500 active:bg-blue-900"
-              />
-            </div>
-          )}
-          {expandForm && (
-            <div>
-              <InputGroup
-                value={otp}
-                labelName="OTP"
-                inputName="otp"
-                inputType="number"
-                error={error}
-                register={() => {}}
-                onChange={(e) => setOtp(e.target.value)}
-              />
-              {/* <input
-                className="block border-2 border-black"
-                type={"number"}
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-              /> */}
-              <div className="pt-2">
-                <Button name="Submit" type="submit" />
-              </div>
-            </div>
-          )}
-          {/* {error.length > 0 && <span className="text-red-500">{error}</span>} */}
-
-          <div id="recaptcha-container"></div>
-        </form>
-      </div>
+          <div  className="col-span-2 text-center">
+          <div>
+        </div>
+              <section className="flex justify-center w-[100%] mt-2" id="logo">
+                <img src={logoIcon} className="w-[50px] h-[50px] m-2" alt="logo-icon" />
+                <p className="pt-4 text-orange-400 text-lg">OMERALD</p>
+              </section>
+              <p className="text-md font-light text-gray-500"><span className="font-semibold text-lightBlue-800">Sign In</span> to get started with omerald diagnostics</p>
+              <img src={thoughtsImage} alt="thought-process" className="m-auto my-8 w-[220px] " />
+              <form onSubmit={verifyOTP}>
+                <div id="phoneNumber" className="pb-4">
+                  {!expandForm &&<div
+                    className={`border-2 rounded-md pl-2 w-[220px] m-auto text-xs font-extralight 
+                    ${
+                      isPhoneInputFocusedOnce
+                        ? isValidPhoneNumber(phoneNumber)
+                          ? " border-gray-900"
+                          : " border-red-500"
+                        : " border-gray-300"
+                    }
+                    `}
+                  >
+                    <PhoneInputWithCountrySelect
+                      ref={phoneInputRef}
+                      disabled={isPhoneNumberDisabled}
+                      name="phoneNumberInput"
+                      defaultCountry="IN"
+                      placeholder="Enter mobile number"
+                      value={phoneNumber}
+                      onChange={(value) =>
+                        value === undefined
+                          ? setPhoneNumber("")
+                          : setPhoneNumber(value)
+                      }
+                    />
+                  </div>
+                  }
+                     {!isValidPhoneNumber(phoneNumber) && checkIfFocused() && (
+                     <span className="mt-1 text-sm text-red-600 w-full block">
+                          Please Enter a valid Number
+                      </span>
+                    )} 
+                </div>
+                {!expandForm && (
+                  <div className="flex justify-center">
+                    <button
+                      onClick={(e) => requestOTP(e)}
+                      className="block w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md"
+                    >Send Otp</button>
+                  </div>
+                )}
+                {expandForm && (
+                  <div >
+                    <section className="m-auto w-100 flex justify-center">
+                      <OtpInput
+                        value={otp}
+                        onChange={(e)=>{setOtp(e)}}
+                        numInputs={6}
+                        shouldAutoFocus={true}
+                        inputStyle={{
+                          width: "35px",
+                          height: "35px",
+                          margin: "4px",
+                          borderRadius:"5px",
+                          backgroundColor:"#f5f6f7",
+                          color: "grey",
+                        }}
+                      />
+                    </section>
+                    <div className="flex justify-center mt-4">
+                      <button name="Submit" type="submit"
+                        className="block w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md"
+                      >Submit OTP</button>
+                    </div>
+                  </div>
+                )}
+                <div id="recaptcha-container"></div>
+              </form>
+          </div>
+        </div>
     </div>
   );
 };

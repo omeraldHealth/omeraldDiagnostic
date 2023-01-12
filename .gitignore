@@ -4,3 +4,4 @@ yarn.lock
 .next
 .DS_Store
 next-env.d.ts
+.env
