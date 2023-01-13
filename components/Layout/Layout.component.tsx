@@ -8,28 +8,51 @@ import Button from "../core/Button/Button.component";
 import { useAuth } from "../../lib/auth";
 import {
   Bars3Icon,
-  ChartBarIcon,
   ClipboardDocumentListIcon,
   HomeIcon,
   XMarkIcon,
+  ChartBarSquareIcon,
+  BeakerIcon,
+  UserCircleIcon,
+  WrenchScrewdriverIcon,
+  AdjustmentsHorizontalIcon,
+  MagnifyingGlassIcon,
+  BellIcon,
+  BellAlertIcon,
+  
+
 } from "@heroicons/react/20/solid";
 
 const privateRoutes = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
-  // { name: "Team", href: "#", icon: UsersIcon, current: false },
-  // { name: "Projects", href: "#", icon: FolderIcon, current: false },
-  // { name: "Calendar", href: "#", icon: CalendarIcon, current: false },
-  // { name: "Documents", href: "#", icon: InboxIcon, current: false },
   {
     name: "Add Reports",
     href: "/addReports",
-    icon: ChartBarIcon,
+    icon: ChartBarSquareIcon,
     current: false,
   },
   {
-    name: "Get Reports",
+    name: "View Reports",
     href: "/reports",
     icon: ClipboardDocumentListIcon,
+    current: false,
+  },
+  {
+    name: "Tests Offered",
+    href: "/test",
+    icon: BeakerIcon,
+    current: false,
+  },
+  {
+    name: "Profile",
+    href: "/profile",
+    icon: UserCircleIcon,
+    current: false,
+  },
+  {
+    name: "Settings",
+    href: "/settings",
+    icon: WrenchScrewdriverIcon,
     current: false,
   },
 ];
@@ -65,7 +88,7 @@ const Layout = ({ children }: LayoutProps) => {
     return <>{children}</>;
   } else {
     return (
-      <div>
+      <div >
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -164,7 +187,7 @@ const Layout = ({ children }: LayoutProps) => {
                             />
                           </div>
                           <div className="ml-3">
-                            <p className="text-base font-medium text-white">
+                            <p className="text-lg  font-bold text-white">
                               {diagnosticDetails?.fullName}
                             </p>
                             <button
@@ -235,7 +258,7 @@ const Layout = ({ children }: LayoutProps) => {
                     <div>
                       <img
                         className="inline-block w-10"
-                        src={diagnosticDetails?.brandDetails.brandLogo}
+                        src={diagnosticDetails?.brandDetails.brandLogo ? diagnosticDetails?.brandDetails.brandLogo: "https://res.cloudinary.com/drjut62wv/image/upload/v1673515394/omerald/diagnosticCenter/doctor_fhroz3.png"}
                         alt=""
                       />
                     </div>
@@ -256,7 +279,7 @@ const Layout = ({ children }: LayoutProps) => {
             </div>
           </div>
         </div>
-        <div className="md:pl-64 flex flex-col flex-1">
+        <div className="md:pl-64 flex flex-col flex-1 ">
           <div className="sticky top-0 z-10 md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3 bg-gray-100">
             <button
               type="button"
@@ -268,13 +291,30 @@ const Layout = ({ children }: LayoutProps) => {
             </button>
           </div>
           <main className="flex-1">
-            <div className="py-6">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                <h1 className="text-2xl font-semibold text-gray-900">
-                  {currentNavigation.name}
-                </h1>
+            <div className="">
+              <div className="max-w-[100%] px-8 bg-white h-[7vh] py-4 flex justify-between">
+                  <section className="flex">
+                        <AdjustmentsHorizontalIcon className="w-6"/>
+                        <p className="mx-4 flex align- font-semibold">{currentNavigation.name}</p>
+                  </section>
+                  <section className="flex w-[20vw] bg-gray-200 rounded-xl justify-between">
+                        <input className="bg-gray-200 px-10 rounded-xl border-0 outline-none font-light" placeholder="Search" />
+                        <a href="/" className="w-4 mx-2 flex align-middle"><MagnifyingGlassIcon /></a> 
+                  </section>
+                  <section className="flex">
+                    <BellIcon className="w-8 text-gray-600 mx-4"/>
+                    <section>
+                      <a href="/">
+                          <img
+                            className="inline-block w-8"
+                            src={diagnosticDetails?.brandDetails.brandLogo ? diagnosticDetails?.brandDetails.brandLogo: "https://res.cloudinary.com/drjut62wv/image/upload/v1673515394/omerald/diagnosticCenter/doctor_fhroz3.png"}
+                            alt=""
+                          />
+                      </a>
+                    </section>
+                  </section>
               </div>
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+              <div className="bg-[#e9e9e9] max-h-auto min-h-[93vh]">
                 {children}
               </div>
             </div>
