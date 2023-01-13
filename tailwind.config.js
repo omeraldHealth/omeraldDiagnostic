@@ -18,6 +18,7 @@ module.exports = {
         500: "#173e43",
       },
       btnSecondary: "#4438ca",
+      orangeBg:"#FFA500",
       ...colors,
     },
     animation: {

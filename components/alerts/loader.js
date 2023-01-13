@@ -12,7 +12,6 @@ export const LoaderComp = ( ) => {
                     left:"45vw",
                     top:"30vh",                   
                 }}
-
         />
     </div>
 }

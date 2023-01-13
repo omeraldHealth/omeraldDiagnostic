@@ -122,7 +122,10 @@ export async function uploadImage(file: File) {
     // const imageData = Buffer.from(file, "base64");
     const { data } = await axios.get(`/api/getUploadLink`);
     const resp = await axios.put(data.url, file, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 
+        "Content-Type": "multipart/form-data",
+        'Access-Control-Allow-Origin': '*'
+      }
     });
     const imageUrl = data.url.split("?")[0];
     // console.log(imageUrl);

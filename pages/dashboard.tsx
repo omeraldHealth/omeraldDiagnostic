@@ -1,205 +1,93 @@
+
+import { bannerDashboard, doctorAvatar } from "@/components/core/images/image";
+import {CategoryScale} from 'chart.js';
 import { useAuth } from "@/lib/auth";
-import React, { useEffect, useReducer, useState } from "react";
-import { ReportUserDetails } from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.interface";
-import { ReportDetails, ReportTypes } from "middleware/models.interface";
-import Button from "@/components/core/Button/Button.component";
-import Loading from "@/components/core/LoadingIcon/Loading.component";
-import {
-  CartesianGrid,
-  LineChart,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { getReports } from "@/lib/db";
-import ReportSharedVsTime from "@/components/Graphs/ReportSharedVsTime";
-import { LoaderComp } from "@/components/alerts/loader";
-interface stateType {
-  loading: boolean;
-  success: boolean;
-  error: string;
-  manualReportVSuploadReport: {
-    name: "Manual Reports" | "Upload Reports";
-    value: number;
-  }[];
-  noOfReportTypes: {
-    name: string;
-    value: number;
-  }[];
-}
-interface actionType {
-  type: string;
-  value?: any;
-}
+import { BeakerIcon, ChartBarIcon, ShareIcon } from "@heroicons/react/20/solid";
+import React from "react";
+import ReportSharedVsTime2 from "@/components/Graphs/ReportSharedVsTime2";
+import Chart from 'chart.js/auto';
+import Link from "next/link";
 
-
-//TODO: Update Types
-function UserReportReducer(state: stateType, action: actionType): stateType {
-  if (action.type === "success") {
-    return {
-      ...state,
-      loading: false,
-      success: true, //can be change to something like report successfully created.
-      error: "",
-      // reportUserDetails: null,
-    };
-  } else if (action.type === "error") {
-    return {
-      ...state,
-      loading: false,
-      error: action.value as string,
-    };
-  } else if (action.type === "loading") {
-    return {
-      ...state,
-      loading: true,
-      error: "",
-    };
-  } else if (action.type === "manualReportVSuploadReport") {
-    return {
-      ...state,
-      manualReportVSuploadReport: action.value,
-      loading: false,
-      error: "",
-    };
-  } else if (action.type === "noOfReportTypes") {
-    return {
-      ...state,
-      noOfReportTypes: action.value,
-      loading: false,
-      error: "",
-    };
-  } else if (action.type === "reset") {
-    return {
-      ...intialState,
-      noOfReportTypes: state.noOfReportTypes,
-    };
-  } else {
-    return state;
-  }
-}
-const intialState: stateType = {
-  loading: false,
-  success: false,
-  error: "",
-  manualReportVSuploadReport: [
-    {
-      name: "Manual Reports",
-      value: 0,
-    },
-    {
-      name: "Upload Reports",
-      value: 0,
-    },
-  ],
-  noOfReportTypes: [],
-};
 const Dashboard = () => {
-  const { user } = useAuth();
-  const [reportList, setReportList] = useState<ReportDetails[]>([]);
-  const [state, dispatch] = useReducer(UserReportReducer, intialState);
 
-  useEffect(() => {
-    (async () => {
-      const token = await user?.getIdToken();
+  const {diagnosticDetails, signOut } = useAuth();
+  Chart.register(CategoryScale);
 
-      const resp = await getReports(
-        token as string,
-        user?.phoneNumber as string
-      );
-      if (resp.status === 200) {
-        setReportList(resp.data);
-      }
-    })();
-  }, []);
+  return <div className="p-8">
+    <section className="relative ">
+      <img src={bannerDashboard} className="w-[100%]" alt="dashboard-banner" /> 
+      <p className="absolute top-5 left-80 text-white">Welcome {diagnosticDetails?.fullName}!</p>
+      <p className="absolute top-14 left-80 font-light text-sm text-gray-300">You have uploaded <span className="text-orange-400">{diagnosticDetails?.reports?.length ?? 0} report</span> till date, 
+          please use our add reports section to share more reports<br/> with your patients directly. Also total tests listed are <span className="text-orange-400">{diagnosticDetails?.tests?.length ?? 0} </span> you can add more using the tests offered section.
+       </p>
+    </section>
+    <section className="my-6 flex justify-between" >
+        <Link href={"/test"}  passHref={true}>
+          <section className="w-[20%] h-[14vh] p-4 flex justify-between bg-blue-900 rounded-md text-white">
+              <BeakerIcon className="w-10" />
+              <span className="mt-4">
+                <p className="font-light text-sm">Tests Offered</p>
+                <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.tests?.length ?? 0 }</p>
+              </span>
+          </section>
+        </Link>
+        <Link href={"/reports"}  passHref={true}>
+        <section className="w-[20%] h-[14vh] p-4 flex justify-between bg-indigo-900 rounded-md text-white">
+            <ChartBarIcon className="w-10" />
+            <span className="mt-4">
+              <p className="font-light text-sm">Reports Uploaded</p>
+              <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.reports?.length ?? 0 }</p>
+            </span>
+        </section>
+        </Link>
+        <Link href={"/reports"}  passHref={true}>
+        <section className="w-[20%] h-[14vh] p-4 flex justify-between bg-gray-500 rounded-md text-white">
+            <ShareIcon className="w-10" />
+            <span className="mt-4">
+              <p className="font-light text-sm">Reports Shared</p>
+              <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.sharedReport?.length ?? 0 }</p>
+            </span>
+        </section>
+        </Link>
+        <Link href={"/profile"}  passHref={true}>
+        <section className="w-[20%] h-[14vh] p-4 flex justify-between bg-green-900 rounded-md text-white">
+            <BeakerIcon className="w-10" />
+            <span className="mt-4">
+              <p className="font-light text-sm">Total Users/Branches</p>
+              <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.managersDetail?.length ?? 0 }  / {diagnosticDetails?.branch?.length ?? 0 } </p>
+            </span>
+        </section>
+        </Link>
 
-  useEffect(() => {
-    let noOfManualReports = 0;
-    let noOfUploadReports = 0;
-    let noOftypesOfReports: { name: string; value: number }[] = [];
-    let noOfReportsShared: { date: number; value: number }[] = [];
-    reportList.forEach((report) => {
-      if (report.isManualReport) {
-        noOfManualReports++;
-      } else {
-        noOfUploadReports++;
-      }
-      let item = noOftypesOfReports.find(
-        (type) => type.name === report.testName
-      );
-      if (item) {
-        item.value++;
-      } else {
-        noOftypesOfReports.push({ name: report.testName, value: 1 });
-      }
-      // let reportsShared = noOfReportsShared.find()
-    });
-    dispatch({
-      type: "manualReportVSuploadReport",
-      value: [
-        { name: "Manual Reports", value: noOfManualReports },
-        { name: "Upload Reports", value: noOfUploadReports },
-      ],
-    });
-    dispatch({
-      type: "noOfReportTypes",
-      value: noOftypesOfReports,
-    });
-  }, [reportList]);
-
-  if (state.loading) {
-    return <LoaderComp />;
-  } else if (state.success) {
-    return (
-      <div className="grid h-screen bg-primary place-content-center">
-        <span>Success</span>
-        {/* <Button name="Go To Home" onClick={handleGoToHome} /> */}
-      </div>
-    );
-  } else {
-    return (
-      <div className="grid h-screen place-content-center">
-        <div id="manualReportVSuploadReport">
-          <PieChart width={1000} height={400}>
-            <Pie
-              dataKey="value"
-              isAnimationActive={false}
-              data={state.manualReportVSuploadReport}
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              fill="#8884d8"
-              label
-            />
-            <Tooltip />
-          </PieChart>
-          <PieChart width={1000} height={400}>
-            <Pie
-              dataKey="value"
-              isAnimationActive={false}
-              data={state.noOfReportTypes}
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              fill="#8884d8"
-              label
-            />
-            <Tooltip />
-          </PieChart>
-          <ReportSharedVsTime reports={reportList} />
-          {/* <LineChart>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis ticks={ticks} />
-            <YAxis />
-            <Tooltip />
-          </LineChart> */}
-        </div>
-      </div>
-    );
-  }
+    </section>
+    <section className="flex justify-between h-[45vh]">
+      <section className="w-[60%] h-auto bg-white">
+        <ReportSharedVsTime2 />
+      </section>
+      <section className="w-[30%] h-[100%] bg-white rounded-sm p-4">
+        <p>Recent Activities</p>
+        <p className="text-xs my-2 text-gray-400 font-light">Summary of the latest updated activities</p>
+        {
+          diagnosticDetails?.activities ? diagnosticDetails?.activities?.map((activity,index) => {
+            return ( 
+              <section key={index} className="my-4 flex justify-between">
+                  <span className="text-xs flex">
+                    <img src={doctorAvatar} alt="user-avatar" className="w-10 rounded-full mr-4" />
+                    <span>
+                    <p className="text-light text-gray-600 mt-1">{activity.activity}</p>
+                    <p className="text-light text-indigo-600 mt-1">{activity.updatedTime?.toDateString()}</p>
+                    </span>
+                  </span>
+              </section>
+            )
+          }):
+          <>
+           <p className="text-light text-sm text-gray-600 mt-8">No Activities....</p>
+          </>
+        }
+      </section>
+    </section>
+  </div>
 };;
 
 export default Dashboard;

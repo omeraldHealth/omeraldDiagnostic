@@ -3,14 +3,17 @@ import { ObjectId, Timestamp } from "mongodb";
 export interface UserDetails {
   diagnosticName: string;
   fullName: string;
+  tests: string[];
   phoneNumber: string;
-  department: string;
+  branch: string[];
   email: string;
+  sharedReport: string[];
   address?: string;
   reports?: string[];
   updatedAt?: Date;
   brandDetails: BrandDetailsForm;
   managersDetail: IManagerDetails[];
+  activities: ActivityDetails[];
 }
 export type BrandDetailsForm = {
   brandLogo: string;
@@ -59,4 +62,8 @@ export type ReportDetails = {
   parsedData?: ReportParamsData[];
   createdAt?: Date;
   updatedAt?: Date;
+};
+export type ActivityDetails = {
+  activity: string;
+  updatedTime?: Date;
 };

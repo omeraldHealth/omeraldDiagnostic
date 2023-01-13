@@ -1,3 +1,4 @@
+import { warningAlert } from "@/components/alerts/alert";
 import { getAuth, onIdTokenChanged, User } from "firebase/auth";
 import { UserDetails } from "middleware/models.interface";
 import { useRouter } from "next/router";
@@ -71,6 +72,7 @@ function useFirebaseAuth() {
     setUser(null);
     setDiagnosticDetails(null);
     await auth.signOut();
+    warningAlert("User Logged Out")
     router.push("");
   };
 
