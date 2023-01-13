@@ -21,7 +21,7 @@ export default function TextArea(props: TextAreaProps) {
       <div className="mt-1 relative rounded-md shadow-sm mb-2">
         <textarea
           {...props.register(props.inputName)}
-          rows={4}
+          rows={2}
           name={props.inputName}
           id={props.inputName}
           placeholder={props.placeholder}

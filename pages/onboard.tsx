@@ -11,6 +11,7 @@ import Button from "@/components/core/Button/Button.component";
 import { imageWidthAndHeight } from "@/utils/helper";
 import { IManagerDetails, UserDetails } from "middleware/models.interface";
 import Loading from "@/components/core/LoadingIcon/Loading.component";
+import { LoaderComp } from "@/components/alerts/loader";
 
 type BasicDetailsForm = {
   fullName: string;
@@ -18,7 +19,7 @@ type BasicDetailsForm = {
   email: string;
   address: string;
   phoneNumber: string;
-  department: string;
+  branch: string;
 };
 type BrandDetailsForm = {
   brandLogo: FileList;
@@ -35,6 +36,7 @@ const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
 
 const checkDimensions = async (imageFile: FileList) => {
   let dimensions = await imageWidthAndHeight(imageFile[0]);
+  return false;
   // if (
   //   dimensions.width >= 200 &&
   //   dimensions.height >= 67 &&
@@ -61,7 +63,7 @@ const schema = yup.object().shape({
   fullName: yup.string().strict().required(),
   email: yup.string().email().required(),
   address: yup.string().required(),
-  department: yup.string().required(),
+  branch: yup.string().required(),
 });
 const schemaStep2 = yup.object().shape({
   brandLogo: yup
@@ -75,11 +77,11 @@ const schemaStep2 = yup.object().shape({
           value && value[0]?.type
         )
     )
-    .test(
-      "size",
-      "File Size is too large",
-      (value) => value && value[0]?.size <= 10000000
-    )
+    // .test(
+    //   "size",
+    //   "File Size is too large",
+    //   (value) => value && value[0]?.size <= 10000000
+    // )
     // .test(
     //   "dimensions",
     //   "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
@@ -92,7 +94,7 @@ const schemaStep2 = yup.object().shape({
     //       );
     //     });
     //   }
-    // ),
+    // )
   ,facebookUrl: yup.string().url("Please Enter a valid Url"),
   instaUrl: yup.string().url("Please Enter a valid Url"),
 });
@@ -192,7 +194,7 @@ const Onboard = () => {
   };
 
   const handleOnSubmitForm = async () => {
-    // setIsLoading(true);
+    setIsLoading(true);
 
     let data: UserDetails = {
       ...getValuesStep1(),
@@ -240,12 +242,12 @@ const Onboard = () => {
   };
 
   if (isLoading) {
-    return <Loading />;
+    return <LoaderComp />;
   }
 
   return (
-    <div className="grid  h-screen place-content-center">
-      <div className="flex flex-col md:min-w-[500px] shadow-lg rounded-md border-2 p-10">
+    <div className="grid place-content-center w-[100vw] h-[100vh] bg-signBanner" >
+      <div className="flex flex-col md:min-w-[500px] shadow-lg bg-white rounded-md border-2 p-10">
         <div id="steps" className="rounded-md bg-slate-50 w-full p-4 mb-4">
           {steps.map((step, index) => (
             <Fragment key={index}>
@@ -290,12 +292,12 @@ const Onboard = () => {
               <InputGroup
                 labelName="Diagnostic Centre Name"
                 inputName="diagnosticName"
-                placeholder="Add Diagnostic name"
+                placeholder="Add diagnostic name"
                 error={errors.diagnosticName?.message}
                 register={register}
               />
               <InputGroup
-                labelName="Full Name"
+                labelName="Account manager Name"
                 inputName="fullName"
                 placeholder="Add your name"
                 error={errors.fullName?.message}
@@ -313,21 +315,22 @@ const Onboard = () => {
                 labelName="Phone Number"
                 inputName="phoneNumber"
                 placeholder="Add your phone"
+                disabled
                 error={errors.phoneNumber?.message}
                 register={register}
               />
               <InputGroup
-                labelName="Department"
-                inputName="department"
-                placeholder="Add Department Name"
-                error={errors.department?.message}
+                labelName="Branch"
+                inputName="branch"
+                placeholder="Add Branch Name"
+                error={errors.branch?.message}
                 register={register}
               />
               <TextArea
                 labelName="Address"
                 inputName="address"
                 error={errors.address?.message}
-                placeholder="Add your address"
+                placeholder="Add branch address"
                 register={register}
               />
 
@@ -337,7 +340,6 @@ const Onboard = () => {
               </div>
             </form>
           )}
-
           {currentStep.id === 2 && (
             <form
               id="brandDetails"
@@ -472,8 +474,8 @@ const Onboard = () => {
                     value={getValuesStep1("email")}
                   />
                   <LabelNameandValue
-                    labelName="Department"
-                    value={getValuesStep1("department")}
+                    labelName="Branch"
+                    value={getValuesStep1("branch")}
                   />
                   <LabelNameandValue
                     labelName="Phone Number"

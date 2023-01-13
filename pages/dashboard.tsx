@@ -13,22 +13,12 @@ const Dashboard = () => {
   const {diagnosticDetails, signOut } = useAuth();
   Chart.register(CategoryScale);
 
-  const activities = [
-    {
-      action: "uploaded",
-      reporter: "Mohammed Saif",
-      time:"3 days ago",
-      reportName:"Blood Report",
-      profile: doctorAvatar
-    }
-  ]
-
   return <div className="p-8">
     <section className="relative ">
       <img src={bannerDashboard} className="w-[100%]" alt="dashboard-banner" /> 
       <p className="absolute top-5 left-80 text-white">Welcome {diagnosticDetails?.fullName}!</p>
-      <p className="absolute top-14 left-80 font-light text-sm text-gray-300">You have uploaded <span className="text-orange-400">{diagnosticDetails?.reports?.length} report</span> till date, 
-          please use our add reports section to share more reports<br/> with your patients directly. Also total tests listed are <span className="text-orange-400">{10} </span> you can add more using the tests offered section.
+      <p className="absolute top-14 left-80 font-light text-sm text-gray-300">You have uploaded <span className="text-orange-400">{diagnosticDetails?.reports?.length ?? 0} report</span> till date, 
+          please use our add reports section to share more reports<br/> with your patients directly. Also total tests listed are <span className="text-orange-400">{diagnosticDetails?.tests?.length ?? 0} </span> you can add more using the tests offered section.
        </p>
     </section>
     <section className="my-6 flex justify-between" >
@@ -37,7 +27,7 @@ const Dashboard = () => {
               <BeakerIcon className="w-10" />
               <span className="mt-4">
                 <p className="font-light text-sm">Tests Offered</p>
-                <p className="font-bold text-2xl flex justify-end my-2">10</p>
+                <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.tests?.length ?? 0 }</p>
               </span>
           </section>
         </Link>
@@ -46,7 +36,7 @@ const Dashboard = () => {
             <ChartBarIcon className="w-10" />
             <span className="mt-4">
               <p className="font-light text-sm">Reports Uploaded</p>
-              <p className="font-bold text-2xl flex justify-end my-2">10</p>
+              <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.reports?.length ?? 0 }</p>
             </span>
         </section>
         </Link>
@@ -55,7 +45,7 @@ const Dashboard = () => {
             <ShareIcon className="w-10" />
             <span className="mt-4">
               <p className="font-light text-sm">Reports Shared</p>
-              <p className="font-bold text-2xl flex justify-end my-2">8</p>
+              <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.sharedReport?.length ?? 0 }</p>
             </span>
         </section>
         </Link>
@@ -64,7 +54,7 @@ const Dashboard = () => {
             <BeakerIcon className="w-10" />
             <span className="mt-4">
               <p className="font-light text-sm">Total Users/Branches</p>
-              <p className="font-bold text-2xl flex justify-end my-2">10 / 5</p>
+              <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.managersDetail?.length ?? 0 }  / {diagnosticDetails?.branch?.length ?? 0 } </p>
             </span>
         </section>
         </Link>
@@ -78,19 +68,22 @@ const Dashboard = () => {
         <p>Recent Activities</p>
         <p className="text-xs my-2 text-gray-400 font-light">Summary of the latest updated activities</p>
         {
-          activities.slice(0,5).map(activity => {
+          diagnosticDetails?.activities ? diagnosticDetails?.activities?.map((activity,index) => {
             return ( 
-              <section className="my-4 flex justify-between">
+              <section key={index} className="my-4 flex justify-between">
                   <span className="text-xs flex">
-                    <img src={activity.profile} alt="user-avatar" className="w-10 rounded-full mr-4" />
+                    <img src={doctorAvatar} alt="user-avatar" className="w-10 rounded-full mr-4" />
                     <span>
-                    <p className="text-light text-gray-600 mt-1">{activity.reporter} <span>{activity.action} report</span> <span className="text-orange-500">"{activity.reportName}"</span></p>
-                    <p className="text-light text-indigo-600 mt-1">{activity.time}</p>
+                    <p className="text-light text-gray-600 mt-1">{activity.activity}</p>
+                    <p className="text-light text-indigo-600 mt-1">{activity.updatedTime?.toDateString()}</p>
                     </span>
                   </span>
               </section>
             )
-          })
+          }):
+          <>
+           <p className="text-light text-sm text-gray-600 mt-8">No Activities....</p>
+          </>
         }
       </section>
     </section>

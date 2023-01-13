@@ -1,8 +1,8 @@
 import React, { cloneElement, ReactElement, ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/router";
-import Loading from "@/components/core/LoadingIcon/Loading.component";
 import { LoaderComp } from "@/components/alerts/loader";
+import { successAlert } from "@/components/alerts/alert";
 
 // export type NextPageWithLayout = NextPage & {
 //   auth: AuthContextInterface;
@@ -14,8 +14,8 @@ import { LoaderComp } from "@/components/alerts/loader";
 // };
 
 //TODO: ADD EXCEPTIONS HERE
-const allowedPaths = ["", "/", "/login"];
-
+const allowedPaths = ["","/","/login"];
+let flag = true;
 const Allowed = ({
   children,
 }: {
@@ -24,12 +24,16 @@ const Allowed = ({
   const auth = useAuth();
   const router = useRouter();
 
-  if (allowedPaths.includes(router.pathname)) {
+  if (allowedPaths.includes(router.pathname) && !auth?.user) {
     return <>{children}</>;
   } else if (auth?.loading) {
     return <LoaderComp />;
   } else if (auth?.user && auth?.diagnosticDetails) {
-    if (router.pathname === "/onboard") {
+    if (router.pathname === "/onboard" || router.pathname === "/") {
+      if(flag){
+        successAlert("User logged in")
+        flag = false;
+      }
       router.push("/dashboard");
       return null;
     }
