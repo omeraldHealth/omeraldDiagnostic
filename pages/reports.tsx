@@ -33,7 +33,7 @@ const Reports = () => {
   };
 
   return (
-    <div>
+    <div className="p-6">
       <ReportsTable reports={reportList} onSelectReport={handleSelectReport} />
       {/* {selectedReport && <span>{JSON.stringify(selectedReport)}</span>} */}
     </div>

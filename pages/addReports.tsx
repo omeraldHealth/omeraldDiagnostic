@@ -11,9 +11,8 @@ import {
 } from "middleware/models.interface";
 import Button from "@/components/core/Button/Button.component";
 import UploadInput from "@/components/UploadReport/UploadReport.component";
-import Loading from "@/components/core/LoadingIcon/Loading.component";
-import InputGroup from "@/components/core/InputGroup/InputGroup.component";
 import SelectComponent from "../components/core/SelectComponent/SelectComponent";
+import { LoaderComp } from "@/components/alerts/loader";
 const crypto = require("crypto");
 interface stateType {
   loading: boolean;
@@ -199,7 +198,7 @@ const AddReports = () => {
   };
 
   if (state.loading) {
-    return <Loading />;
+    return <LoaderComp />;
   } else if (state.success) {
     return (
       <div className="grid h-screen bg-primary place-content-center">
@@ -209,7 +208,7 @@ const AddReports = () => {
     );
   } else {
     return (
-      <div className="">
+      <div className="p-8">
         {state.reportUserDetails == null && (
           <div className="px-4 sm:px-6 lg:px-8 mt-12">
             <div className="sm:flex sm:items-center pb-8">

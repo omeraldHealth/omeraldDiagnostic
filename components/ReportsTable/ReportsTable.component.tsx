@@ -7,11 +7,22 @@ import Link from "next/link";
 import { usePDF } from "@react-pdf/renderer";
 import PdfTesting from "../PdfTesting/PdfTesting";
 import { useAuth } from "@/lib/auth";
+import { Table, TableProps } from "antd";
+import { ColumnsType } from "antd/es/table";
 
 type ReportTableProps = {
   reports: ReportDetails[];
   onSelectReport: (val: string) => void;
 };
+
+interface DataType {
+  key: React.Key;
+  userName: string;
+  email: number;
+  testName: string;
+  reportDate: Date;
+  status: string;
+}
 
 export default function ReportsTable({
   reports,
@@ -19,7 +30,67 @@ export default function ReportsTable({
 }: ReportTableProps) {
   const router = useRouter();
   const { user, diagnosticDetails } = useAuth();
+  
+  
+  const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
+    console.log('params', pagination, filters, sorter, extra);
+  };
 
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'Name',
+      dataIndex: 'userName',
+      sorter: (a, b) => a.userName.length - b.userName.length,
+      sortDirections: ['descend'],
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => a.email - b.email,
+    },
+    {
+      title: 'Test Name',
+      dataIndex: 'testName',
+      sorter: (a, b) => a.testName.length - b.testName.length,
+    },
+    {
+      title: 'Report Date',
+      dataIndex: 'reportDate',
+      render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
+      sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() }
+    ,
+    {
+      title: 'Click to view',
+      dataIndex: "status",
+      render: ((stat:string,person: any) =>  <>{stat.toLowerCase() === "parsing" ? (
+        "Parsing..."
+      ) : (
+        <ViewPdf
+          report={person}
+          diagnosticDetails={diagnosticDetails as UserDetails}
+        />
+      )}</>
+      ),
+    },
+    {
+      title: 'Click to Share',
+      dataIndex: 'userName',
+      render: ((userName:string) => <>
+           <RWebShare
+                data={{
+                            text: `Hi ${userName}! Welcome to Omerald. Please login with us to get your report`,
+                            url: "https://omerald.com",
+                            title: "Omerald Diagnostic Centre",}}
+                onClick={() => console.log("shared successfully!")}>
+        <ShareIcon className="text-indigo-600 w-4 h-4 hover:text-indigo-900 active:shadow-lg" />
+        </RWebShare>
+   </>),
+    },
+  ];
+  
+  const data = reports;
+  
   const handleOnClick = () => {
     router.push("/addReports");
   };
@@ -49,94 +120,7 @@ export default function ReportsTable({
         <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
             <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-              <table className="min-w-full divide-y divide-gray-300">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Email
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Test Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Report Date
-                    </th>
-                    <th
-                      scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                    >
-                      <span className="sr-only">Click to View</span>
-                    </th>
-                    <th
-                      scope="col"
-                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
-                    >
-                      <span className="sr-only">Click to Share</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
-                  {reports.map((person) => (
-                    <tr key={person.reportId}>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        {person.userName}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.email}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {person.testName}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                        {dayjs(person.reportDate).format("MMM D, YYYY")}
-                      </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        {person.status.toLowerCase() === "parsing" ? (
-                          "Parsing..."
-                        ) : (
-                          <ViewPdf
-                            report={person}
-                            diagnosticDetails={diagnosticDetails as UserDetails}
-                          />
-                        )}
-                      </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        {/* <button
-                          // onClick={() => onSelectReport(person.reportId)}
-                          className="text-indigo-600 hover:text-indigo-900"
-                        > */}
-                        <RWebShare
-                          data={{
-                            text: `Hi ${person.userName}! Welcome to Omerald. Please login with us to get your report`,
-                            url: "https://omerald.com",
-                            title: "Omerald Diagnostic Centre",
-                          }}
-                          onClick={() => console.log("shared successfully!")}
-                        >
-                          <ShareIcon className="text-indigo-600 w-4 h-4 hover:text-indigo-900 active:shadow-lg" />
-                        </RWebShare>
-                        {/* <span className="sr-only">, {person.userName}</span>
-                        </button> */}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <Table columns={columns} dataSource={data} onChange={onChange} />
             </div>
           </div>
         </div>
