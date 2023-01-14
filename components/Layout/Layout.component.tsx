@@ -215,7 +215,7 @@ const Layout = ({ children }: LayoutProps) => {
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex-1 flex flex-col min-h-0 bg-orangeBg">
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-              <a href="/" >
+              <Link href="/" >
               <div className="flex items-center flex-shrink-0 px-4">
                 <img
                   className="h-10 w-10 rounded-full"
@@ -226,7 +226,7 @@ const Layout = ({ children }: LayoutProps) => {
                   Omerald
                 </span>
               </div>
-              </a>
+              </Link>
              
               <nav className="mt-16 flex-1 pl-2 space-y-6">
                 {privateRoutes.map((item) => (
@@ -241,7 +241,7 @@ const Layout = ({ children }: LayoutProps) => {
                       )}
                     >
                       <item.icon
-                        className="mr-3 flex-shrink-0 h-6 w-6 text-green-900 "
+                        className="mr-3 flex-shrink-0 h-6 w-6 text-gray-500"
                         aria-hidden="true"
                       />
                       {item.name}
@@ -297,10 +297,10 @@ const Layout = ({ children }: LayoutProps) => {
                         <AdjustmentsHorizontalIcon className="w-6"/>
                         <p className="mx-4 flex align- font-semibold">{currentNavigation.name}</p>
                   </section>
-                  <section className="flex w-[20vw] bg-gray-200 rounded-xl justify-between">
+                  {/* <section className="flex w-[20vw] bg-gray-200 rounded-xl justify-between">
                         <input className="bg-gray-200 px-10 rounded-xl border-0 outline-none font-light" placeholder="Search" />
                         <a href="/" className="w-4 mx-2 flex align-middle"><MagnifyingGlassIcon /></a> 
-                  </section>
+                  </section> */}
                   <section className="flex">
                     <BellIcon className="w-8 text-gray-600 mx-4"/>
                     <section>

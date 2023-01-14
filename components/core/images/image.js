@@ -3,3 +3,4 @@ export const logoIcon = "https://res.cloudinary.com/drjut62wv/image/upload/v1673
 export const thoughtsImage = "https://res.cloudinary.com/drjut62wv/image/upload/v1673493208/omerald/diagnosticCenter/though_process_t3o6mg.svg"
 export const doctorAvatar = "https://res.cloudinary.com/drjut62wv/image/upload/v1673515394/omerald/diagnosticCenter/doctor_fhroz3.png"
 export const bannerDashboard = "https://res.cloudinary.com/drjut62wv/image/upload/v1673522877/omerald/diagnosticCenter/banner_fhbthj.png"
+export const successUpload = "https://res.cloudinary.com/drjut62wv/image/upload/v1673693847/omerald/diagnosticCenter/undraw_happy_announcement_re_tsm0_1_jggnix.svg"

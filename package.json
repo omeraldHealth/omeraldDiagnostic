@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^2.9.7",
     "@react-pdf/renderer": "^3.0.0",
     "@tailwindcss/forms": "^0.5.2",
+    "antd": "^5.1.4",
     "aws-sdk": "^2.1238.0",
     "axios": "^0.27.2",
     "chart.js": "^4.1.2",
