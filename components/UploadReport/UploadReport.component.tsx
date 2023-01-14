@@ -25,7 +25,7 @@ const UploadInput = ({ labelName, file, setFile }: UploadInputProps) => {
         file:rounded-full file:border-0
         file:text-xs 
         file:bg-indigo-700 file:text-white
-        hover:file:bg-primary border border-solid p-1 border-gray-500  focus:outline-primary "
+        hover:file:bg-gray-400 border border-solid p-1 border-gray-500  focus:outline-primary "
         id={labelName}
         type="file"
         accept="application/pdf"

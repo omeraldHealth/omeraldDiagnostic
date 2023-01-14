@@ -38,14 +38,14 @@ const CustomFormComponent = ({
       <label className="block text-sm font-medium text-gray-700 pb-5">
         {formType.testName}
       </label>
-      <form onSubmit={handleSubmit(handleSubmitForm)}>
+      <form onSubmit={handleSubmit(handleSubmitForm)} className="grid grid-cols-3 gap-4">
         {formType.keywords.map((val) => (
           <div key={val.keyword}>
             <div className="block">
               <div className="flex items-center">
                 <div className="w-[500px]">
                   <InputGroup
-                    labelName={val.keyword}
+                    labelName={val.keyword+" ("+val.unit+" "+val.normalRange+")"}
                     inputName={val.keyword}
                     inputType="number"
                     placeholder="Add value"
@@ -53,28 +53,13 @@ const CustomFormComponent = ({
                     error={errors[val.keyword]?.message as string}
                   />
                 </div>
-
-                <span className="border-2 border-md bg-gray-400 max-w-10 max-h-10 ">
-                  {val.unit}
-                </span>
-                <span className="border-2 border-md bg-gray-400 max-w-10 max-h-10">
-                  {val.normalRange}
-                </span>
               </div>
-
-              {/* <label className="">{val.keyword}</label> */}
-              {/* <input
-                {...register(val.keyword)}
-                name={val.keyword}
-                className="border-2 border-black-2 mx-2 "
-                placeholder={val.keyword}
-                type="number"
-              /> */}
             </div>
           </div>
         ))}
-        <div className=" pt-4 flex justify-center">
-          <Button name="Submit" type="submit" />
+        <div className="w-[93%] flex justify-between pt-6 absolute bottom-10 right-10">
+        <button type="submit"  name="Upload Report" className="block w-[130px] bg-gray-400 text-white p-2 text-sm rounded-md">Back</button>     
+            <button type="submit" name="Submit" className="block w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md">Continue</button>
         </div>
       </form>
     </div>

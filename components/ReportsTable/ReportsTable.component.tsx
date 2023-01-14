@@ -9,6 +9,7 @@ import PdfTesting from "../PdfTesting/PdfTesting";
 import { useAuth } from "@/lib/auth";
 import { Table, TableProps } from "antd";
 import { ColumnsType } from "antd/es/table";
+import { LoaderComp } from "../alerts/loader";
 
 type ReportTableProps = {
   reports: ReportDetails[];
@@ -29,7 +30,8 @@ export default function ReportsTable({
   onSelectReport,
 }: ReportTableProps) {
   const router = useRouter();
-  const { user, diagnosticDetails } = useAuth();
+  const { user, diagnosticDetails,loading } = useAuth();
+
   
   
   const onChange: TableProps<DataType>['onChange'] = (pagination, filters, sorter, extra) => {
@@ -119,12 +121,14 @@ export default function ReportsTable({
       <div className="mt-8 flex flex-col">
         <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+            <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg bg-white">
               <Table columns={columns} dataSource={data} onChange={onChange} />
+              {loading ?? <LoaderComp />}
             </div>
           </div>
         </div>
       </div>
+    
     </div>
   );
 }
