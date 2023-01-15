@@ -50,7 +50,10 @@ export default function InputGroup({
           file:rounded-full file:border-0
           file:text-xs 
           file:bg-indigo-700 file:text-white
-          hover:file:bg-primary  ${
+          hover:file:bg-primary 
+          ${
+            inputType === "string"  && "border border-solid p-2"}
+          ${
             inputType === "file" && "border border-solid p-1 "
           }
           ${
