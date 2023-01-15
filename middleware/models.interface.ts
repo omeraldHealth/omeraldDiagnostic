@@ -34,6 +34,11 @@ export type ReportTypes = {
   testName: string;
   keywords: ReportParamsType[];
 };
+export type TestTypes = {
+  _id: ObjectId;
+  testName: string;
+  keywords: ReportParamsType[];
+};
 export type ReportParamsType = {
   _id: ObjectId;
   keyword: string;

@@ -1,6 +1,6 @@
-import { ReportParamsData, ReportTypes } from "middleware/models.interface";
+import { ReportParamsData, ReportTypes, TestTypes } from "middleware/models.interface";
 
 export interface CustomFormProps {
-  formType: ReportTypes;
+  formType: ReportTypes | TestTypes;
   onReportSubmitForm: (val: ReportParamsData[]) => void;
 }
