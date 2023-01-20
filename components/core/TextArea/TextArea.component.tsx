@@ -14,7 +14,7 @@ export default function TextArea(props: TextAreaProps) {
     <div>
       <label
         htmlFor="comment"
-        className="block text-sm font-medium text-gray-700"
+        className="block text-xs sm:text-sm sm:font-medium text-gray-700"
       >
         {props.labelName}
       </label>
@@ -25,7 +25,7 @@ export default function TextArea(props: TextAreaProps) {
           name={props.inputName}
           id={props.inputName}
           placeholder={props.placeholder}
-          className={`block w-full pr-10 focus:outline-none sm:text-sm rounded-md ${
+          className={`block w-full pr-10 focus:outline-none text-xs sm:text-sm text-gray-500 rounded-md ${
             props.error &&
             " border-red-300 text-red-900  focus:ring-red-500 focus:border-red-500 placeholder-red-300"
           }`}

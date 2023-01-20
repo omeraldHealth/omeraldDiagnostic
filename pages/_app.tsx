@@ -22,6 +22,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/20/solid";
 import { ToastContainer } from "react-toastify";
+import PageHeader from "@/components/atomicSystem/atoms/PageHeader";
 
 // export type NextPageWithLayout = NextPage & {
 //   getLayout?: (page: ReactElement) => ReactNode;
@@ -47,6 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <AuthProvider>
       <Allowed>
         <Layout>
+          <PageHeader/>
           <Component {...pageProps} />
           <ToastContainer position="top-right"
             autoClose={2000}

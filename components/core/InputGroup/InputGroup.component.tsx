@@ -30,7 +30,7 @@ export default function InputGroup({
     <div>
       <label
         htmlFor={inputName}
-        className="block text-sm font-medium text-gray-700"
+        className="sm:block text-xs sm:text-sm sm:font-medium text-gray-700"
       >
         {labelName}
       </label>
@@ -46,7 +46,7 @@ export default function InputGroup({
           type={inputType}
           name={inputName}
           id={inputName}
-          className={`block w-full pr-10 sm:text-sm rounded-md placeholder:text-xs file:mr-4 file:py-2 file:px-4
+          className={`block w-full pr-10 text-xs text-gray-500 sm:text-sm rounded-md placeholder:text-xs file:mr-4 file:py-2 file:px-4
           file:rounded-full file:border-0
           file:text-xs 
           file:bg-indigo-700 file:text-white

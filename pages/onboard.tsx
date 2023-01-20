@@ -181,7 +181,7 @@ const Onboard = () => {
     // console.log(newData.values());
     setShowStep3ContinueError(false);
     setManagerDetails((val) => val.concat(newData));
-    resetStep3();
+    // resetStep3();
   };
 
   const handleSubmitStep3 = (handler: () => void) => {
@@ -247,13 +247,13 @@ const Onboard = () => {
 
   return (
     <div className="grid place-content-center w-[100vw] h-[100vh] bg-signBanner" >
-      <div className="flex flex-col md:min-w-[500px] shadow-lg bg-white rounded-md border-2 p-10">
+      <div className="max-h-auto h-[85vh] md:h-[80vh] w-[85vw] relative flex flex-col md:min-w-[500px] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
         <div id="steps" className="rounded-md bg-slate-50 w-full p-4 mb-4">
           {steps.map((step, index) => (
             <Fragment key={index}>
               <span
                 id="stepId"
-                className={`rounded-full shadow-sm text-xs p-2 px-3  ${
+                className={`rounded-full shadow-sm text-xs sm:pl-1 lg:p-2 lg:px-3  ${
                   currentStep.id === step.id && "bg-blue-700 text-white"
                 }
                 ${currentStep.id < step.id && "bg-white text-blue-700"}
@@ -274,7 +274,7 @@ const Onboard = () => {
               {steps.length !== index + 1 && (
                 <div
                   id="line"
-                  className={`border mx-2 h-0 w-10 mb-1 inline-block ${
+                  className={`border mx-1 sm:m-0 lg:mx-2 h-0 w-6  lg:w-10 mb-1 inline-block ${
                     currentStep.id === step.id &&
                     "border-blue-700 border-dashed"
                   }
@@ -289,6 +289,7 @@ const Onboard = () => {
           <h1 className="text-lg mb-5">{currentStep.name}</h1>
           {currentStep.id === 1 && (
             <form id="basicDetails" onSubmit={handleSubmit(handleOnContinue)}>
+              <section className="h-[44vh] overflow-scroll">
               <InputGroup
                 labelName="Diagnostic Centre Name"
                 inputName="diagnosticName"
@@ -333,8 +334,8 @@ const Onboard = () => {
                 placeholder="Add branch address"
                 register={register}
               />
-
-              <div className="flex justify-between pt-2">
+              </section>
+              <div className="flex justify-between w-[90%] pt-2 absolute bottom-4">
                 <Button styles="basic" name="Back" classNames="bg-white" />
                 <Button styles="basic" type="submit" name="Continue" />
               </div>
@@ -345,6 +346,15 @@ const Onboard = () => {
               id="brandDetails"
               onSubmit={handleSubmitStep2(handleOnContinue)}
             >
+               <section className="h-[44vh] overflow-scroll">
+               {!Boolean(errorsStep2.brandLogo) &&
+                getValuesStep2("brandLogo")?.length == 1 && (
+                  <img
+                    alt="logo"
+                    className="w-10 h-10 rounded-full"
+                    src={URL.createObjectURL(getValuesStep2("brandLogo")[0])}
+                  />
+              )}
               <InputGroup
                 labelName="Upload Brand Logo"
                 inputName="brandLogo"
@@ -353,14 +363,6 @@ const Onboard = () => {
                 register={registerStep2}
                 inputType="file"
               />
-
-              {!Boolean(errorsStep2.brandLogo) &&
-                getValuesStep2("brandLogo")?.length == 1 && (
-                  <img
-                    src={URL.createObjectURL(getValuesStep2("brandLogo")[0])}
-                  />
-                )}
-
               <InputGroup
                 labelName="Facebook Url"
                 inputName="facebookUrl"
@@ -375,8 +377,8 @@ const Onboard = () => {
                 error={errorsStep2.instaUrl?.message}
                 register={registerStep2}
               />
-
-              <div className="flex justify-between pt-2">
+              </section>
+              <div className="flex justify-between w-[90%] pt-2 absolute bottom-4">
                 <Button
                   styles="basic"
                   name="Back"
@@ -389,7 +391,7 @@ const Onboard = () => {
           )}
           {currentStep.id === 3 && (
             <div id="reportDetails">
-              <div className="flex justify-between  mb-10">
+              <div className="md:flex justify-between max-h-[44vh] overflow-scroll  mb-10">          
                 <div className="flex-1">
                   <form
                     id="reportDetails"
@@ -419,11 +421,11 @@ const Onboard = () => {
                       inputType="file"
                     />
                     <div className="flex justify-end pt-2">
-                      <Button styles="basic" type="submit" name="Add" />
+                      {managerDetails.length<1 && <Button styles="basic" type="submit" name="Add" />}
                     </div>
                   </form>
                 </div>
-                <div className="flex flex-col items-center justify-between flex-1">
+                <div className="flex flex-col my-2 sm:m-0 sm:items-center justify-between flex-1">
                   {managerDetails.map((manager, index) => (
                     <SignatureBlock
                       key={String(index)}
@@ -434,7 +436,7 @@ const Onboard = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex justify-between pt-2">
+              <div className="flex justify-between w-[90%] pt-2 absolute bottom-4">
                 <Button
                   styles="basic"
                   name="Back"
@@ -458,9 +460,9 @@ const Onboard = () => {
           )}
           {currentStep.id == 4 && (
             <form id="summary" onSubmit={handleSubmit(handleOnContinue)}>
-              <div className="flex justify-between  mb-10">
-                <div className="flex-1 mr-10">
-                  <h1>Basic Details</h1>
+              <div className="flex justify-between max-h-[44vh] overflow-scroll mb-10">
+                <div className="flex-1 sm:mr-10 overflow-scroll h-[44vh]">
+                  {/* <h1>Basic Details</h1> */}
                   <LabelNameandValue
                     labelName="Diagnostic Centre Name"
                     value={getValuesStep1("diagnosticName")}
@@ -485,9 +487,6 @@ const Onboard = () => {
                     labelName="Address"
                     value={getValuesStep1("address")}
                   />
-                </div>
-                <div className="flex-1">
-                  <h2>Brand Details</h2>
                   <LabelNameandValue
                     labelName="Brand Logo"
                     value=""
@@ -503,18 +502,7 @@ const Onboard = () => {
                   />
                 </div>
               </div>
-              <h2 className="my-5">Report Details</h2>
-              <div className="flex justify-start space-x-2 mb-10">
-                {managerDetails.map((manager, index) => (
-                  <SignatureBlock
-                    key={String(index)}
-                    name={manager.get("managerName") as string}
-                    role={manager.get("managerRole") as string}
-                    signature={manager.get("managerSignature") as File}
-                  />
-                ))}
-              </div>
-              <div className="flex justify-between pt-2">
+              <div className="flex justify-between w-[90%] pt-2 absolute bottom-4">
                 <Button
                   styles="basic"
                   name="Back"
@@ -546,10 +534,8 @@ const SignatureBlock = ({ name, role, signature }: SignatureBlockProps) => {
   return (
     <div>
       <img
-        className="shadow-lg"
+        className="shadow-lg w-10 h-10 sm:w-40 sm:h-40 mb-4"
         src={URL.createObjectURL(signature)}
-        width={150}
-        height={25}
       />
       <span className="text-xs font-semibold block font-mono text-slate-700">
         {name}
@@ -568,15 +554,13 @@ const LabelNameandValue = ({
   imgFile?: File;
 }) => {
   return (
-    <div className="flex justify-between shadow-sm p-4">
-      <span className=" text-sm text-secondary">{labelName}:</span>
-      {value && <span className="text-sm ">{value}</span>}
+    <div className="flex shadow-sm p-4 relative">
+      <span className="text-sm w-40 lg:w-60 sm:font-bold">{labelName}:</span>
+      {value && <span className="text-xs absolute sm:relative right-0 sm:text-sm ">{value}</span>}
       {imgFile && (
         <img
-          className="shadow-lg"
+          className="w-20 rounded-full shadow-md h-20"
           src={URL.createObjectURL(imgFile)}
-          width={150}
-          height={25}
         />
       )}
     </div>
