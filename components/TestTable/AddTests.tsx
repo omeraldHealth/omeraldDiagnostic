@@ -1,8 +1,6 @@
 import { useAuth } from "@/lib/auth";
 import React, { useEffect, useReducer, useState } from "react";
 import { createReport, getReportTypes, uploadReport } from "@/lib/db";
-import CustomFormComponent from "@/components/CustomForm/CustomForm.component";
-import BasicReportDetailsForm from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.component";
 import { ReportUserDetails } from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.interface";
 import {
   ReportDetails,
@@ -10,17 +8,11 @@ import {
   ReportTypes,
   TestTypes
 } from "middleware/models.interface";
-import Button from "@/components/core/Button/Button.component";
-import UploadInput from "@/components/UploadReport/UploadReport.component";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { LoaderComp } from "@/components/alerts/loader";
 import { useRouter } from "next/router";
-import { BellAlertIcon, CheckBadgeIcon, CheckCircleIcon, LightBulbIcon, TicketIcon } from "@heroicons/react/20/solid";
-import { successUpload } from "@/components/core/images/image";
-import Link from "next/link";
 import SelectComponent from "../core/SelectComponent/SelectComponent";
-import InputGroup from "../core/InputGroup/InputGroup.component";
 import { yupResolver } from "@hookform/resolvers/yup";
 const crypto = require("crypto");
 interface stateType {
@@ -79,7 +71,8 @@ function UserReportReducer(state: stateType, action: actionType): stateType {
   } else {
     return state;
   }
-}
+} 
+
 const intialState: stateType = {
   loading: false,
   success: false,
@@ -87,6 +80,7 @@ const intialState: stateType = {
   reportUserDetails: null,
   reportTypes: [],
 };
+
 const AddTests = () => {
   const { user } = useAuth();
   const [state, dispatch] = useReducer(UserReportReducer, intialState);
@@ -100,7 +94,7 @@ const AddTests = () => {
   >(null);
   const [step,setStep] = useState(1)
   const router = useRouter()
-  console.log(state.reportTypes[selectedType.id]?.keywords)
+  console.log(state.reportTypes)
   useEffect(() => {
     (async () => {
       const token = await user?.getIdToken();
@@ -231,8 +225,8 @@ const AddTests = () => {
     return <LoaderComp />;
   }else {
     return (
-      <div className="w-[100%] my-10">
-        <section className="w-[100%] h-auto min-h-[60vh] rounded-md p-8 bg-white relative">
+      <div className="w-[100%] h-auto my-10">
+        <section className="w-[100%] h-auto rounded-md p-8 bg-white relative">
             <div className=" md:gap-10">
               <div className="col-span-1">
                 <div id="" className="pb-8">
@@ -287,20 +281,14 @@ const AddTests = () => {
                   />
                 </div>
                 {selectedType.id > -1 && (
-                    <CustomFormComponent
-                      formType={state.reportTypes[selectedType.id]}
-                      onReportSubmitForm={handleManualReportSubmit}
-                    />
+                   <></>
                   )}
                 </>
               )}
               {isUploadReportSelected === "no" && (
                 <div className="grid">
                   {selectedType.id > -1 && (
-                    <CustomFormComponent
-                      formType={state.reportTypes[selectedType.id]}
-                      onReportSubmitForm={handleManualReportSubmit}
-                    />
+                    <></>
                   )}
                 </div>
               )}

@@ -115,8 +115,8 @@ const LoginComponent = () => {
 
   return (
     <div className="w-[100vw] h-[100vh] bg-signBanner content-between flex" >
-        <div className="w-[60vw] xl:w-[50vw] h-[70vh] xl:h-[55vh] m-auto grid grid-cols-3 bg-white">
-          <div className="col-span-1 text-center px-4 xl:px-8 border-r-2">
+        <div className="w-[90vw] sm:w-[80vw] lg:w-[65vw] h-auto xl:w-[50vw] py-5 xl:py-2 m-auto grid grid-cols-3 bg-white">
+          <div className="hidden sm:block col-span-1 text-center px-4 xl:px-8 border-r-2">
             <img className="my-10" src={signDoctorImage} alt="banner-doctor-img" />
             <p className="text-orange-500 font-bold mb-3 font-serif">Reporting Simplified</p>
             <p className="font-extralight text-sm">Store, Analyse and share test reports with omerald at your fingertips </p>
@@ -124,7 +124,7 @@ const LoginComponent = () => {
               <button className="bg-orange-100 text-sm p-2 my-5 font-light text-orange-500 rounded-xl">Know more</button>
             </a>
           </div>
-          <div  className="col-span-2 text-center">
+          <div  className="col-span-3 p-4 sm:col-span-2 text-center">
           <div>
         </div>
               <section className="flex justify-center w-[100%] mt-2" id="logo">
@@ -136,7 +136,7 @@ const LoginComponent = () => {
               <form onSubmit={verifyOTP}>
                 <div id="phoneNumber" className="pb-4">
                   {!expandForm &&<div
-                    className={`border-2 rounded-md pl-2 w-[220px] m-auto text-xs font-extralight 
+                    className={`border-2 rounded-md pl-2 w-[80%] sm:w-[60%] m-auto text-xs font-extralight 
                     ${
                       isPhoneInputFocusedOnce
                         ? isValidPhoneNumber(phoneNumber)
@@ -171,8 +171,8 @@ const LoginComponent = () => {
                   <div className="flex justify-center">
                     <button
                       onClick={(e) => requestOTP(e)}
-                      className="block w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md"
-                    >Send Otp</button>
+                      className="block  w-[80%] sm:w-[60%]  bg-blue-800 text-white p-2 text-sm rounded-md"
+                    >SEND OTP</button>
                   </div>
                 )}
                 {expandForm && (
@@ -195,8 +195,8 @@ const LoginComponent = () => {
                     </section>
                     <div className="flex justify-center mt-4">
                       <button name="Submit" type="submit"
-                        className="block w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md"
-                      >Submit OTP</button>
+                        className="block w-[80%] sm:w-[60%] bg-blue-800 text-white p-2 text-sm rounded-md"
+                      >SUBMIT OTP</button>
                     </div>
                   </div>
                 )}
