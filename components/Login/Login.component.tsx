@@ -182,6 +182,7 @@ const LoginComponent = () => {
                         value={otp}
                         onChange={(e)=>{setOtp(e)}}
                         numInputs={6}
+                        isInputNum={true}
                         shouldAutoFocus={true}
                         inputStyle={{
                           width: "35px",
