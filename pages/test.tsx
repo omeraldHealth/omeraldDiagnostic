@@ -12,8 +12,8 @@ const Tests = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="px-4 sm:px-6 lg:px-8 mt-12">
+    <div className="p-2 xl:p-6">
+      <div className="xl:px-4 p-4 sm:p-2 lg:px-8 sm:mt-12">
         <div className="sm:flex sm:items-center">
         {!addTest ?
           <> <div className="sm:flex-auto">

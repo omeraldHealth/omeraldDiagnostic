@@ -102,7 +102,7 @@ const data: DataType[] = [
 
 export default function TestTable(){
   return (
-    <div className="w-[100%] bg-white h-[60vh] my-10 rounded-lg p-4">
+    <div className="w-[100%] bg-white h-auto min-h-[30vh] sm:min-h-[60vh] my-10 rounded-lg p-4">
       <Table columns={columns} dataSource={data} />
     </div>
   )
