@@ -226,10 +226,10 @@ const AddReports = () => {
     );
   } else {
     return (
-      <div className="p-8">
+      <div className="p-2 py-4 sm:p-8">
         {(state.reportUserDetails == null || step == 1) && (
-          <div className="px-4 sm:px-6 lg:px-8 mt-12">
-            <div className="sm:flex sm:items-center pb-8">
+          <div className="px-4 sm:px-6 lg:px-8  xl:mt-12">
+            <div className="sm:flex sm:items-center pb-2 sm:pb-8">
               <div className="sm:flex-auto">
                 <h1 className="text-xl font-semibold text-gray-900">Step 1</h1>
                 <p className="mt-2 text-sm text-gray-700">
@@ -242,7 +242,7 @@ const AddReports = () => {
           </div>
         )}
         {(state.reportUserDetails && step != 1) && (
-          <div className="px-4 sm:px-6 lg:px-8 mt-12">
+          <div className="px-4 sm:px-6 lg:px-8 xl:mt-12">
             <div className="sm:flex sm:items-center pb-8">
               <div className="sm:flex-auto">
                 <h1 className="text-xl font-semibold text-gray-900">Step 2</h1>
@@ -253,7 +253,7 @@ const AddReports = () => {
               </div>
               <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"></div>
             </div>
-            <section  className="w-[80%] h-auto min-h-[60vh] rounded-md p-8 bg-white relative">
+            <section  className="w-100sm:w-[80%] h-auto min-h-[60vh] rounded-md p-8 bg-white relative">
             <div className=" md:gap-10">
               <div className="col-span-1">
                 <div id="" className="pb-8">
@@ -320,7 +320,7 @@ const AddReports = () => {
                         <span className="text-red-500">{state.error}</span>
                       )}
                       
-                      <div className="w-[93%] flex justify-between pt-6 absolute bottom-10 right-10">
+                      <div className="w-[93%] pl-5 xl:pl-0 flex justify-between pt-6 absolute bottom-10 right-10">
                         <button type="submit"  name="Upload Report"
                           onClick={handleBack} className="block w-[130px] bg-gray-400 text-white p-2 text-sm rounded-md">Back</button>
                     
