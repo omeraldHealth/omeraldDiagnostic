@@ -69,9 +69,9 @@ const BasicReportDetailsForm = ({
 
   return (
     <div className="md:w-full">
-      <section className="w-[100%] xl:w-[80%] h-auto min-h-[60vh] rounded-md p-8 bg-white">
+      <section className="w-[100%] xl:w-[100%] h-auto min-h-[40vh] rounded-md p-8 bg-white">
         <form onSubmit={handleSubmit(handleSubmitForm)}>
-          <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-2  md:gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-3  md:gap-4">
             <InputGroup
               labelName="Patient Name *"
               inputName="userName"
