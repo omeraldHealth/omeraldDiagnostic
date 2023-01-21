@@ -13,47 +13,47 @@ const Dashboard = () => {
   const {diagnosticDetails, signOut } = useAuth();
   Chart.register(CategoryScale);
 
-  return <div className="p-8">
-    <section className="relative ">
+  return <div className="p-6 xl:p-8">
+    <section className="relative">
       <img src={bannerDashboard} className="w-[100%]" alt="dashboard-banner" /> 
-      <p className="absolute top-5 left-80 text-white">Welcome {diagnosticDetails?.fullName}!</p>
-      <p className="absolute top-14 left-80 font-light text-sm text-gray-300">You have uploaded <span className="text-orange-400">{diagnosticDetails?.reports?.length ?? 0} report</span> till date, 
+      <p className="absolute top-5 left-[25%] xl:left-80 font-light text-white">Welcome {diagnosticDetails?.fullName}!</p>
+      <p className="absolute top-14 left-[25%] xl:left-80 font-light text-xs xl:text-sm text-gray-300">You have uploaded <span className="text-orange-400">{diagnosticDetails?.reports?.length ?? 0} report</span> till date, 
           please use our add reports section to share more reports<br/> with your patients directly. Also total tests listed are <span className="text-orange-400">{diagnosticDetails?.tests?.length ?? 0} </span> you can add more using the tests offered section.
        </p>
     </section>
     <section className="my-6 flex justify-between" >
         <Link href={"/test"}  passHref={true}>
-          <section className="w-[20%] h-[14vh] p-4 flex justify-between bg-blue-900 rounded-md text-white">
+          <section className="w-[23%] xl:w-[20%] h-[14vh] p-4 flex justify-between bg-blue-900 rounded-md text-white">
               <BeakerIcon className="w-10" />
-              <span className="mt-4">
+              <span className="mt-2 xl:mt-4">
                 <p className="font-light text-sm">Tests Offered</p>
                 <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.tests?.length ?? 0 }</p>
               </span>
           </section>
         </Link>
         <Link href={"/reports"}  passHref={true}>
-        <section className="w-[20%] h-[14vh] p-4 flex justify-between bg-indigo-900 rounded-md text-white">
+        <section className="w-[23%] xl:w-[20%] h-[14vh] p-4 flex justify-between bg-indigo-900 rounded-md text-white">
             <ChartBarIcon className="w-10" />
-            <span className="mt-4">
+            <span className="mt-2 xl:mt-4">
               <p className="font-light text-sm">Reports Uploaded</p>
               <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.reports?.length ?? 0 }</p>
             </span>
         </section>
         </Link>
         <Link href={"/reports"}  passHref={true}>
-        <section className="w-[20%] h-[14vh] p-4 flex justify-between bg-gray-500 rounded-md text-white">
+        <section className="w-[23%]  xl:w-[20%] h-[14vh] p-4 flex justify-between bg-gray-500 rounded-md text-white">
             <ShareIcon className="w-10" />
-            <span className="mt-4">
+            <span className="mt-2 xl:mt-4">
               <p className="font-light text-sm">Reports Shared</p>
               <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.sharedReport?.length ?? 0 }</p>
             </span>
         </section>
         </Link>
         <Link href={"/profile"}  passHref={true}>
-        <section className="w-[20%] h-[14vh] p-4 flex justify-between bg-green-900 rounded-md text-white">
+        <section className="w-[23%] xl:w-[20%] h-[14vh] p-4 flex justify-between bg-green-900 rounded-md text-white">
             <BeakerIcon className="w-10" />
-            <span className="mt-4">
-              <p className="font-light text-sm">Total Users/Branches</p>
+            <span className="mt-2 xl:mt-4">
+              <p className="font-light text-xs xl:text-sm">Total Users/Branches</p>
               <p className="font-bold text-2xl flex justify-end my-2">{diagnosticDetails?.managersDetail?.length ?? 0 }  / {diagnosticDetails?.branch?.length ?? 0 } </p>
             </span>
         </section>
@@ -61,7 +61,7 @@ const Dashboard = () => {
 
     </section>
     <section className="flex justify-between h-[45vh]">
-      <section className="w-[60%] h-auto bg-white">
+      <section className="w-[65%] xl:w-[60%] h-auto bg-white">
         <ReportSharedVsTime2 />
       </section>
       <section className="w-[30%] h-[100%] bg-white rounded-sm p-4">
