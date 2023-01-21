@@ -246,14 +246,14 @@ const Onboard = () => {
   }
 
   return (
-    <div className="grid place-content-center w-[100vw] h-[100vh] bg-signBanner" >
-      <div className="max-h-auto h-[85vh] md:h-[80vh] w-[85vw] relative flex flex-col md:min-w-[500px] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
+    <div className="grid md:place-content-center w-[100vw] h-[100vh] bg-signBanner" >
+      <div className="max-h-auto h-[75vh] sm:h-[85vh] md:h-[80vh] w-[94%] m-auto lg:w-[75vw] relative flex flex-col xl:w-[65vw] xl:h-[70vh] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
         <div id="steps" className="rounded-md bg-slate-50 w-full p-4 mb-4">
           {steps.map((step, index) => (
             <Fragment key={index}>
               <span
                 id="stepId"
-                className={`rounded-full shadow-sm text-xs sm:pl-1 lg:p-2 lg:px-3  ${
+                className={`rounded-full font-bold text-lg shadow-sm sm:text-xs px-2 p-1 mx-1 sm:pl-1 lg:p-2 lg:px-3  ${
                   currentStep.id === step.id && "bg-blue-700 text-white"
                 }
                 ${currentStep.id < step.id && "bg-white text-blue-700"}
@@ -263,7 +263,7 @@ const Onboard = () => {
               </span>
               <span
                 id="stepName"
-                className={`mx-4 text-xs ${
+                className={`mx-4 hidden sm:inline-block text-xs ${
                   currentStep.id === step.id && "text-blue-700"
                 }
                 ${currentStep.id < step.id && "text-black"}
@@ -274,7 +274,7 @@ const Onboard = () => {
               {steps.length !== index + 1 && (
                 <div
                   id="line"
-                  className={`border mx-1 sm:m-0 lg:mx-2 h-0 w-6  lg:w-10 mb-1 inline-block ${
+                  className={`border  mx-1 sm:m-0 lg:mx-2 h-0 w-6  lg:w-10 mb-1 inline-block ${
                     currentStep.id === step.id &&
                     "border-blue-700 border-dashed"
                   }
@@ -289,7 +289,7 @@ const Onboard = () => {
           <h1 className="text-lg mb-5">{currentStep.name}</h1>
           {currentStep.id === 1 && (
             <form id="basicDetails" onSubmit={handleSubmit(handleOnContinue)}>
-              <section className="h-[44vh] overflow-scroll">
+              <section className="h-[44vh] xl:h-[46vh] overflow-y-auto">
               <InputGroup
                 labelName="Diagnostic Centre Name"
                 inputName="diagnosticName"
@@ -346,7 +346,7 @@ const Onboard = () => {
               id="brandDetails"
               onSubmit={handleSubmitStep2(handleOnContinue)}
             >
-               <section className="h-[44vh] overflow-scroll">
+               <section className="h-[44vh] overflow-y-auto">
                {!Boolean(errorsStep2.brandLogo) &&
                 getValuesStep2("brandLogo")?.length == 1 && (
                   <img
@@ -391,7 +391,7 @@ const Onboard = () => {
           )}
           {currentStep.id === 3 && (
             <div id="reportDetails">
-              <div className="md:flex justify-between max-h-[44vh] overflow-scroll  mb-10">          
+              <div className="md:flex justify-between max-h-[44vh] overflow-y-auto  mb-10">          
                 <div className="flex-1">
                   <form
                     id="reportDetails"
@@ -460,9 +460,9 @@ const Onboard = () => {
           )}
           {currentStep.id == 4 && (
             <form id="summary" onSubmit={handleSubmit(handleOnContinue)}>
-              <div className="flex justify-between max-h-[44vh] overflow-scroll mb-10">
-                <div className="flex-1 sm:mr-10 overflow-scroll h-[44vh]">
-                  {/* <h1>Basic Details</h1> */}
+              <div className="flex justify-between max-h-[44vh] overflow-y-auto mb-10">
+                <div className="flex-1 sm:mr-10 h-[44vh]">
+                  <h1>Basic Details</h1>
                   <LabelNameandValue
                     labelName="Diagnostic Centre Name"
                     value={getValuesStep1("diagnosticName")}
@@ -554,9 +554,9 @@ const LabelNameandValue = ({
   imgFile?: File;
 }) => {
   return (
-    <div className="flex shadow-sm p-4 relative">
-      <span className="text-sm w-40 lg:w-60 sm:font-bold">{labelName}:</span>
-      {value && <span className="text-xs absolute sm:relative right-0 sm:text-sm ">{value}</span>}
+    <div className="flex shadow-sm pr-2 py-4 sm:p-4 relative">
+      <span className="text-xs w-[30vw] sm:w-40 lg:w-60 sm:font-bold">{labelName}:</span>
+      {value && <span className="text-xs text-gray-500 max-w-[60vw]  right-0 sm:text-sm ">{value}</span>}
       {imgFile && (
         <img
           className="w-20 rounded-full shadow-md h-20"

@@ -97,7 +97,7 @@ export default function ReportsTable({
     router.push("/addReports");
   };
   return (
-    <div className="px-4 sm:px-6 lg:px-8 mt-12">
+    <div className="sm:px-2 xl:px-4 lg:px-8 sm:mt-12">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">

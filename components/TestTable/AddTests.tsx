@@ -267,7 +267,7 @@ const AddTests = () => {
               </div>
               {isUploadReportSelected === "yes" && (
                 <>
-                <div className=" pb-8 w-[40%]">
+                <div className=" pb-8 w-[90%] sm:w-[40%]">
                   <SelectComponent
                     labelName="Please select the type of test"
                     selected={selectedType}

@@ -22,7 +22,7 @@ import {
   
 
 } from "@heroicons/react/20/solid";
-
+import {doctorAvatar, logoIcon} from "../../components/core/images/image"
 const privateRoutes = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
   {
@@ -66,7 +66,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [currentNavigation, setCurrentNavigation] = useState<NavigationType>(
     privateRoutes[0]
   );
-
+    console.log(diagnosticDetails?.brandDetails.brandLogo)
   useEffect(() => {
     setCurrentNavigation(
       privateRoutes.find((val) => val.href === router.pathname) ||
@@ -117,7 +117,7 @@ const Layout = ({ children }: LayoutProps) => {
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative flex-1 flex flex-col max-w-xs w-full bg-primary">
+                <Dialog.Panel className="relative flex-1 flex flex-col max-w-xs w-full bg-orangeBg">
                   <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-300"
@@ -145,7 +145,7 @@ const Layout = ({ children }: LayoutProps) => {
                     <div className="flex-shrink-0 flex items-center px-4">
                       <img
                         className="h-10 w-10 rounded-full"
-                        src="/icons/onlyOmeraldLogo.png"
+                        src={'/icons/onlyOmeraldLogo.png'}
                         alt="Omerald"
                       />
                       <span className="text-white font-semibold text-2xl ml-4 tracking-wider">
@@ -161,11 +161,11 @@ const Layout = ({ children }: LayoutProps) => {
                               item.name === currentNavigation.name
                                 ? "bg-secondary text-white"
                                 : "text-white hover:bg-btnPrimary-300  hover:bg-opacity-75",
-                              "group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                              "group flex items-center px-2 py-2 text-sm sm:text-base font-light sm:font-medium rounded-md"
                             )}
                           >
                             <item.icon
-                              className="mr-4 flex-shrink-0 h-6 w-6 text-white"
+                              className="mr-4 flex-shrink-0 h-4 w-4 sm:h-6 sm:w-6 text-white"
                               aria-hidden="true"
                             />
                             {item.name}
@@ -182,12 +182,12 @@ const Layout = ({ children }: LayoutProps) => {
                           <div>
                             <img
                               className="inline-block w-10"
-                              src={diagnosticDetails?.brandDetails.brandLogo}
+                              src={doctorAvatar}
                               alt=""
                             />
                           </div>
                           <div className="ml-3">
-                            <p className="text-lg  font-bold text-white">
+                            <p className="sm:text-lg text-sm font-light sm:font-bold text-white">
                               {diagnosticDetails?.fullName}
                             </p>
                             <button
@@ -209,7 +209,6 @@ const Layout = ({ children }: LayoutProps) => {
             </div>
           </Dialog>
         </Transition.Root>
-
         {/* Static sidebar for desktop */}
         <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
           {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -258,7 +257,7 @@ const Layout = ({ children }: LayoutProps) => {
                     <div>
                       <img
                         className="inline-block w-10"
-                        src={diagnosticDetails?.brandDetails.brandLogo ? diagnosticDetails?.brandDetails.brandLogo: "https://res.cloudinary.com/drjut62wv/image/upload/v1673515394/omerald/diagnosticCenter/doctor_fhroz3.png"}
+                        src={doctorAvatar}
                         alt=""
                       />
                     </div>
@@ -280,41 +279,17 @@ const Layout = ({ children }: LayoutProps) => {
           </div>
         </div>
         <div className="md:pl-64 flex flex-col flex-1 ">
-          <div className="sticky top-0 z-10 md:hidden pl-1 pt-1 sm:pl-3 sm:pt-3 bg-gray-100">
-            <button
-              type="button"
-              className="-ml-0.5 -mt-0.5 h-12 w-12 inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <span className="sr-only">Open sidebar</span>
-              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
           <main className="flex-1">
-            <div className="">
-              <div className="max-w-[100%] px-8 bg-white h-[7vh] py-4 flex justify-between">
+            <div className="h-auto">
+              <div className="max-w-[100%] border-b-2 px-8 bg-white h-[8vh] sm:h-[11vh] xl:h-[7vh] py-4 flex justify-between">
                   <section className="flex">
-                        <AdjustmentsHorizontalIcon className="w-6"/>
-                        <p className="mx-4 flex align- font-semibold">{currentNavigation.name}</p>
+                        <AdjustmentsHorizontalIcon className="w-8 h-6 xl:w-6 hidden sm:inline-block"/>
+                        <a className="sm:hidden" onClick={() => setSidebarOpen(true)}><Bars3Icon className="h-6 w-6" aria-hidden="true" /></a>
+                        <p className="mx-4 text-lg font-semibold flex align-middle">{currentNavigation.name}</p>
                   </section>
-                  {/* <section className="flex w-[20vw] bg-gray-200 rounded-xl justify-between">
-                        <input className="bg-gray-200 px-10 rounded-xl border-0 outline-none font-light" placeholder="Search" />
-                        <a href="/" className="w-4 mx-2 flex align-middle"><MagnifyingGlassIcon /></a> 
-                  </section> */}
-                  <section className="flex">
-                    <BellIcon className="w-8 text-gray-600 mx-4"/>
-                    <section>
-                      <a href="/">
-                          <img
-                            className="inline-block w-8"
-                            src={diagnosticDetails?.brandDetails.brandLogo ? diagnosticDetails?.brandDetails.brandLogo: "https://res.cloudinary.com/drjut62wv/image/upload/v1673515394/omerald/diagnosticCenter/doctor_fhroz3.png"}
-                            alt=""
-                          />
-                      </a>
-                    </section>
-                  </section>
+                  <BellIcon className="w-8 h-8 xl:w-8 text-gray-600"/>
               </div>
-              <div className="bg-[#e9e9e9] max-h-auto min-h-[93vh]">
+              <div className="bg-[#e9e9e9] min-h-[93vh]">
                 {children}
               </div>
             </div>
