@@ -21,7 +21,7 @@ const UploadInput = ({ labelName, file, setFile }: UploadInputProps) => {
       </label>
       <input
         onChange={handleFileChange}
-        className="block w-full pr-10 sm:text-sm rounded-md placeholder:text-xs file:mr-4 file:py-2 file:px-4
+        className="block w-[100%] sm:w-[60%] pr-10 sm:text-sm rounded-md placeholder:text-xs file:mr-4 file:py-2 file:px-4
         file:rounded-full file:border-0
         file:text-xs 
         file:bg-indigo-700 file:text-white

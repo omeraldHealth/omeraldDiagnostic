@@ -42,7 +42,7 @@ const CustomFormComponent = ({
         {formType.keywords.map((val) => (
           <div key={val.keyword} className="max-h-[30vh] overflow-y-auto">
             <div className="block">
-              <div className="flex items-center">
+              <div className="sm:flex items-center">
                 <div className="w-[500px]">
                   <InputGroup
                     labelName={val.keyword+" ("+val.unit+" "+val.normalRange+")"}
@@ -57,9 +57,9 @@ const CustomFormComponent = ({
             </div>
           </div>
         ))}
-        <div className="w-[93%] pl-5 xl:pl-0 flex justify-between pt-6 absolute bottom-10 right-10">
-            <button type="submit"  name="Upload Report" className="block w-[130px] bg-gray-400 text-white p-2 text-sm rounded-md">Back</button>     
-            <button type="submit" name="Submit" className="block w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md">Continue</button>
+        <div className="w-[93%]  pl-10 sm:pl-5 xl:pl-0 flex justify-between pt-6 absolute bottom-10 right-10">
+            <button type="submit"  name="Upload Report" className="block w-auto sm:w-[130px] bg-gray-400 text-white p-2 text-sm rounded-md">Back</button>     
+            <button type="submit" name="Submit" className="block w-auto sm:w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md">Continue</button>
         </div>
       </form>
     </div>

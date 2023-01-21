@@ -212,8 +212,8 @@ const AddReports = () => {
     return <LoaderComp />;
   } else if (state.success) {
     return (
-      <div className="grid h-[92vh] bg-gray-100 place-content-center">
-        <section className="bg-white w-[40vw] h-[40vh] p-4 shadow-2xl rounded-xl w-100">
+      <div className="grid min-h-[92vh] bg-gray-100 place-content-center">
+        <section className="bg-white w-[90vw] sm:w-[40vw] h-auto min-h-[40vh] p-4 shadow-2xl rounded-xl w-100">
           <img src={successUpload} alt="success-upload" className="w-40 my-4 mx-auto" />
           <span className="my-8 text-gray-500 flex justify-center"><CheckBadgeIcon className="w-10 text-green-800" /> 
           <span className="mt-2">Report Uploaded Succesfully</span></span>
@@ -242,7 +242,7 @@ const AddReports = () => {
           </div>
         )}
         {(state.reportUserDetails && step != 1) && (
-          <div className="px-4 sm:px-6 lg:px-8 xl:mt-12">
+          <div className="px-4 sm:px-6 lg:px-8 xl:mt-12 hid">
             <div className="sm:flex sm:items-center pb-8">
               <div className="sm:flex-auto">
                 <h1 className="text-xl font-semibold text-gray-900">Step 2</h1>
@@ -253,7 +253,7 @@ const AddReports = () => {
               </div>
               <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"></div>
             </div>
-            <section  className="w-100sm:w-[80%] h-auto min-h-[60vh] rounded-md p-8 bg-white relative">
+            <section  className="w-1md:w-[80%] h-auto min-h-[60vh] rounded-md p-8 bg-white relative">
             <div className=" md:gap-10">
               <div className="col-span-1">
                 <div id="" className="pb-8">
@@ -291,7 +291,7 @@ const AddReports = () => {
                     </span>
                   </div>
                 </div>
-                <div className=" pb-8 w-[40%]">
+                <div className=" pb-8 w-[90%] sm:w-[40%]">
                   <SelectComponent
                     labelName="Please select the type of report"
                     selected={selectedType}
@@ -320,19 +320,19 @@ const AddReports = () => {
                         <span className="text-red-500">{state.error}</span>
                       )}
                       
-                      <div className="w-[93%] pl-5 xl:pl-0 flex justify-between pt-6 absolute bottom-10 right-10">
+                      <div className="w-[93%]  pl-10 sm:pl-5 xl:pl-0 flex justify-between pt-6 absolute bottom-10 right-10">
                         <button type="submit"  name="Upload Report"
-                          onClick={handleBack} className="block w-[130px] bg-gray-400 text-white p-2 text-sm rounded-md">Back</button>
+                          onClick={handleBack} className="block w-auto sm:w-[130px] bg-gray-400 text-white p-2 text-sm rounded-md">Back</button>
                     
                           <button type="submit"   name="Upload Report"
-                          onClick={handleUploadReport} className="block w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md">Continue</button>
+                          onClick={handleUploadReport} className="block w-auto sm:w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md">Continue</button>
                       </div>
                     </div>
                   )}
                 </div>
               )}
               {isUploadReportSelected === "no" && (
-                <div className="grid">
+                <div >
                   {selectedType.id > -1 && (
                     <CustomFormComponent
                       formType={state.reportTypes[selectedType.id]}
