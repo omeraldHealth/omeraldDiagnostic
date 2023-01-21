@@ -31,7 +31,7 @@ const Allowed = ({
   } else if (auth?.user && auth?.diagnosticDetails) {
     if (router.pathname === "/onboard" || router.pathname === "/") {
       if(flag){
-        successAlert("User logged in")
+        // successAlert("User logged in")
         flag = false;
       }
       router.push("/dashboard");

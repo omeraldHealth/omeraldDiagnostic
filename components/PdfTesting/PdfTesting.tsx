@@ -117,7 +117,7 @@ const PdfTesting = ({ report, diagnosticDetails }: PdfTestingProps) => {
             </Text>
             <Text>
               Age:{" "}
-              <Text>{dayjs(report.dob).diff(new Date(), "year")} Years</Text>
+              <Text>{dayjs(new Date).diff(report.dob, "year")} Years</Text>
             </Text>
             <Text>
               Gender: <Text>{report.gender}</Text>

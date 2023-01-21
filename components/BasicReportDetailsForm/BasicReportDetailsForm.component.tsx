@@ -73,21 +73,21 @@ const BasicReportDetailsForm = ({
         <form onSubmit={handleSubmit(handleSubmitForm)}>
           <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-2  md:gap-4">
             <InputGroup
-              labelName="Patient Name"
+              labelName="Patient Name *"
               inputName="userName"
               error={errors.userName?.message}
               placeholder="Add Your Name"
               register={register}
             />
             <InputGroup
-              labelName="Email"
+              labelName="Email *"
               inputName="email"
               error={errors.email?.message}
               placeholder="example@example.com"
               register={register}
             />
             <div>
-              <p className="text-sm font-normal mb-1">Enter phone number</p>
+              <p className="text-sm font-normal mb-1">Enter phone number *</p>
               <div
                 className={`border rounded-md pl-2 border-gray-500
             ${
@@ -121,7 +121,7 @@ const BasicReportDetailsForm = ({
             </div>
            
             <InputGroup
-              labelName="Date of Birth"
+              labelName="Date of Birth *"
               inputName="dob"
               inputType={"date"}
               error={errors.dob?.message}
@@ -129,7 +129,7 @@ const BasicReportDetailsForm = ({
               register={register}
             />
             <InputGroup
-              labelName="Report Date"
+              labelName="Report Date *"
               inputName="reportDate"
               inputType={"date"}
               error={errors.reportDate?.message}
@@ -141,7 +141,7 @@ const BasicReportDetailsForm = ({
                 htmlFor="gender"
                 className="block text-sm font-medium text-gray-700 pb-3"
               >
-                Gender
+                Gender *
               </label>
               <div className="flex flex-1">
                 <span className="mr-4">

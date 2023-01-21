@@ -16,6 +16,9 @@ const PageHeader = () => {
       case '/onboard':
         setPageTitle('Omerald Diagnostic | Onboard')
         break;
+      case '/dashboard':
+        setPageTitle('Omerald Diagnostic | Dashboard')
+        break;
       default:
         setPageTitle('Omerald Diagnostic')
         break;
