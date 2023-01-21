@@ -50,12 +50,12 @@ const ReportSharedVsTime2 = () =>{
         ]
     }
 
-    return <div>
+    return <>
       <Line 
         data={data}
         options={option}
       />
-    </div>
+    </>
 }
 
 export default ReportSharedVsTime2

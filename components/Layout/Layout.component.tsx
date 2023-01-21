@@ -280,7 +280,7 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
         <div className="md:pl-64 flex flex-col flex-1 ">
           <main className="flex-1">
-            <div className="">
+            <div className="h-auto">
               <div className="max-w-[100%] border-b-2 px-8 bg-white h-[8vh] sm:h-[11vh] xl:h-[7vh] py-4 flex justify-between">
                   <section className="flex">
                         <AdjustmentsHorizontalIcon className="w-8 h-6 xl:w-6 hidden sm:inline-block"/>
@@ -289,9 +289,9 @@ const Layout = ({ children }: LayoutProps) => {
                   </section>
                   <BellIcon className="w-8 h-8 xl:w-8 text-gray-600"/>
               </div>
-              {/* <div className="bg-[#e9e9e9] max-h-auto min-h-[93vh]">
+              <div className="bg-[#e9e9e9] min-h-[93vh]">
                 {children}
-              </div> */}
+              </div>
             </div>
           </main>
         </div>
