@@ -57,7 +57,7 @@ const CustomFormComponent = ({
             </div>
           </div>
         ))}
-        <div className="w-[93%]  pl-10 sm:pl-5 xl:pl-0 flex justify-between pt-6 absolute bottom-10 right-10">
+        <div className="w-[93%]  pl-10 Vism:pl-5 xl:pl-0 flex justify-between pt-6 absolute bottom-10 right-10">
             <button type="submit"  name="Upload Report" className="block w-auto sm:w-[130px] bg-gray-400 text-white p-2 text-sm rounded-md">Back</button>     
             <button type="submit" name="Submit" className="block w-auto sm:w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md">Continue</button>
         </div>
