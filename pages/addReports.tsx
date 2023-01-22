@@ -227,8 +227,8 @@ const AddReports = () => {
   const [currentStep, setCurrentStep] = useState(steps[0]);
 
   return (
-       <div className="w-[100%] h-[93vh] bg-signBanner flex">
-        <div className="max-h-auto h-[75vh] sm:h-[85vh] md:h-[80vh] w-[94%] m-auto lg:w-[75vw] relative flex flex-col xl:w-[65vw] xl:h-[70vh] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
+       <div className="w-[100%] h-[80vh] xl:h-[93vh] bg-signBanner flex p-4 sm:p-8 xl:p-2">
+        <div className="max-h-auto h-[75vh] sm:h-[85vh] md:h-[80vh] w-[98%] sm:w-[94%] m-auto lg:w-[75vw] relative flex flex-col xl:w-[65vw] xl:h-[70vh] shadow-lg bg-white rounded-md border-2  xl:p-4 sm:p-10">
           <div id="steps" className="rounded-md bg-slate-50 w-full p-4 mb-4">
             {steps.map((step, index) => (
               <Fragment key={index}>
@@ -266,7 +266,7 @@ const AddReports = () => {
               </Fragment>
             ))}
           </div>
-          <div>
+          <div className="overflow-y-auto">
             {currentStep.id === 1 && (
               <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
             )}
@@ -363,8 +363,8 @@ const AddReports = () => {
                 </section>
             )}
             {currentStep.id === 3 && (
-               <section className="w-[40vh] h-[40vh] rounded-full border-2 border-green-800 m-auto mt-12">
-                 <img src={successUpload} alt="success-upload" className="w-40 my-4 mx-auto mt-8" />
+               <section className="w-[40vh] h-auto xl:h-[40vh] m-auto xl:mt-12">
+                 <img src={successUpload} alt="success-upload" className="w-40 xl:my-4 mx-auto mt-8" />
                  <span className="my-8 text-gray-500 flex justify-center"><CheckBadgeIcon className="w-10 text-green-800" /> 
                  <span className="mt-2">Report Uploaded Succesfully</span></span>
                  <Link href="/reports">

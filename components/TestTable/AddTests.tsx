@@ -238,7 +238,7 @@ const   AddTests = () => {
   const [currentStep, setCurrentStep] = useState(steps[0]);
 
     return (
-      <div className="max-h-auto h-[75vh] sm:h-[85vh] md:h-[80vh] w-[94%] mt-6 lg:w-[75vw] relative flex flex-col xl:w-[65vw] xl:h-[70vh] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
+      <div className="max-h-auto h-[75vh] sm:h-[85vh] md:h-[80vh] w-[100%] sm:w-[94%] mt-6 lg:w-[75vw] relative flex flex-col xl:w-[65vw] xl:h-[70vh] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
         <div id="steps" className="rounded-md bg-slate-50 w-full p-4 mb-4">
           {steps.map((step, index) => (
             <Fragment key={index}>
