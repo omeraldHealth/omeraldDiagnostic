@@ -66,7 +66,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [currentNavigation, setCurrentNavigation] = useState<NavigationType>(
     privateRoutes[0]
   );
-    console.log(diagnosticDetails?.brandDetails.brandLogo)
+
   useEffect(() => {
     setCurrentNavigation(
       privateRoutes.find((val) => val.href === router.pathname) ||

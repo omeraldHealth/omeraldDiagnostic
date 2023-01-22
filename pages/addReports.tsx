@@ -1,5 +1,5 @@
 import { useAuth } from "@/lib/auth";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { Fragment, useEffect, useReducer, useState } from "react";
 import { createReport, getReportTypes, uploadReport } from "@/lib/db";
 import CustomFormComponent from "@/components/CustomForm/CustomForm.component";
 import BasicReportDetailsForm from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.component";
@@ -12,11 +12,13 @@ import {
 import Button from "@/components/core/Button/Button.component";
 import UploadInput from "@/components/UploadReport/UploadReport.component";
 import SelectComponent from "../components/core/SelectComponent/SelectComponent";
-import { LoaderComp } from "@/components/alerts/loader";
+import { LoaderComp, Spinner } from "@/components/alerts/loader";
 import { useRouter } from "next/router";
 import { BellAlertIcon, CheckBadgeIcon, CheckCircleIcon, LightBulbIcon, TicketIcon } from "@heroicons/react/20/solid";
 import { successUpload } from "@/components/core/images/image";
 import Link from "next/link";
+import { successAlert } from "@/components/alerts/alert";
+import { stat } from "fs";
 const crypto = require("crypto");
 interface stateType {
   loading: boolean;
@@ -81,6 +83,12 @@ const intialState: stateType = {
   reportUserDetails: null,
   reportTypes: [],
 };
+const steps = [
+  { id: 1, name: "Enter Patient Details" },
+  { id: 2, name: "Upload Report" },
+  { id: 3, name: "Success" },
+];
+
 const AddReports = () => {
   const { user } = useAuth();
   const [state, dispatch] = useReducer(UserReportReducer, intialState);
@@ -133,6 +141,9 @@ const AddReports = () => {
       reportDetails
     );
     if (resp.status === 201) {
+      setCurrentStep((current) =>
+            current.id == 3 ? current : steps[current.id]
+      );
       dispatch({ type: "success" });
       setSelectedType({ id: -1, name: "Select report type" });
     }
@@ -188,6 +199,9 @@ const AddReports = () => {
           reportDetails
         );
         if (resp.status === 201) {
+          setCurrentStep((current) =>
+            current.id == 3 ? current : steps[current.id]
+          );
           dispatch({ type: "success" });
           setSelectedType({ id: -1, name: "Select report type" });
         }
@@ -196,8 +210,10 @@ const AddReports = () => {
   };
 
   const handleBasicFormSubmit = (basicFormData: ReportUserDetails) => {
+    setCurrentStep((current) =>
+      current.id == 3 ? current : steps[current.id]
+    );
     dispatch({ type: "addReportUserDetails", value: basicFormData });
-    setStep(2)
   };
 
   const handleUploadReportChange = (e: any) => {
@@ -208,146 +224,160 @@ const AddReports = () => {
     setStep(1)
   }
 
-  if (state.loading) {
-    return <LoaderComp />;
-  } else if (state.success) {
-    return (
-      <div className="grid min-h-[92vh] bg-gray-100 place-content-center">
-        <section className="bg-white w-[90vw] sm:w-[40vw] h-auto min-h-[40vh] p-4 shadow-2xl rounded-xl w-100">
-          <img src={successUpload} alt="success-upload" className="w-40 my-4 mx-auto" />
-          <span className="my-8 text-gray-500 flex justify-center"><CheckBadgeIcon className="w-10 text-green-800" /> 
-          <span className="mt-2">Report Uploaded Succesfully</span></span>
-          <Link href="/reports">
-          <button type="submit" name="Upload Report"
-          className="block w-[220px] m-auto bg-green-800 text-white p-2 text-sm rounded-md">View Report</button>
-          </Link>
-        </section>
-      </div>
-    );
-  } else {
-    return (
-      <div className="p-2 py-4 sm:p-8">
-        {(state.reportUserDetails == null || step == 1) && (
-          <div className="px-4 sm:px-6 lg:px-8  xl:mt-12">
-            <div className="sm:flex sm:items-center pb-2 sm:pb-8">
-              <div className="sm:flex-auto">
-                <h1 className="text-xl font-semibold text-gray-900">Step 1</h1>
-                <p className="mt-2 text-sm text-gray-700">
-                  Add User Details to be updated in the report.
-                </p>
-              </div>
-              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"></div>
-            </div>
-            <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
+  const [currentStep, setCurrentStep] = useState(steps[0]);
+
+  return (
+       <div className="w-[100%] h-[80vh] xl:h-[93vh] bg-signBanner flex p-4 sm:p-8 xl:p-2">
+        <div className="max-h-auto h-[75vh] sm:h-[85vh] md:h-[80vh] w-[98%] sm:w-[94%] m-auto lg:w-[75vw] relative flex flex-col xl:w-[65vw] xl:h-[70vh] shadow-lg bg-white rounded-md border-2  xl:p-4 sm:p-10">
+          <div id="steps" className="rounded-md bg-slate-50 w-full p-4 mb-4">
+            {steps.map((step, index) => (
+              <Fragment key={index}>
+                <span
+                  id="stepId"
+                  className={`rounded-full font-bold text-lg shadow-sm sm:text-xs px-2 p-1 mx-1 sm:pl-1 lg:p-2 lg:px-3  ${
+                    currentStep.id === step.id && "bg-blue-700 text-white"
+                  }
+                  ${currentStep.id < step.id && "bg-white text-blue-700"}
+                  ${currentStep.id > step.id && "bg-primary text-white"}`}
+                >
+                  {step.id}
+                </span>
+                <span
+                  id="stepName"
+                  className={`mx-4 hidden sm:inline-block text-xs ${
+                    currentStep.id === step.id && "text-blue-700"
+                  }
+                  ${currentStep.id < step.id && "text-black"}
+                  ${currentStep.id > step.id && "text-primary"}`}
+                >
+                  {step.name}
+                </span>
+                {steps.length !== index + 1 && (
+                  <div
+                    id="line"
+                    className={`border  mx-1 sm:m-0 lg:mx-2 h-0 w-6  lg:w-10 mb-1 inline-block ${
+                      currentStep.id === step.id &&
+                      "border-blue-700 border-dashed"
+                    }
+                    ${currentStep.id < step.id && "border-dashed"}
+                    ${currentStep.id > step.id && "border-primary border-solid"}`}
+                  ></div>
+                )}
+              </Fragment>
+            ))}
           </div>
-        )}
-        {(state.reportUserDetails && step != 1) && (
-          <div className="px-4 sm:px-6 lg:px-8 xl:mt-12 hid">
-            <div className="sm:flex sm:items-center pb-8">
-              <div className="sm:flex-auto">
-                <h1 className="text-xl font-semibold text-gray-900">Step 2</h1>
-                <p className="mt-2 text-sm text-gray-700">
-                  Select report type and fill the data or upload already
-                  existing report and we will parse it for you.
-                </p>
-              </div>
-              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none"></div>
-            </div>
-            <section  className="w-1md:w-[80%] h-auto min-h-[60vh] rounded-md p-8 bg-white relative">
-            <div className=" md:gap-10">
-              <div className="col-span-1">
-                <div id="" className="pb-8">
-                  <label
-                    htmlFor="query1"
-                    className="block text-sm font-medium text-gray-700 pb-3"
-                  >
-                    Do you want to upload a report?
-                  </label>
-                  <div className="-mt-1 ml-2">
-                    <span className="mr-8">
-                      <input
-                        className=""
-                        type="radio"
-                        value="yes"
-                        id="yes"
-                        name="query1"
-                        onChange={handleUploadReportChange}
-                      />{" "}
-                      <label className=" text-xs font-medium " htmlFor="yes">
-                        Yes
-                      </label>
-                    </span>
-                    <span>
-                      <input
-                        type="radio"
-                        value="no"
-                        id="no"
-                        name="query1"
-                        onChange={handleUploadReportChange}
-                      />{" "}
-                      <label className=" text-xs font-medium " htmlFor="no">
-                        No
-                      </label>
-                    </span>
-                  </div>
-                </div>
-                <div className=" pb-8 w-[90%] sm:w-[40%]">
-                  <SelectComponent
-                    labelName="Please select the type of report"
-                    selected={selectedType}
-                    setSelected={setSelectedType}
-                    data={state.reportTypes.map((val, index) => {
-                      return {
-                        id: index,
-                        name: val.testName,
-                      };
-                    })}
-                  />
-                </div>
-              </div>
-              {isUploadReportSelected === "yes" && (
-                <div className="col-span-2">
-                  {selectedType.id > -1 && (
-                    <div className="">
-                      <div className="w-[40%]">
-                        <UploadInput
-                          labelName="Upload Report"
-                          file={file}
-                          setFile={setFile}
+          <div className="overflow-y-auto">
+            {currentStep.id === 1 && (
+              <BasicReportDetailsForm onBasicFormSubmit={handleBasicFormSubmit} />
+            )}
+            {currentStep.id === 2 && (
+                <section  className="w-1md:w-[80%] h-auto min-h-[50vh] rounded-md p-8 bg-white relative">
+                  <div className=" md:gap-10">
+                    <div className="col-span-1">
+                      <div id="" className="pb-8">
+                        <label
+                          htmlFor="query1"
+                          className="block text-sm font-medium text-gray-700 pb-3"
+                        >
+                          Do you want to upload a report?
+                        </label>
+                        <div className="-mt-1 ml-2">
+                          <span className="mr-8">
+                            <input
+                              className=""
+                              type="radio"
+                              value="yes"
+                              id="yes"
+                              name="query1"
+                              onChange={handleUploadReportChange}
+                            />{" "}
+                            <label className=" text-xs font-medium " htmlFor="yes">
+                              Yes
+                            </label>
+                          </span>
+                          <span>
+                            <input
+                              type="radio"
+                              value="no"
+                              id="no"
+                              name="query1"
+                              onChange={handleUploadReportChange}
+                            />{" "}
+                            <label className=" text-xs font-medium " htmlFor="no">
+                              No
+                            </label>
+                          </span>
+                        </div>
+                      </div>
+                      <div className=" pb-8 w-[90%] sm:w-[40%]">
+                        <SelectComponent
+                          labelName="Please select the type of report"
+                          selected={selectedType}
+                          setSelected={setSelectedType}
+                          data={state.reportTypes.map((val, index) => {
+                            return {
+                              id: index,
+                              name: val.testName,
+                            };
+                          })}
                         />
                       </div>
-                      {state.error && (
-                        <span className="text-red-500">{state.error}</span>
-                      )}
-                      
-                      <div className="w-[93%]  pl-10 sm:pl-5 xl:pl-0 flex justify-between pt-6 absolute bottom-10 right-10">
-                        <button type="submit"  name="Upload Report"
-                          onClick={handleBack} className="block w-auto sm:w-[130px] bg-gray-400 text-white p-2 text-sm rounded-md">Back</button>
-                    
-                          <button type="submit"   name="Upload Report"
-                          onClick={handleUploadReport} className="block w-auto sm:w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md">Continue</button>
-                      </div>
                     </div>
-                  )}
-                </div>
-              )}
-              {isUploadReportSelected === "no" && (
-                <div >
-                  {selectedType.id > -1 && (
-                    <CustomFormComponent
-                      formType={state.reportTypes[selectedType.id]}
-                      onReportSubmitForm={handleManualReportSubmit}
-                    />
-                  )}
-                </div>
-              )}
-            </div>
-            </section>
+                    {isUploadReportSelected === "yes" && (
+                      <div className="col-span-2">
+                        {selectedType.id > -1 && (
+                          <div className="">
+                            <div className="w-[40%]">
+                              <UploadInput
+                                labelName="Upload Report"
+                                file={file}
+                                setFile={setFile}
+                              />
+                            </div>
+                            {state.error && (
+                              <span className="text-red-500">{state.error}</span>
+                            )}
+                            
+                            <div className="w-[93%]  pl-10 sm:pl-5 xl:pl-0 flex justify-between pt-6 absolute bottom-10 right-10">
+                              <button type="submit"  name="Upload Report"
+                                onClick={handleBack} className="block w-auto sm:w-[130px] bg-gray-400 text-white p-2 text-sm rounded-md">Back</button>
+                          
+                                <button type="submit"   name="Upload Report"
+                                onClick={handleUploadReport} className="block w-auto sm:w-[220px] bg-blue-800 text-white p-2 text-sm rounded-md">Continue</button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {isUploadReportSelected === "no" && (
+                      <div >
+                        {selectedType.id > -1 && (
+                          <CustomFormComponent
+                            formType={state.reportTypes[selectedType.id]}
+                            onReportSubmitForm={handleManualReportSubmit}
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </section>
+            )}
+            {currentStep.id === 3 && (
+               <section className="w-[40vh] h-auto xl:h-[40vh] m-auto xl:mt-12">
+                 <img src={successUpload} alt="success-upload" className="w-40 xl:my-4 mx-auto mt-8" />
+                 <span className="my-8 text-gray-500 flex justify-center"><CheckBadgeIcon className="w-10 text-green-800" /> 
+                 <span className="mt-2">Report Uploaded Succesfully</span></span>
+                 <Link href="/reports">
+                 <button type="submit" name="Upload Report"
+                 className="block w-[220px] m-auto bg-green-800 text-white p-2 text-sm rounded-md">View Report</button>
+                 </Link>
+               </section>
+            )}
+            {state.loading && <div className="w-[95%] h-[60%] flex justify-center bg-white absolute opacity-90 top-40"><Spinner /></div>}
           </div>
-        )}
+        </div>
       </div>
     );
-  }
-};
+  };
 
 export default AddReports;

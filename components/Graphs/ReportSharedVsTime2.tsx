@@ -44,7 +44,7 @@ const ReportSharedVsTime2 = () =>{
             borderColor: 'rgb(214, 128, 6)',
             borderWidth: 2,
             data:[26, 42, 165, 87, 186,100],
-            borderDash: [10,10]
+            // borderDash: [10,10]
 
           }
         ]

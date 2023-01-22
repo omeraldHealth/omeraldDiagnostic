@@ -13,3 +13,15 @@ export const LoaderComp = ( ) => {
         />
     </div>
 }
+
+export const Spinner = () => {
+    return <Dna visible={true}
+            height="120"
+            width="120"
+            ariaLabel="dna-loading"
+            wrapperClass="dna-wrapper"
+            wrapperStyle={{
+               alignSelf:"center"                
+            }}
+    />
+}

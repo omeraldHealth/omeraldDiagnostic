@@ -291,21 +291,21 @@ const Onboard = () => {
             <form id="basicDetails" onSubmit={handleSubmit(handleOnContinue)}>
               <section className="h-[44vh] xl:h-[46vh] overflow-y-auto">
               <InputGroup
-                labelName="Diagnostic Centre Name"
+                labelName="Diagnostic Centre Name *"
                 inputName="diagnosticName"
                 placeholder="Add diagnostic name"
                 error={errors.diagnosticName?.message}
                 register={register}
               />
               <InputGroup
-                labelName="Account manager Name"
+                labelName="Account manager Name *"
                 inputName="fullName"
                 placeholder="Add your name"
                 error={errors.fullName?.message}
                 register={register}
               />
               <InputGroup
-                labelName="Email"
+                labelName="Email *"
                 inputName="email"
                 placeholder="example@example.com"
                 error={errors.email?.message}
@@ -313,7 +313,7 @@ const Onboard = () => {
               />
               <InputGroup
                 value={user && user.phoneNumber ? user.phoneNumber : ""}
-                labelName="Phone Number"
+                labelName="Phone Number *"
                 inputName="phoneNumber"
                 placeholder="Add your phone"
                 disabled
@@ -321,14 +321,14 @@ const Onboard = () => {
                 register={register}
               />
               <InputGroup
-                labelName="Branch"
+                labelName="Branch *"
                 inputName="branch"
                 placeholder="Add Branch Name"
                 error={errors.branch?.message}
                 register={register}
               />
               <TextArea
-                labelName="Address"
+                labelName="Address *"
                 inputName="address"
                 error={errors.address?.message}
                 placeholder="Add branch address"
@@ -356,7 +356,7 @@ const Onboard = () => {
                   />
               )}
               <InputGroup
-                labelName="Upload Brand Logo"
+                labelName="Upload Brand Logo *"
                 inputName="brandLogo"
                 placeholder="Upload Brand Logo"
                 error={errorsStep2.brandLogo?.message}
@@ -364,14 +364,14 @@ const Onboard = () => {
                 inputType="file"
               />
               <InputGroup
-                labelName="Facebook Url"
+                labelName="Facebook Url *"
                 inputName="facebookUrl"
                 placeholder="Add Facebook Url"
                 error={errorsStep2.facebookUrl?.message}
                 register={registerStep2}
               />
               <InputGroup
-                labelName="Instagram Url"
+                labelName="Instagram Url *"
                 inputName="instaUrl"
                 placeholder="Add Instagram Url"
                 error={errorsStep2.instaUrl?.message}
@@ -398,14 +398,14 @@ const Onboard = () => {
                     onSubmit={handleStep3AddManager(handleAddManager)}
                   >
                     <InputGroup
-                      labelName="Manager Name"
+                      labelName="Manager Name *"
                       inputName="managerName"
                       placeholder="Add operations manager name"
                       error={errorsStep3.managerName?.message}
                       register={registerStep3}
                     />
                     <InputGroup
-                      labelName="Manager Role"
+                      labelName="Manager Role *"
                       inputName="managerRole"
                       placeholder="Add operations manager role"
                       error={errorsStep3.managerRole?.message}
@@ -413,7 +413,7 @@ const Onboard = () => {
                     />
 
                     <InputGroup
-                      labelName="Manager Signature"
+                      labelName="Manager Signature *"
                       inputName="managerSignature"
                       placeholder="Add operations manager signature"
                       error={errorsStep3.managerSignature?.message}
