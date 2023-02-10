@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import { BellAlertIcon, CheckBadgeIcon, CheckCircleIcon, LightBulbIcon, TicketIcon } from "@heroicons/react/20/solid";
 import { successUpload } from "@/components/core/images/image";
 import Link from "next/link";
-import { successAlert } from "@/components/alerts/alert";
+import { errorAlert, successAlert } from "@/components/alerts/alert";
 import { stat } from "fs";
 const crypto = require("crypto");
 interface stateType {
@@ -155,6 +155,7 @@ const AddReports = () => {
     file: string,
     testName: string
   ) => {
+    console.log(file)
     const response = await uploadReport(token, userId, file, testName);
     // console.log(response);
     if (response.status == 200 && response.data.success) {
@@ -173,7 +174,7 @@ const AddReports = () => {
     if (file) {
       dispatch({ type: "loading" });
       const { phoneNumberInput, ...restBasicForm } =
-        state.reportUserDetails as ReportUserDetails;
+      state.reportUserDetails as ReportUserDetails;
       const reportDetails: ReportDetails = {
         userId: phoneNumberInput,
         status: "parsing",
@@ -190,7 +191,7 @@ const AddReports = () => {
         reportDetails.testName
       );
       if (!uploadedReportDetail) {
-        //some error occured, TODO:handle error here
+        errorAlert("Error uploaded file")
       } else {
         reportDetails.reportId = uploadedReportDetail.result.id;
         const resp = await createReport(

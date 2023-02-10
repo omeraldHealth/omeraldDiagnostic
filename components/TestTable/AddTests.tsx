@@ -89,9 +89,8 @@ const intialState: stateType = {
 };
 const steps = [
   { id: 1, name: "Enter Test Details" },
-  { id: 2, name: "Enter Keywords" },
-  { id: 3, name: "Enter Aliases" },
-  { id: 4, name: "Success" },
+  { id: 2, name: "Enter Keywords & aliases" },
+  { id: 3, name: "Success" },
 ];
 
 

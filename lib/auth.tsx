@@ -53,13 +53,16 @@ function useFirebaseAuth() {
     const token = await user.getIdToken();
     const phoneNumber = user.phoneNumber || "";
     // await handleUser(user, token, phoneNumber); DO NOT call handleUser, because when user logs in , it will automatically get called.
+    setLoading(true)
     const resp = await getUserDetails(token, phoneNumber);
     if (resp.status == 200) {
       setDiagnosticDetails(resp.data.user);
       router.push(redirect);
+     
     } else if (resp.status == 404) {
       router.push("/onboard");
     }
+    setLoading(false)
   };
 
   const signOut = async () => {

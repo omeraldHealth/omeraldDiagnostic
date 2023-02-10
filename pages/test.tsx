@@ -13,7 +13,7 @@ const Tests = () => {
 
   return (
     <div className="p-2 xl:p-6">
-      <div className="xl:px-4 p-4 sm:p-2 lg:px-8 sm:mt-12">
+      <div className="xl:px-4 p-4 sm:p-2 lg:px-8 mt-2 xl:mt-12">
         <div className="sm:flex sm:items-center justify-between">
           {!addTest ? <p className="font-bold text-lg ">List of Test</p>:<p className="font-bold text-lg ">Add Test</p>}
          <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
