@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { ReportDetails, UserDetails } from "middleware/models.interface";
+import { ReportDetails, DiagnosticCenter } from "middleware/models.interface";
 import { generateUploadURL } from "./s3";
 
 export async function getUserDetails(token: string, userId: string) {
@@ -12,7 +12,15 @@ export async function getUserDetails(token: string, userId: string) {
     return { status: error.response.status || error.request.code, data: null };
   }
 }
-export async function setUserDetails(token: string, userDetails: UserDetails) {
+
+
+
+
+
+
+
+
+export async function setUserDetails(token: string, userDetails: DiagnosticCenter) {
   try {
     const resp = await axios.post(
       `/api/user/${encodeURIComponent(userDetails.phoneNumber)}`,
@@ -121,6 +129,7 @@ export async function uploadImage(file: File) {
     // console.log(file);
     // const imageData = Buffer.from(file, "base64");
     const { data } = await axios.get(`/api/getUploadLink`);
+    console.log(data.url)
     const resp = await axios.put(data.url, file, {
       headers: { 
         "Content-Type": "multipart/form-data",

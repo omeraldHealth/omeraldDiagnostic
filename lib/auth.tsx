@@ -1,13 +1,13 @@
 import { warningAlert } from "@/components/alerts/alert";
 import { getAuth, onIdTokenChanged, User } from "firebase/auth";
-import { UserDetails } from "middleware/models.interface";
+import { DiagnosticCenter } from "middleware/models.interface";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { deleteSession, getUserDetails, setSession } from "./db";
 import firebaseApp from "./firebase";
 export interface AuthContextInterface {
   user: User | null;
-  diagnosticDetails: UserDetails | null;
+  diagnosticDetails: DiagnosticCenter | null;
   loading: boolean;
   signIn: (user: User, redirect: string) => Promise<void>;
   signOut: () => Promise<void>;
