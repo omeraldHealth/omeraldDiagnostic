@@ -16,6 +16,7 @@ export async function getUserDetails(token: string, userId: string) {
 export async function uploadImage(file: File) {
   try {
     const { data } = await axios.get(`/api/getUploadLink`);
+    console.log("link",data)
     const resp = await axios.put(data.url, file, {
       headers: { 
         "Content-Type": "multipart/form-data",

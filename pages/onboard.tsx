@@ -216,7 +216,7 @@ const Onboard = () => {
         })
       ),
     };
-
+    console.log(data)
     const token = (await user?.getIdToken()) as string;
     const res = await setUserDetails(token, data);
     // console.log(res);
