@@ -1,7 +1,7 @@
 import { Db, MongoClient } from "mongodb";
 
-const MONGODB_URI = process.env.MONGO_URI;
-const MONGODB_DB = process.env.MONGODB_DB;
+const MONGODB_URI = process.env.MONGO_URI_1;
+const MONGODB_DB = process.env.MONGODB_DB_1;
 
 let cachedClient: MongoClient;
 let cachedDb: Db;

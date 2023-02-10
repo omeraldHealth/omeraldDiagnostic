@@ -2,7 +2,7 @@ import { withAuth } from "@/lib/middlewares";
 import { time } from "console";
 import { connectToDatabase } from "middleware/database";
 import { NextApiRequest, NextApiResponse } from "next";
-import { UserDetails } from "../../../middleware/models.interface";
+import { DiagnosticCenter } from "../../../middleware/models.interface";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { db } = await connectToDatabase();
@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (user) {
         return res.status(200).json({ user });
       } else {
-        return res.status(404).send("NoT FOund");
+        return res.status(404).send("NoT Found");
       }
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === "POST") {
     try {
-      const userDetails = req.body as UserDetails;
+      const userDetails = req.body as DiagnosticCenter;
       userDetails.updatedAt = new Date();
       const isUserExists = await db
         .collection("diagnosticusers")
