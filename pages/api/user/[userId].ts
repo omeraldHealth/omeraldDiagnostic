@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (user) {
         return res.status(200).json({ user });
       } else {
-        return res.status(404).send("NoT Found");
+        return res.status(404).send("Not Found");
       }
     } catch (error: any) {
       return res.status(500).json({ error: error.message });

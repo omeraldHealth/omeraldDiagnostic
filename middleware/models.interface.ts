@@ -1,19 +1,19 @@
 import { ObjectId, Timestamp } from "mongodb";
 
-export interface DiagnosticCenter {
+export interface UserDetails {
   diagnosticName: string;
   fullName: string;
-  tests: string[];
+  tests?: string[];
   phoneNumber: string;
-  branch: string[];
+  branch?: string[];
   email: string;
-  sharedReport: string[];
+  sharedReport?: string[];
   address?: string;
   reports?: string[];
   updatedAt?: Date;
   brandDetails: BrandDetailsForm;
   managersDetail: IManagerDetails[];
-  activities: ActivityDetails[];
+  activities?: ActivityDetails[];
 }
 export type BrandDetailsForm = {
   brandLogo: string;

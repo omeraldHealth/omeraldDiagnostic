@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { ReportDetails, DiagnosticCenter } from "middleware/models.interface";
+import { ReportDetails, UserDetails } from "middleware/models.interface";
 import { generateUploadURL } from "./s3";
 
 export async function getUserDetails(token: string, userId: string) {
@@ -30,7 +30,7 @@ export async function uploadImage(file: File) {
   }
 }
 
-export async function setUserDetails(token: string, userDetails: DiagnosticCenter) {
+export async function setUserDetails(token: string, userDetails: UserDetails) {
   try {
     const resp = await axios.post(
       `/api/user/${encodeURIComponent(userDetails.phoneNumber)}`,

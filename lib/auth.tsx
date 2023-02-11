@@ -1,13 +1,13 @@
 import { warningAlert } from "@/components/alerts/alert";
 import { getAuth, onIdTokenChanged, User } from "firebase/auth";
-import { DiagnosticCenter } from "middleware/models.interface";
+import { UserDetails } from "middleware/models.interface";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { deleteSession, getUserDetails, setSession } from "./db";
 import firebaseApp from "./firebase";
 export interface AuthContextInterface {
   user: User | null;
-  diagnosticDetails: DiagnosticCenter | null;
+  diagnosticDetails: UserDetails | null;
   loading: boolean;
   signIn: (user: User, redirect: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -53,16 +53,13 @@ function useFirebaseAuth() {
     const token = await user.getIdToken();
     const phoneNumber = user.phoneNumber || "";
     // await handleUser(user, token, phoneNumber); DO NOT call handleUser, because when user logs in , it will automatically get called.
-    setLoading(true)
     const resp = await getUserDetails(token, phoneNumber);
     if (resp.status == 200) {
       setDiagnosticDetails(resp.data.user);
       router.push(redirect);
-     
     } else if (resp.status == 404) {
       router.push("/onboard");
     }
-    setLoading(false)
   };
 
   const signOut = async () => {
