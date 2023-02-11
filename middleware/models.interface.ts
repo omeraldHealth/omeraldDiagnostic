@@ -1,6 +1,6 @@
 import { ObjectId, Timestamp } from "mongodb";
 
-export interface DiagnosticCenter {
+export interface UserDetails {
   diagnosticName: string;
   fullName: string;
   tests: string[];
