@@ -6,6 +6,9 @@ import { DiagnosticCenter } from "../../../middleware/models.interface";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { db } = await connectToDatabase();
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === "GET") {
     try {
       const { userId } = req.query;
