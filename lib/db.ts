@@ -40,12 +40,12 @@ export async function setUserDetails(token: string, userDetails: UserDetails) {
 
 export async function getReportTypes(token: string) {
   try {
-    const resp = await axios.get(`/api/reportTypes`, {
-      headers: { Authorization: `Bearer ${token}` },
+    const resp = await axios.get(url+`/api/omerald/getReportTypes`, {
+      // headers: { Authorization: `Bearer ${token}` },
     });
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
-    return { status: error.response.status || error.request.code, data: null };
+    return { status: error.response};
   }
 }
 export async function setSession(token: string, userId: string) {
@@ -81,9 +81,9 @@ export async function createReport(
   reportDetails: ReportDetails
 ) {
   try {
-    reportDetails.userId = reportDetails.userId.split(" ").join("");
+    reportDetails.userId = userId.split(" ").join("");
     const resp = await axios.post(
-      `/api/reports/${encodeURIComponent(userId)}`,
+      url+`/api/diagnostic/reports/insertDiagnosticReport`,
       reportDetails,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -91,12 +91,12 @@ export async function createReport(
     );
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
-    return { status: error.response.status || error.request.code, data: null };
+    return { status: error.response };
   }
 }
 export async function getReports(token: string, userId: string) {
   try {
-    const resp = await axios.get(`/api/reports/${encodeURIComponent(userId)}`, {
+    const resp = await axios.get(`${url}/api/diagnostic/reports/getDiagnosticReports?userId=${(userId)}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return { status: resp.status, data: resp.data };
@@ -105,26 +105,18 @@ export async function getReports(token: string, userId: string) {
   }
 }
 export async function uploadReport(
-  token: string,
-  userId: string,
-  file: string | number | readonly string[],
-  testName: string
+  file: File,
 ) {
-  try {
-    const resp = await axios.post(
-      `https://calm-tor-77784.herokuapp.com/uploadReport`,
-      {
-        file: file,
-        userId: userId,
-        token: token,
-        testName: testName,
-      },
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
-    return { status: resp.status, data: resp.data };
+  const formData = new FormData();
+  formData.append('file',file);
+    try {
+      const resp = await axios.post(url+`/api/diagnostic/uploadReport`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+    })
+    return resp;
   } catch (error: any) {
-    return { status: error.response.status || error.request.code, data: null };
+    return null;
   }
 }

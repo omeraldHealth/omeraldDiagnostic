@@ -3,7 +3,7 @@ import { ObjectId, Timestamp } from "mongodb";
 export interface UserDetails {
   diagnosticName: string;
   fullName: string;
-  tests: string[];
+  tests: ReportTypes[];
   phoneNumber: string;
   branch: string;
   email: string;

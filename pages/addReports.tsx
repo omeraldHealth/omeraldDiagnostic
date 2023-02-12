@@ -90,13 +90,13 @@ const steps = [
 ];
 
 const AddReports = () => {
-  const { user } = useAuth();
+  const { user ,diagnosticDetails} = useAuth();
   const [state, dispatch] = useReducer(UserReportReducer, intialState);
   const [selectedType, setSelectedType] = useState<{
     id: number;
     name: string;
   }>({ id: -1, name: "Select report type" });
-  const [file, setFile] = useState<string>("");
+  const [file, setFile] = useState<File>();
   const [isUploadReportSelected, setIsUploadReportSelected] = useState<
     string | null
   >(null);
@@ -108,9 +108,8 @@ const AddReports = () => {
       const token = await user?.getIdToken();
       if (token) {
         const resp = await getReportTypes(token);
-        console.log(resp);
         if (resp.status == 200) {
-          dispatch({ type: "addReportTypes", value: resp.data.reportTypes });
+          dispatch({ type: "addReportTypes", value: resp.data });
         }
       }
     })();
@@ -140,7 +139,7 @@ const AddReports = () => {
       user?.phoneNumber as string,
       reportDetails
     );
-    if (resp.status === 201) {
+    if (resp.status === 200) {
       setCurrentStep((current) =>
             current.id == 3 ? current : steps[current.id]
       );
@@ -150,15 +149,12 @@ const AddReports = () => {
     // console.log(reportDetails);
   };
   const getUploadedReportDetails = async (
-    token: string,
-    userId: string,
-    file: string,
-    testName: string
+    file: File,
   ) => {
-    console.log(file)
-    const response = await uploadReport(token, userId, file, testName);
-    // console.log(response);
-    if (response.status == 200 && response.data.success) {
+
+    const response = await uploadReport(file);
+    console.log(response);
+    if (response && response.status == 200 ) {
       return response.data;
     } else {
       return null;
@@ -185,21 +181,21 @@ const AddReports = () => {
       const token = (await user?.getIdToken()) || "";
       const userId = user?.phoneNumber as string;
       const uploadedReportDetail = await getUploadedReportDetails(
-        token,
-        userId,
-        file,
-        reportDetails.testName
+        file
       );
+      console.log(uploadedReportDetail)
       if (!uploadedReportDetail) {
         errorAlert("Error uploaded file")
       } else {
-        reportDetails.reportId = uploadedReportDetail.result.id;
+        reportDetails.reportUrl = uploadedReportDetail.location;
+
         const resp = await createReport(
           token,
           user?.phoneNumber as string,
           reportDetails
         );
-        if (resp.status === 201) {
+
+        if (resp.status === 200) {
           setCurrentStep((current) =>
             current.id == 3 ? current : steps[current.id]
           );
@@ -315,7 +311,7 @@ const AddReports = () => {
                           labelName="Please select the type of report"
                           selected={selectedType}
                           setSelected={setSelectedType}
-                          data={state.reportTypes.map((val, index) => {
+                          data={state.reportTypes.concat(diagnosticDetails ? diagnosticDetails?.tests : []).map((val, index) => {
                             return {
                               id: index,
                               name: val.testName,

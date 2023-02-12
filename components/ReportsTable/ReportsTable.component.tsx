@@ -65,8 +65,10 @@ export default function ReportsTable({
     {
       title: 'Click to view',
       dataIndex: "status",
-      render: ((stat:string,person: any) =>  <>{stat.toLowerCase() === "parsing" ? (
-        "Parsing..."
+      render: ((stat:string,person: any) =>  <>{
+        
+        stat.toLowerCase() === "parsing" ? (
+        <a href={person.reportUrl} target="_blank" className="text-orange-700">View˝</a>
       ) : (
         <ViewPdf
           report={person}
@@ -149,7 +151,7 @@ const ViewPdf = ({
   if (instance.loading) return <div>Loading ...</div>;
 
   if (instance.error) return <div>Something went wrong: {instance.error}</div>;
-
+  console.log(instance)
   return (
     <a
       href={instance.url as string}
