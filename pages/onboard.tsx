@@ -179,11 +179,11 @@ const Onboard = () => {
         })
       ),
     };
-    console.log(data)
+
     const token = (await user?.getIdToken()) as string;
     const res = await setUserDetails(token, data);
-    // console.log(res);
-    if (res.status == 201 && user) {
+    console.log(res);
+    if (res.status == 200 && user) {
       setIsLoading(false);
       signIn(user, "/dashboard");
     }

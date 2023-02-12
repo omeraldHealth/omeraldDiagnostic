@@ -1,12 +1,12 @@
 import axios, { AxiosError } from "axios";
-import { ReportDetails, DiagnosticCenter } from "middleware/models.interface";
+import { ReportDetails, UserDetails } from "middleware/models.interface";
 import { generateUploadURL } from "./s3";
+
+const url = "http://localhost:4000"
 
 export async function getUserDetails(token: string, userId: string) {
   try {
-    const resp = await axios.get(`/api/user/${encodeURIComponent(userId)}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const resp = await axios.get(url+`/api/diagnostic/getDiagnosticUser?userId=`+userId, {});
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error.response.status || error.request.code, data: null };
@@ -14,34 +14,27 @@ export async function getUserDetails(token: string, userId: string) {
 }
 
 export async function uploadImage(file: File) {
-  try {
-    const { data } = await axios.get(`/api/getUploadLink`);
-    console.log("link",data)
-    const resp = await axios.put(data.url, file, {
-      headers: { 
-        "Content-Type": "multipart/form-data",
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
-    const imageUrl = data.url.split("?")[0];
-    return imageUrl;
+  const formData = new FormData();
+  formData.append('file',file);
+    try {
+      const resp = await axios.post(url+`/api/diagnostic/uploadBranding`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+    })
+    const {location} = resp.data
+    return location;
   } catch (error: any) {
     return null;
   }
 }
 
-export async function setUserDetails(token: string, userDetails: DiagnosticCenter) {
+export async function setUserDetails(token: string, userDetails: UserDetails) {
   try {
-    const resp = await axios.post(
-      `/api/user/${encodeURIComponent(userDetails.phoneNumber)}`,
-      userDetails,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const resp = await axios.post(url+`/api/diagnostic/saveDiagnosticUser`, userDetails, {})
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
-    return { status: error.response.status || error.request.code, data: null };
+    return { status: error };
   }
 }
 
