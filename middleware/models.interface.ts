@@ -5,7 +5,7 @@ export interface UserDetails {
   fullName: string;
   tests: string[];
   phoneNumber: string;
-  branch: string[];
+  branch: string;
   email: string;
   sharedReport: string[];
   address?: string;

@@ -68,13 +68,13 @@ const Dashboard = () => {
                     <InformationCircleIcon className="w-4 float-right" />
                 </Tooltip>
             
-                <p className="font-bold text-2xl flex justify-center my-2 mt-4">{diagnosticDetails?.managersDetail?.length ?? 0 }  / {diagnosticDetails?.branch?.length ?? 0 } </p>
-                <p className="font-light text-xs xl:text-sm">Total Users/Branches</p>
+                <p className="font-bold text-2xl flex justify-center my-2 mt-4">{diagnosticDetails?.managersDetail?.length ?? 0 } </p>
+                <p className="font-light text-xs xl:text-sm">Total Users</p>
               </span>
           </section>
         </Link>
     </section>
-    <section className="grid grid-cols-1 gap-4 sm:flex justify-between h-[45vh]">
+    <section className="grid grid-cols-1 gap-4 sm:flex justify-between h-[45vh] my-4">
       <section className="sm:w-[65%] xl:w-[60%] h-[30vh] sm:h-auto bg-white">
         <ReportSharedVsTime2 />
       </section>

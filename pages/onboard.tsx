@@ -9,7 +9,7 @@ import InputGroup from "@/components/core/InputGroup/InputGroup.component";
 import TextArea from "@/components/core/TextArea/TextArea.component";
 import Button from "@/components/core/Button/Button.component";
 import { imageWidthAndHeight } from "@/utils/helper";
-import { IManagerDetails, DiagnosticCenter } from "middleware/models.interface";
+import { IManagerDetails, UserDetails } from "middleware/models.interface";
 import Loading from "@/components/core/LoadingIcon/Loading.component";
 import { LoaderComp } from "@/components/alerts/loader";
 
@@ -159,7 +159,7 @@ const Onboard = () => {
   const handleOnSubmitForm = async () => {
     setIsLoading(true);
 
-    let data: DiagnosticCenter = {
+    let data: UserDetails = {
       ...getValuesStep1(),
       brandDetails: {
         // ...getValuesStep2(),

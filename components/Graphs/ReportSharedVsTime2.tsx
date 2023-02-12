@@ -8,7 +8,7 @@ const ReportSharedVsTime2 = () =>{
         plugins: {
           title: {
             display: true,
-            text: 'Reports Shared / Month (2022)'
+            text: 'Reports Shared Last 6 months'
           }
         },
         elements: {
@@ -34,7 +34,7 @@ const ReportSharedVsTime2 = () =>{
             backgroundColor: 'rgba(49, 104, 212)',
             borderColor: 'rgb(49, 104, 212)',
             borderWidth: 2,
-            data: [10, 45, 140, 81, 206,120],
+            data: [],
           },
           {
             label: 'Reports Shared',
@@ -43,9 +43,7 @@ const ReportSharedVsTime2 = () =>{
             backgroundColor: 'rgba(214, 128, 6)',
             borderColor: 'rgb(214, 128, 6)',
             borderWidth: 2,
-            data:[26, 42, 165, 87, 186,100],
-            // borderDash: [10,10]
-
+            data:[],
           }
         ]
     }
