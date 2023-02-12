@@ -37,18 +37,6 @@ const validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
 const checkDimensions = async (imageFile: FileList) => {
   let dimensions = await imageWidthAndHeight(imageFile[0]);
   return false;
-  // if (
-  //   dimensions.width >= 200 &&
-  //   dimensions.height >= 67 &&
-  //   dimensions.width <= 900 &&
-  //   dimensions.height <= 300 &&
-  //   Number(dimensions.height / dimensions.width).toFixed(1) ===
-  //     Number(1 / 3).toFixed(1)
-  // ) {
-  //   return true;
-  // } else {
-  //   return false;
-  // }
 };
 
 const steps = [
@@ -77,24 +65,6 @@ const schemaStep2 = yup.object().shape({
           value && value[0]?.type
         )
     )
-    // .test(
-    //   "size",
-    //   "File Size is too large",
-    //   (value) => value && value[0]?.size <= 10000000
-    // )
-    // .test(
-    //   "dimensions",
-    //   "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
-    //   function (value) {
-    //     return new Promise((res, rej) => {
-    //       res(
-    //         value &&
-    //           validImageTypes.includes(value && value[0]?.type) &&
-    //           checkDimensions(value)
-    //       );
-    //     });
-    //   }
-    // )
   ,facebookUrl: yup.string().url("Please Enter a valid Url"),
   instaUrl: yup.string().url("Please Enter a valid Url"),
 });
@@ -115,26 +85,13 @@ const schemaStep3 = yup.object().shape({
       "File Size is too large",
       (value) => value && value[0]?.size <= 1000000
     )
-    // .test(
-    //   "dimensions",
-    //   "Dimension should be between 200 x 67  and  900 x 300 pixels, maintaining the aspectRatio of 1:3",
-    //   function (value) {
-    //     return new Promise((res, rej) => {
-    //       console.log("async validation");
-    //       res(
-    //         value &&
-    //           validImageTypes.includes(value && value[0]?.type) &&
-    //           checkDimensions(value)
-    //       );
-    //     });
-    //   }
-    // ),
 });
+
 
 const Onboard = () => {
   const { user, diagnosticDetails, signIn } = useAuth();
   const router = useRouter();
-
+  const auth = useAuth()
   const [currentStep, setCurrentStep] = useState(steps[0]);
   const [managerDetails, setManagerDetails] = useState<FormData[]>([]);
   const [showStep3ContinueError, setShowStep3ContinueError] = useState(false);
@@ -171,6 +128,12 @@ const Onboard = () => {
     mode: "onChange",
     resolver: yupResolver(schemaStep3),
   });
+
+  useEffect(()=>{
+    if(auth.diagnosticDetails){
+      router.push("/dashboard")
+    }
+  })
 
   const handleAddManager = async (data: IManagerDetails) => {
     // console.log(getValuesStep1());

@@ -23,6 +23,7 @@ import {
 
 } from "@heroicons/react/20/solid";
 import {doctorAvatar, logoIcon} from "../../components/core/images/image"
+import { LoaderComp } from "../alerts/loader";
 const privateRoutes = [
   { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
   {
@@ -66,7 +67,7 @@ const Layout = ({ children }: LayoutProps) => {
   const [currentNavigation, setCurrentNavigation] = useState<NavigationType>(
     privateRoutes[0]
   );
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     setCurrentNavigation(
       privateRoutes.find((val) => val.href === router.pathname) ||
@@ -76,7 +77,9 @@ const Layout = ({ children }: LayoutProps) => {
 
   const handleNavigationChange = (nav: NavigationType) => {
     setCurrentNavigation(nav);
+    setLoading(true)
   };
+
   const handleSignOut = async () => {
     await signOut();
   };
@@ -290,7 +293,8 @@ const Layout = ({ children }: LayoutProps) => {
                   <BellIcon className="w-8 h-8 xl:w-8 text-gray-600"/>
               </div>
               <div className="bg-[#e9e9e9] min-h-[93vh]">
-                {children}
+                {
+                children}
               </div>
             </div>
           </main>
