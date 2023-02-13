@@ -37,25 +37,28 @@ interface KeywordType {
     _id:string
 }
 
-
-
-export default function KeywordTable({keywords,updateKeyword}:any){
+export default function KeywordTable({keywords,updateKeyword,manual}:any){
    
   const {diagnosticDetails} = useAuth()
   const [data,setData] = useState(keywords.keywords)
+  const [keyArr,setKeyArr] = useState([])
 
   const handle = (keyword:any) => {
-    let keyArr = keywords.keywords?.filter((key:any) => key._id !== keyword?._id)
-    keyArr.push(keyword)
-    setData(keyArr)
 
+    if(!manual){
+      let key = keywords.keywords?.filter((key:any) => key._id !== keyword?._id)
+      setKeyArr(key)
+    }else{
+      setKeyArr([...keyArr, keyword]);
+      console.log(keyArr)
+    }
     updateKeyword(keyArr)
-    // console.log()
-    // let tests = diagnosticDetails?.tests.filter(test => test._id == keywords.keywords._id);
-    // console.log(tests)
-
+    setData(keyArr)
   }
 
+  const handleAddKeyword = (keyword:any) => {
+    setData(keyword)
+  }
 
   const columns: ColumnsType<KeywordType> = [
     {
@@ -98,17 +101,17 @@ export default function KeywordTable({keywords,updateKeyword}:any){
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-            <FormModal handle={handle} record={record} />
+            <FormModal handle={handle} record={record} manual={false} />
         </Space>
       ),
     },
   ];
 
-  
-
   return (
     <div className="w-[100%] bg-white h-auto min-h-[20vh] sm:min-h-[40vh] rounded-lg p-4">
+      {manual && <FormModal handle={handle} record={keywords} manual={true} />}
       <Table columns={columns} dataSource={data} />
+   
     </div>
   )
 }

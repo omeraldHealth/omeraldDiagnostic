@@ -18,12 +18,15 @@ import BasicReportDetailsForm from "../BasicReportDetailsForm/BasicReportDetails
 import UploadInput from "../UploadReport/UploadReport.component";
 import CustomFormComponent from "../CustomForm/CustomForm.component";
 import { successUpload } from "../core/images/image";
-import { CheckBadgeIcon } from "@heroicons/react/20/solid";
+import { CheckBadgeIcon, PlusCircleIcon, PlusIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import AddTestDetailsForm from "../BasicReportDetailsForm/AddTestDetailsForm";
 import ReportsTable from "../ReportsTable/ReportsTable.component";
 import KeywordTable from "./KeywordTable";
 import { successAlert } from "../alerts/alert";
+import {AddTestModal} from "../alerts/addTest"
+import { FormModal } from "../alerts/modal";
+
 const crypto = require("crypto");
 interface stateType {
   loading: boolean;
@@ -111,13 +114,14 @@ const   AddTests = ({setAddTest}:any) => {
   const [step,setStep] = useState(1)
   const router = useRouter()
   const [reportTypes,setReportTypes] = useState({});
+  const [testName,setTest] = useState({})
+  const [keywords,setKeywords] = useState([])
 
   useEffect(() => {
     (async () => {
       const token = await user?.getIdToken();
       if (token) {
         const resp = await getReportTypes(token);
-        console.log(resp)
         if (resp.status == 200) {
           dispatch({ type: "addReportTypes", value: resp.data });
         }
@@ -256,6 +260,12 @@ const   AddTests = ({setAddTest}:any) => {
   }
 
   const handleSaveTest = async () => {
+    let test = {
+      "testName":testName,
+      "keywords":keywords
+    }
+    setReportTypes(test)
+    console.log(reportTypes)
     if(!diagnosticDetails?.tests.some(obj => obj._id === reportTypes._id)){
       diagnosticDetails?.tests?.push(reportTypes)
     }
@@ -270,11 +280,32 @@ const   AddTests = ({setAddTest}:any) => {
   }
 
   const handleUpdateKeyword = async (keywords:any) => {
-    console.log(diagnosticDetails?.tests.some(obj => obj._id === reportTypes._id))
     // handleSaveTest()
   }
 
   const [currentStep, setCurrentStep] = useState(steps[0]);
+
+  const handleAddTest = (e) => {
+
+    setKeywords(e)
+    console.log(keywords)
+  }
+
+  const handleTestName = (testName:any) => {
+    setTest(testName)
+    setCurrentStep((current) =>
+      current.id == 3 ? current : steps[current.id]
+    );
+  }
+
+  let sampleKeyword = {
+    "keyword":" ",
+    "unit":" ",
+    "normalRange":" ",
+    "aliases":" "
+  }
+
+
 
     return (
       <div className="max-h-auto h-[75vh] sm:h-[85vh] md:h-[80vh] w-[100%] sm:w-[94%] mt-6 lg:w-[75vw] relative flex flex-col xl:w-[65vw] xl:h-[70vh] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
@@ -373,32 +404,46 @@ const   AddTests = ({setAddTest}:any) => {
                            )}
                            {isUploadReportSelected === "no" && (
                              <div >
-                                 <button className="bg-gray-200 rounded-md border-2 px-2 py-1 text-sm">Add test</button>
+                                 <AddTestModal handleTestName={handleTestName} />
                              </div>
                            )}
-                           {selectedType?.id > -1  && <>
-                            { reportTypes?
+                           {selectedType?.id > -1  && 
+                           <>
+                            { reportTypes && isUploadReportSelected === "yes" &&
                              <section className="flex justify-end">
                                    <button onClick={handleNext} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Next</button>
-                             </section>:
-                             <div className="w-[10vw] h-[10vh] absolute top-60 left-50"  ><Spinner/></div>
+                             </section>
                             }
-                             </>
+                           </>
                            }
                </div>
            </div>
           )}
           {currentStep.id === 2 && (
              <>
-                 {/* <button onClick={handleBack} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Back</button> */}
+             {isUploadReportSelected === "yes" ?
                  <div>  
                     <p className="m-2 font-bold text-sm">{reportTypes?.testName} Report</p>
-                    <KeywordTable keywords={reportTypes} updateKeyword={handleUpdateKeyword} />
+                    <KeywordTable keywords={reportTypes} updateKeyword={handleUpdateKeyword} manual={false} />
                     <section className="flex justify-between">
                       <button onClick={handleBack} className="bg-gray-500 text-white px-4 py-2 text-sm rounded-md">Back</button>
                       <button onClick={handleSaveTest} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
                     </section>
                  </div>
+                 :
+                 <div>  
+                    <section className="flex justify-between">
+                      <p className="m-2 font-bold text-sm">{testName}</p>
+        
+                    </section>
+                
+                    <KeywordTable keywords={sampleKeyword} updateKeyword={setKeywords} manual={true} />
+                    <section className="flex justify-between">
+                      <button onClick={handleBack} className="bg-gray-500 text-white px-4 py-2 text-sm rounded-md">Back</button>
+                      <button onClick={handleSaveTest} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
+                    </section>
+                 </div>
+            }
              </>
           )}
           {currentStep.id === 3 && (

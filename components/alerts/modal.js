@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal } from 'antd';
-import { PencilIcon } from '@heroicons/react/20/solid';
+import { PencilIcon, PlusCircleIcon } from '@heroicons/react/20/solid';
 import { report } from 'process';
 import { useAuth } from '@/lib/auth';
 
-export const FormModal = ({record,handle}) => {
+export const FormModal = ({record,handle,manual}) => {
   const [open, setOpen] = useState(false);
   const {diagnosticDetails} = useAuth()
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -13,7 +13,6 @@ export const FormModal = ({record,handle}) => {
 
  useEffect(()=>{
     setKeyWord(Object.keys(record).map(key => [key, record[key]]));
-  
  },[])
 
   const showModal = () => {
@@ -44,7 +43,7 @@ export const FormModal = ({record,handle}) => {
 
   return (
     <>
-      <a onClick={showModal}><PencilIcon className='w-4 text-btnPrimary-400'/></a>
+      {manual ?<a onClick={showModal}> <PlusCircleIcon className="text-sm w-[2vw] text-green-900"  /></a> :<a onClick={showModal}><PencilIcon className='w-4 text-btnPrimary-400'/></a>}
       <Modal
         title={"Update Keyword"}
         open={open}
