@@ -1,11 +1,14 @@
 
 import AddTests from "@/components/TestTable/AddTests";
 import TestTable from "@/components/TestTable/TestTable";
+import { useAuth } from "@/lib/auth";
+import { useAmp } from "next/amp";
 import React, { useEffect, useState } from "react";
 
 const Tests = () => {
 
   const [addTest,setAddTest] = useState(true);
+  const {diagnosticDetails} = useAuth()
 
   const handleAddTests = () => {
     setAddTest(!addTest)
@@ -36,7 +39,7 @@ const Tests = () => {
          </div>
         </div>
         <div className="sm:flex sm:items-center">
-          {!addTest ? <TestTable /> : <AddTests />}
+          {!addTest ? <TestTable tests={diagnosticDetails?.tests} /> : <AddTests setAddTest={setAddTest} />}
         </div>
       </div>
     </div>

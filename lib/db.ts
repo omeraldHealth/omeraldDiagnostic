@@ -120,3 +120,16 @@ export async function uploadReport(
     return null;
   }
 }
+
+export async function updateTests(
+  diagnosticUser: any,userId: any
+) {
+  try {
+    const resp = await axios.post(url+`/api/diagnostic/updateDiagnosticUser?userId=${userId}`, diagnosticUser,{
+      // headers: { Authorization: `Bearer ${token}` },
+    });
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response};
+  }
+}

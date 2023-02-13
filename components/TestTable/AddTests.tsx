@@ -1,6 +1,6 @@
 import { useAuth } from "@/lib/auth";
 import React, { Fragment, useEffect, useReducer, useState } from "react";
-import { createReport, getReportTypes, uploadReport } from "@/lib/db";
+import { createReport, getReportTypes, updateTests, uploadReport } from "@/lib/db";
 import { ReportUserDetails } from "@/components/BasicReportDetailsForm/BasicReportDetailsForm.interface";
 import {
   ReportDetails,
@@ -23,6 +23,7 @@ import Link from "next/link";
 import AddTestDetailsForm from "../BasicReportDetailsForm/AddTestDetailsForm";
 import ReportsTable from "../ReportsTable/ReportsTable.component";
 import KeywordTable from "./KeywordTable";
+import { successAlert } from "../alerts/alert";
 const crypto = require("crypto");
 interface stateType {
   loading: boolean;
@@ -96,8 +97,8 @@ const steps = [
 ];
 
 
-const   AddTests = () => {
-  const { user } = useAuth();
+const   AddTests = ({setAddTest}:any) => {
+  const { user,diagnosticDetails } = useAuth();
   const [state, dispatch] = useReducer(UserReportReducer, intialState);
   const [selectedType, setSelectedType] = useState<{
     id: number;
@@ -254,6 +255,25 @@ const   AddTests = () => {
     setReportTypes(state?.reportTypes[selectedType?.id])
   }
 
+  const handleSaveTest = async () => {
+    if(!diagnosticDetails?.tests.some(obj => obj._id === reportTypes._id)){
+      diagnosticDetails?.tests?.push(reportTypes)
+    }
+    const resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)
+
+    if(resp?.status === 200){
+      setAddTest(false)
+      setCurrentStep((current) =>
+      current.id == 3 ? current : steps[current.id]
+    );
+    }
+  }
+
+  const handleUpdateKeyword = async (keywords:any) => {
+    console.log(diagnosticDetails?.tests.some(obj => obj._id === reportTypes._id))
+    // handleSaveTest()
+  }
+
   const [currentStep, setCurrentStep] = useState(steps[0]);
 
     return (
@@ -356,10 +376,14 @@ const   AddTests = () => {
                                  <button className="bg-gray-200 rounded-md border-2 px-2 py-1 text-sm">Add test</button>
                              </div>
                            )}
-                           {selectedType?.id > -1 &&
+                           {selectedType?.id > -1  && <>
+                            { reportTypes?
                              <section className="flex justify-end">
                                    <button onClick={handleNext} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Next</button>
-                             </section>
+                             </section>:
+                             <div className="w-[10vw] h-[10vh] absolute top-60 left-50"  ><Spinner/></div>
+                            }
+                             </>
                            }
                </div>
            </div>
@@ -368,21 +392,30 @@ const   AddTests = () => {
              <>
                  {/* <button onClick={handleBack} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Back</button> */}
                  <div>  
-                    <KeywordTable keywords={reportTypes} />
+                    <p className="m-2 font-bold text-sm">{reportTypes?.testName} Report</p>
+                    <KeywordTable keywords={reportTypes} updateKeyword={handleUpdateKeyword} />
                     <section className="flex justify-between">
                       <button onClick={handleBack} className="bg-gray-500 text-white px-4 py-2 text-sm rounded-md">Back</button>
-                      <button onClick={handleNext} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
+                      <button onClick={handleSaveTest} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
                     </section>
                  </div>
              </>
           )}
           {currentStep.id === 3 && (
-               <button onClick={handleBack} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Back</button>
+               <section className="w-[40vh] h-auto xl:h-[40vh] m-auto xl:mt-12">
+               <img src={successUpload} alt="success-upload" className="w-40 xl:my-4 mx-auto mt-8" />
+               <span className="my-8 text-gray-500 flex justify-center"><CheckBadgeIcon className="w-10 text-green-800" /> 
+               <span className="mt-2">Test Added Succesfully</span></span>
+               <Link href="/test">
+               <button type="submit" name="Upload Report"
+               className="block w-[220px] m-auto bg-green-800 text-white p-2 text-sm rounded-md">View Tests</button>
+               </Link>
+             </section>
           )}
           {state.loading && <div className="w-[95%] h-[60%] flex justify-center bg-white absolute opacity-90 top-40"><Spinner /></div>}
         </div>
       </div>
     );
-  };
+};
 
 export default AddTests;

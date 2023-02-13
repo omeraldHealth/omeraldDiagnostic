@@ -2,6 +2,8 @@ import React from 'react'
 import { Space, Table, Tag, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { LoaderComp } from '../alerts/loader';
+import {FormModal} from "../alerts/modal"
 
 interface DataType {
   key: string;
@@ -100,10 +102,11 @@ const data: DataType[] = [
   },
 ];
 
-export default function TestTable(){
+export default function TestTable({tests}:any){
   return (
     <div className="w-[100%] bg-white h-auto min-h-[30vh] sm:min-h-[60vh] my-10 rounded-lg p-4">
-      <Table columns={columns} dataSource={data} />
+      {tests ? <Table columns={columns} dataSource={tests} />: <LoaderComp/>}
+    
     </div>
   )
 }
