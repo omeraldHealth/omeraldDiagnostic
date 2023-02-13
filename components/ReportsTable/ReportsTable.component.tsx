@@ -155,7 +155,8 @@ const ViewPdf = ({
   return (
     <a
       href={instance.url as string}
-      download={`${report.userName}-${report.testName}.pdf`}
+      target={"_blank"}
+      // download={`${report.userName}-${report.testName}.pdf`}
       className="text-indigo-600 hover:text-indigo-900"
     >
       View

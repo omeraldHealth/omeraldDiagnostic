@@ -1,6 +1,9 @@
+import { useAuth } from "@/lib/auth";
+import { getReportTypes } from "@/lib/db";
 import { ReportTypes } from "middleware/models.interface";
-import React, { useReducer, useState }  from "react";
+import React, { useEffect, useReducer, useState }  from "react";
 import SelectComponent from "../core/SelectComponent/SelectComponent";
+import CustomFormComponent from "../CustomForm/CustomForm.component";
 import UploadInput from "../UploadReport/UploadReport.component";
 import { ReportUserDetails } from "./BasicReportDetailsForm.interface";
 
@@ -69,21 +72,36 @@ const intialState: stateType = {
   reportUserDetails: null,
   reportTypes: [],
 };
-const AddTestDetailsForm = () => {
-
+const AddTestDetailsForm = ({handleNext}:any) => {
+  const { user } = useAuth();
   const [isUploadReportSelected, setIsUploadReportSelected] = useState<string | null>(null);
   const [state, dispatch] = useReducer(UserReportReducer, intialState);
   const [selectedType, setSelectedType] = useState<{
     id: number;
     name: string;
   }>({ id: -1, name: "Select report type" });
+  let [tests,setTests] = useState(state.reportTypes)
 
+  useEffect(() => {
+    (async () => {
+      const token = await user?.getIdToken();
+      if (token) {
+        const resp = await getReportTypes(token);
+        if (resp.status == 200) {
+          dispatch({ type: "addReportTypes", value: resp.data });
+        }
+      }
+    })();
+  }, [user]);
 
-  console.log(state.reportTypes)
+  const handleAddTest = (obj:any) =>{
+    setTests(tests)
+  }
+
   const handleUploadReportChange = (e: any) => {
     setIsUploadReportSelected(e.target.value);
   };
-  
+
   return (
     <div className="w-[100%] h-[40vh]">
         <div className="p-8 md:gap-10">
@@ -141,14 +159,14 @@ const AddTestDetailsForm = () => {
                     )}
                     {isUploadReportSelected === "no" && (
                       <div >
-                        {/* {selectedType.id > -1 && (
-                          <CustomFormComponent
-                            formType={state.reportTypes[selectedType.id]}
-                            onReportSubmitForm={handleManualReportSubmit}
-                          />
-                        )} */}
+                          <button className="bg-gray-200 rounded-md border-2 px-2 py-1 text-sm">Add test</button>
                       </div>
                     )}
+                    {selectedType?.id > -1 &&
+                      <section className="flex justify-end">
+                            <button onClick={handleNext} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Next</button>
+                      </section>
+                    }
         </div>
     </div>
   );

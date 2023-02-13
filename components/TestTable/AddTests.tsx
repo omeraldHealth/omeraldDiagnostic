@@ -21,6 +21,8 @@ import { successUpload } from "../core/images/image";
 import { CheckBadgeIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import AddTestDetailsForm from "../BasicReportDetailsForm/AddTestDetailsForm";
+import ReportsTable from "../ReportsTable/ReportsTable.component";
+import KeywordTable from "./KeywordTable";
 const crypto = require("crypto");
 interface stateType {
   loading: boolean;
@@ -107,19 +109,21 @@ const   AddTests = () => {
   >(null);
   const [step,setStep] = useState(1)
   const router = useRouter()
-  console.log(state)
+  const [reportTypes,setReportTypes] = useState({});
+
   useEffect(() => {
     (async () => {
       const token = await user?.getIdToken();
       if (token) {
         const resp = await getReportTypes(token);
-        console.log(resp);
+        console.log(resp)
         if (resp.status == 200) {
-          dispatch({ type: "addReportTypes", value: resp.data.reportTypes });
+          dispatch({ type: "addReportTypes", value: resp.data });
         }
       }
     })();
   }, [user]);
+  
   const handleGoToHome = () => {
     router.push("reports")
   };
@@ -209,9 +213,9 @@ const   AddTests = () => {
   };
 
   const testingSchema = {};
-  state.reportTypes[selectedType.id]?.keywords.forEach((params) => {
-    testingSchema[params.keyword] = yup.string().required();
-  });
+  // state.reportTypes[selectedType.id]?.keywords.forEach((params) => {
+  //   testingSchema[params.keyword] = yup.string().required();
+  // });
 
   const schema = yup.object().shape(testingSchema);
 
@@ -228,10 +232,26 @@ const   AddTests = () => {
 
   const handleUploadReportChange = (e: any) => {
     setIsUploadReportSelected(e.target.value);
+   
+    setReportTypes(state.reportTypes[selectedType?.id])
   };
 
   const handleBack = () => {
-    setStep(1)
+    setCurrentStep((current) =>
+      current.id == 3 ? current : steps[0]
+    );
+  }
+
+  function handleNext() {
+    setCurrentStep((current) =>
+      current.id == 3 ? current : steps[current.id]
+    );
+  }
+
+
+  const handleTestChange = (e:any) =>{
+    setSelectedType(e)
+    setReportTypes(state?.reportTypes[selectedType?.id])
   }
 
   const [currentStep, setCurrentStep] = useState(steps[0]);
@@ -277,13 +297,87 @@ const   AddTests = () => {
         </div>
         <div>
           {currentStep.id === 1 && (
-             <AddTestDetailsForm/>
+               <div className="w-[100%] h-[40vh]">
+               <div className="p-8 md:gap-10">
+                           <div className="col-span-1">
+                             <div id="" className="pb-8">
+                               <label
+                                 htmlFor="query1"
+                                 className="block text-sm font-medium text-gray-700 pb-3"
+                               >
+                                 You want to choose from existing reports
+                               </label>
+                               <div className="-mt-1 ml-2">
+                                 <span className="mr-8">
+                                   <input
+                                     className=""
+                                     type="radio"
+                                     value="yes"
+                                     id="yes"
+                                     name="query1"
+                                     onChange={handleUploadReportChange}
+                                   />{" "}
+                                   <label className=" text-xs font-medium " htmlFor="yes">
+                                     Yes
+                                   </label>
+                                 </span>
+                                 <span>
+                                   <input
+                                     type="radio"
+                                     value="no"
+                                     id="no"
+                                     name="query1"
+                                     onChange={handleUploadReportChange}
+                                   />{" "}
+                                   <label className=" text-xs font-medium " htmlFor="no">
+                                     No
+                                   </label>
+                                 </span>
+                               </div>
+                             </div>
+                           </div>
+                           {isUploadReportSelected === "yes" && (
+                                 <div className=" pb-8 w-[90%] sm:w-[40%]">
+                                          <SelectComponent
+                                            labelName="Please select the type of test"
+                                            selected={selectedType}
+                                            setSelected={handleTestChange}
+                                            data={state.reportTypes.map((val, index) => {
+                                              return {
+                                                id: index,
+                                                name: val.testName,
+                                              };
+                                            })}
+                                          />
+                                 </div>
+                           )}
+                           {isUploadReportSelected === "no" && (
+                             <div >
+                                 <button className="bg-gray-200 rounded-md border-2 px-2 py-1 text-sm">Add test</button>
+                             </div>
+                           )}
+                           {selectedType?.id > -1 &&
+                             <section className="flex justify-end">
+                                   <button onClick={handleNext} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Next</button>
+                             </section>
+                           }
+               </div>
+           </div>
           )}
           {currentStep.id === 2 && (
-             <></>
+             <>
+                 {/* <button onClick={handleBack} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Back</button> */}
+                 <div>  
+                    <KeywordTable keywords={reportTypes} />
+                    <section className="flex justify-between">
+                      <button onClick={handleBack} className="bg-gray-500 text-white px-4 py-2 text-sm rounded-md">Back</button>
+                      <button onClick={handleNext} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
+                    </section>
+                 </div>
+             </>
           )}
           {currentStep.id === 3 && (
-             <></>
+               <button onClick={handleBack} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Back</button>
           )}
           {state.loading && <div className="w-[95%] h-[60%] flex justify-center bg-white absolute opacity-90 top-40"><Spinner /></div>}
         </div>
