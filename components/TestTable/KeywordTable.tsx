@@ -47,13 +47,30 @@ export default function KeywordTable({keywords,updateKeyword,manual}:any){
 
     if(!manual){
       let key = keywords.keywords?.filter((key:any) => key._id !== keyword?._id)
-      setKeyArr(key)
+      key.push(keyword)
+      setKeyArr(key);
+      updateKeyword(key)
+      setData(key)
     }else{
-      setKeyArr([...keyArr, keyword]);
-      console.log(keyArr)
+      if(keyword.aliases.includes(",")){
+        keyword.aliases = keyword.aliases.split(",")
+      }else{
+        keyword.aliases = [].push(keyword)
+      }
+
+      if(keyArr.length<1){
+        keyArr.push(keyword)
+        setKeyArr(keyword)
+      
+      }else{
+        setKeyArr([...keyArr, keyword]);
+      }
+      
+
+      updateKeyword(keyArr)
+      setData(keyArr)
     }
-    updateKeyword(keyArr)
-    setData(keyArr)
+  
   }
 
   const handleAddKeyword = (keyword:any) => {

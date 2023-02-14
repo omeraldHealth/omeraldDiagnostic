@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 
 const Tests = () => {
 
-  const [addTest,setAddTest] = useState(true);
+  const [addTest,setAddTest] = useState(false);
   const {diagnosticDetails} = useAuth()
 
   const handleAddTests = () => {

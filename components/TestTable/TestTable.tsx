@@ -45,8 +45,7 @@ const columns: ColumnsType<DataType> = [
         {keywords.map((param) => {
           return (
             <>
-             {console.log(param)}
-             <Tooltip placement="topLeft" title={param.aliases.join(",")}>
+             <Tooltip placement="topLeft" title={param.aliases}>
               <Tag className="my-1" color={"green"} key={param}>
                 {param.keyword.toUpperCase()}
               </Tag>

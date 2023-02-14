@@ -259,16 +259,21 @@ const   AddTests = ({setAddTest}:any) => {
     setReportTypes(state?.reportTypes[selectedType?.id])
   }
 
-  const handleSaveTest = async () => {
+  const handleSaveTest = async (manual:any) => {
     let test = {
       "testName":testName,
       "keywords":keywords
     }
-    setReportTypes(test)
-    console.log(reportTypes)
-    if(!diagnosticDetails?.tests.some(obj => obj._id === reportTypes._id)){
+  
+    if(manual){
+      diagnosticDetails?.tests?.push(test)
+    }
+    else{
+   
       diagnosticDetails?.tests?.push(reportTypes)
     }
+    console.log(diagnosticDetails?.tests)
+
     const resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)
 
     if(resp?.status === 200){
@@ -424,10 +429,10 @@ const   AddTests = ({setAddTest}:any) => {
              {isUploadReportSelected === "yes" ?
                  <div>  
                     <p className="m-2 font-bold text-sm">{reportTypes?.testName} Report</p>
-                    <KeywordTable keywords={reportTypes} updateKeyword={handleUpdateKeyword} manual={false} />
+                    <KeywordTable keywords={reportTypes} updateKeyword={setKeywords} manual={false} />
                     <section className="flex justify-between">
                       <button onClick={handleBack} className="bg-gray-500 text-white px-4 py-2 text-sm rounded-md">Back</button>
-                      <button onClick={handleSaveTest} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
+                      <button onClick={()=>{handleSaveTest(false)}} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
                     </section>
                  </div>
                  :
@@ -440,7 +445,7 @@ const   AddTests = ({setAddTest}:any) => {
                     <KeywordTable keywords={sampleKeyword} updateKeyword={setKeywords} manual={true} />
                     <section className="flex justify-between">
                       <button onClick={handleBack} className="bg-gray-500 text-white px-4 py-2 text-sm rounded-md">Back</button>
-                      <button onClick={handleSaveTest} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
+                      <button onClick={()=>{handleSaveTest(true)}} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
                     </section>
                  </div>
             }

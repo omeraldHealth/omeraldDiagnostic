@@ -3,16 +3,34 @@ import { bannerDashboard, doctorAvatar } from "@/components/core/images/image";
 import {CategoryScale} from 'chart.js';
 import { useAuth } from "@/lib/auth";
 import { BeakerIcon, ChartBarIcon, InformationCircleIcon, ShareIcon } from "@heroicons/react/20/solid";
-import React from "react";
+import React, { useEffect } from "react";
 import ReportSharedVsTime2 from "@/components/Graphs/ReportSharedVsTime2";
 import Chart from 'chart.js/auto';
 import Link from "next/link";
 import { Tooltip } from "antd";
+import { getReports } from "@/lib/db";
 
 const Dashboard = () => {
 
-  const {diagnosticDetails, signOut } = useAuth();
+  const {diagnosticDetails, signOut ,user} = useAuth();
   Chart.register(CategoryScale);
+
+  useEffect(() => {
+    (async () => {
+      const token = await user?.getIdToken();
+
+      const resp = await getReports(
+        token as string,
+        user?.phoneNumber as string
+      );
+      // console.log(resp);
+      if (resp.status === 200) {
+        if(diagnosticDetails?.reports?.length<1){
+          diagnosticDetails?.reports.push(resp.data)
+        }
+      }
+    })();
+  }, []);
 
   return <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[94vh]">
     <section className="relative">
