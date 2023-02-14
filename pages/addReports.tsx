@@ -183,9 +183,9 @@ const AddReports = () => {
       const uploadedReportDetail = await getUploadedReportDetails(
         file
       );
-      console.log(uploadedReportDetail)
+
       if (!uploadedReportDetail) {
-        errorAlert("Error uploaded file")
+        // errorAlert("Error uploaded file")
       } else {
         reportDetails.reportUrl = uploadedReportDetail.location;
 
