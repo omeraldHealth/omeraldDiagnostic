@@ -9,7 +9,7 @@ const Profile = () => {
   return (
     <div className="p-4">
         <div className="w-[70vw] bg-white h-[70vh] m-10 p-10">
-          <img src={diagnosticDetails?.brandDetails[0].brandLogo} className="w-[120px]  h-[120px] rounded-full " alt="logo"/>
+          <img src={diagnosticDetails?.brandDetails[0].brandLogo} className="w-[120px]  h-[120px] rounded-full border-2 border-gray-e00" alt="logo"/>
           
           <section className="flex">
           <section className="w-[50%] grid grid-cols-3 border-r-2 border-gray-100">
@@ -26,7 +26,7 @@ const Profile = () => {
                 <p className="font-light my-6 lowercase">{diagnosticDetails?.phoneNumber} </p>  
                 <p className="font-light my-6 lowercase">{diagnosticDetails?.email} </p> 
                 <p className="font-light my-6">{diagnosticDetails?.branch} </p> 
-                <p className="font-light my-6 lowercase">{diagnosticDetails?.address} </p>
+                <p className="font-light my-6 lowercase overflow-hidden max-w-[100%] max-h-[3vh]">{diagnosticDetails?.address} </p>
                 <p className="font-light my-6">{diagnosticDetails?.tests?.length} </p> 
                 {/* <p className="font-light my-6">{diagnosticDetails?.brandDetails?.facebookUrl ? diagnosticDetails?.brandDetails?.facebookUrl: "Not found"} </p> 
                 <p className="font-light my-6">{diagnosticDetails?.brandDetails?.instaUrl ? diagnosticDetails?.brandDetails?.facebookUrl : "Not found"} </p>  */}
@@ -41,8 +41,8 @@ const Profile = () => {
                 <p className="font-bold my-6">Manager Signature :</p>
               </section>
               <section className="mt-4 col-span-2">
-                <a target={"_blank"} src={diagnosticDetails?.brandDetails?.facebookUrl} className="font-light my-6 block">{diagnosticDetails?.brandDetails?.facebookUrl ? diagnosticDetails?.brandDetails?.facebookUrl: "Not found"} </a> 
-                <a target={"_blank"} src={diagnosticDetails?.brandDetails?.instaUrl} className="font-light my-6">{diagnosticDetails?.brandDetails?.instaUrl ? diagnosticDetails?.brandDetails?.facebookUrl : "Not found"} </a> 
+                <a target={"_blank"} href={diagnosticDetails?.brandDetails[0].facebookUrl} className="font-light my-6 block text-blue-400">{diagnosticDetails?.brandDetails[0].facebookUrl ? diagnosticDetails?.brandDetails[0].facebookUrl: "Not found"} </a> 
+                <a target={"_blank"} href={diagnosticDetails?.brandDetails[0].instaUrl} className="font-light my-6  text-blue-400">{diagnosticDetails?.brandDetails[0].instaUrl ? diagnosticDetails?.brandDetails[0].facebookUrl : "Not found"} </a> 
                 <p className="font-light my-6 lowercase">{diagnosticDetails?.managersDetail[0].managerName} </p> 
                 <p className="font-light my-6 lowercase">{diagnosticDetails?.managersDetail[0].managerRole} </p> 
                 <img className="w-[40px] h-[40px]" src={diagnosticDetails?.managersDetail[0].managerSignature} alt="signature" /> 

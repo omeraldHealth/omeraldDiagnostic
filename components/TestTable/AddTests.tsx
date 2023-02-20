@@ -269,7 +269,6 @@ const   AddTests = ({setAddTest}:any) => {
       diagnosticDetails?.tests?.push(test)
     }
     else{
-   
       diagnosticDetails?.tests?.push(reportTypes)
     }
     console.log(diagnosticDetails?.tests)
