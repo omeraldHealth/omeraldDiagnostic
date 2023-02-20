@@ -44,32 +44,23 @@ export default function KeywordTable({keywords,updateKeyword,manual}:any){
   const [keyArr,setKeyArr] = useState([])
 
   const handle = (keyword:any) => {
-
-    if(!manual){
-      let key = keywords.keywords?.filter((key:any) => key._id !== keyword?._id)
-      key.push(keyword)
-      setKeyArr(key);
-      updateKeyword(key)
-      setData(key)
-    }else{
+    if(keyword){
       if(keyword.aliases.includes(",")){
         keyword.aliases = keyword.aliases.split(",")
       }else{
-        keyword.aliases = [].push(keyword)
+        keyword.aliases = [keyword.aliases]
       }
-
-      if(keyArr.length<1){
-        keyArr.push(keyword)
-        setKeyArr(keyword)
-      
-      }else{
-        setKeyArr([...keyArr, keyword]);
-      }
-      
-
-      updateKeyword(keyArr)
-      setData(keyArr)
+    } 
+    let key;
+    if(!manual){
+     key = keywords.keywords?.filter((key:any) => key._id !== keyword?._id)
+    }else{
+       key = keyArr?.filter((key:any) => key.keyword !== keyword?.keyword)
     }
+    key.push(keyword)
+    setKeyArr(key);
+    setData(key)
+    updateKeyword(key)
   
   }
 
@@ -100,18 +91,18 @@ export default function KeywordTable({keywords,updateKeyword,manual}:any){
       title: 'Aliases',
       key: 'aliases',
       dataIndex: 'aliases',
-      render: (text) => <a>{text}</a>,
-      // render: (_, { aliases}) => (
-      //   <>
-      //     {aliases.map((param) => {
-      //       return (
-      //         <>
-      //             <span>{param},</span>
-      //         </>
-      //       );
-      //     })}
-      //   </>
-      // ),
+      // render: (text) => <a>{text}</a>,
+      render: (_, { aliases}) => (
+        <>
+          {aliases && aliases.length > 0 && aliases.map((param) => {
+            return (
+              <>
+                  <span>{param},</span>
+              </>
+            );
+          })}
+        </>
+      ),
     },
     {
       title: 'Action',
@@ -127,8 +118,10 @@ export default function KeywordTable({keywords,updateKeyword,manual}:any){
   return (
     <div className="w-[100%] bg-white h-auto min-h-[20vh] sm:min-h-[40vh] rounded-lg p-4">
       {manual && <FormModal handle={handle} record={keywords} manual={true} />}
-      <Table columns={columns} dataSource={data} />
-   
+      <div className='max-h-[35vh] overflow-y-scroll'>
+        <Table columns={columns} dataSource={data} />
+      </div>
+    
     </div>
   )
 }

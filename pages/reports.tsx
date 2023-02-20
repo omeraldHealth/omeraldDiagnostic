@@ -33,7 +33,7 @@ const Reports = () => {
   };
 
   return (
-    <div className="p-8 sm:p-2 xl:p-6">
+    <div className="p-8 sm:p-2 xl:p-6 bg-signBanner">
       <ReportsTable reports={reportList} onSelectReport={handleSelectReport} />
     </div>
   );

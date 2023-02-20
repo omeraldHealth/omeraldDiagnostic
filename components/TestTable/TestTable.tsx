@@ -105,7 +105,6 @@ export default function TestTable({tests}:any){
   return (
     <div className="w-[100%] bg-white h-auto min-h-[30vh] sm:min-h-[60vh] my-10 rounded-lg p-4">
       {tests ? <Table columns={columns} dataSource={tests} />: <LoaderComp/>}
-    
     </div>
   )
 }

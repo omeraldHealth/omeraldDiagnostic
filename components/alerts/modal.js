@@ -26,7 +26,8 @@ export const FormModal = ({record,handle,manual}) => {
     setTimeout(() => {
       setOpen(false);
       setConfirmLoading(false);
-    }, 2000);
+    }, 200);
+    console.log(record)
     handle(record)
   };
 
@@ -39,7 +40,6 @@ export const FormModal = ({record,handle,manual}) => {
     record[e.target.name] = e.target.value
     setKeyWord(Object.keys(record).map(key => [key, record[key]]));
   }
-
 
   return (
     <>

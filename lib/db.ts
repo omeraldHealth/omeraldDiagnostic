@@ -2,8 +2,8 @@ import axios, { AxiosError } from "axios";
 import { ReportDetails, UserDetails } from "middleware/models.interface";
 import { generateUploadURL } from "./s3";
 
-// const url = "http://localhost:4000"
-const url = "https://parser-api.onrender.com"
+const url = "http://localhost:4000"
+// const url = "https://parser-api.onrender.com"
 
 export async function getUserDetails(token: string, userId: string) {
   try {

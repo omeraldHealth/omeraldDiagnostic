@@ -23,7 +23,7 @@ import Link from "next/link";
 import AddTestDetailsForm from "../BasicReportDetailsForm/AddTestDetailsForm";
 import ReportsTable from "../ReportsTable/ReportsTable.component";
 import KeywordTable from "./KeywordTable";
-import { successAlert } from "../alerts/alert";
+import { errorAlert, successAlert } from "../alerts/alert";
 import {AddTestModal} from "../alerts/addTest"
 import { FormModal } from "../alerts/modal";
 
@@ -113,9 +113,9 @@ const   AddTests = ({setAddTest}:any) => {
   >(null);
   const [step,setStep] = useState(1)
   const router = useRouter()
-  const [reportTypes,setReportTypes] = useState({});
   const [testName,setTest] = useState({})
   const [keywords,setKeywords] = useState([])
+  const [showNext,setShowNext] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -238,7 +238,7 @@ const   AddTests = ({setAddTest}:any) => {
   const handleUploadReportChange = (e: any) => {
     setIsUploadReportSelected(e.target.value);
    
-    setReportTypes(state.reportTypes[selectedType?.id])
+    // setReportTypes(e.id)
   };
 
   const handleBack = () => {
@@ -255,34 +255,88 @@ const   AddTests = ({setAddTest}:any) => {
 
 
   const handleTestChange = (e:any) =>{
+    setTest(e.name)
     setSelectedType(e)
-    setReportTypes(state?.reportTypes[selectedType?.id])
+    // console.log(state.reportTypes[e.id])
+    // setReportTypes(e.id)
+    // console.log(e.id)
+    // console.log(reportTypes)
+    // if(reportTypes){
+    //   setShowNext(true)
+    // }
+
   }
 
   const handleSaveTest = async (manual:any) => {
     let test = {
       "testName":testName,
       "keywords":keywords
-    }
+    } 
+    console.log(manual)
+    if(!manual){
+      if(!diagnosticDetails?.tests.some(e => e.testName === test.testName) && test.keywords.length>0){
+        diagnosticDetails?.tests?.push(test)
+        const resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)  
+        if(resp?.status === 200){
+          setAddTest(false)
+          setCurrentStep((current) =>
+          current.id == 3 ? current : steps[current.id]
+        );
+        }
+      }else if(diagnosticDetails?.tests.length == 0){
+        if(keywords.length<1){
+          test.keywords = state.reportTypes[selectedType.id].keywords
+        }
+        diagnosticDetails?.tests?.push(test)
+        const resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)  
+        if(resp?.status === 200){
+          setAddTest(false)
+          setCurrentStep((current) =>
+          current.id == 3 ? current : steps[current.id]
+        );
+        }
+      }
+      else{
+        if(keywords.length<1){
+          test.keywords = state.reportTypes[selectedType.id].keywords
+        }
+        
+        diagnosticDetails?.tests.forEach(e => {
+            if(e.testName === testName){
+              e.keywords = test.keywords
+            }
+        })
   
-    if(manual){
-      diagnosticDetails?.tests?.push(test)
-    }
-    else{
-      diagnosticDetails?.tests?.push(reportTypes)
-    }
-    console.log(diagnosticDetails?.tests)
-
-    const resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)
-
-    if(resp?.status === 200){
-      setAddTest(false)
-      setCurrentStep((current) =>
-      current.id == 3 ? current : steps[current.id]
-    );
+       const resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)  
+        if(resp?.status === 200){
+          setAddTest(false)
+          setCurrentStep((current) =>
+          current.id == 3 ? current : steps[current.id]
+        );
+        }
+      }
+    }else{
+      console.log(diagnosticDetails?.tests.some(e => e.testName === test.testName))
+      if(diagnosticDetails?.tests.some(e => e.testName === test.testName)){
+        diagnosticDetails?.tests.forEach(e => {
+          if(e.testName === testName){
+            e.keywords = test.keywords
+          }
+      })
+      }else{
+        diagnosticDetails?.tests?.push(test)
+      }
+      console.log(diagnosticDetails?.tests)
+      const resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)  
+      if(resp?.status === 200){
+        setAddTest(false)
+        setCurrentStep((current) =>
+        current.id == 3 ? current : steps[current.id]
+      );
+      }
     }
   }
-
+   
   const handleUpdateKeyword = async (keywords:any) => {
     // handleSaveTest()
   }
@@ -308,10 +362,7 @@ const   AddTests = ({setAddTest}:any) => {
     "normalRange":" ",
     "aliases":" "
   }
-
-
-
-    return (
+  return (
       <div className="max-h-auto h-[75vh] sm:h-[85vh] md:h-[80vh] w-[100%] sm:w-[94%] mt-6 lg:w-[75vw] relative flex flex-col xl:w-[65vw] xl:h-[70vh] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
         <div id="steps" className="rounded-md bg-slate-50 w-full p-4 mb-4">
           {steps.map((step, index) => (
@@ -411,14 +462,10 @@ const   AddTests = ({setAddTest}:any) => {
                                  <AddTestModal handleTestName={handleTestName} />
                              </div>
                            )}
-                           {selectedType?.id > -1  && 
-                           <>
-                            { reportTypes && isUploadReportSelected === "yes" &&
+                           {selectedType?.id > -1 && isUploadReportSelected === "yes" &&
                              <section className="flex justify-end">
                                    <button onClick={handleNext} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Next</button>
                              </section>
-                            }
-                           </>
                            }
                </div>
            </div>
@@ -427,8 +474,8 @@ const   AddTests = ({setAddTest}:any) => {
              <>
              {isUploadReportSelected === "yes" ?
                  <div>  
-                    <p className="m-2 font-bold text-sm">{reportTypes?.testName} Report</p>
-                    <KeywordTable keywords={reportTypes} updateKeyword={setKeywords} manual={false} />
+                    <p className="m-2 font-bold text-sm">{testName} Report</p>
+                    <KeywordTable keywords={state.reportTypes[selectedType?.id]} updateKeyword={setKeywords} manual={false} />
                     <section className="flex justify-between">
                       <button onClick={handleBack} className="bg-gray-500 text-white px-4 py-2 text-sm rounded-md">Back</button>
                       <button onClick={()=>{handleSaveTest(false)}} className="bg-indigo-700 text-white px-4 py-2 text-sm rounded-md">Save Test type</button>
@@ -464,7 +511,7 @@ const   AddTests = ({setAddTest}:any) => {
           {state.loading && <div className="w-[95%] h-[60%] flex justify-center bg-white absolute opacity-90 top-40"><Spinner /></div>}
         </div>
       </div>
-    );
+  );
 };
 
 export default AddTests;

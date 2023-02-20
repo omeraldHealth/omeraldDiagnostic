@@ -32,7 +32,7 @@ const Dashboard = () => {
     })();
   }, []);
 
-  return <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[94vh]">
+  return <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[94vh] bg-signBanner">
     <section className="relative">
       <img src={bannerDashboard} className="w-[100%] h-[20vh] sm:h-auto" alt="dashboard-banner" /> 
       <p className="absolute top-5 left-[25%] xl:left-80 font-light text-white">Welcome {diagnosticDetails?.fullName}!</p>

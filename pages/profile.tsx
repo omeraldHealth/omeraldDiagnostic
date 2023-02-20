@@ -7,8 +7,8 @@ const Profile = () => {
 
   const {diagnosticDetails} = useAuth()
   return (
-    <div className="p-4">
-        <div className="w-[70vw] bg-white h-[70vh] m-10 p-10">
+    <div className="p-4 bg-signBanner">
+        <div className="w-[70vw] bg-white h-[70vh] m-auto my-10 p-10">
           <img src={diagnosticDetails?.brandDetails[0].brandLogo} className="w-[120px]  h-[120px] rounded-full border-2 border-gray-e00" alt="logo"/>
           
           <section className="flex">
