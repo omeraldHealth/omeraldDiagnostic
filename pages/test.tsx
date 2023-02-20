@@ -2,6 +2,7 @@
 import AddTests from "@/components/TestTable/AddTests";
 import TestTable from "@/components/TestTable/TestTable";
 import { useAuth } from "@/lib/auth";
+import { updateTests } from "@/lib/db";
 import { useAmp } from "next/amp";
 import React, { useEffect, useState } from "react";
 
@@ -9,9 +10,20 @@ const Tests = () => {
 
   const [addTest,setAddTest] = useState(false);
   const {diagnosticDetails} = useAuth()
+  const [tests,setTests] = useState(diagnosticDetails?.tests)
 
   const handleAddTests = () => {
     setAddTest(!addTest)
+  }
+
+  const handleRemove = async (e:any) => {
+    let x = diagnosticDetails?.tests.filter(test => test._id !== e._id)
+    diagnosticDetails["tests"] = x;
+
+    const resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)  
+    if(resp?.status === 200){
+      setTests(diagnosticDetails?.tests)
+    }
   }
 
   return (
@@ -39,7 +51,7 @@ const Tests = () => {
          </div>
         </div>
         <div className="sm:flex sm:items-center">
-          {!addTest ? <TestTable tests={diagnosticDetails?.tests} /> : <AddTests setAddTest={setAddTest} />}
+          {!addTest ? <TestTable handleRemove={handleRemove} tests={tests} /> : <AddTests setAddTest={setAddTest} />}
         </div>
       </div>
     </div>
