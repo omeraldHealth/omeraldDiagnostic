@@ -58,7 +58,6 @@ function useFirebaseAuth() {
     if (resp.status == 200 && resp.data != null) {
       setDiagnosticDetails(resp.data);
       router.push(redirect);
-     
     } else if (resp.status == 404) {
       router.push("/onboard");
     }

@@ -12,6 +12,7 @@ import { imageWidthAndHeight } from "@/utils/helper";
 import { IManagerDetails, UserDetails } from "middleware/models.interface";
 import Loading from "@/components/core/LoadingIcon/Loading.component";
 import { LoaderComp } from "@/components/alerts/loader";
+import { errorAlert } from "@/components/alerts/alert";
 
 type BasicDetailsForm = {
   fullName: string;
@@ -190,6 +191,8 @@ const Onboard = () => {
 
     if (res.status === 409) {
       // console.log("changing route");
+      setIsLoading(false);
+      errorAlert("Error creating profile")
       router.push("/");
     }
   };
@@ -211,7 +214,7 @@ const Onboard = () => {
 
   return (
     <div className="grid md:place-content-center w-[100vw] h-[100vh] bg-signBanner" >
-      <div className="h-[80vh] w-[94%] m-auto lg:w-[75vw] relative flex flex-col xl:w-[65vw] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
+      <div className="max-h-auto h-[75vh] sm:h-[85vh] md:h-[80vh] w-[94%] m-auto lg:w-[75vw] relative flex flex-col xl:w-[65vw] xl:h-[70vh] shadow-lg bg-white rounded-md border-2 p-4 sm:p-10">
         <div id="steps" className="rounded-md bg-slate-50 w-full p-4 mb-4">
           {steps.map((step, index) => (
             <Fragment key={index}>

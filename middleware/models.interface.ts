@@ -7,13 +7,13 @@ export interface UserDetails {
   phoneNumber: string;
   branch: string;
   email: string;
-  sharedReport: string[];
+  sharedReport?: string[];
   address?: string;
   reports?: string[];
   updatedAt?: Date;
   brandDetails: BrandDetailsForm;
   managersDetail: IManagerDetails[];
-  activities: ActivityDetails[];
+  activities?: ActivityDetails[];
 }
 export type BrandDetailsForm = {
   brandLogo: string;
