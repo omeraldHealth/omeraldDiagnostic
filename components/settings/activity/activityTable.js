@@ -1,7 +1,10 @@
-import { Table } from 'antd'
+import { TrashIcon } from '@heroicons/react/20/solid'
+import { Space, Table } from 'antd'
 import React from 'react'
 
 export const SettingsTable = (data) => {
+
+  const handleRemove = () => {}
 
   const activities = [
     [
@@ -23,6 +26,7 @@ export const SettingsTable = (data) => {
             key: 'updatedTime',
             render: (text) => <a>{text}</a>,
         },
+     
     ],
     [
     {
@@ -41,7 +45,17 @@ export const SettingsTable = (data) => {
         title: 'ManagerSignature',
         dataIndex: 'managerSignature',
         key: 'managerSignature',
-        render: (text) => <a href={text} target={"_blank"} className="text-red-500">Signature</a>,
+        render: (text) => { return <img src={text} className="w-[100px] h-[50px]" alt="logo"/>}
+    },
+    {
+        title: 'Action',
+        dataIndex: 'action',
+        key: 'action',
+        render: (_, record) => (
+          <Space size="middle">
+               <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>
+          </Space>
+        ),
     },
     ],
     [
