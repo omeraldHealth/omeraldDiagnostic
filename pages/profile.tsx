@@ -11,30 +11,28 @@ const Profile = () => {
   const {diagnosticDetails} = useAuth()
   let [diagnostic,setDiagnostic] = useState(diagnosticDetails)
 
+  const record = {
+    "diagnosticName":diagnostic?.diagnosticName,
+    "email":diagnostic?.email,
+    "branch":diagnostic?.branch,
+    "address":diagnostic?.address,
+    "facebookUrl":diagnostic?.brandDetails[0].facebookUrl,
+    "instaUrl":diagnostic?.brandDetails[0].instaUrl,
+    "managerName":diagnostic?.managersDetail[0].managerName,
+    "manageRole":diagnostic?.managersDetail[0].managerRole
+  }
+
+
   const handle= async(e:any)=>{
-    if(!Object.values(e).some(e => {return (e === "" || e=== ' ')})){
-      let managersDetail = Object.assign(diagnosticDetails?.managersDetail[0],{"managerName":e.managerName,"managerRole":e.manageRole });
-      let brandDetails = Object.assign(diagnosticDetails?.brandDetails[0],{"facebookUrl":e.facebookUrl,"instaUrl":e.instaUrl });
-      setDiagnostic({...diagnostic,diagnosticName:e.diagnosticName,"email":e.email,address:e.address,branch:e.branch,address:e.address,brandDetails:[brandDetails],managersDetail:[managersDetail] })
-    }
-    console.log(diagnostic)
-    const resp = await updateTests(diagnostic,diagnosticDetails?.phoneNumber)  
+    let managersDetail = Object.assign(diagnostic?.managersDetail[0],{"managerName":e.managerName,"managerRole":e.manageRole });
+    let brandDetails = Object.assign(diagnostic?.brandDetails[0],{"facebookUrl":e.facebookUrl,"instaUrl":e.instaUrl });
+    setDiagnostic({...diagnostic,diagnosticName:e.diagnosticName,"email":e.email,address:e.address,branch:e.branch,address:e.address,brandDetails:[brandDetails],managersDetail:[managersDetail] })
+    const resp = await updateTests(diagnostic,diagnostic?.phoneNumber)  
     if(resp?.status === 200){
     }
   }
 
-  const record = {
-    "diagnosticName":diagnosticDetails?.diagnosticName,
-    // "phoneNumber":diagnosticDetails?.phoneNumber,
-    "email":diagnosticDetails?.email,
-    "branch":diagnosticDetails?.branch,
-    "address":diagnosticDetails?.address,
-    "facebookUrl":diagnosticDetails?.brandDetails[0].facebookUrl,
-    "instaUrl":diagnosticDetails?.brandDetails[0].instaUrl,
-    "managerName":diagnosticDetails?.managersDetail[0].managerName,
-    "manageRole":diagnosticDetails?.managersDetail[0].managerRole
-  }
-
+ 
 
   return (
     <div className="p-4 bg-signBanner">

@@ -107,7 +107,7 @@ const Dashboard = () => {
                     <img src={doctorAvatar} alt="user-avatar" className="w-10 rounded-full mr-4" />
                     <span>
                     <p className="text-light text-gray-600 mt-1">{activity.activity}</p>
-                    <p className="text-light text-indigo-600 mt-1">{activity.updatedTime?.toDateString()}</p>
+                    <p className="text-light text-indigo-600 mt-1">{activity.updatedTime}</p>
                     </span>
                   </span>
               </section>
