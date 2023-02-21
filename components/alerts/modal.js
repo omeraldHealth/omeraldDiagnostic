@@ -5,7 +5,7 @@ import { report } from 'process';
 import { useAuth } from '@/lib/auth';
 
 export const FormModal = ({record,handle,manual}) => {
-  console.log(record)
+
   const [open, setOpen] = useState(false);
   const {diagnosticDetails} = useAuth()
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -28,7 +28,7 @@ export const FormModal = ({record,handle,manual}) => {
       setOpen(false);
       setConfirmLoading(false);
     }, 200);
-    console.log(record)
+
     handle(record)
   };
 

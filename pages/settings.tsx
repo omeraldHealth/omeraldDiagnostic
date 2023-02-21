@@ -9,8 +9,8 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 const Setting = () => {
 
   return (
-    <div className="bg-signBanner">
-
+    <div className="w-[100%] h-[100vh] bg-signBanner">
+      
     </div>
   );
 };
