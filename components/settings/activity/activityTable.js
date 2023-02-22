@@ -30,22 +30,16 @@ export const SettingsTable = (data) => {
     ],
     [
     {
-      title: 'Manager Name',
+      title: 'Operator Name',
       dataIndex: 'managerName',
       key: 'managerName',
       render: (text) => <a className='text-blue-800 font-medium'>{text}</a>,
     },
     {
-        title: 'Manager Role',
+        title: 'Operator Role',
         dataIndex: 'managerRole',
         key: 'managerRole',
         render: (text) => <a>{text}</a>,
-    },
-    {
-        title: 'ManagerSignature',
-        dataIndex: 'managerSignature',
-        key: 'managerSignature',
-        render: (text) => { return <img src={text} className="w-[100px] h-[50px]" alt="logo"/>}
     },
     {
         title: 'Action',
@@ -84,10 +78,10 @@ export const SettingsTable = (data) => {
           render: (text) => <a>{text}</a>,
         },
         {
-          title: 'Branch Manager',
+          title: 'Branch Operator',
           dataIndex: 'branchManager',
           key: 'branchManager',
-          render: (text) => <a>{text}</a>,
+          render: (text) => <a>{text?.managerName}</a>,
         },
         {
           title: 'Action',
@@ -99,11 +93,67 @@ export const SettingsTable = (data) => {
             </Space>
           ),
       },
-        ]
+    ],
+    [
+      {
+        title: 'Pathologist Name',
+        dataIndex: 'name',
+        key: 'name',
+        render: (text) => <a className='text-blue-800 font-medium'>{text}</a>,
+      },
+      {
+          title: 'Pathologist Designation',
+          dataIndex: 'designation',
+          key: 'designation',
+          render: (text) => <a>{text}</a>,
+      },
+      {
+          title: 'Pathologist Signature',
+          dataIndex: 'signature',
+          key: 'signature',
+          render: (text) => <img src={text} className="w-[200px] h-[70px]" />,
+      },
+      {
+        title: 'Action',
+        dataIndex: 'branchAddress',
+        key: 'branchAddress  ',
+        render: (_, record) => (
+          <Space size="middle">
+               <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>
+          </Space>
+        ),
+    },
+  ], 
+  [
+    {
+      title: 'Subject',
+      dataIndex: 'subject',
+      key: 'subject',
+      render: (text) => <a className='text-blue-800 font-medium'>{text}</a>,
+    },
+    {
+        title: 'Query',
+        dataIndex: 'message',
+        key: 'message',
+        render: (text) => <a className='italic font-bold '>{text}</a>,
+    },
+    {
+        title: 'Branch',
+        dataIndex: 'branch',
+        key: 'branch',
+        render: (text) =><a className='text-blue-800 font-medium'>{text}</a>,
+    },
+    {
+      title: 'Query Date',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (text) => <a className='text-blue-800 font-medium'>{text}</a>,
+  },
+] 
 ]
 
   return (
-    <div className='max-h-[80%] overflow-y-scroll'>
+    <div className='max-h-[80%] overflow-auto'>
         <Table columns={activities[data.ind]} dataSource={data?.data}  pagination={false}  />
     </div>
   )

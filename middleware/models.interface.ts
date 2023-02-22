@@ -15,6 +15,7 @@ export interface UserDetails {
   brandDetails: BrandDetailsForm;
   managersDetail: IManagerDetails[];
   activities?: ActivityDetails[];
+  pathologistDetail?: IPathologistDetails[];
 }
 
 export type BrandDetailsForm = {
@@ -28,12 +29,27 @@ export type IManagerDetails = {
   managerSignature: string;
 };
 
+export type IPathologistDetails = {
+  name: string;
+  designation: string;
+  signature: string;
+};
+
 export type BranchDetail = {
   branchName: String,
   branchEmail: String,
   branchAddress: String,
   branchContact: String,
   branchManager: IManagerDetails,
+}
+
+export type Query = {
+  phoneNumber:String,
+  name:String,
+  email:String,
+  branch:String,
+  subject:String,
+  message:String
 }
 export interface DiagnosticUserSession {
   userId: string;

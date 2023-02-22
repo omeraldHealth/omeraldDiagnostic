@@ -12,10 +12,9 @@ const Setting = () => {
 
   return (
     <div className="w-[100%] h-[100%] bg-signBanner flex ">
-      <div className="w-[70vw] bg-white rounded-lg h-[70vh] m-auto my-10 p-10">
+      <div className="w-[80vw] bg-white rounded-lg h-[80vh] m-auto my-10 p-10">
         <SettingsTab />
       </div>
-   
     </div>
   );
 };

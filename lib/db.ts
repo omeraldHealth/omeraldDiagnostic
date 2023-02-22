@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
-import { ReportDetails, UserDetails } from "middleware/models.interface";
+import { Query, ReportDetails, UserDetails } from "middleware/models.interface";
 import { generateUploadURL } from "./s3";
 
-// const url = "http://localhost:4000"
-const url = "https://parser-api.onrender.com"
+const url = "http://localhost:4000"
+// const url = "https://parser-api.onrender.com"
 
 export async function getUserDetails(token: string, userId: string) {
   try {
@@ -126,6 +126,31 @@ export async function updateTests(
 ) {
   try {
     const resp = await axios.post(url+`/api/diagnostic/updateDiagnosticUser?userId=${userId}`, diagnosticUser,{
+      // headers: { Authorization: `Bearer ${token}` },
+    });
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response};
+  }
+}
+export async function createQuery(
+  contactData: Query
+) {
+  try {
+    const resp = await axios.post(url+`/api/diagnostic/createQuery`, contactData,{
+      // headers: { Authorization: `Bearer ${token}` },
+    });
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response};
+  }
+}
+
+export async function getQueries(
+  userId: String
+) {
+  try {
+    const resp = await axios.get(url+`/api/diagnostic/getQuery?userId=`+userId,{
       // headers: { Authorization: `Bearer ${token}` },
     });
     return { status: resp.status, data: resp.data };
