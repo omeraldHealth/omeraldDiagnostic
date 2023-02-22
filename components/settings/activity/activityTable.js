@@ -4,8 +4,6 @@ import React from 'react'
 
 export const SettingsTable = (data) => {
 
-  const handleRemove = () => {}
-
   const activities = [
     [
         {
@@ -42,12 +40,18 @@ export const SettingsTable = (data) => {
         render: (text) => <a>{text}</a>,
     },
     {
+      title: 'Operator Contact',
+      dataIndex: 'managerContact',
+      key: 'managerContact',
+      render: (text) => <a>{text}</a>,
+  },
+    {
         title: 'Action',
         dataIndex: 'managerSignature',
         key: 'managerSignature  ',
         render: (_, record) => (
           <Space size="middle">
-               <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>
+            {record?._id  &&  <a onClick={()=>{data.handle(record)}}><TrashIcon className='w-4 text-red-500' /></a>}
           </Space>
         ),
     },
@@ -89,7 +93,7 @@ export const SettingsTable = (data) => {
           key: 'branchAddress  ',
           render: (_, record) => (
             <Space size="middle">
-                 <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>
+             {record?._id && <a onClick={()=>{data.handle(record)}}><TrashIcon className='w-4 text-red-500' /></a>}
             </Space>
           ),
       },
@@ -119,7 +123,7 @@ export const SettingsTable = (data) => {
         key: 'branchAddress  ',
         render: (_, record) => (
           <Space size="middle">
-               <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>
+            {record._id &&   <a onClick={()=>{data.handle(record)}}><TrashIcon className='w-4 text-red-500' /></a>}
           </Space>
         ),
     },
@@ -153,7 +157,7 @@ export const SettingsTable = (data) => {
 ]
 
   return (
-    <div className='max-h-[80%] overflow-auto'>
+    <div className='h-[80%] overflow-y-auto'>
         <Table columns={activities[data.ind]} dataSource={data?.data}  pagination={false}  />
     </div>
   )

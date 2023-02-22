@@ -87,6 +87,7 @@ function useFirebaseAuth() {
   return {
     user,
     diagnosticDetails,
+    setDiagnosticDetails,
     loading,
     signIn,
     signOut,

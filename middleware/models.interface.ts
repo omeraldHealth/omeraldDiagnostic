@@ -26,7 +26,7 @@ export type BrandDetailsForm = {
 export type IManagerDetails = {
   managerName: string;
   managerRole: string;
-  managerSignature: string;
+  managerContact: string;
 };
 
 export type IPathologistDetails = {

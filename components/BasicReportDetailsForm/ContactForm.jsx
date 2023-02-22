@@ -38,7 +38,7 @@ export function   ContactForm({phoneNumber,diagnosticName,branchDetails,email,to
          disabled={branchDetails}
           type="text"
           name="branch"
-          value={branchDetails[0].branchName}
+          value={branchDetails[0]?.branchName}
           id="name"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         />
