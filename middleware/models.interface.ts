@@ -10,11 +10,13 @@ export interface UserDetails {
   sharedReport?: string[];
   address?: string;
   reports?: string[];
+  branchDetails?: BranchDetail[],
   updatedAt?: Date;
   brandDetails: BrandDetailsForm;
   managersDetail: IManagerDetails[];
   activities?: ActivityDetails[];
 }
+
 export type BrandDetailsForm = {
   brandLogo: string;
   facebookUrl?: string;
@@ -25,6 +27,14 @@ export type IManagerDetails = {
   managerRole: string;
   managerSignature: string;
 };
+
+export type BranchDetail = {
+  branchName: String,
+  branchEmail: String,
+  branchAddress: String,
+  branchContact: String,
+  branchManager: IManagerDetails,
+}
 export interface DiagnosticUserSession {
   userId: string;
   token: string;
@@ -71,4 +81,5 @@ export type ReportDetails = {
 export type ActivityDetails = {
   activity: string;
   updatedTime?: Date;
+  user:IManagerDetails
 };

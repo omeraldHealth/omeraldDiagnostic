@@ -49,8 +49,8 @@ export const SettingsTable = (data) => {
     },
     {
         title: 'Action',
-        dataIndex: 'action',
-        key: 'action',
+        dataIndex: 'managerSignature',
+        key: 'managerSignature  ',
         render: (_, record) => (
           <Space size="middle">
                <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>
@@ -61,22 +61,44 @@ export const SettingsTable = (data) => {
     [
         {
           title: 'Branch Name',
-          dataIndex: 'managerName',
-          key: 'managerName',
+          dataIndex: 'branchName',
+          key: 'branchName',
           render: (text) => <a className='text-blue-800 font-medium'>{text}</a>,
         },
         {
-            title: 'Manager Role',
-            dataIndex: 'managerRole',
-            key: 'managerRole',
+            title: 'Branch Email',
+            dataIndex: 'branchEmail',
+            key: 'branchEmail',
             render: (text) => <a>{text}</a>,
         },
         {
-            title: 'ManagerSignature',
-            dataIndex: 'managerSignature',
-            key: 'managerSignature',
-            render: (text) => <a href={text} target={"_blank"} className="text-red-500">Signature</a>,
+            title: 'Branch Contact',
+            dataIndex: 'branchContact',
+            key: 'branchContact',
+            render: (text) => <a>{text}</a>,
         },
+        {
+          title: 'Branch Address',
+          dataIndex: 'branchAddress',
+          key: 'branchAddress',
+          render: (text) => <a>{text}</a>,
+        },
+        {
+          title: 'Branch Manager',
+          dataIndex: 'branchManager',
+          key: 'branchManager',
+          render: (text) => <a>{text}</a>,
+        },
+        {
+          title: 'Action',
+          dataIndex: 'branchAddress',
+          key: 'branchAddress  ',
+          render: (_, record) => (
+            <Space size="middle">
+                 <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>
+            </Space>
+          ),
+      },
         ]
 ]
 

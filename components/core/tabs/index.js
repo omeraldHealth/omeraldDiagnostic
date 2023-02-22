@@ -15,7 +15,8 @@ export const SettingsTab = () => {
 
   const components = [
     <SettingsTable data={diagnosticDetails.activities} ind={0} />,
-    <SettingsTable data={diagnosticDetails.managersDetail} ind={1} />
+    <SettingsTable data={diagnosticDetails.managersDetail} ind={1} />,
+    <SettingsTable data={diagnosticDetails.branchDetails} ind={2} />
   ]
 
   return (
