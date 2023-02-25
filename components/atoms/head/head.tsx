@@ -13,10 +13,6 @@ const Head: FC<HeadProps> = ({ title = 'Omerald Diagnostic', description = 'Help
 		<link rel='apple-touch-icon' href='/static/touch-icon.png' />
 		<link rel='mask-icon' href='/static/favicon-mask.svg' color='#49B882' />
 		<link rel='icon' href={ogImage} />
-		<link
-			href='https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap'
-			rel='stylesheet'
-		/>
 		<meta property='og:url' content={url} />
 		<meta property='og:title' content={title} />
 		<meta property='og:description' content={description} />
@@ -26,12 +22,6 @@ const Head: FC<HeadProps> = ({ title = 'Omerald Diagnostic', description = 'Help
 		<meta property='og:image' content={ogImage} />
 		<meta property='og:image:width' content='1200' />
 		<meta property='og:image:height' content='630' />
-		<link
-			rel='stylesheet'
-			href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css'
-			integrity='sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=='
-			crossOrigin='anonymous'
-		/>
 	</NextHead>
 )
 

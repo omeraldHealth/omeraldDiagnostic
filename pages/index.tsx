@@ -1,14 +1,12 @@
-import { Inter } from 'next/font/google'
 import { Fragment } from 'react'
 import { Head } from '@components/atoms'
-
-const inter = Inter({ subsets: ['latin'] })
+import { PageTemplate } from '@components/templates/pageTemplate'
 
 export default function Home() {
   return (
     <Fragment>
 			<Head title={'Omerald Diagnostic'} />
-			{/* <PageTemplate navigation={<NavigationBar />} footer={<Footer />}></PageTemplate> */}
+      <PageTemplate>Saif</PageTemplate>
 		</Fragment>
   )
 }
