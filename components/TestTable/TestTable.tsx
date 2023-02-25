@@ -96,7 +96,8 @@ export default function TestTable({tests,handleRemove}:any){
           {sampleType?.keywords.map((param) => {
             return (
               <>
-              <Popover content={param.aliases} title={sampleType.sampleName}>
+              {console.log(sampleType)}
+              <Popover content={param.aliases} title={"Aliases"}>
                 <Tag className="my-1" color={"green"} key={param}>
                   {param.keyword.toUpperCase()}
                 </Tag>
