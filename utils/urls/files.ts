@@ -1,0 +1,1 @@
+export const logoUrl = `https://omerald.s3.ap-northeast-1.amazonaws.com/logoIcon_hzhein.webp`
