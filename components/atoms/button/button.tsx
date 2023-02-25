@@ -5,3 +5,6 @@ export const SignInButton: FC<any> = ({children}:any) => (
 	<button className='bg-btnPrimary-600 text-white w-[132px] h-[52px] rounded-lg mx-8 font-sm text-light'>{children}</button>
 )
 
+export const SubscribeButton: FC<any> = ({children}:any) => (
+	<button className='bg-[#00E1F0] text-white w-auto px-4 h-[52px] mx-8 font-sm text-light'>{children}</button>
+)

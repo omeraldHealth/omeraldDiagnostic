@@ -33,7 +33,10 @@ module.exports = {
     extend: {
       backgroundImage: theme => ({
         'signBanner': "url('/images/sign-banner.png')",
-      })
+      }),
+      lineHeight: {
+        'copyRight': '26',
+      }
     },
   },
   plugins: [require("@tailwindcss/forms")],

@@ -18,8 +18,8 @@ export function Navbar({ children }:any) {
                 {navLinks.map(nav => <Link href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
             </section>
             <section className='flex items-center'>
-                <NavFont>{"Sign In"}</NavFont>
-                <SignInButton>{"Start Free"}</SignInButton>
+                <Link href={"/signIn"}><NavFont>{"Sign In"}</NavFont></Link>
+                <Link href={"/signIn"}><SignInButton>{"Start Free"}</SignInButton></Link>
             </section>
         </div>
 	)
