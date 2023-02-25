@@ -1,12 +1,10 @@
-import { BottomBanner, PageLayout } from '@components/organism'
-import React, { Fragment } from 'react'
+import { PageLayout } from '@components/organism'
+import React from 'react'
 
 export function PageTemplate({ children }:any) {
 	return (
         <PageLayout>
-			<Fragment>
-				<BottomBanner/>
-			</Fragment>
+			{children}
 		</PageLayout>
 	)
 }
