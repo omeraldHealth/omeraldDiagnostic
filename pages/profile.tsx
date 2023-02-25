@@ -71,14 +71,14 @@ const Profile = () => {
                 <p className="font-bold my-6">Instagram url :</p>
                 <p className="font-bold my-6">Manager Name :</p>
                 <p className="font-bold my-6">Manager Role :</p>
-                <p className="font-bold my-6">Manager Signature :</p>
+                {/* <p className="font-bold my-6">Manager Signature :</p> */}
               </section>
               <section className="mt-4 col-span-2">
                 <a target={"_blank"} href={diagnostic?.brandDetails[0].facebookUrl} className="font-light my-6 block text-blue-400">{diagnostic?.brandDetails[0].facebookUrl ? diagnostic?.brandDetails[0].facebookUrl: "Not found"} </a> 
                 <a target={"_blank"} href={diagnostic?.brandDetails[0].instaUrl} className="font-light my-6  text-blue-400">{diagnostic?.brandDetails[0].instaUrl ? diagnostic?.brandDetails[0].facebookUrl : "Not found"} </a> 
                 <p className="font-light my-6 lowercase">{diagnostic?.managersDetail[0].managerName} </p> 
                 <p className="font-light my-6 lowercase">{diagnostic?.managersDetail[0].managerRole} </p> 
-                <img className="w-[40px] h-[40px]" src={diagnostic?.managersDetail[0].managerSignature} alt="signature" /> 
+                {/* <img className="w-[40px] h-[40px]" src={diagnostic?.managersDetail[0].managerSignature} alt="signature" />  */}
               </section>
           </section>
           </section>

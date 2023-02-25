@@ -1,5 +1,5 @@
 import React from 'react'
-import { Space, Table, Tag, Tooltip } from 'antd';
+import { Popover, Space, Table, Tag, Tooltip } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { LoaderComp } from '../alerts/loader';
@@ -9,6 +9,11 @@ import { useAuth } from '@/lib/auth';
 interface DataType {
   key: string;
   testName: string;
+  sampleType: SampleType;
+}
+
+interface SampleType {
+  sampleName: string,
   keywords: any[];
 }
 
@@ -77,19 +82,25 @@ export default function TestTable({tests,handleRemove}:any){
       render: (text) => <a>{text}</a>,
     },
     {
+      title: 'Sample Type',
+      dataIndex: 'sampleType',
+      key: 'sampleType',
+      render: (text) => <a>{text.sampleName}</a>,
+    },
+    {
       title: 'Keywords (Hover to see aliases)',
-      key: 'keywords',
-      dataIndex: 'keywords',
-      render: (_, { keywords}) => (
+      key: 'sampleType',
+      dataIndex: 'sampleType',
+      render: (_, {sampleType}) => (
         <>
-          {keywords.map((param) => {
+          {sampleType?.keywords.map((param) => {
             return (
               <>
-               <Tooltip placement="topLeft" title={param.aliases}>
+              <Popover content={param.aliases} title={sampleType.sampleName}>
                 <Tag className="my-1" color={"green"} key={param}>
                   {param.keyword.toUpperCase()}
                 </Tag>
-              </Tooltip>
+              </Popover>
               </>
             );
           })}
@@ -102,7 +113,7 @@ export default function TestTable({tests,handleRemove}:any){
       render: (_, record) => (
         <Space size="middle">
           {/* <a onClick={()=>{handleEdit(record)}}><FormModal handle={handleEdit} record={record.keywords} manual={false} /></a> */}
-          <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>
+          {record?._id && <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>}
         </Space>
       ),
     },

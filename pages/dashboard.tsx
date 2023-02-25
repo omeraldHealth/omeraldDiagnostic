@@ -3,16 +3,18 @@ import { bannerDashboard, doctorAvatar } from "@/components/core/images/image";
 import {CategoryScale} from 'chart.js';
 import { useAuth } from "@/lib/auth";
 import { BeakerIcon, ChartBarIcon, InformationCircleIcon, ShareIcon } from "@heroicons/react/20/solid";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReportSharedVsTime2 from "@/components/Graphs/ReportSharedVsTime2";
 import Chart from 'chart.js/auto';
 import Link from "next/link";
 import { Tooltip } from "antd";
 import { getReports } from "@/lib/db";
+import { ReportDetails } from "middleware/models.interface";
 
 const Dashboard = () => {
 
   const {diagnosticDetails, signOut ,user} = useAuth();
+  const [reportList, setReportList] = useState<ReportDetails[]>([]);
   Chart.register(CategoryScale);
 
   useEffect(() => {
@@ -25,9 +27,7 @@ const Dashboard = () => {
       );
       // console.log(resp);
       if (resp.status === 200) {
-        if(diagnosticDetails?.reports?.length<1){
-          diagnosticDetails?.reports.push(resp.data)
-        }
+        setReportList(resp.data);
       }
     })();
   }, []);
@@ -61,7 +61,7 @@ const Dashboard = () => {
                   <InformationCircleIcon className="w-4 float-right" />
                </Tooltip>
              
-              <p className="font-bold text-2xl flex justify-center my-2 mt-4">{diagnosticDetails?.reports?.length ?? 0 }</p>
+              <p className="font-bold text-2xl flex justify-center my-2 mt-4">{reportList?.length ?? 0 }</p>
               <p className="font-light text-xs xl:text-sm">Reports Uploaded</p>
             </span>
         </section>
@@ -78,7 +78,7 @@ const Dashboard = () => {
             </span>
         </section>
         </Link>
-        <Link href={"/profile"}  passHref={true}>
+        <Link href={"/settings"}  passHref={true}>
           <section className="sm:w-[23%] xl:w-[20%] h-[12vh] sm:h-[14vh] p-2 flex justify-between bg-green-900 rounded-md text-white">
               <BeakerIcon className="w-10" />
               <span >

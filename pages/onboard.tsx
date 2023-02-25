@@ -107,7 +107,7 @@ const Onboard = () => {
   } = useForm<BasicDetailsForm>({
     resolver: yupResolver(schema),
   });
-  setValue("phoneNumber", user && user.phoneNumber ? user.phoneNumber : "");
+  // setValue("phoneNumber", user && user.phoneNumber ? user.phoneNumber : "");
 
   const {
     register: registerStep2,
@@ -161,6 +161,7 @@ const Onboard = () => {
     setIsLoading(true);
 
     let data: UserDetails = {
+      
       ...getValuesStep1(),
       brandDetails: {
         // ...getValuesStep2(),
@@ -179,6 +180,7 @@ const Onboard = () => {
           };
         })
       ),
+      phoneNumber: user && user.phoneNumber ? user.phoneNumber : ""
     };
 
     const token = (await user?.getIdToken()) as string;
@@ -256,7 +258,7 @@ const Onboard = () => {
           <h1 className="text-lg mb-5">{currentStep.name}</h1>
           {currentStep.id === 1 && (
             <form id="basicDetails" onSubmit={handleSubmit(handleOnContinue)}>
-              <section className="h-[44vh] xl:h-[46vh] overflow-y-auto">
+              <section className="">
               <InputGroup
                 labelName="Diagnostic Centre Name *"
                 inputName="diagnosticName"
@@ -448,7 +450,7 @@ const Onboard = () => {
                   />
                   <LabelNameandValue
                     labelName="Phone Number"
-                    value={getValuesStep1("phoneNumber")}
+                    value={ user && user.phoneNumber ? user.phoneNumber : ""}
                   />
                   <LabelNameandValue
                     labelName="Address"

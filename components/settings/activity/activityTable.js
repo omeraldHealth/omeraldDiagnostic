@@ -49,9 +49,9 @@ export const SettingsTable = (data) => {
         title: 'Action',
         dataIndex: 'managerSignature',
         key: 'managerSignature  ',
-        render: (_, record) => (
+        render: (_, record,index) => (
           <Space size="middle">
-            {record?._id  &&  <a onClick={()=>{data.handle(record)}}><TrashIcon className='w-4 text-red-500' /></a>}
+            {record?._id && (index !== 0 ? <a onClick={()=>{data.handle(record)}} ><TrashIcon className='w-4 text-red-500' /></a> :<p>Cannot delete Admin</p>)}
           </Space>
         ),
     },

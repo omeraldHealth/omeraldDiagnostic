@@ -3,7 +3,7 @@ import { ObjectId, Timestamp } from "mongodb";
 export interface UserDetails {
   diagnosticName: string;
   fullName: string;
-  tests: ReportTypes[];
+  tests: TestTypes[];
   phoneNumber: string;
   branch: string;
   email: string;
@@ -55,15 +55,16 @@ export interface DiagnosticUserSession {
   userId: string;
   token: string;
 }
-export type ReportTypes = {
+export type SampleTypes = {
   _id: ObjectId;
-  testName: string;
+  sampleName: string;
   keywords: ReportParamsType[];
 };
+
 export type TestTypes = {
   _id: ObjectId;
   testName: string;
-  keywords: ReportParamsType[];
+  sampleType: SampleTypes
 };
 export type ReportParamsType = {
   _id: ObjectId;

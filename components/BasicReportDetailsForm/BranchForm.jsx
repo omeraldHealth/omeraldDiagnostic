@@ -29,10 +29,10 @@ export function BranchForm({toggleManager}) {
           "branchManager": manager
         }
         diagnosticDetails?.branchDetails.push(query)
-        setDiagnosticDetails(diagnosticDetails)
-        console.log(diagnosticDetails)
+    
         const resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)
         if(resp.status === 200){
+          setDiagnosticDetails(diagnosticDetails)
           toggleManager(true)
         }
     }
