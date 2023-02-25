@@ -1,5 +1,14 @@
 import { ReactNode } from "react"
 
+export interface LogoProps {
+	width: number,
+	height: number,
+}
+
+export interface NavTextProps {
+	children: any
+}
+
 export interface HeadProps {
 	title?: string
 	description?: string

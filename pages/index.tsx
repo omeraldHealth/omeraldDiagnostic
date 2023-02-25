@@ -6,7 +6,8 @@ export default function Home() {
   return (
     <Fragment>
 			<Head title={'Omerald Diagnostic'} />
-      <PageTemplate>Saif</PageTemplate>
+      <PageTemplate>
+      </PageTemplate>
 		</Fragment>
   )
 }
