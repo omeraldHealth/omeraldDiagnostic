@@ -20,6 +20,7 @@ module.exports = {
       },
       btnSecondary: "#4438ca",
       orangeBg:"#FFA500",
+      darkBlue:"#0F0E2C",
       ...colors,
     },
     animation: {

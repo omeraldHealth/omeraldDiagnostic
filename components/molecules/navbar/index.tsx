@@ -12,7 +12,7 @@ const navLinks = [
 
 export function Navbar({ children }:any) {
 	return (
-        <div className='flex justify-between items-center'>
+        <div className='flex justify-between items-center px-[10%]'>
             <Logo width={80} height={80}/>
             <section className='flex'>
                 {navLinks.map(nav => <Link href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}

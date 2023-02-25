@@ -4,9 +4,9 @@ import { ReactElement } from "react";
 
 export default function PageLayout({children,}: {children: ReactElement}) {
   return (
-    <div className="h-[100vh] w-[100vw] px-[10%] pt-6">
+    <div className="w-[100vw] min-h-[100vh] pt-6">
       <Navbar />
-        <main>{children}</main>
+        <main >{children}</main>
       <Footer />
     </div>
   )

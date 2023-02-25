@@ -18,10 +18,10 @@ const navFooterLinks2 = [
     {"navLink":"/faq","navText":"FAQ"}
 ]
 
-export function Footer({ children }:any) {
+export function Footer() {
     const [email,setEmail] = useState("")
 	return (
-        <div className='absolute bottom-0 text-center w-[80%] h-[50vh] py-10'>
+        <div className='text-center w-[100%] h-[50vh] py-10 px-[10%]'>
             {/*Footer Links  */}
             <section className='h-[30vh] w-[100%] grid grid-cols-4 text-left gap-10'>
                 <section>
