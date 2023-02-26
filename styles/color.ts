@@ -23,6 +23,7 @@ type Neutral =
   | 'omerald_color_neutral__40'
   | 'omerald_color_positive_50'
   | 'omerald_color_bg__neutralDarker'
+  | 'omerald_color_text_info'
 export const neutral: Record<Neutral, string> = {
   white: '#ffffff',
   s50: '#f1f1f1',
@@ -49,6 +50,7 @@ export const neutral: Record<Neutral, string> = {
   omerald_color_bg__infoLightest: '#F4F9FF',
   omerald_color_text__infoDark: '#153F7A',
   omerald_color_positive_50: '#109E38',
+  omerald_color_text_info: '#757095',
 }
 
 type Primary = 'brand' | 'omerald_color_text__brandMedium'

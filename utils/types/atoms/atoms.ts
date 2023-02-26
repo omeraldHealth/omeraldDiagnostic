@@ -8,6 +8,10 @@ export interface LogoProps {
 export interface NavTextProps {
 	children: any
 }
+export interface FontTextProp {
+	style?:string,
+	children: any
+}
 
 export interface HeadProps {
 	title?: string

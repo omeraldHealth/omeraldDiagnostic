@@ -1,4 +1,5 @@
-import { SignInButton, SubscribeButton } from "@components/atoms/button/button"
+import { SignInButton } from "@components/atoms/button/button"
+import { BodyText_1, BodyText_2, HeaderText_1, TitleText } from "@components/atoms/font"
 import { Navbar } from "@components/molecules/navbar"
 import { useState } from "react"
 import {FaCheckCircle} from 'react-icons/fa'
@@ -10,23 +11,23 @@ export function LandingBanner() {
 	return (
         <div className={styles['landingBanner']}>
             <Navbar/>
-            <section className="w-[70%] 2xl:w-[55%] px-[12%] my-[5%]">
-                <p className="xl:font-[700] xl:text-[22px] xl:font-[700] xl:text-[22px]">Diagnostic Centre Solution in Single Platform.</p>
-                <p className="xl:font-[700] xl:text-[50px]">Managing Diagnostic  Centre has never been easier</p>
-                <p className="xl:font-[300] xl:text-[18px] pr-20 text-[#757095]">Omerald digitalises diagnostic centre's, offering website creation, test selection, report generation, and branding updates.</p>
-                <section className='flex w-[90%] p-2 mt-6 bg-white shadow-xl'>
+            <section className="w-[99%] sm:w-[90%] xl:w-[70%] 2xl:w-[65%] px-4 sm:px-8 lg:px-[12%]  my-[10%] lg:my-[5%]">
+                <TitleText style={"my-4"}>Diagnostic Centre Solution in Single Platform.</TitleText>
+                <HeaderText_1 style={"my-2"}>Managing Diagnostic  Centre has never been easier</HeaderText_1>
+                <BodyText_1 style="xl:w-[80%]">Omerald digitalises diagnostic centre's, offering website creation, test selection, report generation, and branding updates.</BodyText_1>
+                <section className='flex sm:w-[90%] p-1 sm:p-2 mt-6 bg-white shadow-xl'>
                     <span>
-                        <label className="ml-2 font-light text-sm">Register with your phone number</label>
+                        <label className="sm:ml-2 font-light text-gray-500 text-xs sm:text-sm">Register with your phone number</label>
                         <input className='w-[100%] border-4 border-black bg-slate-50 text-slate-600 border-none focus:ring-0' type={"text"} placeholder="+917288292092" id="phone" name="phone" value={phone} onChange={(e)=>{setPhone(e.target.value)}} />
                     </span>
-                      <SignInButton style={"bg-black text-white rounded-sm self-center w-[50%]"}>{"Subscribe"}</SignInButton>
+                      <SignInButton style={"bg-black text-white rounded-sm self-center w-[60%] sm:w-[50%]"}>{"Subscribe"}</SignInButton>
                 </section>
                 <span className="flex my-8">
-                    <p className="flex mr-4"><FaCheckCircle className="text-btnPrimary-600 self-center mr-2 "/> Free Register</p>
-                    <p className="flex mx-4"><FaCheckCircle className="text-btnPrimary-600 self-center mr-2 "/>Great Service</p>
+                    <span className="flex mr-4"><FaCheckCircle className="text-btnPrimary-600 self-center mr-2 "/><BodyText_2 style="self-center">Free Register</BodyText_2></span>
+                    <span className="flex"><FaCheckCircle className="text-btnPrimary-600 self-center mr-2 "/><BodyText_2 style="self-center">Great Service</BodyText_2></span>
                 </span>
             </section>
         </div>
-        )
+    )
 }
 
