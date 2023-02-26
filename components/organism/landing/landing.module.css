@@ -3,8 +3,8 @@
     height: 110vh;
     background-image: url("../landing/background.jpg");
     background-size: cover;
-    background-position-y: 1%;
-    padding-top: 6vh;
+    background-position-y: 0.5%;
+    padding-top: 3vh;
 }
 
 .howItWorks{

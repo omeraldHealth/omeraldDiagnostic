@@ -57,7 +57,7 @@ export function BlogContainer() {
             {/* Header */}
             <section className='flex justify-between my-10'>
                 <p className='font-bold text-3xl'>Our Latest Blog Posts</p>
-                <a href={"https://blog.omerald.com/articles"} target="_blank"><SignInButton style={"w-[10vw] text-slate-300"}>{"See All Blog posts"}</SignInButton></a>
+                <a href={"https://blog.omerald.com/articles"} target="_blank"><SignInButton style={"w-[14vw] text-slate-300"}>{"See All Blog posts"}</SignInButton></a>
             </section>
             <section className='flex gap-20'>
                 <section className='flex col-span-2 gap-20'>
