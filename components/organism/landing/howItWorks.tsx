@@ -10,7 +10,7 @@ export function HowItWorks() {
                     <p className='text-[#5D5FEF] my-6 lg:my-0 uppercase font-bold text-sm'>How Omerald Helps You</p>
                     <p className='text-[37px] my-6 lg:my-0 font-[600]'>Simplifying Diagnostic Center Operations</p>
                     <p className='text-[#64607D] my-6 lg:my-0 font-light'>Omerald streamlines test selection, report generation, and branding updates for diagnostic centers</p>
-                    <SignInButton style="hidden my-6 lg:my-0 lg:block rounded-full shodow-md my-4 mx-0">{"Get Started"}</SignInButton>
+                    <SignInButton style="hidden my-6 lg:my-4 lg:block rounded-full shodow-md my-4 mx-0">{"Get Started"}</SignInButton>
                 </section>
                 <section></section>
                 <section className='hidden lg:block  text-left pl-[20%] pr-[20%] pt-[20%]'>

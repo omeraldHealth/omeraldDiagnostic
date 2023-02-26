@@ -22,7 +22,7 @@ export function Navbar() {
             </section>
             <section className='lg:flex items-center'>
                <span className='lg:flex'><Link href={"/signIn"}><NavFont>{"Sign In"}</NavFont></Link></span>
-               <span className='hidden lg:flex'><Link href={"/signIn"}><SignInButton>{"Start Free"}</SignInButton></Link></span>
+               <span className='hidden lg:flex'><Link href={"/signIn"}><SignInButton style="mx-8">{"Start Free"}</SignInButton></Link></span>
             </section>
         </div>
 	)
