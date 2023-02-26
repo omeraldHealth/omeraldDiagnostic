@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 export function BottomBanner() {
@@ -9,7 +10,7 @@ export function BottomBanner() {
                 <p className='font-light text-md text-white font-sans'>Digital solutions for diagnostic centre</p>
             </section>
             <section className='flex '>
-                <button className='bg-btnPrimary-600 w-[500px] text-white uppercase h-[20%] self-center'>Login</button> 
+               <button className='bg-btnPrimary-600 w-[500px] text-white uppercase h-[20%] self-center'><a >Login</a></button> 
             </section>
         </div>
         )

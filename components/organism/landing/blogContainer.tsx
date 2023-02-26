@@ -57,13 +57,13 @@ export function BlogContainer() {
             {/* Header */}
             <section className='flex justify-between my-10'>
                 <p className='font-bold text-3xl'>Our Latest Blog Posts</p>
-                <Link href={"/"}><SignInButton style={"w-[10vw] text-slate-300"}>{"See All Blog posts"}</SignInButton></Link>
+                <a href={"https://blog.omerald.com/articles"} target="_blank"><SignInButton style={"w-[10vw] text-slate-300"}>{"See All Blog posts"}</SignInButton></a>
             </section>
             <section className='flex gap-20'>
                 <section className='flex col-span-2 gap-20'>
                 {
                     blogs?.map(blog => {
-                        return <section className='blog w-[370px]'>
+                        return <section className='blog w-[370px] shadow-lg p-4'>
                             <img src={blog.url} className='w-[100%] h-[270px] rounded-md shadow-md' alt='blogBanner' />
                             <p className='my-4 text-gray-500'>{blog.date} <span>{" Category"}</span></p>
                             <p className='my-4 font-bold'>{blog.title} <span>{" Category"}</span></p>
@@ -75,14 +75,14 @@ export function BlogContainer() {
                 <section>
                     {
                         sideBlogs?.map(blog => {
-                            return<> <section className='blog min-w-[370px] w-auto my-2 flex'>
+                            return<> <section className='blog min-w-[370px] w-auto mb-6 flex shadow-lg rounded-md px-2'>
                                 <img src={blog.url} className='w-[120px] h-[80px] rounded-md shadow-md self-center' alt='blogBanner' />
                                 <span className='ml-4'>
-                                    <p className='my-4 text-gray-500'>{blog.date} <span>{" Category"}</span></p>
-                                    <p className='my-4 font-bold'>{blog.title} <span>{" Category"}</span></p>
+                                    <p className='mb-4 text-gray-500'>{blog.date} <span>{" Category"}</span></p>
+                                    <p className='mb-4 font-bold'>{blog.title} <span>{" Category"}</span></p>
                                 </span>
                             </section>
-                            <hr/>
+                            <hr className='my-4'/>
                             </>
                         })
                     }
