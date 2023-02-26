@@ -11,7 +11,7 @@ export function LandingBanner() {
 	return (
         <div className={styles['landingBanner']}>
             <Navbar/>
-            <section className="w-[99%] sm:w-[90%] xl:w-[70%] 2xl:w-[65%] px-4 sm:px-8 lg:px-[12%]  my-[10%] lg:my-[5%]">
+            <section className="w-[96%] sm:w-[90%] xl:w-[70%] 2xl:w-[65%] px-6 sm:px-8 lg:px-[12%]  my-[10%] lg:my-[5%]">
                 <TitleText style={"my-4"}>Diagnostic Centre Solution in Single Platform.</TitleText>
                 <HeaderText_1 style={"my-2"}>Managing Diagnostic  Centre has never been easier</HeaderText_1>
                 <BodyText_1 style="xl:w-[80%]">Omerald digitalises diagnostic centre's, offering website creation, test selection, report generation, and branding updates.</BodyText_1>

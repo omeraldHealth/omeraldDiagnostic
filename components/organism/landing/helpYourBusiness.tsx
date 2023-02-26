@@ -1,4 +1,5 @@
 import { SignInButton } from '@components/atoms/button/button'
+import { BodyText_1, BodyText_2, HeaderText_1, HeaderText_2, TitleText, TitleText_2 } from '@components/atoms/font'
 import {FaTrophy,FaHandSparkles,FaSun} from 'react-icons/fa'
 import styles from "./landing.module.css"
 
@@ -25,29 +26,27 @@ const helpBusiness = [
 
 export function HelpYourBusiness() {
 	return (
-        <div className={`w-[100vw] px-[10%] py-10 text-center ${styles['helpBusiness']}`}>
-
-            <section className={`text-btnPrimary-600 w-[60%] rounded-2xl py-16 px-10 m-auto my-[14vh] ${styles['officeHandShake']}`}>
-                <p className='font-[800] text-[28px]'>Push your Diagnostic Centre to next level.</p>
-                <p className='font-[600] text-[20px] my-8 w-[70%] m-auto'>End-to-end payments and financial management in a single solution. Meet the right platform to help realize.</p>
+        <div className={`w-[100vw] h-auto px-[4%] sm:px-[10%] py-40 sm:py-10 text-center ${styles['helpBusiness']}`}>
+{/* 
+            <section className={`text-btnPrimary-600 w-[100%] lg:w-[60%] rounded-2xl py-16 px-2 sm:px-10 m-auto sm:my-[14vh] ${styles['officeHandShake']}`}>
+                <HeaderText_2>Push your Diagnostic Centre to next level.</HeaderText_2>
+                <TitleText_2 style='my-8 xl:w-[70%] m-auto'>End-to-end payments and financial management in a single solution. Meet the right platform to help realize.</TitleText_2>
                 <SignInButton style={"rounded-full"}>Get Started</SignInButton>
-            </section>
-         
-
-            <p className='font-[600] text-[40px]'>We help your business grow faster.</p>
-            <p className='font-[400] text-[20px] text-[#64607D] w-[40%] m-auto my-6'>Omerald's efficient software solution accelerates business growth for diagnostic centre's.</p>
-            <section className="flex gap-[2%] my-[7%] w-[100%] justify-around  ">
+            </section> */}
+        
+            <HeaderText_2 style='mt-10 sm:mt-0'>We help your business grow faster.</HeaderText_2>
+            <BodyText_1 style='lg:w-[40%] m-auto my-6'>Omerald's efficient software solution accelerates business growth for diagnostic centre's.</BodyText_1>
+            <section className="lg:flex gap-[2%] my-[7%] w-[100%] justify-around  ">
                 {
                     helpBusiness.map(help => {
-                        return <section  className="text-left bg-white w-[33%] h-[350px] p-10 rounded-lg shadow-md">
+                        return <section  className="text-left bg-white my-10 lg:my-0 lg:w-[33%] h-auto p-10 rounded-lg shadow-md">
                         {help?.icon}
-                        <p className="font-[500] text-[25px] my-4"> {help?.title}</p>
-                        <p className="font-[400] text-[16px] text-gray-400 my-4"> {help?.description}</p>
+                        <TitleText_2 style='my-4'> {help?.title}</TitleText_2>
+                        <BodyText_2 style='text-gray-400 my-4' > {help?.description}</BodyText_2>
                         <a className='absolute text-green-500'>Read More</a>
                     </section>
                     })
                 }
-               
             </section>
         </div>
         )

@@ -21,9 +21,9 @@ const navFooterLinks2 = [
 export function Footer() {
     const [email,setEmail] = useState("")
 	return (
-        <div className='text-center w-[100%] h-[50vh] py-10 px-[10%]'>
+        <div className='text-center w-[100%] min-h-[50vh] py-10 px-[10%]'>
             {/*Footer Links  */}
-            <section className='h-[30vh] w-[100%] grid grid-cols-4 text-left gap-10'>
+            <section className='min-h-[30vh] h-auto w-[100%] grid sm:grid-cols-2 lg:grid-cols-4 text-left gap-10'>
                 <section>
                     <FooterHeaderFont>{"Omerald"}</FooterHeaderFont>
                     <p className='font-base text-md text-[#757095] my-6'>Diagnostic centre Application</p>
@@ -41,7 +41,7 @@ export function Footer() {
                     {navFooterLinks2.map(nav => <Link href={nav.navLink}><FooterLinkFont>{nav.navText}</FooterLinkFont></Link> )}
                     </section>
                 </section>    
-                <section>
+                <section className='hidden lg:block'>
                     <FooterHeaderFont>{"Join our newsletter"}</FooterHeaderFont>
                     <section>
                         <section className='flex border-2 mt-6'>
@@ -53,8 +53,8 @@ export function Footer() {
                 </section>
             </section>
             {/* Footer CopyRight */}
-            <section className='w-[100%]'>
-                <hr className='w-[100%] bg-primary border-2 mb-[40px]' />
+            <section className='w-[100%] my-6'>
+                <hr className='hidden xl:block w-[100%] bg-primary border-2 my-[40px]' />
                 <CopyRightFont>Copyright @ Omerald 2023. All Rights Reserved.</CopyRightFont>
             </section>
         </div>

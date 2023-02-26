@@ -1,5 +1,5 @@
 import { SignInButton } from '@components/atoms/button/button'
-import Link from 'next/link'
+import { HeaderText_2 } from '@components/atoms/font'
 import React  from 'react'
 
 export type BlogDataType = {
@@ -53,14 +53,15 @@ const sideBlogs : BlogDataType[] = [
 
 export function BlogContainer() {
 	return (
-        <div className='w-[100%] min-h-[70vh] bg-white px-[10%] py-10'>
+        <div className='w-[100%] h-auto bg-white px-[4%] lg:px-[10%] py-10'>
             {/* Header */}
             <section className='flex justify-between my-10'>
-                <p className='font-bold text-3xl'>Our Latest Blog Posts</p>
-                <a href={"https://blog.omerald.com/articles"} target="_blank"><SignInButton style={"w-[14vw] text-slate-300"}>{"See All Blog posts"}</SignInButton></a>
+                <HeaderText_2 style=''>Our Latest Blog Posts</HeaderText_2>
+                <a href={"https://blog.omerald.com/articles"} target="_blank">
+                    <SignInButton style={"w-[30vw] sm:w-[20vw] lg:w-[14vw] text-slate-300"}>{"See All Blog posts"}</SignInButton></a>
             </section>
-            <section className='flex gap-20'>
-                <section className='flex col-span-2 gap-20'>
+            <section className='lg:flex gap-2 2xl:gap-20'>
+                <section className='sm:flex my-10 lg:my-0 col-span-2  gap-2 2xl:gap-20'>
                 {
                     blogs?.map(blog => {
                         return <section className='blog w-[370px] shadow-lg p-4'>

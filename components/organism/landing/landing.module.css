@@ -40,13 +40,36 @@
         padding-top: 2vh !important;
         min-height: auto !important;
     }
+    .howItWorks{
+        background-image: none !important;
+    }
+    .helpBusiness{
+        background-image: none !important;
+    }
+    .contactUs{
+        background-size: 600px;
+        background-position-y: 36% !important;
+    }
 }
 
-@media (min-width:430px) and (max-width:750px)  {
+@media (min-width:430px) and (max-width:769px)  {
     .landingBanner{
         background-size: 2000px;
         background-position-x: 45%;
         padding-top: 1vh !important;
         min-height: auto !important;
     }
+    .howItWorks{
+        background-image: none !important;
+    }
+    .helpBusiness{
+        background-size: 1000px;
+        background-position-y: 40%;
+        padding-top: 2vh !important;
+    }
+    .contactUs{
+        background-size: 700px;
+        background-position-y: 35% !important;
+    }
+    
 }
