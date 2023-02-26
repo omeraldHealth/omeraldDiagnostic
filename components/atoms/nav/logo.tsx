@@ -4,13 +4,14 @@ import { logoUrl } from '@utils'
 import Image from 'next/image'
 
 const Logo: FC<LogoProps> = ({ width = 500, height = 500 }) => (
-	<Image
+	<img
         src={logoUrl}
-        alt="Omerald Logo"
-        width={width}
-        height={height}
-        blurDataURL={logoUrl}
-        placeholder="blur" 
+        // alt="Omerald Logo"
+        // width={width}
+        // height={height}
+        // blurDataURL={logoUrl}
+        // placeholder="blur" 
+        className="w-[50px] sm:w-[70px]"
     />
 )
 

@@ -12,17 +12,17 @@ const navLinks = [
 
 export function Navbar() {
 	return (
-<div  className={`flex justify-between items-center px-[10%]`}>
+        <div  className={`flex justify-between items-center px-[1%] sm:px-[4%] xl:px-[10%]`}>
             <span className='flex'>
                 <Logo width={80} height={80}/>
-                <p className='font-sans text-lg font-bold self-center'>OMERALD DIAGNOSTICS</p>
+                <p className='font-sans hidden sm:block sm:text-lg sm:font-bold self-center'>OMERALD DIAGNOSTICS</p>
             </span>
-            <section className='flex'>
+            <section className='hidden lg:flex'>
                 {navLinks.map(nav => <Link href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
             </section>
-            <section className='flex items-center'>
-                <Link href={"/signIn"}><NavFont>{"Sign In"}</NavFont></Link>
-                <Link href={"/signIn"}><SignInButton>{"Start Free"}</SignInButton></Link>
+            <section className='lg:flex items-center'>
+               <span className='lg:flex'><Link href={"/signIn"}><NavFont>{"Sign In"}</NavFont></Link></span>
+               <span className='hidden lg:flex'><Link href={"/signIn"}><SignInButton>{"Start Free"}</SignInButton></Link></span>
             </section>
         </div>
 	)

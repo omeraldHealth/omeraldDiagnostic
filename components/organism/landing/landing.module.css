@@ -32,3 +32,19 @@
     background-position-x: center;
     background-position-y: 74%;
 }
+
+@media only screen and (max-width:429px)  {
+    .landingBanner{
+        background-size: 1000px;
+        background-position-x: 60%;
+        padding-top: 2vh !important;
+    }
+}
+
+@media (min-width:430px) and (max-width:750px)  {
+    .landingBanner{
+        background-size: 1500px;
+        background-position-x: 60%;
+        padding-top: 1vh !important;
+    }
+}

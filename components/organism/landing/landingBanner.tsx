@@ -10,10 +10,10 @@ export function LandingBanner() {
 	return (
         <div className={styles['landingBanner']}>
             <Navbar/>
-            <section className="w-[55%] px-[12%] my-[5%]">
-                <p className="font-[700] text-[22px]">Diagnostic Centre Solution in Single Platform.</p>
-                <p className="font-[700] text-[50px]">Managing Diagnostic  Centre has never been easier</p>
-                <p className="font-[300] text-[18px] pr-20 text-[#757095]">Omerald digitalises diagnostic centre's, offering website creation, test selection, report generation, and branding updates.</p>
+            <section className="w-[70%] 2xl:w-[55%] px-[12%] my-[5%]">
+                <p className="xl:font-[700] xl:text-[22px] xl:font-[700] xl:text-[22px]">Diagnostic Centre Solution in Single Platform.</p>
+                <p className="xl:font-[700] xl:text-[50px]">Managing Diagnostic  Centre has never been easier</p>
+                <p className="xl:font-[300] xl:text-[18px] pr-20 text-[#757095]">Omerald digitalises diagnostic centre's, offering website creation, test selection, report generation, and branding updates.</p>
                 <section className='flex w-[90%] p-2 mt-6 bg-white shadow-xl'>
                     <span>
                         <label className="ml-2 font-light text-sm">Register with your phone number</label>

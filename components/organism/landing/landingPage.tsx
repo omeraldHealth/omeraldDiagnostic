@@ -16,15 +16,15 @@ export function LandingPage() {
             <div >
                 <LandingBanner/>
                 <hr/>
-                <Partners/>
+                {/* <Partners/> */}
                 <hr/>
-                <HowItWorks/>
-                <HelpYourBusiness/>
-                <Advertisement/>
-                <Testimonial/>
-                <ContactContainer/>
-                <BlogContainer/>
-                <BottomBanner/>
+                {/* <HowItWorks/> */}
+                {/* <HelpYourBusiness/> */}
+                {/* <Advertisement/> */}
+                {/* <Testimonial/> */}
+                {/* <ContactContainer/> */}
+                {/* <BlogContainer/> */}
+                {/* <BottomBanner/> */}
             </div>
         </PageLayout>
     )
