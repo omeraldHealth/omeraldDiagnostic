@@ -4,7 +4,7 @@ import { getUserDetailType } from "utils/types/atoms/hooks";
 
 export async function getUserDetails(userId: getUserDetailType) {
   try {
-    const resp = await axios .get(getDiagnosticUserApi+userId, {});
+    const resp = await axios .get(getDiagnosticUserApi+userId.phoneNumber, {});
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error.response.status || error.request.code, data: null };

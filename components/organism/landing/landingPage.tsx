@@ -9,6 +9,7 @@ import { HelpYourBusiness } from '@components/organism/landing/helpYourBusiness'
 import { LandingBanner } from '@components/organism/landing/landingBanner'
 import { Partners } from '@components/organism/landing/partners'
 import { HowItWorks } from '@components/organism/landing/howItWorks'
+import { Footer } from '@components/molecules/footer'
 
 export function LandingPage() {
 	return (
@@ -25,6 +26,7 @@ export function LandingPage() {
                 <ContactContainer/>
                 <BlogContainer/>
                 <BottomBanner/>
+                <Footer />
             </div>
         </PageLayout>
     )

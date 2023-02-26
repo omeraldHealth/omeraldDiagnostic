@@ -8,3 +8,5 @@ export const partners = [
     "https://res.cloudinary.com/drjut62wv/image/upload/v1677398134/omerald/diagnosticCenter/download_iflnc5.png"
 ]
 export const officeHandShake = "https://res.cloudinary.com/drjut62wv/image/upload/v1677407603/omerald/diagnosticCenter/istockphoto-1144821436-612x612_w0xhtm.jpg"
+export const signInBackground = "https://res.cloudinary.com/drjut62wv/image/upload/v1677440521/omerald/diagnosticCenter/Frame_1_oba0es.png"
+export const signInBanner = "https://res.cloudinary.com/drjut62wv/image/upload/v1677442345/omerald/diagnosticCenter/undraw_scientist_jups_bo0fms.svg"

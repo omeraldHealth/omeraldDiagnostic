@@ -33,7 +33,7 @@ module.exports = {
     // fontFamily: {},
     extend: {
       backgroundImage: theme => ({
-        'signBanner': "url('/styles/themes/background.jpg')",
+        'signBanner': `${""}`,
         'my-background': "url('@styles/themes/background.jpg')",
       }),
       lineHeight: {

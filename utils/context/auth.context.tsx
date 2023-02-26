@@ -7,7 +7,7 @@ import { deleteSession, setSession } from 'utils/hook/session';
 import { warningAlert } from '@components/atoms/alerts/alert';
 import firebaseApp from 'utils/auth/firebase';
 
-const AuthContext = createContext<AuthContextInterface | undefined>(undefined)
+const AuthContext = createContext<AuthContextInterface>(null)
 
 export function AuthContextProvider({ children }: { children: React.ReactNode }) {
   const auth = useFirebaseAuth();
@@ -48,6 +48,7 @@ function useFirebaseAuth() {
 
     if (resp.status == 200 && resp.data != null) {
       setDiagnosticDetails(resp.data);
+
       router.push(redirect);
     } else if (resp.status == 404) {
       router.push("/onboard");
