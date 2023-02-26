@@ -1,9 +1,10 @@
 import { SignInButton } from '@components/atoms/button/button'
-import { partners } from '@utils'
+import styles from "./landing.module.css"
 
 export function HowItWorks() {
 	return (
-        <div className='w-[100vw] px-[10%] py-10 text-center my-4 mt-12 grid grid-rows-2'>
+        <div className='pt-[10vh]'>
+        <div className={`w-[100vw] h-[100vh] px-[10%] text-center grid grid-rows-2 ${styles['howItWorks']}`}>
             <section className='grid grid-cols-3 justify-between h-[40vh]'>
                 <section className='text-left'>
                     <p className='text-[#5D5FEF] uppercase font-bold text-sm'>How Omerald Helps You</p>
@@ -29,6 +30,7 @@ export function HowItWorks() {
                 <section></section>
             </section>
         </div>
-        )
+        </div>
+    )
 }
 

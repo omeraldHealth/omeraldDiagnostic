@@ -1,11 +1,16 @@
 import { SignInButton, SubscribeButton } from "@components/atoms/button/button"
+import { Navbar } from "@components/molecules/navbar"
 import { useState } from "react"
 import {FaCheckCircle} from 'react-icons/fa'
+import styles from "./landing.module.css"
+
 export function LandingBanner() {
     const [phone,setPhone] = useState("")
+    
 	return (
-        <div className='h-[55vh] my-20 mx-[10%]'>
-            <section className="w-[50%] pr-40">
+        <div className={styles['landingBanner']}>
+            <Navbar/>
+            <section className="w-[55%] px-[12%] my-[5%]">
                 <p className="font-[700] text-[22px]">Diagnostic Centre Solution in Single Platform.</p>
                 <p className="font-[700] text-[50px]">Managing Diagnostic  Centre has never been easier</p>
                 <p className="font-[300] text-[18px] pr-20 text-[#757095]">Omerald digitalises diagnostic centre's, offering website creation, test selection, report generation, and branding updates.</p>

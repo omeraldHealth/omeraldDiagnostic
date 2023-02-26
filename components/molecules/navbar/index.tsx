@@ -12,12 +12,11 @@ const navLinks = [
 
 export function Navbar() {
 	return (
-        <div className='flex justify-between items-center px-[10%]'>
+<div  className={`flex justify-between items-center px-[10%]`}>
             <span className='flex'>
                 <Logo width={80} height={80}/>
                 <p className='font-sans text-lg font-bold self-center'>OMERALD DIAGNOSTICS</p>
             </span>
-            
             <section className='flex'>
                 {navLinks.map(nav => <Link href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
             </section>

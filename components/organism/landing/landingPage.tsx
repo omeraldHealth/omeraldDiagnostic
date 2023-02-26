@@ -13,24 +13,19 @@ import { HowItWorks } from '@components/organism/landing/howItWorks'
 export function LandingPage() {
 	return (
         <PageLayout>
-            <Fragment>
+            <div >
                 <LandingBanner/>
                 <hr/>
                 <Partners/>
                 <hr/>
                 <HowItWorks/>
-                <hr/>
                 <HelpYourBusiness/>
-                <hr/>
                 <Advertisement/>
-                <hr/>
                 <Testimonial/>
-                <hr/>
                 <ContactContainer/>
-                <hr/>
                 <BlogContainer/>
                 <BottomBanner/>
-            </Fragment>
+            </div>
         </PageLayout>
     )
 }

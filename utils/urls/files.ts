@@ -7,3 +7,4 @@ export const partners = [
     "https://res.cloudinary.com/drjut62wv/image/upload/v1677398134/omerald/diagnosticCenter/APOLLO-HOSPITALS-LOGO_antmkg.jpg",
     "https://res.cloudinary.com/drjut62wv/image/upload/v1677398134/omerald/diagnosticCenter/download_iflnc5.png"
 ]
+export const officeHandShake = "https://res.cloudinary.com/drjut62wv/image/upload/v1677407603/omerald/diagnosticCenter/istockphoto-1144821436-612x612_w0xhtm.jpg"

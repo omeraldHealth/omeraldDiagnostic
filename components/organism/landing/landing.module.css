@@ -1,0 +1,34 @@
+.landingBanner{
+    width: 100%;
+    height: 110vh;
+    background-image: url("../landing/background.jpg");
+    background-size: cover;
+    background-position-y: 1%;
+    padding-top: 6vh;
+}
+
+.howItWorks{
+    background-image: url("../landing/background.jpg");
+    background-size: cover;
+    background-position-y: 18.2%;
+}
+
+.officeHandShake{
+    background-color: #EBF3FF;
+    border: 1px solid rgb(222, 222, 222);
+    background: linear-gradient(#EBF3FF, rgba(255,255,255,.5)), url("https://res.cloudinary.com/drjut62wv/image/upload/v1677408002/omerald/diagnosticCenter/undraw_business_deal_re_up4u_kxbvcg.svg");
+}
+
+.helpBusiness{
+    background-image: url("../landing/background.jpg");
+    background-size: cover;
+    background-position-y: 30%;
+}
+
+.contactUs{
+    background-image: url("../landing/background.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 74%;
+}
