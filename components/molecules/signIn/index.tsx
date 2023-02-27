@@ -15,7 +15,10 @@ import { BodyText_2 } from "@components/atoms/font";
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
 import { Spinner } from "@components/atoms/loader";
 import { useAuthContext } from "utils/context/auth.context";
-import firebaseApp from "utils/auth/firebase";
+import { useDispatch,useSelector } from "react-redux";
+import { rootReducerType } from "utils/store/types";
+import { useRouter } from "next/router";
+
 
 const SignInComponent = () => {
   const auth = getAuth();
@@ -28,7 +31,10 @@ const SignInComponent = () => {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [seconds, setSeconds] = useState(0);
+  const dispatch = useDispatch()
+  const reducer = useSelector((state:rootReducerType) => state);
   auth.languageCode = "en";
+  const route = useRouter()
 
   useEffect(() => {
     // Exit early when timer reaches 0
@@ -45,6 +51,11 @@ const SignInComponent = () => {
     return () => clearInterval(timer);
   }, [seconds]);
 
+  useEffect(()=>{
+    if(reducer?.loginReducer?.isLoggedIn){
+      route.push("/dashboard")
+    }
+  },[])
 
   const [isPhoneNumberDisabled, setPhoneNumberDisabled] = useState(false);
 
@@ -112,12 +123,12 @@ const SignInComponent = () => {
     setError("");
     if (otp.length === 6) {
       setLoadOtp(true)
-      console.log(loadOtp)
       let confirmationResult = window.confirmationResult;
       confirmationResult
         .confirm(otp)
         .then(async (result: UserCredential) => {
           successAlert("User logged in succesfully")
+          dispatch({ type: 'LOGIN_SUCCESS', payload: user });
           setLoadOtp(false)
           signIn(result.user, "/dashboard");
         })
@@ -126,6 +137,7 @@ const SignInComponent = () => {
             setError("Invalid OTP");
             errorAlert("Invalid OTP ");
           }
+          dispatch({ type: 'LOGIN_FAILED', payload: error });
           setLoadOtp(false)
         });
     } else {
@@ -206,7 +218,7 @@ const SignInComponent = () => {
                         </div>
                         <section className="mt-4">
                           {seconds > 0 && <p>Did'nt receive otp? resend in <span className="text-red-500">{seconds}</span> seconds</p>}
-                          {seconds == 0 && <button onClick={requestOTP} className="p-2 border-2 border-gray-400">Resend</button>}
+                          {seconds == 0 && <button onClick={requestOTP} className="p-2 border-2 bg-gray-300 rounded-lg">Resend</button>}
                         </section>
                
                       </div>
