@@ -109,21 +109,22 @@ const SignInComponent = () => {
 
   const verifyOTP: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    setLoadOtp(true)
     setError("");
     if (otp.length === 6) {
+      setLoadOtp(true)
+      console.log(loadOtp)
       let confirmationResult = window.confirmationResult;
       confirmationResult
         .confirm(otp)
         .then(async (result: UserCredential) => {
-          setLoadOtp(false)
           successAlert("User logged in succesfully")
+          setLoadOtp(false)
           signIn(result.user, "/dashboard");
         })
         .catch((error: any) => {
           if (error?.code === "auth/invalid-verification-code") {
             setError("Invalid OTP");
-            errorAlert("Invalid OTP ")
+            errorAlert("Invalid OTP ");
           }
           setLoadOtp(false)
         });
@@ -131,11 +132,10 @@ const SignInComponent = () => {
       setError("Length should be of 6 digits");
       errorAlert("Otp Length should be of 6 digits")
     }
-    setLoadOtp(false)
   };
 
-  return (<section className="h-[70vh] my-[10vh]">
-          <section className="w-[40vw] h-[45vh] rounded-lg bg-white shadow-xl m-auto self-center p-10 text-center"> 
+  return (<section className="lg:h-[70vh] my-[10vh]">
+          <section className="w-[90vw] sm:w-[80vw] lg:w-[40vw] sm:h-[30vh] lg:h-[45vh] rounded-lg bg-white shadow-xl m-auto self-center p-1 py-10 sm:p-10 text-center"> 
               <BodyText_2 style="text-black">Welcome Back 👋</BodyText_2>
               <p className="text-black font-md text-xl mb-10">Sign In to your Account</p>
               <form onSubmit={verifyOTP}>
