@@ -15,17 +15,21 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
   } else if (auth?.loading) {
     return <Spinner />;
   } else if (auth?.user && auth?.diagnosticDetails) {
-    if (router.pathname === "/onboard" || router.pathname === "/signIn") {
+    if (router.pathname === "/onboard") {
       if(flag){
         successAlert("User logged in")
         flag = false;
       }
       router.push("/dashboard");
       return null;
+    }else if(router.pathname === "/signIn"){
+      successAlert("Already logged in")
+      router.push("/dashboard");
+      return null;
     }
     return cloneElement(children, { auth: auth });
   } else if (auth?.user) {
-    if (router.pathname === "/onboard") {
+    if (router.pathname === "/onboard" || router.pathname === "/") {
       return cloneElement(children);
     }
     router.push("/onboard");

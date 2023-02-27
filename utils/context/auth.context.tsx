@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { getAuth, onIdTokenChanged, User } from "firebase/auth";
+import { getAuth, onIdTokenChanged, User,setPersistence,browserSessionPersistence } from "firebase/auth";
 import { AuthContextInterface, UserDetails } from 'utils'
 import { useRouter } from 'next/router';
 import { getUserDetails } from 'utils/hook/userDetail';
 import { deleteSession, setSession } from 'utils/hook/session';
 import { warningAlert } from '@components/atoms/alerts/alert';
 import firebaseApp from 'utils/auth/firebase';
-import { useQuery } from 'react-query';
 
 const AuthContext = createContext<AuthContextInterface>(null)
 
@@ -26,6 +25,21 @@ function useFirebaseAuth() {
     const unsubscribe = onIdTokenChanged(auth, handleUser);
     return () => unsubscribe();}, []
   );
+
+  setPersistence(auth, browserSessionPersistence)
+  .then(() => {
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+    // ...
+    // New sign-in will be persisted with session persistence.
+    // return signIn(user?.phoneNumber,"/dashboard");
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
 
   const handleUser = async (rawUser: User | null) => {
     if (rawUser) {
@@ -49,14 +63,13 @@ function useFirebaseAuth() {
     if (resp) {
       setDiagnosticDetails(resp);
       router.push(redirect);
-    } else if (resp.status == 404) {
+    } else {
       router.push("/onboard");
     }
   };
 
   const signOut = async () => {
     if (user) {
-      const token = await user.getIdToken();
       const phoneNumber = user.phoneNumber || "";
       await deleteSession(phoneNumber);
     }
