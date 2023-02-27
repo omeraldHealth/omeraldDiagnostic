@@ -6,7 +6,8 @@ import type { AppProps } from 'next/app'
 import { ToastContainer } from "react-toastify";
 import { AuthContextProvider } from 'utils/context/auth.context'
 import { QueryClient, QueryClientProvider } from 'react-query'
-
+import { Provider } from 'react-redux'
+import store from 'utils/store/store'
 
 const queryClient = new QueryClient()
 
@@ -22,7 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthContextProvider>
             <GlobalStyle />
             <ToastContainer/>
-            <ThemeProvider theme={theme}>{isMounted && <Component {...pageProps} />}</ThemeProvider>
+            <ThemeProvider theme={theme}>{isMounted && <Provider store={store}><Component {...pageProps} /></Provider> }</ThemeProvider>
         </AuthContextProvider>
     </QueryClientProvider>
   )
