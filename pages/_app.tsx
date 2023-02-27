@@ -8,8 +8,15 @@ import { AuthContextProvider } from 'utils/context/auth.context'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 import store from 'utils/store/store'
+import Allowed from 'utils/permissions'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    // queries: {
+    //   retries: 3, // Set the maximum number of retries to 3 for all queries
+    // },
+  },
+})
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isMounted, setIsMounted] = useState(false)
@@ -23,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthContextProvider>
             <GlobalStyle />
             <ToastContainer/>
-            <ThemeProvider theme={theme}>{isMounted && <Provider store={store}><Component {...pageProps} /></Provider> }</ThemeProvider>
+            <ThemeProvider theme={theme}>{isMounted && <Provider store={store}><Allowed><Component {...pageProps} /></Allowed></Provider> }</ThemeProvider>
         </AuthContextProvider>
     </QueryClientProvider>
   )

@@ -19,7 +19,6 @@ import { useDispatch,useSelector } from "react-redux";
 import { rootReducerType } from "utils/store/types";
 import { useRouter } from "next/router";
 
-
 const SignInComponent = () => {
   const auth = getAuth();
   const {user,signIn} = useAuthContext()

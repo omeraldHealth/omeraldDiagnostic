@@ -6,6 +6,7 @@ import { getUserDetails } from 'utils/hook/userDetail';
 import { deleteSession, setSession } from 'utils/hook/session';
 import { warningAlert } from '@components/atoms/alerts/alert';
 import firebaseApp from 'utils/auth/firebase';
+import { useQuery } from 'react-query';
 
 const AuthContext = createContext<AuthContextInterface>(null)
 
@@ -30,8 +31,8 @@ function useFirebaseAuth() {
     if (rawUser) {
       const phoneNumber = rawUser.phoneNumber || "";
       const resp = await getUserDetails({"phoneNumber":phoneNumber});
-      if (resp.status == 200) {
-        setDiagnosticDetails(resp.data);
+      if (resp) {
+        setDiagnosticDetails(resp);
       }
       await setSession(phoneNumber);
       setUser(rawUser);
@@ -45,10 +46,8 @@ function useFirebaseAuth() {
   const signIn = async (user: User, redirect: string) => {
     const phoneNumber = user.phoneNumber || "";
     const resp = await getUserDetails({"phoneNumber":phoneNumber});
-
-    if (resp.status == 200 && resp.data != null) {
-      setDiagnosticDetails(resp.data);
-
+    if (resp) {
+      setDiagnosticDetails(resp);
       router.push(redirect);
     } else if (resp.status == 404) {
       router.push("/onboard");
