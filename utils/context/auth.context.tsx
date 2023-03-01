@@ -68,6 +68,7 @@ function useFirebaseAuth() {
     const resp = await getUserDetails({"phoneNumber":phoneNumber});
     if (resp) {
       setDiagnosticDetails(resp);
+
       router.push(redirect);
     } else {
       router.push("/onboard");

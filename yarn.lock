@@ -687,6 +687,13 @@
     protobufjs "^7.0.0"
     yargs "^16.2.0"
 
+"@headlessui/react@^1.7.12":
+  version "1.7.12"
+  resolved "https://registry.yarnpkg.com/@headlessui/react/-/react-1.7.12.tgz#9ab2baa3c4f632782631e00937f9531a34033619"
+  integrity sha512-FhSx5V+Qp0GvbTpaxyS+ymGDDNntCacClWsk/d8Upbr19g3AsPbjfPk4+m2CgJGcuCB5Dz7LpUIOAbvQTyjL2g==
+  dependencies:
+    client-only "^0.0.1"
+
 "@heroicons/react@^2.0.16":
   version "2.0.16"
   resolved "https://registry.npmjs.org/@heroicons/react/-/react-2.0.16.tgz"
@@ -1772,7 +1779,7 @@ classnames@2.x, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.5, classna
   resolved "https://registry.npmjs.org/classnames/-/classnames-2.3.2.tgz"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
 
-client-only@0.0.1:
+client-only@0.0.1, client-only@^0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz"
   integrity sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==
@@ -2900,6 +2907,11 @@ has@^1.0.3:
   integrity sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==
   dependencies:
     function-bind "^1.1.1"
+
+headlessui@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/headlessui/-/headlessui-0.0.0.tgz#bffbc91c40e9a6fa09c1e6064caaa670cabc68c0"
+  integrity sha512-CHvacVPbl8AqIg2sBNKySUmumu7o15jSrCaTrIh9GW2Eq4y/krCN/vZFOsKCwlrhWQbO4267a8xvvP8bs+qREQ==
 
 hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"

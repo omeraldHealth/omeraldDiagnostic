@@ -126,8 +126,7 @@ const SignInComponent = () => {
       confirmationResult
         .confirm(otp)
         .then(async (result: UserCredential) => {
-          successAlert("User logged in succesfully")
-          dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+          dispatch({ type: 'LOGIN_SUCCESS', payload: true });
           setLoadOtp(false)
           signIn(result.user, "/dashboard");
         })

@@ -3,6 +3,7 @@ import { Spinner } from "@components/atoms/loader";
 import { useRouter } from "next/router";
 import React, { cloneElement, ReactElement } from "react";
 import { useAuthContext } from "utils/context/auth.context";
+import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
 
 const allowedPaths = ["","/","/signIn"];
 let flag = true;
