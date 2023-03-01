@@ -4,7 +4,7 @@ import { createGlobalStyle } from 'styled-components'
 export default createGlobalStyle`
 	html, body, body > div {
 		height: 100%;
-		background: rgb(251, 251, 252);;
+		background: white;
 	}
 
 	* {

@@ -23,7 +23,10 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
       router.push("/dashboard");
       return null;
     }else if(router.pathname === "/signIn"){
-      successAlert("Already logged in")
+      if(flag){
+        successAlert("User logged in")
+        flag = false;
+      }
       router.push("/dashboard");
       return null;
     }

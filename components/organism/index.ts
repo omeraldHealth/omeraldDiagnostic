@@ -9,4 +9,5 @@ export { LandingBanner } from '@components/organism/landing/landingBanner';
 export { HowItWorks } from '@components/organism/landing/howItWorks';
 export { LandingPage } from '@components/organism/landing/landingPage';
 export { SignIn } from '@components/organism/signIn/index';
+export { Error } from '@components/organism/error/index';
 export { OnboardComp } from '@components/organism/onboard/index';
