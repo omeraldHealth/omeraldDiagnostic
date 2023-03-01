@@ -10,7 +10,9 @@ export default createGlobalStyle`
 	* {
 		box-sizing: border-box;
 	}
-
+	.ant-form-item-explain-error {
+		text-align:left !important
+	}
 	body {
 		margin: 0;
 		padding: 0;

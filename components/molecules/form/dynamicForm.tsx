@@ -1,0 +1,54 @@
+import React from 'react';
+import { Button, Form, Input } from 'antd';
+import LogoUploader from '@components/atoms/file/logoUploaders';
+import BannerUploader from '@components/atoms/file/bannerUpload';
+import { useSelector } from 'react-redux';
+
+interface FormProps  {
+    name:string,
+    type:string,
+    label:string,
+    required:boolean,
+}
+
+interface FormType  {
+    formProps: FormProps[],
+    buttonText: string,
+    handleSubmit: (value:any) =>void
+    handleImage?: (value:any) =>void
+}
+
+export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonText}:FormType) => {
+
+  const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
+
+  return (
+    <Form onFinish={handleSubmit} name="basic" 
+        initialValues={{ remember: true,phoneNumber:diagnosticProfile?.phoneNumber }}>
+        {formProps.map(form => <>
+                {form.type === "text" && 
+                <Form.Item className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ required: form.required,message: `Please input ${form.label}`}]}>
+                   {form.name !== "phoneNumber" ? <Input placeholder={form.label} className="border-gray-200  text-black font-light text-sm" />:
+                   <Input disabled placeholder={form.label} className="border-gray-200  text-black font-light text-sm" />
+                } 
+                </Form.Item>
+                }
+                {form.type === "logo" &&
+                <Form.Item className='mb-6' name={form.name} labelCol={{ span: 10 }} >
+                    <LogoUploader handleImage={handleImage} />
+                </Form.Item>
+                }
+                {form.type === "banner" &&
+                <Form.Item className='mb-6' name={form.name} labelCol={{ span: 0 }} >
+                    <BannerUploader handleImage={handleImage} />
+                </Form.Item>
+                }
+              </>
+        )}
+        <Form.Item className='flex justify-start absolute bottom-0 mt-4'>
+            <Button className='bg-blue-500' type="primary" htmlType="submit">{buttonText}</Button>
+        </Form.Item> 
+    </Form>
+  );
+};
+

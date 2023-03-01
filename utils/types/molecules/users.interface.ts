@@ -26,6 +26,7 @@ export interface UserDetails {
 
 export type BrandDetailsForm = {
   brandLogo: string;
+  brandBanner: string;  
   instaUrl?: string;
   facebookUrl?: string;
 };

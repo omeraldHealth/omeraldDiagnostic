@@ -26,12 +26,14 @@ export default function App({ Component, pageProps }: AppProps) {
 	}, [])
 
   return (
+    <Provider store={store}>
     <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
             <GlobalStyle />
             <ToastContainer/>
-            <ThemeProvider theme={theme}>{isMounted && <Provider store={store}><Allowed><Component {...pageProps} /></Allowed></Provider> }</ThemeProvider>
+            <ThemeProvider theme={theme}>{isMounted && <Allowed><Component {...pageProps} /></Allowed> }</ThemeProvider>
         </AuthContextProvider>
     </QueryClientProvider>
+    </Provider>
   )
 }

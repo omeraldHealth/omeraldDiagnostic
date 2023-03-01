@@ -6,6 +6,9 @@ import { getUserDetails } from 'utils/hook/userDetail';
 import { deleteSession, setSession } from 'utils/hook/session';
 import { warningAlert } from '@components/atoms/alerts/alert';
 import firebaseApp from 'utils/auth/firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_DIAGNOSTIC_DETAILS } from 'utils/store/types';
+import useSelection from 'antd/es/table/hooks/useSelection';
 
 const AuthContext = createContext<AuthContextInterface>(null)
 
@@ -20,6 +23,8 @@ function useFirebaseAuth() {
   const [diagnosticDetails, setDiagnosticDetails] =useState<UserDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     const unsubscribe = onIdTokenChanged(auth, handleUser);
@@ -44,9 +49,10 @@ function useFirebaseAuth() {
   const handleUser = async (rawUser: User | null) => {
     if (rawUser) {
       const phoneNumber = rawUser.phoneNumber || "";
+      dispatch({ type: SET_DIAGNOSTIC_DETAILS,payload: Object.assign(diagnosticProfile,{"phoneNumber":phoneNumber}) });
       const resp = await getUserDetails({"phoneNumber":phoneNumber});
-      if (resp) {
-        setDiagnosticDetails(resp);
+      if (resp.status==200) {
+        setDiagnosticDetails(resp.data);
       }
       await setSession(phoneNumber);
       setUser(rawUser);
