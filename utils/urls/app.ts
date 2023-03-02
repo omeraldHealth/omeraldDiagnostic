@@ -6,3 +6,4 @@ export const backendApiPath = "http://localhost:4000"
 export const getDiagnosticUserApi = backendApiPath+`/api/diagnostic/getDiagnosticUser?userId=`
 export const insertDiagnosticUserApi = backendApiPath+`/api/diagnostic/saveDiagnosticUser`
 export const uploadImageApi = backendApiPath+`/api/diagnostic/uploadBranding`
+export const getDiagnosticReports = backendApiPath+`/api/diagnostic/reports/getDiagnosticReports?userId=`

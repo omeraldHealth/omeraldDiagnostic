@@ -1,12 +1,9 @@
-import { UserDetails } from '@utils'
 import React from 'react'
-import { Avatar, Button, Card, Divider } from 'antd';
 
-export const ProfileSummaryComponent = (profile:UserDetails) => {
-    console.log(profile)
+export const ProfileSummaryComponent = ({style,props}:any) => {
+  let profile = props
   return (
-    <div className='h-auto bg-red w-[200%]'>
-        <div className="w-[70vw] bg-white rounded-lg h-auto text-left">
+        <div className={`w-[70vw] bg-white rounded-lg h-auto text-left  ${style}`}>
           <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj5Q2raMjAzWc3f7P5IK9YmXGlC4V3ZrTQMeHPzNpfx_8RyG_5sizbgCxLVJLXzwaRwAI&usqp=CAU'
            className='w-[100px] rounded-full border-2' />
           <section className="flex">
@@ -49,7 +46,6 @@ export const ProfileSummaryComponent = (profile:UserDetails) => {
             </section>
           </section>
         </div>
-    </div>
   )
 }
 

@@ -11,5 +11,5 @@ export function dashboardReducer(state = dashbordRoute, action:any) {
       default:
         return state;
     }
-  }
+}
   

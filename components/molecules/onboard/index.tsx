@@ -1,5 +1,5 @@
 import { StepHeader } from "@components/atoms/form";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { onboardSteps } from "utils/static";
 import {DynamicFormCreator} from "components/molecules/form/dynamicForm"
 import { BasicDetailsForm, BranchDetails } from "utils/types/molecules/forms.interface";

@@ -9,9 +9,10 @@ const IndexObj = {
     "/dashboard":0,
     "/addReports":1,
     "/reports":2,
-    "/test":3,
-    "/profile":4,
-    "/settings":5
+    "/addTest":3,
+    "/test":4,
+    "/profile":5,
+    "/settings":6
 }
   
 

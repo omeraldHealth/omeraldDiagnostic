@@ -29,6 +29,12 @@ export const privateRoutes = [
       current: false,
     },
     {
+      name: "Add Tests",
+      href: "/addTest",
+      icon: ChartBarSquareIcon,
+      current: false,
+    },
+    {
       name: "Tests Offered",
       href: "/test",
       icon: BeakerIcon,
