@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 
 const SignInComponent = () => {
   const auth = getAuth();
-  const {user,signIn} = useAuthContext()
+  const {user,signIn,diagnosticDetails} = useAuthContext()
   const phoneInputRef = useRef(null);
   const [isPhoneInputFocusedOnce, setIsPhoneInputFocusedOnce] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -51,7 +51,7 @@ const SignInComponent = () => {
   }, [seconds]);
 
   useEffect(()=>{
-    if(reducer?.loginReducer?.isLoggedIn){
+    if(diagnosticDetails?.phoneNumber){
       route.push("/dashboard")
     }
   },[])

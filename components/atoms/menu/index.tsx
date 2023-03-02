@@ -17,6 +17,9 @@ export const MenuDropDown = () => {
     const dispatch = useDispatch()
     const router = useRouter()
 
+    const handleLogout=()=>{
+        signOut()
+    }
   return (
     <div>
         {/* Profile dropdown */}
@@ -48,7 +51,7 @@ export const MenuDropDown = () => {
                                     <a
                                     onClick={()=>{ 
                                         if(diagnosticDetails!=null && item.name == "Sign out"){
-                                            // signOut()
+                                          handleLogout()
                                         }
                                         else if(diagnosticDetails!=null && item.name =="Settings"){
                                             dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:item.name,href:"/settings",loading:false} })

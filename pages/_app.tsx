@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
             <GlobalStyle />
-            <ToastContainer/>
+            <ToastContainer autoClose={1000}/>
             <ThemeProvider theme={theme}>{isMounted && <Allowed><Component {...pageProps} /></Allowed> }</ThemeProvider>
         </AuthContextProvider>
     </QueryClientProvider>
