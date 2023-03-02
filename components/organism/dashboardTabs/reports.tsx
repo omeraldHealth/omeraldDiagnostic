@@ -4,7 +4,6 @@ import { ColumnsType } from 'antd/es/table';
 import { getReports } from 'utils/hook/userDetail';
 import { ReportDetails, UserDetails } from '@utils';
 import { useAuthContext } from 'utils/context/auth.context';
-import { useSelector } from 'react-redux';
 import { usePDF } from "@react-pdf/renderer";
 import dayjs from 'dayjs';
 import { ShareIcon } from '@heroicons/react/20/solid';
@@ -20,26 +19,26 @@ export default function ReportsTab() {
     {
       title: 'Name',
       dataIndex: 'userName',
-      sorter: (a, b) => a.userName.length - b.userName.length,
-      sortDirections: ['descend'],
+      // sorter: (a, b) => a.userName.length - b.userName.length,
+      // sortDirections: ['descend'],
     },
     {
       title: 'Email',
       dataIndex: 'email',
-      defaultSortOrder: 'descend',
-      sorter: (a, b) => a.email - b.email,
+      // defaultSortOrder: 'descend',
+      // sorter: (a, b) => a.email - b.email,
     },
     {
       title: 'Test Name',
       dataIndex: 'testName',
-      sorter: (a, b) => a.testName.length - b.testName.length,
+      // sorter: (a, b) => a.testName.length - b.testName.length,
     },
     {
       title: 'Report Date',
       dataIndex: 'reportDate',
       render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
-      sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() }
-    ,
+      // sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() }
+    },
     {
       title: 'Click to view',
       dataIndex: "status",
@@ -107,7 +106,7 @@ const ViewPdf = ({
   if (instance.loading) return <div>Loading ...</div>;
 
   if (instance.error) return <div>Something went wrong: {instance.error}</div>;
-  console.log(instance)
+
   return (
     <a
       href={instance.url as string}

@@ -18,15 +18,14 @@ import dayjs from "dayjs";
 import React from "react";
 import { PdfTestingProps } from "./PdfTesting.interface";
 import PdfTable from "./PdfTable/PdfTable";
-
 const styles = StyleSheet.create({
-  pageBackground: {
-    position: "absolute",
-    minWidth: "100%",
-    minHeight: "100%",
-    height: "100%",
-    width: "100%",
-  },
+  // pageBackground: {
+  //   position: "absolute",
+  //   minWidth: "100%",
+  //   minHeight: "100%",
+  //   height: "100%",
+  //   width: "100%",
+  // },
   page: {
     // margin: 10,
     fontFamily: "Helvetica",

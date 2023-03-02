@@ -61,7 +61,6 @@ const SignInComponent = () => {
   const generateRecaptcha = () => {
     if (window.recaptchaVerifier) {
       const recaptchaElement = document.getElementById('recaptcha-container');
-      console.log(recaptchaElement )
       // If the element has a reCAPTCHA widget rendered in it
       if (recaptchaElement?.childNodes && recaptchaElement?.childNodes.length > 0) {
         // Remove the existing reCAPTCHA widget

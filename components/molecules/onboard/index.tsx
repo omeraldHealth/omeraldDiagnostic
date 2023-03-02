@@ -41,7 +41,6 @@ const OnboardComponent = () => {
       setLogo(value.logo)
     }else if(Object?.keys(value).includes("banner")){
       setBanner(value.banner)
-      console.log(value.banner)
     }
    
   }

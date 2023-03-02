@@ -2,7 +2,9 @@ import React from 'react'
 
 export const ProfileSummaryComponent = ({style,props}:any) => {
   let profile = props
+
   return (
+    <div className='mt-10 h-[70vh]'>
         <div className={`w-[70vw] bg-white rounded-lg h-auto text-left  ${style}`}>
           <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj5Q2raMjAzWc3f7P5IK9YmXGlC4V3ZrTQMeHPzNpfx_8RyG_5sizbgCxLVJLXzwaRwAI&usqp=CAU'
            className='w-[100px] rounded-full border-2' />
@@ -46,6 +48,7 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
             </section>
           </section>
         </div>
+    </div>
   )
 }
 

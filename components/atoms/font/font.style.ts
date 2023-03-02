@@ -5,8 +5,6 @@ import styled from 'styled-components';
 
 const screenWidth = typeof window !== "undefined" ? window.screen.width : null;
 
-console.log(screenWidth)
-
 export const TitleTextStyled = styled.text`
     ${screenWidth && screenWidth > 900 && title.omerald_textStyle_monitor_Title1}
     ${screenWidth && screenWidth > 771 && screenWidth < 900 && title.omerald_textStyle_laptop_Title1}

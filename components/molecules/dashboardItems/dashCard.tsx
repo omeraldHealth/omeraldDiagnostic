@@ -55,7 +55,7 @@ const dashCard: DashCardTye[] = [
         tipInfo:"Shows the count of tests offered by your laboratory",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Total Users",
-        value: 0
+        value: diagnosticDetails.managersDetail?.length
     }
 ]
 

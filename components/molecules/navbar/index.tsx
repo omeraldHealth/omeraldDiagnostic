@@ -16,12 +16,11 @@ const navLinks = [
 export function Navbar() {
 
     const {diagnosticDetails} = useAuthContext()
-    console.log(diagnosticDetails)
 
 	return (
         <div  className={`flex justify-between items-center px-[1%] sm:px-[4%] xl:px-[10%]`}>
             <Link href={"/"}><span className='flex'>
-                <Logo width={80} height={80}/>
+                <Logo/>
                 <p className='font-sans hidden sm:block sm:text-lg sm:font-bold self-center'>OMERALD DIAGNOSTICS</p>
             </span>
             </Link>

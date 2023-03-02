@@ -4,6 +4,7 @@ import React from 'react'
 import { Space, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useAuthContext } from 'utils/context/auth.context';
+import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
 
 interface DataType {
   key: string;
@@ -18,6 +19,10 @@ interface SampleType {
 
 export default function TestTab() {
   const {diagnosticDetails} = useAuthContext()
+
+  const handleEdit = (record:any) =>{}
+
+  const handleRemove = (record:any) => {}
   
   const columns: ColumnsType<DataType> = [
     {
@@ -41,7 +46,6 @@ export default function TestTab() {
           {sampleType?.keywords.map((param) => {
             return (
               <>
-              {console.log(sampleType)}
               {/* <Popover content={param.aliases} title={"Aliases"}> */}
                 <a href='#'>
                   <Tag className="my-1" color={"green"} key={param}>
@@ -60,8 +64,8 @@ export default function TestTab() {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          {/* <a onClick={()=>{handleEdit(record)}}><FormModal handle={handleEdit} record={record.keywords} manual={false} /></a> */}
-          {/* {record?._id && <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>} */}
+          <a onClick={()=>{handleEdit(record)}}><PencilIcon className='w-4 text-gray-500' /> </a>
+          {record?._id && <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>}
         </Space>
       ),
     },
