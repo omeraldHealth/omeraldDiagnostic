@@ -12,6 +12,6 @@ export const socialIcons = [
 
 export const SocialMediaIcons = () => {
     return <div className='flex gap-6 my-10'>
-        {socialIcons.map(social => <Link href={social.url}><p className={"w-4 text-[#3734A9]"}>{social.component}</p></Link> )}
+        {socialIcons.map((social) => <Link key={social.key} href={social.url}><p className={"w-4 text-[#3734A9]"}>{social.component}</p></Link> )}
     </div>
 }

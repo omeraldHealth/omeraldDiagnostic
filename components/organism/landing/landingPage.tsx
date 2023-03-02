@@ -24,7 +24,7 @@ export function LandingPage() {
                 <Advertisement/>
                 <Testimonial/>
                 <ContactContainer/>
-                <BlogContainer/>
+                {/* <BlogContainer/> */}
                 <BottomBanner/>
                 <Footer />
             </div>

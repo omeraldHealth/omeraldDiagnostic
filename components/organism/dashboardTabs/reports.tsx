@@ -17,29 +17,34 @@ export default function ReportsTab() {
 
   const columns: ColumnsType<ReportTableType> = [
     {
+      key:"name",
       title: 'Name',
       dataIndex: 'userName',
       // sorter: (a, b) => a.userName.length - b.userName.length,
       // sortDirections: ['descend'],
     },
     {
+      key:"email",
       title: 'Email',
       dataIndex: 'email',
       // defaultSortOrder: 'descend',
       // sorter: (a, b) => a.email - b.email,
     },
     {
+      key:"testName",
       title: 'Test Name',
       dataIndex: 'testName',
       // sorter: (a, b) => a.testName.length - b.testName.length,
     },
     {
+      key:"reportDate",
       title: 'Report Date',
       dataIndex: 'reportDate',
       render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
       // sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() }
     },
     {
+      key:"click",
       title: 'Click to view',
       dataIndex: "status",
       render: ((stat:string,person: any) =>  <>{
@@ -55,6 +60,7 @@ export default function ReportsTab() {
       ),
     },
     {
+      key:"share",
       title: 'Click to Share',
       dataIndex: 'userName',
       render: ((userName:string) => <>

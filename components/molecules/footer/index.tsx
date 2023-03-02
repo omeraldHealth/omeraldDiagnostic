@@ -32,13 +32,13 @@ export function Footer() {
                 <section>
                     <FooterHeaderFont>{"Company"}</FooterHeaderFont>
                     <section className='mt-6'>
-                    {navFooterLinks.map(nav => <Link href={nav.navLink}><FooterLinkFont>{nav.navText}</FooterLinkFont></Link> )}
+                    {navFooterLinks.map((nav,index) => <Link key={index} href={nav.navLink}><FooterLinkFont>{nav.navText}</FooterLinkFont></Link> )}
                     </section>
                 </section>
                 <section>
                     <FooterHeaderFont>{"Resources"}</FooterHeaderFont>
                     <section className='mt-6'>
-                    {navFooterLinks2.map(nav => <Link href={nav.navLink}><FooterLinkFont>{nav.navText}</FooterLinkFont></Link> )}
+                    {navFooterLinks2.map((nav,index) => <Link key={index} href={nav.navLink}><FooterLinkFont>{nav.navText}</FooterLinkFont></Link> )}
                     </section>
                 </section>    
                 <section className='hidden lg:block'>

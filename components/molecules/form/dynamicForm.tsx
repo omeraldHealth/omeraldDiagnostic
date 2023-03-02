@@ -25,21 +25,21 @@ export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonTex
   return (
     <Form onFinish={handleSubmit} name="basic" 
         initialValues={{ remember: true,phoneNumber:diagnosticProfile?.phoneNumber }}>
-        {formProps.map(form => <>
+        {formProps.map((form,index) => <>
                 {form.type === "text" && 
-                <Form.Item className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ required: form.required,message: `Please input ${form.label}`}]}>
+                <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ required: form.required,message: `Please input ${form.label}`}]}>
                    {form.name !== "phoneNumber" ? <Input placeholder={form.label} className="border-gray-200  text-black font-light text-sm" />:
                    <Input disabled placeholder={form.label} className="border-gray-200  text-black font-light text-sm" />
                 } 
                 </Form.Item>
                 }
                 {form.type === "logo" &&
-                <Form.Item className='mb-6' name={form.name} labelCol={{ span: 10 }} >
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 10 }} >
                     <LogoUploader handleImage={handleImage} />
                 </Form.Item>
                 }
                 {form.type === "banner" &&
-                <Form.Item className='mb-6' name={form.name} labelCol={{ span: 0 }} >
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
                     <BannerUploader handleImage={handleImage} />
                 </Form.Item>
                 }

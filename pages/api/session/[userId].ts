@@ -1,6 +1,6 @@
 
-import { connectToDatabase } from "@utils";
 import { NextApiRequest, NextApiResponse } from "next";
+import { connectToDatabase } from "utils/middleware/database";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let { db } = await connectToDatabase();

@@ -33,7 +33,7 @@ export const NavLinks = () => {
     
     return <nav className="">
         {privateRoutes.map((item) => (
-            <a href='#' onClick={() => handleNavigationChange(item)}
+            <a key={item.name} href='#' onClick={() => handleNavigationChange(item)}
                 className={classNames(
                 item.name === currentNavigation.name
                     ? "bg-white text-gray-400 border-0 my-4"

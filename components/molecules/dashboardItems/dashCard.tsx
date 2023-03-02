@@ -62,9 +62,9 @@ const dashCard: DashCardTye[] = [
 return (
     <section className="my-6 grid grid-cols-2 gap-4 sm:flex justify-between" >
         {
-            dashCard?.map(dash => {
+            dashCard?.map((dash,index) => {
                 return (
-                    <a href="#" onClick={()=> dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:"Test",href:dash.href,loading:false} })}>
+                    <a key={index} href="#" onClick={()=> dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:"Test",href:dash.href,loading:false} })}>
                     <section className={`sm:w-[23%] xl:w-[15vw] h-[12vh] sm:h-[14vh] p-2 flex justify-between rounded-md text-white ${dash.style}`}>
                         {dash.icon}
                         <span className="">

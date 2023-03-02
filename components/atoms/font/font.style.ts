@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const screenWidth = typeof window !== "undefined" ? window.screen.width : null;
 
-export const TitleTextStyled = styled.text`
+export const TitleTextStyled = styled.p`
     ${screenWidth && screenWidth > 900 && title.omerald_textStyle_monitor_Title1}
     ${screenWidth && screenWidth > 771 && screenWidth < 900 && title.omerald_textStyle_laptop_Title1}
     ${screenWidth && screenWidth > 500 && screenWidth < 770 && title.omerald_textStyle_tab_Title1}
@@ -13,7 +13,7 @@ export const TitleTextStyled = styled.text`
     ${Colors.neutral.black}
 `
 
-export const TitleTextStyled_2 = styled.text`
+export const TitleTextStyled_2 = styled.p`
     ${screenWidth && screenWidth > 900 && title.omerald_textStyle_monitor_Title2}
     ${screenWidth && screenWidth > 771 && screenWidth < 900 && title.omerald_textStyle_laptop_Title1}
     ${screenWidth && screenWidth > 500 && screenWidth < 770 && title.omerald_textStyle_tab_Title2}
@@ -21,7 +21,7 @@ export const TitleTextStyled_2 = styled.text`
     ${Colors.neutral.black}
 `
 
-export const HeaderStyled_1 = styled.text`
+export const HeaderStyled_1 = styled.p`
     ${screenWidth && screenWidth > 900 && header.omerald_textStyle_monitor_Title1}
     ${screenWidth && screenWidth > 771 && screenWidth < 900 && header.omerald_textStyle_laptop_Title1}
     ${screenWidth && screenWidth > 500 && screenWidth < 770 && header.omerald_textStyle_tab_Title1}
@@ -29,7 +29,7 @@ export const HeaderStyled_1 = styled.text`
     ${Colors.neutral.black}
 `
 
-export const HeaderStyled_2 = styled.text`
+export const HeaderStyled_2 = styled.p`
     ${screenWidth && screenWidth > 900 && header.omerald_textStyle_monitor_Title2}
     ${screenWidth && screenWidth > 771 && screenWidth < 900 && header.omerald_textStyle_laptop_Title2}
     ${screenWidth && screenWidth > 500 && screenWidth < 770 && header.omerald_textStyle_tab_Title2}
@@ -37,7 +37,7 @@ export const HeaderStyled_2 = styled.text`
     ${Colors.neutral.black}
 `
 
-export const BodyStyled_1 = styled.text`
+export const BodyStyled_1 = styled.p`
     ${screenWidth && screenWidth > 900 && body.omerald_textStyle_monitor_Body1}
     ${screenWidth && screenWidth > 771 && screenWidth < 900 && body.omerald_textStyle_laptop_Body1}
     ${screenWidth && screenWidth > 500 && screenWidth < 770 && body.omerald_textStyle_tab_Body1}
@@ -45,7 +45,7 @@ export const BodyStyled_1 = styled.text`
     color:${Colors.neutral.omerald_color_text_info}
 `
 
-export const BodyStyled_2 = styled.text`
+export const BodyStyled_2 = styled.p`
     ${screenWidth && screenWidth > 900 && body.omerald_textStyle_Body2}
     ${screenWidth && screenWidth > 771 && screenWidth < 900 && body.omerald_textStyle_Body2}
     ${screenWidth && screenWidth > 500 && screenWidth < 770 && body.omerald_textStyle_Body2}

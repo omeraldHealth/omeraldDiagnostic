@@ -8,8 +8,7 @@ import { warningAlert } from '@components/atoms/alerts/alert';
 import firebaseApp from 'utils/auth/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_DIAGNOSTIC_DETAILS } from 'utils/store/types';
-import useSelection from 'antd/es/table/hooks/useSelection';
-
+  
 const AuthContext = createContext<AuthContextInterface>(null)
 
 export function AuthContextProvider({ children }: { children: React.ReactNode }) {

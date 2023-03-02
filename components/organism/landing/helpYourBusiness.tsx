@@ -38,8 +38,8 @@ export function HelpYourBusiness() {
             <BodyText_1 style='lg:w-[40%] m-auto my-6'>Omerald's efficient software solution accelerates business growth for diagnostic centre's.</BodyText_1>
             <section className="lg:flex gap-[2%] my-[7%] w-[100%] justify-around  ">
                 {
-                    helpBusiness.map(help => {
-                        return <section  className="text-left bg-white my-10 lg:my-0 lg:w-[33%] h-auto p-10 rounded-lg shadow-md">
+                    helpBusiness.map((help,index) => {
+                        return <section key={index} className="text-left bg-white my-10 lg:my-0 lg:w-[33%] h-auto p-10 rounded-lg shadow-md">
                         {help?.icon}
                         <TitleText_2 style='my-4'> {help?.title}</TitleText_2>
                         <BodyText_2 style='text-gray-400 my-4' > {help?.description}</BodyText_2>

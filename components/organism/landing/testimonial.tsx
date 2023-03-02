@@ -18,7 +18,7 @@ export function Testimonial() {
                 </section>
                 <section className='lg:py-16'>
                     <span className='flex mb-8'>
-                        {fiveStar?.map(star =><FaStar className='text-purple-900 w-[30px]'/> )}
+                        {fiveStar?.map((star,index) =><FaStar key={index} className='text-purple-900 w-[30px]'/> )}
                     </span>
                    
                     <BodyText_1 style='text-left my-4 text-[#1B1C31]'> 

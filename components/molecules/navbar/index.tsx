@@ -25,7 +25,7 @@ export function Navbar() {
             </span>
             </Link>
             <section className='hidden lg:flex'>
-                {navLinks.map(nav => <Link href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
+                {navLinks.map((nav,index) => <Link key={index} href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
             </section>
 
             {!diagnosticDetails?.phoneNumber ? <section className='lg:flex items-center'>

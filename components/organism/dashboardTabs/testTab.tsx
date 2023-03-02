@@ -26,42 +26,39 @@ export default function TestTab() {
   
   const columns: ColumnsType<DataType> = [
     {
+      key: 'testName',
       title: 'Test Name',
       dataIndex: 'testName',
-      key: 'testName',
       render: (text) => <a>{text}</a>,
     },
     {
+      key: 'sampleType',
       title: 'Sample Type',
       dataIndex: 'sampleType',
-      key: 'sampleType',
       render: (text) => <a>{text.sampleName}</a>,
     },
     {
+      key: 'keyword',
       title: 'Keywords (Hover to see aliases)',
-      key: 'sampleType',
-      dataIndex: 'sampleType',
-      render: (_, {sampleType}) => (
+      dataIndex: 'keyword',
+      render: (_,{sampleType}) => (
         <>
-          {sampleType?.keywords.map((param) => {
+          {sampleType?.keywords.map((param,index) => {
             return (
-              <>
-              {/* <Popover content={param.aliases} title={"Aliases"}> */}
-                <a href='#'>
+                <a key={index} href='#'>
                   <Tag className="my-1" color={"green"} key={param}>
                     {param.keyword.toUpperCase()}
                   </Tag>
                 </a>
-              {/* </Popover> */}
-              </>
             );
           })}
         </>
       ),
     },
     {
-      title: 'Action',
       key: 'action',
+      title: 'Action',
+      dataIndex: 'action',
       render: (_, record) => (
         <Space size="middle">
           <a onClick={()=>{handleEdit(record)}}><PencilIcon className='w-4 text-gray-500' /> </a>

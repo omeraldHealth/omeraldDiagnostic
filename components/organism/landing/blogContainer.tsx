@@ -63,8 +63,8 @@ export function BlogContainer() {
             <section className='lg:flex gap-2 2xl:gap-20'>
                 <section className='sm:flex my-10 lg:my-0 col-span-2  gap-2 2xl:gap-20'>
                 {
-                    blogs?.map(blog => {
-                        return <section className='blog w-[370px] shadow-lg p-4'>
+                    blogs?.map((blog,index) => {
+                        return <section key={index} className='blog w-[370px] shadow-lg p-4'>
                             <img src={blog.url} className='w-[100%] h-[270px] rounded-md shadow-md' alt='blogBanner' />
                             <p className='my-4 text-gray-500'>{blog.date} <span>{" Category"}</span></p>
                             <p className='my-4 font-bold'>{blog.title} <span>{" Category"}</span></p>
@@ -75,8 +75,8 @@ export function BlogContainer() {
                 </section>
                 <section>
                     {
-                        sideBlogs?.map(blog => {
-                            return<> <section className='blog min-w-[370px] w-auto mb-6 flex shadow-lg rounded-md px-2'>
+                        sideBlogs?.map((blog,index) => {
+                            return<> <section key={index} className='blog min-w-[370px] w-auto mb-6 flex shadow-lg rounded-md px-2'>
                                 <img src={blog.url} className='w-[120px] h-[80px] rounded-md shadow-md self-center' alt='blogBanner' />
                                 <span className='ml-4'>
                                     <p className='mb-4 text-gray-500'>{blog.date} <span>{" Category"}</span></p>
