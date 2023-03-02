@@ -31,3 +31,12 @@ export const branchDetailsFormArray = [
     {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
     {"name":"branchContact","type":"text","label":"Branch Contact","required":true},
 ]
+
+export interface ReportTableType {
+    key: React.Key;
+    userName: string;
+    email: number;
+    testName: string;
+    reportDate: Date;
+    status: string;
+  }
