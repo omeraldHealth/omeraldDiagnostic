@@ -5,6 +5,7 @@ import { NavLinks } from '@components/atoms/nav/links';
 import React from 'react'
 
 export function Sidebar() {
+
 	return (
         <div className={`w-64`}>
         <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">

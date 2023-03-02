@@ -31,7 +31,7 @@ export function diagnosticReducer(state = diagnosticState, action:any) {
       case GET_DIAGNOSTIC_DETAILS:
         return {...state};
       case SET_DIAGNOSTIC_DETAILS:
-        return { ...state, diagnosticUser: action.payload };
+        return { ...state, ...action.payload };
       default:
         return state;
     }

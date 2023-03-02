@@ -1,7 +1,10 @@
 import { Logo, NavFont } from '@components/atoms'
 import { SignInButton } from '@components/atoms/button/button'
+import { MenuDropDown } from '@components/atoms/menu'
 import Link from 'next/link'
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { useAuthContext } from 'utils/context/auth.context'
 
 const navLinks = [
     {"navLink":"/feature","navText":"Features"},
@@ -11,6 +14,10 @@ const navLinks = [
 ]
 
 export function Navbar() {
+
+    const {diagnosticDetails} = useAuthContext()
+    console.log(diagnosticDetails)
+
 	return (
         <div  className={`flex justify-between items-center px-[1%] sm:px-[4%] xl:px-[10%]`}>
             <Link href={"/"}><span className='flex'>
@@ -21,10 +28,13 @@ export function Navbar() {
             <section className='hidden lg:flex'>
                 {navLinks.map(nav => <Link href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
             </section>
-            <section className='lg:flex items-center'>
+
+            {!diagnosticDetails?.phoneNumber ? <section className='lg:flex items-center'>
                <span className='lg:flex'><Link href={"/signIn"}><NavFont>{"Sign In"}</NavFont></Link></span>
                <span className='hidden lg:flex'><Link href={"/signIn"}><SignInButton style="mx-8">{"Start Free"}</SignInButton></Link></span>
-            </section>
+            </section>:
+            <MenuDropDown/>
+            }
         </div>
 	)
 }

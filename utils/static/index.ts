@@ -18,13 +18,13 @@ export const privateRoutes = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
     {
       name: "Add Reports",
-      href: "addReports",
+      href: "/addReports",
       icon: ChartBarSquareIcon,
       current: false,
     },
     {
       name: "View Reports",
-      href: "reports",
+      href: "/reports",
       icon: ClipboardDocumentListIcon,
       current: false,
     },

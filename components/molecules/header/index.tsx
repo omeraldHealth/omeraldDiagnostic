@@ -1,26 +1,19 @@
+import { MenuDropDown } from '@components/atoms/menu'
 import { Menu, Transition } from '@headlessui/react'
 import { Bars3BottomLeftIcon, Bars3Icon, BellIcon } from '@heroicons/react/20/solid'
 
 import React, { Fragment } from 'react'
-import { useSelector } from 'react-redux'
-import { classNames } from 'utils/static'
+import { useDispatch, useSelector } from 'react-redux'
 
-const navLinks = [
-    {"navLink":"/feature","navText":"Features"},
-    {"navLink":"/knowledge","navText":"Knowledge"},
-    {"navLink":"/blog","navText":"Blog"},
-    {"navLink":"/pricing","navText":"Pricing"}
-]
 
-const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#' },
- ]
+
 
 export function DashboardHeader() {
 
+    const dispatch = useDispatch()
+
     const diagnosticProfile = useSelector((state:any)=>state.diagnosticReducer)
+    const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
 
 	return (
         <div className={`flex justify-between items-center`}>
@@ -36,7 +29,7 @@ export function DashboardHeader() {
                     </button>
                     <div className="flex flex-1 justify-between px-4">
                     <div className="flex flex-1">
-                       <p className='flex font-bold text-xl self-center'><Bars3Icon className='w-6 mx-4'/> Dashboard</p>
+                       <p className='flex font-bold text-lg self-center'><Bars3Icon className='w-6 mx-4'/>{dashboardRoute?.name}</p>
                     </div>
                     <div className="ml-4 flex items-center lg:ml-6">
                         <button
@@ -46,46 +39,7 @@ export function DashboardHeader() {
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                         </button>
-
-                        {/* Profile dropdown */}
-                        <Menu as="div" className="relative ml-3">
-                        <div>
-                            <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            <span className="sr-only">Open user menu</span>
-                            <img
-                                className="h-8 w-8 rounded-full"
-                                src={diagnosticProfile?.brandDetails?.brandLogo ? diagnosticProfile?.brandDetails?.brandLogo :"https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"} alt=""
-                            />
-                            </Menu.Button>
-                        </div>
-                        <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                        >
-                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            {userNavigation.map((item) => (
-                                <Menu.Item key={item.name}>
-                                {({ active }) => (
-                                    <a
-                                    href={item.href}
-                                    className={classNames(
-                                        active ? 'bg-gray-100' : '',
-                                        'block px-4 py-2 text-sm text-gray-700'
-                                    )}
-                                    >
-                                    {item.name}
-                                    </a>
-                                )}
-                                </Menu.Item>
-                            ))}
-                            </Menu.Items>
-                        </Transition>
-                        </Menu>
+                        <MenuDropDown/>
                     </div>
                     </div>
                 </div>

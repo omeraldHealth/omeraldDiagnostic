@@ -1,19 +1,35 @@
 
 
-import React, { useState } from 'react'
-import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react'
 import { classNames, privateRoutes } from 'utils/static';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
+
+const IndexObj = {
+    "/dashboard":0,
+    "/addReports":1,
+    "/reports":2,
+    "/test":3,
+    "/profile":4,
+    "/settings":5
+}
+  
 
 export const NavLinks = () => {
     const [currentNavigation, setCurrentNavigation] = useState<any>(privateRoutes[0]);
-    const router = useRouter();
-    
+    const dispatch = useDispatch()
+    const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
+
+    useEffect(()=>{
+        //@ts-ignore
+        setCurrentNavigation(privateRoutes[IndexObj[dashboardRoute.href]])
+    },[dashboardRoute])
+
     const handleNavigationChange = (nav: any) => {
-        console.log(nav)
         setCurrentNavigation(nav);
+        dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:nav.name,href:nav.href,loading:true} });
     };
     
-
     return <nav className="">
         {privateRoutes.map((item) => (
             <a href='#' onClick={() => handleNavigationChange(item)}
