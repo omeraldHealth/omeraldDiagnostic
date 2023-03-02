@@ -7,3 +7,5 @@ export const getDiagnosticUserApi = backendApiPath+`/api/diagnostic/getDiagnosti
 export const insertDiagnosticUserApi = backendApiPath+`/api/diagnostic/saveDiagnosticUser`
 export const uploadImageApi = backendApiPath+`/api/diagnostic/uploadBranding`
 export const getDiagnosticReports = backendApiPath+`/api/diagnostic/reports/getDiagnosticReports?userId=`
+export const getQueriesApi = backendApiPath+`/api/diagnostic/getQuery?userId=`
+export const addQueryApi = backendApiPath+`/api/diagnostic/createQuery`

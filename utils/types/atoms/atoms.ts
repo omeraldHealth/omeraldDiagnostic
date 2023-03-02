@@ -25,3 +25,12 @@ export interface PageTemplateProps {
 	footer: ReactNode
     children: ReactNode
 }
+
+export type Query = {
+	phoneNumber:String,
+	name:String,
+	email:String,
+	branch:String,
+	subject:String,
+	message:String
+  }

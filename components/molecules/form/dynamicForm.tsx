@@ -14,11 +14,12 @@ interface FormProps  {
 interface FormType  {
     formProps: FormProps[],
     buttonText: string,
+    style?:string,
     handleSubmit: (value:any) =>void
     handleImage?: (value:any) =>void
 }
 
-export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonText}:FormType) => {
+export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonText,style}:FormType) => {
 
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
 
@@ -45,8 +46,8 @@ export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonTex
                 }
               </>
         )}
-        <Form.Item className='flex justify-start absolute bottom-0 mt-4'>
-            <Button className='bg-blue-500' type="primary" htmlType="submit">{buttonText}</Button>
+        <Form.Item className={`flex justify-start ${style}`}>
+            <Button className={`bg-blue-500 ${style}`} type="primary" htmlType="submit">{buttonText}</Button>
         </Form.Item> 
     </Form>
   );

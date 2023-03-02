@@ -1,7 +1,8 @@
-import { getDiagnosticReports, getDiagnosticUserApi, insertDiagnosticUserApi, uploadImageApi } from "utils/urls/app";
+import { addQueryApi, getDiagnosticReports, getDiagnosticUserApi, getQueriesApi, insertDiagnosticUserApi, uploadImageApi } from "utils/urls/app";
 import { getUserDetailType } from "utils/types/atoms/hooks";
 import axios from "axios";
 import { UserDetails } from "utils/types/molecules/users.interface";
+import { Query } from "utils/types/atoms/atoms";
 
 export async function getUserDetails(userId: getUserDetailType) {
   try {
@@ -39,5 +40,28 @@ export async function getReports(userId: getUserDetailType) {
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error.response.status || error.request.code, data: null };
+  }
+}
+
+export async function getQueries(
+  userId: getUserDetailType
+) {
+  try {
+    const resp = await axios.get(getQueriesApi+userId.phoneNumber,{
+    });
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response};
+  }
+}
+
+export async function addQuery(
+  contactData: Query
+) {
+  try {
+    const resp = await axios.post(addQueryApi,contactData,{});
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response};
   }
 }

@@ -64,3 +64,5 @@ export type NavigationType = {
     icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
     current: boolean;
 };
+
+export const settingsTab = ["Billing","Activity Feed","Employee Management","Branch Management","Pathologists","Support"]
