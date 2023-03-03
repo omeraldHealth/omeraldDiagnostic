@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { BeakerIcon,ChartBarIcon,InformationCircleIcon, ShareIcon } from '@heroicons/react/20/solid';
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 import { report } from 'process';
+import { Tooltip } from 'antd';
 
 interface DashCardTye {
     href:string,
@@ -68,9 +69,9 @@ return (
                     <section className={`sm:w-[23%] xl:w-[15vw] h-[12vh] sm:h-[14vh] p-2 flex justify-between rounded-md text-white ${dash.style}`}>
                         {dash.icon}
                         <span className="">
-                            {/* <Tooltip color={'#e3a909'} title={dash.tipInfo}> */}
+                            <Tooltip color={'#e3a909'} title={dash.tipInfo}>
                                 {dash.icon2}
-                            {/* </Tooltip> */}
+                            </Tooltip>
                             <p className="font-bold text-2xl flex justify-center my-2 mt-4">{dash.value ?? 0 }</p>
                             <p className="font-light text-xs xl:text-sm">{dash.title}</p>
                         </span>

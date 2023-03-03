@@ -15,15 +15,16 @@ interface FormType  {
     formProps: FormProps[],
     buttonText: string,
     style?:string,
+    selectedRole?:string,
+    setSelectedRole?: (value:any) =>void
     handleSubmit: (value:any) =>void
     handleImage?: (value:any) =>void
 }
 
-export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonText,style}:FormType) => {
+export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
 
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
-  const [selectedRole, setSelectedRole] = useState("Select Role");
-
+  
   const roles = ['Admin', 'Manager','Operator','Spoc'];
   
   return (
@@ -50,14 +51,12 @@ export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonTex
                 }
                 {form.type === "roles" &&
                 <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
-                    <Space wrap>
                         <Select
                             style={{ width: 120 }}
                             defaultValue={selectedRole}
                             onChange={setSelectedRole}
                             options={roles.map((role) => ({ label: role, value: role }))}
                         />
-                    </Space>
                 </Form.Item>
                 }
               </>

@@ -112,4 +112,5 @@ export interface AuthContextInterface {
     loading: boolean;
     signIn: (user: User, redirect: string) => Promise<void>;
     signOut: () => Promise<void>;
+    setDiagnosticDetails:() => Promise<void>;
 }

@@ -1,5 +1,6 @@
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
+import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 import { TrashIcon } from "@heroicons/react/20/solid";
 import { Space } from "antd";
 import { useState } from "react";
@@ -7,7 +8,7 @@ import { useAuthContext } from "utils/context/auth.context";
 import { updateUserDetails } from "utils/hook/userDetail";
 
 export function EmployeeManagement() {
-    const {diagnosticDetails} = useAuthContext()
+    const {diagnosticDetails,setDiagnosticDetails} = useAuthContext()
     const [addOperator,setAddOperator] = useState(false)
     const columns =    [
         {
@@ -34,19 +35,35 @@ export function EmployeeManagement() {
             key: 'managerSignature  ',
             render: (_, record,index) => (
               <Space size="middle">
-                {record?._id && (index !== 0 ? <a ><TrashIcon className='w-4 text-red-500' /></a> :<p>Cannot delete Admin</p>)}
+                {record?._id && (index !== 0 ? <a ><TrashIcon onClick={()=>{handleRemoveEmployee(record._id)}} className='w-4 text-red-500' /></a> :<p>Cannot delete Admin</p>)}
               </Space>
             ),
         },
     ]
+    const [selectedRole, setSelectedRole] = useState("Select Role");
 
     const handleEmployee = async (value:any) => {
       let data = diagnosticDetails?.managersDetail || [];
       data.push(value)
+
       if(diagnosticDetails){
-        let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"managersDetails":data})
-        if(resp.status==200){
-            console.log("action")
+        let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"managersDetail":data})
+
+        if(resp.data.acknowledged){
+           ActivityLogger(`added ${value.managerName} as branch ${value.managerRole}`,diagnosticDetails)
+           setAddOperator(false)
+        }
+      }
+    }
+
+    const handleRemoveEmployee = async (value:any) => {
+      let data = diagnosticDetails?.managersDetail.filter(manager => manager._id !== value) || [];
+      if(diagnosticDetails){
+        let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"managersDetail":data})
+        setDiagnosticDetails({...diagnosticDetails,"managersDetail":data})
+        if(resp.data.acknowledged){
+           ActivityLogger(`removed ${value.managerName} as branch ${value.managerRole}`,diagnosticDetails)
+           setAddOperator(false)
         }
       }
     }
@@ -57,21 +74,21 @@ export function EmployeeManagement() {
       {"name":"managerRole","type":"roles","label":"Operator Role","required":true}
     ]
 
-	return (
-        <section >
-            <section className="min-h-[45vh]">
-                {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.managersDetail} /></div>:
-                  <section className="w-[50%] my-10 relative">
-                    <DynamicFormCreator handleSubmit={handleEmployee} buttonText="submit" formProps={employeeDetails}  />
-                  </section>
-                }
-            </section>
-           <section className="w-[100%] flex justify-start ">
-                <button onClick={()=>{setAddOperator(!addOperator)}} className="bg-gray-200 p-2 rounded-md">
-                  {!addOperator ?  "Add Operator" : "View Operator"}
-                </button>
-            </section>
-        </section>
+    return (
+          <section >
+              <section className="min-h-[45vh]">
+                  {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.managersDetail} /></div>:
+                    <section className="w-[50%] my-10 relative">
+                      <DynamicFormCreator selectedRole={selectedRole} setSelectedRole={setSelectedRole} handleSubmit={handleEmployee} buttonText="submit" formProps={employeeDetails}  />
+                    </section>
+                  }
+              </section>
+            <section className="w-[100%] flex justify-start ">
+                  <button onClick={()=>{setAddOperator(!addOperator)}} className="bg-gray-200 p-2 rounded-md">
+                    {!addOperator ?  "Add Operator" : "View Operator"}
+                  </button>
+              </section>
+          </section>
     )
 }
 
