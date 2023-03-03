@@ -3,6 +3,7 @@ import { mailImage } from '@utils'
 import React, { useState } from 'react'
 import { useAuthContext } from 'utils/context/auth.context'
 import { addQuery } from 'utils/hook/userDetail'
+import { ActivityLogger } from '../logger.tsx/activity'
 import { DynamicFormCreator } from './dynamicForm'
 
 export const ContactForm = ({handleSubmit}:any) => {

@@ -6,6 +6,7 @@ import { DashBanner } from '@components/molecules/dashboardItems/banner';
 import { DashCard } from '@components/molecules/dashboardItems/dashCard';
 import ReportSharedVsTime2 from '@components/molecules/dashboardItems/chart';
 import { DashActivity } from '@components/molecules/dashboardItems/activity';
+import { Select } from 'antd';
 
 export default function DashboardTab() {
   Chart.register(CategoryScale);
@@ -18,6 +19,7 @@ export default function DashboardTab() {
       <section className="grid grid-cols-1 gap-4 sm:flex justify-between h-[45vh] my-4">
           <ReportSharedVsTime2 />
           <DashActivity/>
+         
       </section>
     </div>
     </Fragment>

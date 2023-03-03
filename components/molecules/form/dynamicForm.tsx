@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Form, Input } from 'antd';
+import React, { useState } from 'react';
+import { Button, Form, Input, Select, Space } from 'antd';
 import LogoUploader from '@components/atoms/file/logoUploaders';
 import BannerUploader from '@components/atoms/file/bannerUpload';
 import { useSelector } from 'react-redux';
@@ -22,9 +22,13 @@ interface FormType  {
 export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonText,style}:FormType) => {
 
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
+  const [selectedRole, setSelectedRole] = useState("Select Role");
 
+  const roles = ['Admin', 'Manager','Operator','Spoc'];
+  
   return (
-    <Form onFinish={handleSubmit} name="basic" 
+    <div className='relative'>
+        <Form onFinish={handleSubmit} name="basic" 
         initialValues={{ remember: true,phoneNumber:diagnosticProfile?.phoneNumber }}>
         {formProps.map((form,index) => <>
                 {form.type === "text" && 
@@ -44,12 +48,26 @@ export const DynamicFormCreator = ({formProps,handleSubmit,handleImage,buttonTex
                     <BannerUploader handleImage={handleImage} />
                 </Form.Item>
                 }
+                {form.type === "roles" &&
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
+                    <Space wrap>
+                        <Select
+                            style={{ width: 120 }}
+                            defaultValue={selectedRole}
+                            onChange={setSelectedRole}
+                            options={roles.map((role) => ({ label: role, value: role }))}
+                        />
+                    </Space>
+                </Form.Item>
+                }
               </>
         )}
         <Form.Item className={`flex justify-start ${style}`}>
             <Button className={`bg-blue-500 ${style}`} type="primary" htmlType="submit">{buttonText}</Button>
         </Form.Item> 
-    </Form>
+        </Form>
+    </div>
+  
   );
 };
 

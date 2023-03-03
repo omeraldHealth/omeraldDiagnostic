@@ -5,21 +5,21 @@ export function Activity() {
     const {diagnosticDetails} = useAuthContext()
     const columns = [
         {
+            key: 'sdas',
             title: 'Activity',
             dataIndex: 'activity',
-            key: 'activity',
             render: (text:any) => <a className='text-blue-800 font-medium'>{text}</a>,
           },
           {
+              key: 'asse',
               title: 'Activity By',
               dataIndex: 'user',
-              key: 'user',
               render: (text:any) => <a>{text.managerName}</a>,
           },
           {
+              key: 'qws',
               title: 'Activity Time',
               dataIndex: 'updatedTime',
-              key: 'updatedTime',
               render: (text:any) => <a>{text}</a>,
           },
     ]

@@ -1,5 +1,7 @@
+import { UserCircleIcon } from '@heroicons/react/20/solid'
 import React from 'react'
 import { useSelector } from 'react-redux'
+import moment from 'moment';
 
 export const DashActivity = () => {
  
@@ -13,10 +15,10 @@ export const DashActivity = () => {
         return ( 
         <section key={index} className="my-4 flex justify-between">
             <span className="text-xs flex">
-                {/* <img src={doctorAvatar} alt="user-avatar" className="w-10 rounded-full mr-4" /> */}
+                <UserCircleIcon className="w-8 h-8 self-center bg-blue-700 text-white rounded-full mr-2" />
                 <span>
-                <p className="text-light text-gray-600 mt-1">{activity.activity}</p>
-                <p className="text-light text-indigo-600 mt-1">{activity.updatedTime}</p>
+                <p className="text-light text-gray-600 mt-1"><span className='font-bold'>{activity.user.managerName} </span>{activity.activity}</p>
+                {moment.utc(DateConverter(activity.updatedTime)).local().startOf('seconds').fromNow()}
                 </span>
             </span> 
         </section>
@@ -28,3 +30,7 @@ export const DashActivity = () => {
     }
 </section>)}
 
+const DateConverter = (dateString:any) => {
+    const date = new Date(dateString);
+    return date
+}  
