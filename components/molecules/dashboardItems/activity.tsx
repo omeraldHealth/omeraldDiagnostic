@@ -11,7 +11,7 @@ export const DashActivity = () => {
         <p>Recent Activities</p>
         <p className="text-xs my-2 text-gray-400 font-light">Summary of the latest updated activities</p>
             {diagnosticDetails?.activities ? diagnosticDetails?.activities?.sort((a:any,b:any)=>{
-                return DateConverter(b.updatedTime) -  DateConverter(a.updatedTime) })?.map((activity,index) => {
+                return DateConverter(b.updatedTime) -  DateConverter(a.updatedTime) })?.splice(0,4).map((activity,index) => {
                 return ( 
                 <section key={index} className="my-4 flex justify-between ">
                     <span className="text-xs flex">
@@ -31,7 +31,6 @@ export const DashActivity = () => {
 )}
 
 const DateConverter = (dateString:any) => {
-    console.log(dateString)
     const date = new Date(dateString);
     return date
 }  

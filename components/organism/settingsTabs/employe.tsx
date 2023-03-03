@@ -62,7 +62,7 @@ export function EmployeeManagement() {
         let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"managersDetail":data})
         setDiagnosticDetails({...diagnosticDetails,"managersDetail":data})
         if(resp.data.acknowledged){
-           ActivityLogger(`removed ${value.managerName} as branch ${value.managerRole}`,diagnosticDetails)
+           ActivityLogger(`removed ${data.managerName} as branch ${value.managerRole}`,diagnosticDetails)
            setAddOperator(false)
         }
       }

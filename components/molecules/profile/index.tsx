@@ -22,10 +22,10 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
                     <p className="font-light my-6">{profile?.diagnosticName ? profile?.diagnosticName : "Not Found"}   </p> 
                     <p className="font-light my-6">{profile?.phoneNumber ? profile?.phoneNumber: "Not Found"} </p>  
                     <p className="font-light my-6 lowercase">{profile?.email ?profile?.email:"Not found"} </p> 
-                    <p className="font-light my-6">{profile?.branchDetails ? profile?.branchDetails[0].branchName : "Not Found"} </p> 
-                    <p className="font-light my-6 lowercase overflow-hidden max-w-[100%] max-h-[3vh]">{profile?.branchDetails && profile?.branchDetails[0]?.branchAddress ? 
+                    {/* <p className="font-light my-6">{profile?.branchDetails ? profile?.branchDetails[0].branchName : "Not Found"} </p>  */}
+                    {/* <p className="font-light my-6 lowercase overflow-hidden max-w-[100%] max-h-[3vh]">{profile?.branchDetails && profile?.branchDetails[0]?.branchAddress ? 
                         profile?.branchDetails[0]?.branchAddress :"Not found"
-                    } </p>
+                    } </p> */}
                     <p className="font-light my-6">{profile?.tests ? profile?.tests?.length : 10} </p> 
                     {/* <p className="font-light my-6">{diagnostic?.brandDetails?.facebookUrl ? diagnostic?.brandDetails?.facebookUrl: "Not found"} </p> 
                     <p className="font-light my-6">{diagnostic?.brandDetails?.instaUrl ? diagnostic?.brandDetails?.facebookUrl : "Not found"} </p>  */}
@@ -42,8 +42,8 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
                 <section className="mt-4 col-span-2">
                     <a target={"_blank"} href={profile?.brandDetails.facebookUrl} className="font-light my-6 block text-blue-400">{profile?.brandDetails.facebookUrl ? profile?.brandDetails.facebookUrl: "Not found"} </a> 
                     <a target={"_blank"} href={profile?.brandDetails.instaUrl} className="font-light my-6  text-blue-400">{profile?.brandDetails.instaUrl ? profile?.brandDetails.facebookUrl : "Not found"} </a> 
-                    <p className="font-light my-6 lowercase">{profile?.branchDetails && profile?.branchDetails[0].branchName ? profile?.branchDetails[0].branchName : "Not found"} </p> 
-                    <p className="font-light my-6 lowercase">{profile?.branchDetails && profile?.branchDetails[0].branchAddress ? profile?.branchDetails[0].branchAddress : "Not found"}</p> 
+                    {/* <p className="font-light my-6 lowercase">{profile?.branchDetails && profile?.branchDetails[0].branchName ? profile?.branchDetails[0].branchName : "Not found"} </p> 
+                    <p className="font-light my-6 lowercase">{profile?.branchDetails && profile?.branchDetails[0].branchAddress ? profile?.branchDetails[0].branchAddress : "Not found"}</p>  */}
                 </section>
             </section>
           </section>
