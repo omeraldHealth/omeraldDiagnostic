@@ -1,4 +1,4 @@
-import { addQueryApi, getDiagnosticReports, getDiagnosticUserApi, getQueriesApi, insertDiagnosticUserApi, insertReportApi, updateDiagnosticUserApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
+import { addQueryApi, getDiagnosticReports, getDiagnosticUserApi, getQueriesApi, insertDiagnosticUserApi, insertReportApi, updateDiagnosticUserApi, updateTestApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
 import { getUserDetailType } from "utils/types/atoms/hooks";
 import axios from "axios";
 import { ReportDetails, UserDetails } from "utils/types/molecules/users.interface";
@@ -105,5 +105,18 @@ export async function createReport(
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error.response };
+  }
+}
+
+export async function updateTests(
+  tests: any,userId: any
+) {
+  try {
+    const resp = await axios.post(updateTestApi+`${userId}`, tests,{
+      // headers: { Authorization: `Bearer ${token}` },
+    });
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response};
   }
 }

@@ -1,7 +1,7 @@
 import { DashboardTable } from '@components/molecules/dashboardItems/data-table'
 import { Fragment } from 'react'
 import React from 'react'
-import { Space, Tag } from 'antd';
+import { Popover, Space, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useAuthContext } from 'utils/context/auth.context';
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
@@ -27,29 +27,31 @@ export default function TestTab() {
   
   const columns: ColumnsType<DataType> = [
     {
+      key: 'sampleName',
+      title: 'Sample Name',
+      dataIndex: 'sampleName',
+      render: (text) => <a>{text}</a>,
+    },
+    {
       key: 'testName',
       title: 'Test Name',
       dataIndex: 'testName',
       render: (text) => <a>{text}</a>,
     },
     {
-      key: 'sampleType',
-      title: 'Sample Type',
-      dataIndex: 'sampleType',
-      render: (text) => <a>{text.sampleName}</a>,
-    },
-    {
-      key: 'keyword',
+      key: 'keywords',
       title: 'Keywords (Hover to see aliases)',
-      dataIndex: 'keyword',
-      render: (_,{sampleType}) => (
+      dataIndex: 'keywords',
+      render: (keywords,record) => (
         <>
-          {sampleType?.keywords.map((param,index) => {
+          {keywords.map((param,index) => {
             return (
                 <a key={index} href='#'>
-                  <Tag className="my-1" color={"green"} key={param}>
-                    {param.keyword.toUpperCase()}
-                  </Tag>
+                  <Popover content={(param.aliases)} title={record.testName+" ("+param.keyword+" aliases)"}>
+                    <Tag className="my-1" color={"green"} key={param}>
+                      {param.keyword.toUpperCase()}
+                    </Tag>
+                  </Popover>
                 </a>
             );
           })}

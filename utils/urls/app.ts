@@ -13,3 +13,4 @@ export const addQueryApi = backendApiPath+`/api/diagnostic/createQuery`
 export const getReportTypeApi = backendApiPath+`/api/omerald/getReportTypes`
 export const uploadReportApi = backendApiPath+`/api/diagnostic/uploadReport`
 export const insertReportApi = backendApiPath+`/api/diagnostic/reports/insertDiagnosticReport`
+export const updateTestApi = backendApiPath+`/api/diagnostic/updateDiagnosticUser?userId=`

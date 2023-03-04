@@ -12,6 +12,7 @@ import { useAuthContext } from "utils/context/auth.context";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { getDiagnosticUserApi } from "@utils";
+import AddTestTab from "@components/organism/dashboardTabs/addTest";
 
 
 const dashboardTabs = {
@@ -19,6 +20,7 @@ const dashboardTabs = {
 "/addReports":<AddReportsTab/>,
 "/reports":<ReportsTab/>,
 "/test":<TestTab/>,
+"/addTest":<AddTestTab/>,
 "/profile":<ProfileTab/>,
 "/settings":<SettingsTab/>
 }

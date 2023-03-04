@@ -95,6 +95,17 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
                      <textarea className='border-gray-200' rows={4} cols="36" placeholder={form.label} maxLength={6} />
                 </Form.Item>
                 }
+                {form.type === "tags" &&
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
+                   <Select
+                        mode="tags"
+                        style={{ width: '100%' }}
+                        placeholder="Aliases"
+                        // onChange={handleChange}
+                        // options={options}
+                    />
+                </Form.Item>
+                }
               </>
         )}
         <Form.Item className={`flex justify-start col-span-2 ${style}`}>

@@ -14,7 +14,11 @@ export const addReportSteps = [
   { id: 2, name: "Upload Report" },
   { id: 3, name: "Success" },
 ];
-
+export const addTestSteps = [
+  { id: 1, name: "Enter Test Details" },
+  { id: 2, name: "Enter Keywords & aliases" },
+  { id: 3, name: "Success" },
+];
 export type onboardStepsType = {
     id: number;
     name: string;
