@@ -44,13 +44,13 @@ export const AddKeyword = ({handleSteps}:any) => {
             ),
       },
   ]
-
+  console.log(selectedTest)
   return (
     <div>
         {
             !isManual && 
             <section>
-                <DashboardTable columns={columns} data={selectedTest.keywords} />
+                <DashboardTable columns={columns} data={selectedTest ? selectedTest.keywords :[]} />
             </section>
            
         }

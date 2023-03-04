@@ -38,8 +38,8 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
         {formProps.map((form,index) => <>
                 {form.type === "text" && 
                 <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ required: form.required,message: `Please input ${form.label}`}]}>
-                   {form.name !== "phoneNumber" && form.type == "text" ? <Input placeholder={form.label} className="border-gray-200  text-black font-light text-sm" />:
-                   <Input disabled placeholder={form.label} className="border-gray-200  text-black font-light text-sm" />
+                   {form.name !== "phoneNumber" && form.type == "text" ? <Input placeholder={form.label} className="border-gray-400  text-black font-light text-sm" />:
+                   <Input disabled placeholder={form.label} className="border-gray-400  text-black font-light text-sm" />
                 } 
                 </Form.Item>
                 }
@@ -47,7 +47,7 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
                 
 
                 <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ required: form.required,message: `Please input ${form.label}`}]}>
-                     <Input placeholder={form.label} className="border-gray-200  text-black font-light text-sm" />
+                     <Input placeholder={form.label} className="border-gray-400  text-black font-light text-sm" />
                 </Form.Item>
                 }
                 {form.type === "logo" &&
@@ -82,7 +82,7 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
                 }
                 {form.type === "date" &&
                 <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
-                       <DatePicker format='YYYY-MM-DD' className='w-[20vw] py-2' placeholder={form.label} onChange={handleDate} />
+                       <DatePicker format='YYYY-MM-DD' className='w-[20vw] py-2 border-gray-400' placeholder={form.label} onChange={handleDate} />
                 </Form.Item>
                 }
                 {form.type === "gender" &&

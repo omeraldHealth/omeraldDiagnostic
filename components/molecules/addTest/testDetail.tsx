@@ -14,6 +14,7 @@ export const TestDetail = ({handleSteps}:any) => {
     const [manual,setManual] = useState({value:false,label:"False"})
     const {isLoading,data} = useQuery(["reportTypes"],()=>{return axios.get(getReportTypeApi)})
     const [selectedReport,setSelectedReport] = useState()
+    const [sampleName,setSampleName] = useState("")
     const [testName,setTestName] = useState("")
     let reportTypes = data && data.data
     const dispatch = useDispatch()
@@ -24,8 +25,9 @@ export const TestDetail = ({handleSteps}:any) => {
     }
 
     const handleSubmit = () => {
-        if(selectedReport && testName.length>0){
-            dispatch({type:SET_TEST,payload:{"isManual":!manual,"selectedTest":selectedReport,"testName":testName}})
+        if(selectedReport && sampleName.length > 0 || manual){
+            dispatch({type:SET_TEST,payload:{"isManual":!manual,"selectedTest":selectedReport,"sampleName":sampleName,"testName":testName}})
+
             handleSteps(1)
         }else{
             errorAlert("Please fill all fields")
@@ -41,11 +43,11 @@ export const TestDetail = ({handleSteps}:any) => {
             }} value={manual.value} />
             </section>
             <section className="my-4">
-                <BodyText_3 style='mb-4'>Please Enter Test Name</BodyText_3>
-                <Input defaultValue={testName} className="w-[25%] border-gray-300 rounded-md" onChange={(e:any)=>{setTestName(e.target.value)}} required placeholder="Test Name" />
+                <BodyText_3 style='mb-4'>Please Enter Sample Name</BodyText_3>
+                <Input defaultValue={sampleName} className="w-[25%] border-gray-300 rounded-md" onChange={(e:any)=>{setSampleName(e.target.value)}} required placeholder="Test Name" />
             </section>
             {
-                manual.value && 
+                manual.value ?
                 <section>
                 <BodyText_3 style='mb-4'>Please select the type of report</BodyText_3>
                         <Select
@@ -55,7 +57,11 @@ export const TestDetail = ({handleSteps}:any) => {
                             onChange={handleOnChange}
                             options={reportTypes && reportTypes.map((reportType:any) => ({ label: reportType.testName, value: reportType._id }))}
                         />
-                </section>
+                </section>:
+                <section className="my-4">
+                   <BodyText_3 style='mb-4'>Please Enter Test Name</BodyText_3>
+                   <Input defaultValue={testName} className="w-[25%] border-gray-300 rounded-md" onChange={(e:any)=>{setTestName(e.target.value)}} required placeholder="Test Name" />
+               </section>
             }
              <button onClick={handleSubmit} className="p-2 px-4 my-10 rounded-lg bg-indigo-500 text-white">Submit</button>
     </div>

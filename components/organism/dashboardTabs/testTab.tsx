@@ -44,7 +44,7 @@ export default function TestTab() {
       dataIndex: 'keywords',
       render: (keywords,record) => (
         <>
-          {keywords.map((param,index) => {
+          {keywords && keywords.map((param,index) => {
             return (
                 <a key={index} href='#'>
                   <Popover content={(param.aliases)} title={record.testName+" ("+param.keyword+" aliases)"}>

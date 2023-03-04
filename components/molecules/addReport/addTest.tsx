@@ -24,7 +24,7 @@ const testForm = [
 export const AddTestComponent = () => {
   const testDetails = useSelector((state:any)=>state.testReducer)
   const [currentStep, setCurrentStep] = useState(addTestSteps[0]);
-  const {testName,selectedTest} = useSelector((state:any)=>state.testReducer)
+  const {sampleName,selectedTest,testName} = useSelector((state:any)=>state.testReducer)
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
   const [loading, setLoading] = useState(false);
   const [addKeyword, setAddKeywords] = useState(false);
@@ -33,10 +33,11 @@ export const AddTestComponent = () => {
   const handleStep = async(value:any) => {
      setLoading(true)
         let tests ={
-                "sampleName":testName,
-                "testName":selectedTest?.testName,
+                "sampleName":sampleName,
+                "testName":selectedTest ? selectedTest?.testName:testName,
                 "keywords":selectedTest?.keywords
         }
+
         
         diagnosticDetails?.tests.push(tests)
        
@@ -49,8 +50,18 @@ export const AddTestComponent = () => {
   }
 
   const handleSubmit =(value:any) => {
-    selectedTest.keywords.push(value)
-    dispatch({type:SET_TEST,payload:{...testDetails,"selectedTest":selectedTest}})
+    if(selectedTest){
+      selectedTest.keywords.push(value)
+      dispatch({type:SET_TEST,payload:{...testDetails,"selectedTest":selectedTest}})
+   
+    } 
+    else{
+      let selected = {
+        "keywords":[value]
+      }
+      dispatch({type:SET_TEST,payload:{...testDetails,"selectedTest":selected}})
+    }
+
     setAddKeywords(false)
   }
 
@@ -67,11 +78,12 @@ export const AddTestComponent = () => {
                   </div>
                 }
                 {
-                  currentStep?.id === 2 && <div className="my-2 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
+                  currentStep?.id === 2 && 
+                  <div className="my-2 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
                     <section className='flex justify-between mb-2'>
                     <section className='flex'>
-                      <p className='text-sm font-bold'>Sample Name :<span className='font-light mx-2'>{testName}</span></p>
-                      <p className='text-sm font-bold'>Test Name :<span className='font-light mx-2'>{selectedTest.testName}</span></p>
+                      <p className='text-sm font-bold'>Sample Name :<span className='font-light mx-2'>{sampleName}</span></p>
+                      <p className='text-sm font-bold'>Test Name :<span className='font-light mx-2'>{selectedTest ? selectedTest?.testName :testName}</span></p>
                     </section>
                     <button onClick={()=>{setAddKeywords(!addKeyword)}} className='p-1 px-2 bg-gray-300 text-black rounded-lg'>
                      {!addKeyword? "Add Keyword":"View Keyword"}
@@ -86,7 +98,7 @@ export const AddTestComponent = () => {
                   
                     :<section className='w-[50%] my-10'>
                       <p className='my-4'>Add Test Parameters</p>
-                    {selectedTest &&  <DynamicFormCreator buttonText="Continue" handleSubmit={handleSubmit} formProps={testForm} />}
+                         <DynamicFormCreator buttonText="Continue" handleSubmit={handleSubmit} formProps={testForm} />
                     </section>  }
                   </div>
                 }
