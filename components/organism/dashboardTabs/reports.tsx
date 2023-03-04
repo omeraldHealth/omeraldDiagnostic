@@ -1,19 +1,23 @@
 import { DashboardTable } from '@components/molecules/dashboardItems/data-table'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment} from 'react'
 import { ColumnsType } from 'antd/es/table';
-import { getReports } from 'utils/hook/userDetail';
 import { ReportDetails, UserDetails } from '@utils';
-import { useAuthContext } from 'utils/context/auth.context';
 import { usePDF } from "@react-pdf/renderer";
 import dayjs from 'dayjs';
 import { ShareIcon } from '@heroicons/react/20/solid';
 import PdfTesting from '@components/molecules/PdfTesting/PdfTesting';
 import { RWebShare } from 'react-web-share';
 import { ReportTableType } from 'utils/store/types';
+import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { Spinner } from '@components/atoms/loader';
+import {getDiagnosticReports} from "utils/urls/app"
 
 export default function ReportsTab() {
-  const {user,diagnosticDetails} = useAuthContext()
-  const [reportList, setReportList] = useState<ReportDetails[]>([]);
+  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
+  const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
+  const {data:reportList,isLoading} = useQuery(["reports",diagnosticDetails],fetchReports)
 
   const columns: ColumnsType<ReportTableType> = [
     {
@@ -75,21 +79,12 @@ export default function ReportsTab() {
    </>),
     },
   ];
-  
-  useEffect(() => {
-    (async () => {
-      const resp = await getReports({"phoneNumber": user?.phoneNumber as string});
-      if (resp.status === 200) {
-        setReportList(resp.data);
-      }
-    })();
-  }, []);
 
   return (
     <Fragment>
          <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">
-            <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg]'>
-              <DashboardTable columns={columns} data={reportList}/>
+            <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg]'> 
+              {isLoading ? <Spinner/> :<DashboardTable columns={columns} data={reportList?.data}/> }
             </div>
         </div>
     </Fragment>   

@@ -5,6 +5,7 @@ import { Space, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useAuthContext } from 'utils/context/auth.context';
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { useSelector } from 'react-redux';
 
 interface DataType {
   key: string;
@@ -18,7 +19,7 @@ interface SampleType {
 }
 
 export default function TestTab() {
-  const {diagnosticDetails} = useAuthContext()
+  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
 
   const handleEdit = (record:any) =>{}
 

@@ -65,7 +65,6 @@ function useFirebaseAuth() {
   const signIn = async (user: User, redirect: string) => {
     const phoneNumber = user.phoneNumber || "";
     const resp = await getUserDetails({"phoneNumber":phoneNumber});
-    console.log(resp)
     if (resp.data) {
       setDiagnosticDetails(resp.data);
       router.push(redirect);
@@ -82,6 +81,7 @@ function useFirebaseAuth() {
 
     setUser(null);
     setDiagnosticDetails(null);
+    dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:null})
     await auth.signOut();
     warningAlert("User Logged Out")
     router.push("/");
