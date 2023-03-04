@@ -1,8 +1,8 @@
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
-import { useAuthContext } from "utils/context/auth.context";
+import { useSelector } from "react-redux";
 
 export function Activity() {
-    const {diagnosticDetails} = useAuthContext()
+    const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const columns = [
         {
             key: 'sdas',

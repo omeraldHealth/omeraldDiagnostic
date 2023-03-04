@@ -7,11 +7,12 @@ export const DashActivity = () => {
  
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
   const date = new Date();
+
   return (<section className="sm:w-[30%] h-[100%] bg-white rounded-sm p-4 mb-10 sm:mb-0 max-h-[50vh] overflow-auto">
         <p>Recent Activities</p>
         <p className="text-xs my-2 text-gray-400 font-light">Summary of the latest updated activities</p>
-            {diagnosticDetails?.activities ? diagnosticDetails?.activities?.sort((a:any,b:any)=>{
-                return DateConverter(b.updatedTime) -  DateConverter(a.updatedTime) })?.splice(0,4).map((activity,index) => {
+            <section>
+           {diagnosticDetails?.activities ? diagnosticDetails?.activities?.map((activity:any,index:any) => {
                 return ( 
                 <section key={index} className="my-4 flex justify-between ">
                     <span className="text-xs flex">
@@ -26,7 +27,8 @@ export const DashActivity = () => {
                     </span> 
                 </section>
                 )
-            }):<><p className="text-light text-sm text-gray-600 mt-8">No Activities....</p></>}
+            }):<p className="text-light text-sm text-gray-600 mt-8">No Activities....</p>}
+            </section> 
     </section>
 )}
 
