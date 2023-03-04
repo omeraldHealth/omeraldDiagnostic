@@ -52,3 +52,11 @@ export const BodyStyled_2 = styled.p`
     ${screenWidth && screenWidth > 200 && screenWidth < 500 && body.omerald_textStyle_Body2}
     color:${Colors.neutral.omerald_color_text_info}
 `
+
+export const BodyStyled_3 = styled.p`
+    ${screenWidth && screenWidth > 900 && body.omerald_textStyle_Body2}
+    ${screenWidth && screenWidth > 771 && screenWidth < 900 && body.omerald_textStyle_Body2}
+    ${screenWidth && screenWidth > 500 && screenWidth < 770 && body.omerald_textStyle_Body2}
+    ${screenWidth && screenWidth > 200 && screenWidth < 500 && body.omerald_textStyle_Body2}
+    color:${Colors.neutral.black}
+`

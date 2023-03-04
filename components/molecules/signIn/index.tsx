@@ -150,7 +150,7 @@ const SignInComponent = () => {
               <form onSubmit={verifyOTP}>
                     <div id="phoneNumber" className="pb-4">
                       {!expandForm &&<div
-                        className={`border-2 rounded-md pl-2 w-[80%] sm:w-[60%] m-auto text-xs font-extralight 
+                        className={`border-2 border-gray-200 rounded-md pl-2 w-[80%] sm:w-[60%] m-auto text-xs font-extralight 
                         ${
                           isPhoneInputFocusedOnce
                             ? isValidPhoneNumber(phoneNumber)

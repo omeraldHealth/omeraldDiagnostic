@@ -10,3 +10,4 @@ export const uploadImageApi = backendApiPath+`/api/diagnostic/uploadBranding`
 export const getDiagnosticReports = backendApiPath+`/api/diagnostic/reports/getDiagnosticReports?userId=`
 export const getQueriesApi = backendApiPath+`/api/diagnostic/getQuery?userId=`
 export const addQueryApi = backendApiPath+`/api/diagnostic/createQuery`
+export const getReportTypeApi = backendApiPath+`/api/omerald/getReportTypes`

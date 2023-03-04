@@ -1,11 +1,17 @@
+import { getDiagnosticUserApi } from '@utils';
 import { Tabs } from 'antd';
-import { Fragment } from 'react'
+import axios from 'axios';
+import { Fragment, useEffect } from 'react'
+import { useQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
+import { useAuthContext } from 'utils/context/auth.context';
 import { settingsTab } from 'utils/static';
+import { SET_DIAGNOSTIC_DETAILS } from 'utils/store/types';
 import { Activity } from '../settingsTabs/activity';
 import { Billing } from '../settingsTabs/billing';
 import { BranchManagement } from '../settingsTabs/branchMan';
 import { EmployeeManagement } from '../settingsTabs/employe';
-import { PathalogistManagement, PathlogistManagement, PathologistManagement } from '../settingsTabs/pathologis';
+import { PathologistManagement } from '../settingsTabs/pathologis';
 import { Support } from '../settingsTabs/support';
 
 const components = [
@@ -18,6 +24,18 @@ const components = [
 ]
 
 export default function SettingsTab() {
+
+  const {diagnosticDetails} = useAuthContext()
+  const dispatch = useDispatch()
+  const fetchDiagnostic = async () => {return await axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)}
+  const {data,isLoading} = useQuery(["diagnosticProfile",diagnosticDetails],fetchDiagnostic)
+
+  useEffect(() =>{
+      if(!isLoading && data){
+        dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":data.data})
+      }
+  },[isLoading,data])
+
   return (
     <Fragment>
           <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">

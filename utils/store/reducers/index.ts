@@ -3,5 +3,6 @@ import { diagnosticReducer } from './diagnosticReducer'
 import {loginReducer} from './loginReducer'
 import {dashboardReducer} from './dashboard'
 import {reportReducer} from './reports'
+import {reportFormReducer} from './reportForm'
 
-export default combineReducers({loginReducer,diagnosticReducer,dashboardReducer,reportReducer})
+export default combineReducers({loginReducer,diagnosticReducer,dashboardReducer,reportReducer,reportFormReducer})

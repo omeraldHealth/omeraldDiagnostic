@@ -4,12 +4,14 @@ import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 import { TrashIcon } from "@heroicons/react/20/solid";
 import { Space } from "antd";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useAuthContext } from "utils/context/auth.context";
 import { updateUserDetails } from "utils/hook/userDetail";
+import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
 
 
 export function BranchManagement() {
-    const {diagnosticDetails,setDiagnosticDetails} = useAuthContext()
+    const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const [addOperator,setAddOperator] = useState(false)
     const columns = [
         {
@@ -60,7 +62,7 @@ export function BranchManagement() {
       {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
       {"name":"branchContact","type":"text","label":"Branch Contact","required":true}
     ]
-
+    const dispatch = useDispatch()
     const handleBranch = async (value:any) => {
       let data = diagnosticDetails?.branchDetails || [];
       data.push(value)
@@ -76,10 +78,12 @@ export function BranchManagement() {
     }
 
     const handleRemoveBranch= async (value:any) => {
-      let data = diagnosticDetails?.branchDetails.filter(branch => branch._id !== value) || [];
+      let data = diagnosticDetails?.branchDetails.filter((branch:any) => branch._id !== value) || [];
       if(diagnosticDetails){
         let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"branchDetails":data})
-        setDiagnosticDetails({...diagnosticDetails,"branchDetails":data})
+        // setDiagnosticDetails({...diagnosticDetails,"branchDetails":data})
+        dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"branchDetails":data}})
+
         if(resp.data.acknowledged){
            ActivityLogger(`removed ${data.branchName}`,diagnosticDetails)
            setAddOperator(false)

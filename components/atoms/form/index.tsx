@@ -21,7 +21,7 @@ export const StepHeader = ({stepList,currentStep}:StepHeaderType) => {
                 </span>
                 <span
                     id="stepName"
-                    className={`mx-4 hidden sm:inline-block text-xs ${
+                    className={`mx-4 self-center  hidden sm:inline-block text-xs ${
                       currentStep.id === step.id && "text-blue-700"
                     }
                     ${currentStep.id < step.id && "text-black"}
@@ -32,7 +32,7 @@ export const StepHeader = ({stepList,currentStep}:StepHeaderType) => {
                 {stepList.length !== index + 1 && (
                     <div
                       id="line"
-                      className={`border  mx-1 sm:m-0 lg:mx-2 h-0 w-6  lg:w-10 mb-1 inline-block ${
+                      className={`border self-center   mx-1 sm:m-0 lg:mx-2 h-0 w-6  lg:w-10 mb-1 inline-block ${
                         currentStep.id === step.id &&
                         "border-blue-700 border-dashed"
                       }

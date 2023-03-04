@@ -2,13 +2,17 @@ import { DashboardTable } from "@components/molecules/dashboardItems/data-table"
 import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
 import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 import { TrashIcon } from "@heroicons/react/20/solid";
+import { insertDiagnosticUserApi, updateDiagnosticUserApi } from "@utils";
 import { Space } from "antd";
+import axios from "axios";
 import { useState } from "react";
-import { useAuthContext } from "utils/context/auth.context";
-import { updateUserDetails } from "utils/hook/userDetail";
+import { QueryCache, QueryClient, useMutation } from "react-query";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
+const queryClient = new QueryClient()
 
 export function EmployeeManagement() {
-    const {diagnosticDetails,setDiagnosticDetails} = useAuthContext()
+    const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const [addOperator,setAddOperator] = useState(false)
     const columns =    [
         {
@@ -41,30 +45,32 @@ export function EmployeeManagement() {
         },
     ]
     const [selectedRole, setSelectedRole] = useState("Select Role");
-
+    const diagnosticMutate = useMutation(updatedObject => 
+    {return axios.post(updateDiagnosticUserApi+diagnosticDetails?.phoneNumber,updatedObject)}, 
+    {onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['diagnosticProfile'] })
+      setAddOperator(false)
+    },});
+    const dispatch = useDispatch()
+    
     const handleEmployee = async (value:any) => {
       let data = diagnosticDetails?.managersDetail || [];
       data.push(value)
 
       if(diagnosticDetails){
-        let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"managersDetail":data})
-
-        if(resp.data.acknowledged){
-           ActivityLogger(`added ${value.managerName} as branch ${value.managerRole}`,diagnosticDetails)
-           setAddOperator(false)
-        }
+        diagnosticMutate.mutate({"managersDetail":data})
+        ActivityLogger(`added ${value.managerName} as branch ${value.managerRole}`,diagnosticDetails)
       }
     }
 
     const handleRemoveEmployee = async (value:any) => {
-      let data = diagnosticDetails?.managersDetail.filter(manager => manager._id !== value) || [];
+      let man = diagnosticDetails?.managersDetail.filter((manager:any) => manager._id === value) || [];
+      let data = diagnosticDetails?.managersDetail.filter((manager:any) => manager._id !== value) || [];
+      console.log(data)
       if(diagnosticDetails){
-        let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"managersDetail":data})
-        setDiagnosticDetails({...diagnosticDetails,"managersDetail":data})
-        if(resp.data.acknowledged){
-           ActivityLogger(`removed ${data.managerName} as branch ${value.managerRole}`,diagnosticDetails)
-           setAddOperator(false)
-        }
+          diagnosticMutate.mutate({"managersDetail":data})
+          dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"managersDetail":data}})
+          ActivityLogger(`removed ${man.managerName} from branch`,diagnosticDetails)
       }
     }
 
@@ -73,7 +79,6 @@ export function EmployeeManagement() {
       {"name":"managerContact","type":"text","label":"Operator Contact","required":true},
       {"name":"managerRole","type":"roles","label":"Operator Role","required":true}
     ]
-
     return (
           <section >
               <section className="min-h-[45vh]">

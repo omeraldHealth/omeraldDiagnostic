@@ -12,7 +12,7 @@ import { useAuthContext } from "utils/context/auth.context";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { getDiagnosticUserApi } from "@utils";
-import { Spinner } from "@components/atoms/loader";
+
 
 const dashboardTabs = {
 "/dashboard":<DashboardTab/>,

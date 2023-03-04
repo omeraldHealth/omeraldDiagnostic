@@ -9,6 +9,12 @@ export const onboardSteps = [
     { id: 4, name: "Summary" },
 ];
 
+export const addReportSteps = [
+  { id: 1, name: "Enter Patient Details" },
+  { id: 2, name: "Upload Report" },
+  { id: 3, name: "Success" },
+];
+
 export type onboardStepsType = {
     id: number;
     name: string;
