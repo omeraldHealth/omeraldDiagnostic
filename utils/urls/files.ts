@@ -14,3 +14,4 @@ export const notFound = "https://res.cloudinary.com/drjut62wv/image/upload/v1677
 export const dashboardBanner = "https://res.cloudinary.com/drjut62wv/image/upload/v1673522877/omerald/diagnosticCenter/banner_fhbthj.png"
 export const giftBoxImage = "https://res.cloudinary.com/drjut62wv/image/upload/v1677055433/omerald/diagnosticCenter/undraw_happy_birthday_re_c16u_sdalw2.svg"
 export const mailImage = "https://res.cloudinary.com/drjut62wv/image/upload/v1677057612/omerald/diagnosticCenter/undraw_newsletter_re_wrob_csjitg.svg"
+export const successUpload = "https://res.cloudinary.com/drjut62wv/image/upload/v1673693847/omerald/diagnosticCenter/undraw_happy_announcement_re_tsm0_1_jggnix.svg"

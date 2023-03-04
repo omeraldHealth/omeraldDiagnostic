@@ -1,7 +1,7 @@
-import { addQueryApi, getDiagnosticReports, getDiagnosticUserApi, getQueriesApi, insertDiagnosticUserApi, updateDiagnosticUserApi, uploadImageApi } from "utils/urls/app";
+import { addQueryApi, getDiagnosticReports, getDiagnosticUserApi, getQueriesApi, insertDiagnosticUserApi, insertReportApi, updateDiagnosticUserApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
 import { getUserDetailType } from "utils/types/atoms/hooks";
 import axios from "axios";
-import { UserDetails } from "utils/types/molecules/users.interface";
+import { ReportDetails, UserDetails } from "utils/types/molecules/users.interface";
 import { Query } from "utils/types/atoms/atoms";
 
 export async function getUserDetails(userId: getUserDetailType) {
@@ -75,4 +75,35 @@ export async function addQuery(
   }
 }
 
+export async function uploadReport(
+  file: File,
+) {
+  const formData = new FormData();
+  formData.append('file',file);
+    try {
+      const resp = await axios.post(uploadReportApi, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+    })
+    return resp;
+  } catch (error: any) {
+    return null;
+  }
+}
 
+export async function createReport(
+  userId: string,
+  reportDetails: ReportDetails
+) {
+  try {
+    reportDetails.userId = userId.split(" ").join("");
+    const resp = await axios.post(
+      insertReportApi,
+      reportDetails,
+    );
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response };
+  }
+}

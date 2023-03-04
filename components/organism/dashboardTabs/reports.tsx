@@ -18,7 +18,7 @@ export default function ReportsTab() {
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
   const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
   const {data:reportList,isLoading} = useQuery(["reports",diagnosticDetails],fetchReports)
-
+  console.log(reportList)
   const columns: ColumnsType<ReportTableType> = [
     {
       key:"name",
@@ -50,10 +50,9 @@ export default function ReportsTab() {
     {
       key:"click",
       title: 'Click to view',
-      dataIndex: "status",
-      render: ((stat:string,person: any) =>  <>{
-        
-        stat.toLowerCase() === "parsing" ? (
+      dataIndex: "isManualReport",
+      render: ((stat:string,person: any) =>  <>{ 
+        !stat ? (
         <a href={person.reportUrl} target="_blank" className="text-orange-700">View˝</a>
       ) : (
         <ViewPdf

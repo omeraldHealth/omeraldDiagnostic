@@ -47,8 +47,8 @@ export const PatientDetails = ({handleSteps}:patientType) => {
     value["dob"] = moment(value.dob).format("YYYY-MM-DD")
     value["reportDate"] = moment(value.reportDate).format("YYYY-MM-DD")
     if(value.dob && value.reportDate && value.gender && pathologist){
-      handleSteps && handleSteps(1)
       dispatch({type:SET_REPORT_FORM,payload:value})
+      handleSteps && handleSteps(1)
     }
     else{
       errorAlert("Please fill all required fields")

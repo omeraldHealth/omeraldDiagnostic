@@ -17,14 +17,15 @@ interface FormType  {
     style?:string,
     selectedRole?:string,
     formStyle?:string,
+    button?:Boolean,
     setSelectedRole?: (value:any) =>void
     handleSubmit: (value:any) =>void
     handleImage?: (value:any) =>void
     handleDate?: (value:any) => void
 }
 
-export const DynamicFormCreator = ({formProps,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
-
+export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
+    console.log(formProps)
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
   
   const roles = ['Admin', 'Manager','Operator','Spoc'];
@@ -98,7 +99,7 @@ export const DynamicFormCreator = ({formProps,formStyle,handleSubmit,handleDate,
         )}
         <Form.Item className={`flex justify-start col-span-2 ${style}`}>
             <Button className={`bg-blue-500 ${style}`} type="primary" htmlType="submit">{buttonText}</Button>
-        </Form.Item> 
+        </Form.Item>    
         </Form>
     </div>
   );
