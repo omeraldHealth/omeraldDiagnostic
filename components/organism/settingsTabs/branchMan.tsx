@@ -76,7 +76,6 @@ export function BranchManagement() {
     }
 
     const handleRemoveBranch= async (value:any) => {
-      console.log(value)
       let data = diagnosticDetails?.branchDetails.filter(branch => branch._id !== value) || [];
       if(diagnosticDetails){
         let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"branchDetails":data})
