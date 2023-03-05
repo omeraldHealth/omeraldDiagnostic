@@ -7,6 +7,7 @@ import { classNames } from 'utils/static'
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types'
 
 const userNavigation = [
+    { name: 'Dashboard', href: '#' },
     { name: 'Your Profile', href: '#' },
     { name: 'Settings', href: '#' },
     { name: 'Sign out', href: '#' },
@@ -51,13 +52,21 @@ export const MenuDropDown = () => {
                                     <a
                                     onClick={()=>{ 
                                         if(diagnosticDetails!=null && item.name == "Sign out"){
+                                          dispatch({type:"SET_LOADING",payload:true})
                                           handleLogout()
                                         }
+                                        else if(diagnosticDetails!=null && item.name =="Dashboard"){
+                                            dispatch({type:"SET_LOADING",payload:true})
+                                            dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:item.name,href:"/dashboard",loading:false} })
+                                            router.push("/dashboard")
+                                        }
                                         else if(diagnosticDetails!=null && item.name =="Settings"){
+                                            dispatch({type:"SET_LOADING",payload:true})
                                             dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:item.name,href:"/settings",loading:false} })
                                             router.push("/dashboard")
                                         }
                                         else if(diagnosticDetails!=null && item.name =="Your Profile"){
+                                            dispatch({type:"SET_LOADING",payload:true})
                                             dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:item.name,href:"/profile",loading:false} })
                                             router.push("/dashboard")
                                         }

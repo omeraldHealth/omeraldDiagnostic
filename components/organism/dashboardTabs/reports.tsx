@@ -16,9 +16,8 @@ import {getDiagnosticReports} from "utils/urls/app"
 
 export default function ReportsTab() {
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-  const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
-  const {data:reportList,isLoading} = useQuery(["reports",diagnosticDetails],fetchReports)
-  console.log(reportList)
+  const reportList = useSelector((state:any)=>state.reportListReducer)
+    console.log(reportList)
   const columns: ColumnsType<ReportTableType> = [
     {
       key:"name",
@@ -83,7 +82,7 @@ export default function ReportsTab() {
     <Fragment>
          <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">
             <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg]'> 
-              {isLoading ? <Spinner/> :<DashboardTable columns={columns} data={reportList?.data}/> }
+              {!reportList ? <Spinner/> :<DashboardTable columns={columns} data={reportList}/> }
             </div>
         </div>
     </Fragment>   

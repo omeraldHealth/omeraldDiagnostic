@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import TestTab from "@components/organism/dashboardTabs/testTab";
 import ProfileTab from "@components/organism/dashboardTabs/profileTab";
 import SettingsTab from "@components/organism/dashboardTabs/settingsTab";
-import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
+import { SET_DIAGNOSTIC_DETAILS, SET_REPORT_LIST } from "utils/store/types";
 import { useAuthContext } from "utils/context/auth.context";
 import { useQuery } from "react-query";
 import axios from "axios";
-import { getDiagnosticUserApi } from "@utils";
+import { getDiagnosticReports, getDiagnosticUserApi } from "@utils";
 import AddTestTab from "@components/organism/dashboardTabs/addTest";
-
+import { Spinner } from "@components/atoms/loader";
 
 const dashboardTabs = {
 "/dashboard":<DashboardTab/>,
@@ -33,12 +33,22 @@ export const DashboardTemplate = () => {
   const dispatch = useDispatch()
   const fetchDiagnostic = async () => {return await axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)}
   const {data,isLoading} = useQuery(["diagnosticProfile",diagnosticDetails],fetchDiagnostic)
+  const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
+  const [reportList,setReportList] = useState([])
+  const {data:reports,isLoading:loading} = useQuery(["reports",reportList],fetchReports)
 
   useEffect(() =>{
       if(!isLoading && data){
         dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":data.data})
       }
   },[isLoading])
+
+  useEffect(() =>{  
+    if(!loading && reports){
+      setReportList(reports.data)
+      dispatch({"type":SET_REPORT_LIST,"payload":reportList})
+    }
+},[loading])
 
   useEffect(()=>{
     //@ts-ignore

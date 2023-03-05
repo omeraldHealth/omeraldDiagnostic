@@ -10,8 +10,11 @@ import { LandingBanner } from '@components/organism/landing/landingBanner'
 import { Partners } from '@components/organism/landing/partners'
 import { HowItWorks } from '@components/organism/landing/howItWorks'
 import { Footer } from '@components/molecules/footer'
+import { useDispatch } from 'react-redux'
 
 export function LandingPage() {
+    const dispatch = useDispatch()
+    dispatch({type:"SET_LOADING",payload:false})
 	return (
         <PageLayout>
             <div >

@@ -6,9 +6,10 @@ import type { AppProps } from 'next/app'
 import { ToastContainer } from "react-toastify";
 import { AuthContextProvider } from 'utils/context/auth.context'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import store from 'utils/store/store'
 import Allowed from 'utils/permissions'
+import { Spinner } from '@components/atoms/loader'
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -9,6 +9,7 @@ import { DashActivity } from '@components/molecules/dashboardItems/activity';
 
 
 export default function DashboardTab() {
+  
   Chart.register(CategoryScale);
   return (
     <Fragment>

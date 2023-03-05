@@ -35,6 +35,7 @@ const SignInComponent = () => {
   auth.languageCode = "en";
   const route = useRouter()
 
+
   useEffect(() => {
     // Exit early when timer reaches 0
     if (seconds === 0) {
@@ -117,6 +118,7 @@ const SignInComponent = () => {
   };
 
   const verifyOTP: React.FormEventHandler<HTMLFormElement> = (e) => {
+    dispatch({type:"SET_LOADING",payload:true})
     e.preventDefault();
     setError("");
     if (otp.length === 6) {

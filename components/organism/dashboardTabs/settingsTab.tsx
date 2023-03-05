@@ -29,7 +29,8 @@ export default function SettingsTab() {
   const dispatch = useDispatch()
   const fetchDiagnostic = async () => {return await axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)}
   const {data,isLoading} = useQuery(["diagnosticProfile",diagnosticDetails],fetchDiagnostic)
-
+  dispatch({type:"SET_LOADING",payload:false})
+  
   useEffect(() =>{
       if(!isLoading && data){
         dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":data.data})

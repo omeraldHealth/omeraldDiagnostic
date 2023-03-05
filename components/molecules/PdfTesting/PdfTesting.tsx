@@ -147,7 +147,7 @@ const PdfTesting = ({ report, diagnosticDetails }: PdfTestingProps) => {
         <View style={styles.bottomSection}>
           <View style={styles.authorization}>
             <Image
-              src="/icons/onlyOmeraldLogo.png"
+              src="https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"
               style={{ width: "100", height: "100" }}
             />
             {/* {diagnosticDetails?.managersDetail.map((manager, index) => (
