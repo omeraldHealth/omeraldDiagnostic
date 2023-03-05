@@ -2,7 +2,7 @@ import { StepHeader } from '@components/atoms/form'
 import { Spinner } from '@components/atoms/loader';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { updateTests } from 'utils/hook/userDetail';
+import { updateTests, updateUserDetails } from 'utils/hook/userDetail';
 import { addReportSteps, addTestSteps } from 'utils/static'
 import { SET_TEST } from 'utils/store/types';
 import { AddKeyword } from '../addTest/createdKeyword';
@@ -31,22 +31,27 @@ export const AddTestComponent = () => {
   const dispatch = useDispatch()
   
   const handleStep = async(value:any) => {
-     setLoading(true)
-        let tests ={
-                "sampleName":sampleName,
-                "testName":selectedTest ? selectedTest?.testName:testName,
-                "keywords":selectedTest?.keywords
-        }
 
-        
-        diagnosticDetails?.tests.push(tests)
-       
-        let resp = await updateTests(diagnosticDetails,diagnosticDetails?.phoneNumber)
-        if(resp.status ===200){
+      if(value==2){
+          setLoading(true)
+          let tests ={
+            "sampleName":sampleName,
+            "testName":selectedTest.testName ? selectedTest?.testName : testName,
+            "keywords":selectedTest?.keywords
+          }
+
+          let test =  diagnosticDetails?.tests
+          test.push(tests)
+
+
+          let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"tests":test})
+          if(resp.status ===200){
           setLoading(false)
           setCurrentStep(addTestSteps[value])
-        }
-   
+          }
+      }else{
+        setCurrentStep(addTestSteps[value])
+      }
   }
 
   const handleSubmit =(value:any) => {

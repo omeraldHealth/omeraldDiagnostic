@@ -48,8 +48,8 @@ export const UploadReport = ({handleSteps}:patientType) => {
   }
 
   const handleSubmit = async () => {
-  
-    if(selectedReport && reportFile && selectedReport.testName){
+
+    if(selectedReport && reportFile && selectedReport.testName.length>1){
       setLoading(true)
      
       const resp = await uploadReport(reportFile)
@@ -86,7 +86,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
 
   const handleForm =async (value:any)=>{
    
-    if(selectedReport && selectedReport.testName){
+    if(selectedReport &&selectedReport.testName.length>1){
       setLoading(true)
         dispatch({type:SET_REPORT_FORM,payload:{
           ...reportDetails,
@@ -171,12 +171,12 @@ export const UploadReport = ({handleSteps}:patientType) => {
           </div>
        
         }
-        {manual.value && <section className='my-4 absolute bottom-0 right-10 flex justify-end'>
+        {manual.value && 
+        <section className='my-4 flex justify-between'>
+          <button onClick={()=>{handleSteps && handleSteps(0)}} className="p-2 bg-gray-400 text-white w-[8vw] rounded-lg">Back</button>
           <button onClick={handleSubmit} className="p-2 bg-secondary text-white w-[8vw] rounded-lg">Continue</button>
         </section>}
-        <section className='my-4 absolute bottom-0 w-[100%] '>
-          <button onClick={()=>{handleSteps && handleSteps(0)}} className="p-2 bg-gray-400 text-white w-[8vw] rounded-lg">Back</button>
-        </section>
+
         {loading && <Spinner/>}
     </div>  
   )

@@ -5,8 +5,11 @@ import { Popover, Space, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useAuthContext } from 'utils/context/auth.context';
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Spinner } from '@components/atoms/loader';
+import { SET_DIAGNOSTIC_DETAILS } from 'utils/store/types';
+import { updateUserDetails } from 'utils/hook/userDetail';
+import { successAlert } from '@components/atoms/alerts/alert';
 
 interface DataType {
   key: string;
@@ -21,10 +24,19 @@ interface SampleType {
 
 export default function TestTab() {
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
+  let dispatch = useDispatch()
 
   const handleEdit = (record:any) =>{}
 
-  const handleRemove = (record:any) => {}
+  const handleRemove = async (record:any) => {
+    let test = diagnosticDetails?.tests.filter((test:any)=>test._id !== record._id)
+    diagnosticDetails["tests"] = test;
+    dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:{diagnosticDetails}})
+    let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"tests":test})
+    if(resp.status==200){
+      successAlert("Test removed succesfully")
+    }
+  }
   
   const columns: ColumnsType<DataType> = [
     {
@@ -65,7 +77,6 @@ export default function TestTab() {
       dataIndex: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <a onClick={()=>{handleEdit(record)}}><PencilIcon className='w-4 text-gray-500' /> </a>
           {record?._id && <a onClick={()=>{handleRemove(record)}}><TrashIcon className='w-4 text-red-500' /></a>}
         </Space>
       ),

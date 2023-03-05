@@ -27,7 +27,6 @@ export const TestDetail = ({handleSteps}:any) => {
     const handleSubmit = () => {
         if(selectedReport && sampleName.length > 0 || manual){
             dispatch({type:SET_TEST,payload:{"isManual":!manual,"selectedTest":selectedReport,"sampleName":sampleName,"testName":testName}})
-
             handleSteps(1)
         }else{
             errorAlert("Please fill all fields")

@@ -54,7 +54,7 @@ export function Support() {
 	return (
             <section>
                 <section className="min-h-[45vh]">
-                    {!query ? queries.length>0 && <div className=""> <DashboardTable columns={columns} data={queries} /></div>:<ContactForm handleSubmit={handleSubmit}/>}
+                    {!query ? <div className=""> <DashboardTable columns={columns} data={queries} /></div>:<ContactForm handleSubmit={handleSubmit}/>}
                 </section>
            
                 <section className="w-[100%] flex justify-start">
