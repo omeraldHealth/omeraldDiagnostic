@@ -1,5 +1,5 @@
-// export const backendApi= "https://parser-api.onrender.com"
-export const backendApiPath = "http://localhost:4000"
+export const backendApi= "https://parser-api.onrender.com"
+// export const backendApiPath = "http://localhost:4000"
 
 
 // Api paths for backend calls
