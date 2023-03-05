@@ -42,14 +42,16 @@ export const UploadReport = ({handleSteps}:patientType) => {
   const manualOptions = [ {value:true,label:"Yes"},{value:false,label:"No"},];
   const dispatch = useDispatch()
   const [loading,setLoading] = useState(false)
-
+  
   const handleOnChange = (value:any) => {
     setSelectedReport(reportTypes.filter((rep:any) => rep._id == value)[0])
   }
 
   const handleSubmit = async () => {
-    setLoading(true)
-    if(selectedReport){
+  
+    if(selectedReport && reportFile && selectedReport.testName){
+      setLoading(true)
+     
       const resp = await uploadReport(reportFile)
       if(resp?.status==200){
         dispatch({type:SET_REPORT_FORM,payload:{
@@ -57,12 +59,10 @@ export const UploadReport = ({handleSteps}:patientType) => {
           reportUrl:resp.data.location,
           isManualReport:!manual,
           testName:selectedReport?.testName,
-          updatedAt:Date.now(),
           status:"parsing",
           userId:diagnosticDetails?.phoneNumber
         }
         })
-  
         const resp2 = await createReport(
           diagnosticDetails?.phoneNumber as string,
           reportDetails
@@ -74,8 +74,9 @@ export const UploadReport = ({handleSteps}:patientType) => {
         }
       }
     }else{
-      errorAlert("please select report type")
+      errorAlert("please select report type and upload file")
     }
+    setLoading(false)
   }
 
   const handleImage = (value:any) => {
@@ -84,12 +85,12 @@ export const UploadReport = ({handleSteps}:patientType) => {
   }
 
   const handleForm =async (value:any)=>{
-    setLoading(true)
-    if(selectedReport){
+   
+    if(selectedReport && selectedReport.testName){
+      setLoading(true)
         dispatch({type:SET_REPORT_FORM,payload:{
           ...reportDetails,
           testName:selectedReport?.testName,
-          updatedAt:Date.now(),
           userId:diagnosticDetails?.phoneNumber,
           parsedData: value,
           status:"parsed",
@@ -97,7 +98,6 @@ export const UploadReport = ({handleSteps}:patientType) => {
           reportId:crypto.randomBytes(20).toString("hex")
         }
         })  
-        console.log(reportDetails)
         const resp2 = await createReport(
           diagnosticDetails?.phoneNumber as string,
           reportDetails
@@ -180,7 +180,6 @@ export const UploadReport = ({handleSteps}:patientType) => {
 }
 
 function getFormType(keywords:any){
-
-   let form = keywords && keywords.map((key:any) => ({ name: key.keyword,type:"text",label:`${key.keyword} (${key.normalRange},${key.unit})`,required:true}))
+   let form = keywords && keywords.map((key:any) => ({ name: key.keyword,type:"text",label:`${key.keyword} (${key.normalRange},${key.unit})`,required:true,pattern:"^[0-9]*$"}))
    return form
 }

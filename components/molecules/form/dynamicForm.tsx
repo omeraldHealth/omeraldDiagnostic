@@ -9,6 +9,7 @@ interface FormProps  {
     type:string,
     label:string,
     required:boolean,
+    pattern:RegExp,
 }
 
 interface FormType  {
@@ -37,31 +38,31 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
         initialValues={{ remember: true,phoneNumber:diagnosticProfile?.phoneNumber }}>
         {formProps.map((form,index) => <>
                 {form.type === "text" && 
-                <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ required: form.required,message: `Please input ${form.label}`}]}>
-                   {form.name !== "phoneNumber" && form.type == "text" ? <Input placeholder={form.label} className="border-gray-400  text-black font-light text-sm" />:
-                   <Input disabled placeholder={form.label} className="border-gray-400  text-black font-light text-sm" />
+                <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                   {form.name !== "phoneNumber" && form.type == "text" ? <Input placeholder={form.label} className="border-gray-400 rounded-lg  text-black font-light text-sm" />:
+                   <Input disabled placeholder={form.label} className="border-gray-400 rounded-lg text-black font-light text-sm" />
                 } 
                 </Form.Item>
                 }
                 {form.type === "contact" && 
                 
 
-                <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ required: form.required,message: `Please input ${form.label}`}]}>
-                     <Input placeholder={form.label} className="border-gray-400  text-black font-light text-sm" />
+                <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                     <Input placeholder={form.label} className="border-gray-400 rounded-lg  text-black font-light text-sm" />
                 </Form.Item>
                 }
                 {form.type === "logo" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 10 }} >
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 10 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
                     <LogoUploader handleImage={handleImage} />
                 </Form.Item>
                 }
                 {form.type === "banner" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
                     <BannerUploader handleImage={handleImage} />
                 </Form.Item>
                 }
                 {form.type === "roles" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]} >
                         <Select
                             style={{ width: 120 }}
                             defaultValue={selectedRole}
@@ -71,7 +72,7 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
                 </Form.Item>
                 }
                 {form.type === "pathologist" &&
-                <Form.Item  key={index} className='mb-6  col-span-1' name={form.name} labelCol={{ span: 0 }} >
+                <Form.Item  key={index} className='mb-6  col-span-1' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
                         <Select
                             style={{ width:340}}
                             defaultValue={"Select Pathologist"}
@@ -82,21 +83,21 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
                 }
                 {form.type === "date" &&
                 <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
-                       <DatePicker format='YYYY-MM-DD' className='w-[20vw] py-2 border-gray-400' placeholder={form.label} onChange={handleDate} />
+                       <DatePicker format='YYYY-MM-DD' className='w-[20vw] py-2 border-gray-400 rounded-lg' placeholder={form.label} onChange={handleDate} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}/>
                 </Form.Item>
                 }
                 {form.type === "gender" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
                     <Radio.Group options={plainOptions} onChange={handleDate} value={"male"} />
                 </Form.Item>
                 }
                 {form.type === "textArea" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
-                     <textarea className='border-gray-200' rows={4} cols="36" placeholder={form.label} maxLength={6} />
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                     <textarea className='border-gray-200 rounded-lg' rows={4} cols="36" placeholder={form.label} maxLength={6} />
                 </Form.Item>
                 }
                 {form.type === "tags" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
                    <Select
                         mode="tags"
                         style={{ width: '100%' }}

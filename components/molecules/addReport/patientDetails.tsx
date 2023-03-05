@@ -11,8 +11,6 @@ export type ReportDetails = {
     email: string;
     gender: string;
     userId: string;
-    createdAt?: Date;
-    updatedAt?: Date;
     userName: string;
     testName: string;
     reportDate: Date;
@@ -25,14 +23,14 @@ export type ReportDetails = {
 };
 
 const PatientDetailsForm = [
-    {"name":"userName","type":"text","label":"Patient Name","required":true},
-    {"name":"email","type":"text","label":"Email","required":true},
+    {"name":"userName","type":"text","label":"Patient Name","required":true,"pattern":"^[a-zA-Z ]*$"},
+    {"name":"email","type":"text","label":"Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
     {"name":"phoneNumber","type":"contact","label":"Phone Number","required":true},
-    {"name":"dob","type":"date","label":"Date of birth","required":true},
+    {"name":"dob","type":"date","label":"Date of birth","required":true,},
     {"name":"reportDate","type":"date","label":"Report creation date","required":true},
     {"name":"gender","type":"gender","label":"Gender","required":true},
-    {"name":"doctorName","type":"pathologist","label":"Pathologist Name","required":true},
-    {"name":"message","type":"textArea","label":"Message","required":true},
+    {"name":"doctorName","type":"pathologist","label":"Pathologist Name","required":false},
+    {"name":"message","type":"textArea","label":"Message","required":false},
 ]
 
 interface patientType {handleSteps?: (value:any) => void}
@@ -44,14 +42,21 @@ export const PatientDetails = ({handleSteps}:patientType) => {
   const dispatch = useDispatch()
 
   const handleForm =(value:any)=> {
-    value["dob"] = moment(value.dob).format("YYYY-MM-DD")
-    value["reportDate"] = moment(value.reportDate).format("YYYY-MM-DD")
-    if(value.dob && value.reportDate && value.gender && pathologist){
+    let notFilled:any = [];
+    Object.keys(value).map((key)=>{
+      if(!value[key]){
+        notFilled.push(key)
+      }
+    })
+ 
+    if(value.dob && value.reportDate && value.gender ){
+      value["dob"] = moment(value.dob).format("YYYY-MM-DD")
+      value["reportDate"] = moment(value.reportDate).format("YYYY-MM-DD")
       dispatch({type:SET_REPORT_FORM,payload:value})
       handleSteps && handleSteps(1)
     }
     else{
-      errorAlert("Please fill all required fields")
+      errorAlert("Please fill all required fields "+notFilled.join(" "))
     }
   }
   

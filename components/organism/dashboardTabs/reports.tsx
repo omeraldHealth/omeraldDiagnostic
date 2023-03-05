@@ -16,8 +16,10 @@ import {getDiagnosticReports} from "utils/urls/app"
 
 export default function ReportsTab() {
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-  const reportList = useSelector((state:any)=>state.reportListReducer)
-    console.log(reportList)
+
+  const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
+  const {data:reports,isLoading:loading} = useQuery(["reports"],fetchReports)
+
   const columns: ColumnsType<ReportTableType> = [
     {
       key:"name",
@@ -45,6 +47,13 @@ export default function ReportsTab() {
       dataIndex: 'reportDate',
       render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
       // sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() }
+    },
+    {
+      key:"updatedAt",
+      title: 'Uploaded Date',
+      dataIndex: 'updatedAt',
+      render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
+      sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() 
     },
     {
       key:"click",
@@ -82,7 +91,7 @@ export default function ReportsTab() {
     <Fragment>
          <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">
             <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg]'> 
-              {!reportList ? <Spinner/> :<DashboardTable columns={columns} data={reportList}/> }
+              {loading && reports?.data ? <Spinner/> :<DashboardTable columns={columns} data={reports?.data}/> }
             </div>
         </div>
     </Fragment>   

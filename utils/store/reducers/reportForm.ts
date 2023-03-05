@@ -7,10 +7,6 @@ const reportInitial:ReportDetails =  {
     email: "",
     gender: "",
     userId: "",
-     //@ts-ignore
-    createdAt: "",
-     //@ts-ignore
-    updatedAt: "",
     userName: "",
     testName: "",
      //@ts-ignore
