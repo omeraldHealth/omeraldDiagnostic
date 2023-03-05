@@ -46,6 +46,6 @@ const ActivityItem = ({activityList}:any) => {
             </section>
         )
         })}
-    <a href="#" onClick={()=>{dispatch({type:SET_DASHBOARD_ROUTE,payload:{name:"Settings",href:"/settings"}})}} className='font-light text-xs text-blue-700'>Read More....</a>
+    <a href="#" onClick={()=>{dispatch({type:SET_DASHBOARD_ROUTE,payload:{name:"Settings",href:"/settings",selectedTabIndex:"1"}})}} className='font-light text-xs text-blue-700'>Read More....</a>
     </section>
 }

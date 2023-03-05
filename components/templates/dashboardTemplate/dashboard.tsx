@@ -15,19 +15,10 @@ import { getDiagnosticReports, getDiagnosticUserApi } from "@utils";
 import AddTestTab from "@components/organism/dashboardTabs/addTest";
 import { Spinner } from "@components/atoms/loader";
 
-const dashboardTabs = {
-"/dashboard":<DashboardTab/>,
-"/addReports":<AddReportsTab/>,
-"/reports":<ReportsTab/>,
-"/test":<TestTab/>,
-"/addTest":<AddTestTab/>,
-"/profile":<ProfileTab/>,
-"/settings":<SettingsTab/>
-}
 
 export const DashboardTemplate = () => {
 
-  let [component,setComponent] = useState(dashboardTabs["/dashboard"]);
+
   const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
   const {diagnosticDetails} = useAuthContext()
   const dispatch = useDispatch()
@@ -36,6 +27,19 @@ export const DashboardTemplate = () => {
   const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
   const [reportList,setReportList] = useState([])
   const {data:reports,isLoading:loading} = useQuery(["reports",reportList],fetchReports)
+
+  const dashboardTabs = {
+    "/dashboard":<DashboardTab/>,
+    "/addReports":<AddReportsTab/>,
+    "/reports":<ReportsTab/>,
+    "/test":<TestTab/>,
+    "/addTest":<AddTestTab/>,
+    "/profile":<ProfileTab/>,
+    "/settings":<SettingsTab selectedTabId={dashboardRoute.selectedTabIndex} />
+  }
+
+  let [component,setComponent] = useState(dashboardTabs["/dashboard"]);
+  
 
   useEffect(() =>{
       if(!isLoading && data){

@@ -1,7 +1,7 @@
 import { getDiagnosticUserApi } from '@utils';
 import { Tabs } from 'antd';
 import axios from 'axios';
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useQuery } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { useAuthContext } from 'utils/context/auth.context';
@@ -23,7 +23,7 @@ const components = [
   <Support/>
 ]
 
-export default function SettingsTab() {
+export default function SettingsTab({selectedTabId}:any) {
 
   const {diagnosticDetails} = useAuthContext()
   const dispatch = useDispatch()
@@ -42,7 +42,7 @@ export default function SettingsTab() {
           <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">
           <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg] p-8'>
             <Tabs
-                defaultActiveKey="0"
+                defaultActiveKey={selectedTabId}
                 style={{
                   height: 220,
                 }}

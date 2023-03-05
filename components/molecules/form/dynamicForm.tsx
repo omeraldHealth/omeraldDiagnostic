@@ -76,7 +76,7 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
                             style={{ width:340}}
                             defaultValue={"Select Pathologist"}
                             onChange={handleDate}
-                            options={diagnosticProfile?.pathologistDetail.map((path:any) => ({ label: path.name, value: path._id }))}
+                            options={diagnosticProfile?.pathologistDetail?.map((path:any) => ({ label: path.name, value: path._id }))}
                         />
                 </Form.Item>
                 }
