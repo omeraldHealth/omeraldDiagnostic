@@ -6,6 +6,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useAuthContext } from 'utils/context/auth.context';
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { useSelector } from 'react-redux';
+import { Spinner } from '@components/atoms/loader';
 
 interface DataType {
   key: string;
@@ -74,8 +75,8 @@ export default function TestTab() {
   return (
     <Fragment>
          <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">
-            <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg]'>
-              <DashboardTable columns={columns} data={diagnosticDetails?.tests}/>
+            <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg]'> 
+            {!diagnosticDetails ? <Spinner/> :<DashboardTable pageSize={7} columns={columns} data={diagnosticDetails?.tests}/> }
             </div>
         </div>
     </Fragment>   

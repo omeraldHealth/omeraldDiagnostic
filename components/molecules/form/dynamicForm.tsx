@@ -26,7 +26,6 @@ interface FormType  {
 }
 
 export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
-    console.log(formProps)
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
   
   const roles = ['Admin', 'Manager','Operator','Spoc'];
@@ -52,12 +51,12 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
                 </Form.Item>
                 }
                 {form.type === "logo" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 10 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 10 }} >
                     <LogoUploader handleImage={handleImage} />
                 </Form.Item>
                 }
                 {form.type === "banner" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
                     <BannerUploader handleImage={handleImage} />
                 </Form.Item>
                 }
@@ -97,7 +96,7 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
                 </Form.Item>
                 }
                 {form.type === "tags" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
                    <Select
                         mode="tags"
                         style={{ width: '100%' }}

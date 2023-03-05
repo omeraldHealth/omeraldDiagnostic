@@ -25,10 +25,10 @@ export const basicFormArray = [
 ]
   
 export const brandDetailsFormArray = [
-    {"name":"brandLogo","type":"logo","label":"Brand Logo","required":true},
-    {"name":"brandBanner","type":"banner","label":"Brand Banner","required":false},
-    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true},
-    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true}
+    {"name":"brandLogo","type":"logo","label":"Brand Logo","required":true,pattern:""},
+    {"name":"brandBanner","type":"banner","label":"Brand Banner","required":false,pattern:""},
+    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true,pattern:""},
+    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true,pattern:""}
 ]
   
 export const branchDetailsFormArray = [

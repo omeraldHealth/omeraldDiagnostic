@@ -46,7 +46,7 @@ export default function ReportsTab() {
       title: 'Report Date',
       dataIndex: 'reportDate',
       render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
-      // sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() }
+      sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() 
     },
     {
       key:"updatedAt",
@@ -91,7 +91,7 @@ export default function ReportsTab() {
     <Fragment>
          <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">
             <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg]'> 
-              {loading && reports?.data ? <Spinner/> :<DashboardTable columns={columns} data={reports?.data}/> }
+            {loading ? <Spinner/> :<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }
             </div>
         </div>
     </Fragment>   

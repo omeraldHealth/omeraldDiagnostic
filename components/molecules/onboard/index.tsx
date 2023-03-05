@@ -33,6 +33,7 @@ const OnboardComponent = () => {
     }
   
     setDiagnosticProfile(Object.assign(diagnosticProfile, val))
+    console.log(diagnosticProfile)
     setCurrentStep(onboardSteps[currentStep.id])
   }
 
@@ -47,11 +48,19 @@ const OnboardComponent = () => {
 
   const handleSubmit = async () => {
     setLoading(true)
-    //@ts-ignore
-    let brandLogoUrl = await uploadImage(diagnosticProfile?.brandDetails.brandLogo);
-    //@ts-ignore
-    let brandBannerUrl = await uploadImage(diagnosticProfile?.brandDetails.brandBanner);
+    console.log(diagnosticProfile?.brandDetails?.brandLogo)
+    let brandLogoUrl;
+    let brandBannerUrl;
+    // //@ts-ignore
+    if(logo){
+      let brandLogoUrl = await uploadImage(logo);
+    }
 
+    if(diagnosticProfile?.brandDetails.brandBanner){
+         //@ts-ignore
+      brandBannerUrl = await uploadImage(banner);
+    }
+  
     setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":
       Object.assign(diagnosticProfile.brandDetails,{"brandLogo":brandLogoUrl,"brandBanner":brandBannerUrl})
     }))
@@ -64,8 +73,8 @@ const OnboardComponent = () => {
     }
   }
 
-  return (<section className="lg:h-[70vh] my-[10vh]">
-          <section className="w-[90vw] sm:h-auto sm:w-[90vw] lg:w-[70vw] md:h-[30vh] lg:h-auto max-h-[80vh] rounded-lg bg-white shadow-xl m-auto self-center  sm:p-6 text-center relative"> 
+  return (<section className="lg:h-[70vh] mt-[3vh] mb-[12vh]">
+          <section className="w-[90vw] sm:h-auto sm:w-[90vw] lg:w-[70vw] md:h-[30vh] lg:h-auto max-h-[80vh] rounded-lg bg-white shadow-xl m-auto self-center pb-5 text-center relative"> 
             <div id="steps" className="rounded-md bg-slate-50 w-full p-4 sm:p-0 md:p-4 mb-4">
                 <StepHeader stepList={onboardSteps} currentStep={currentStep}  />
             </div>
@@ -76,7 +85,7 @@ const OnboardComponent = () => {
                   </div>
                 }
                 {
-                  currentStep?.id === 2 && <div className="my-10 w-[50%] h-auto p-4">
+                  currentStep?.id === 2 && <div className=" w-[50%] h-auto p-4">
                   <DynamicFormCreator buttonText="Continue" formProps={brandDetailsFormArray} handleImage={handleImage} handleSubmit={handleForm}/>
                   </div>
                 }
@@ -87,7 +96,7 @@ const OnboardComponent = () => {
                 }
                 {
                   currentStep?.id === 4 && <div className="w-[100%] h-auto p-4">
-                    <ProfileSummaryComponent {...diagnosticProfile} />
+                    <ProfileSummaryComponent props={diagnosticProfile} />
                     <section className="mx-10 mb-4 flex justify-end">
                     <button onClick={handleSubmit} className="bg-green-900 absolute text-white text-sm font-light px-4 py-2 rounded-md">Submit</button>
                     </section>

@@ -10,7 +10,7 @@ const OnboardComponent = dynamic(() => import('@components/molecules/onboard'))
 export function OnboardComp() {
 	return (
         <PageTemplate>
-        <div className={`pt-[1vh] ${styles["signInContainer"]}`}>
+        <div>
             <Navbar/>
                 <OnboardComponent/>
             <Footer />
