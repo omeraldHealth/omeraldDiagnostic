@@ -171,9 +171,12 @@ export const UploadReport = ({handleSteps}:patientType) => {
           </div>
        
         }
-        {manual.value && <section className='my-4 absolute bottom-0'>
-          <button onClick={handleSubmit} className="p-2 bg-secondary text-white w-[8vw] rounded-lg">Submit</button>
+        {manual.value && <section className='my-4 absolute bottom-0 right-10 flex justify-end'>
+          <button onClick={handleSubmit} className="p-2 bg-secondary text-white w-[8vw] rounded-lg">Continue</button>
         </section>}
+        <section className='my-4 absolute bottom-0 w-[100%] '>
+          <button onClick={()=>{handleSteps && handleSteps(0)}} className="p-2 bg-gray-400 text-white w-[8vw] rounded-lg">Back</button>
+        </section>
         {loading && <Spinner/>}
     </div>  
   )

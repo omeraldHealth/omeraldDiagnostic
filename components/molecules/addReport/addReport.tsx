@@ -20,7 +20,7 @@ export const AddReportComponent = () => {
         </div>
         <div className="h-auto">
                 {
-                  currentStep?.id === 1 && <div className="my-10 w-[90%] sm:w-[70%] md:w-[100%] h-auto p-4">
+                  currentStep?.id === 1 && <div className="my-10 w-[90%] sm:w-[100%] md:w-[100%] h-auto p-4">
                     <PatientDetails handleSteps={handleStep}/>
                   </div>
                 }

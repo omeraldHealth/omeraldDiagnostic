@@ -26,9 +26,10 @@ const PatientDetailsForm = [
     {"name":"userName","type":"text","label":"Patient Name","required":true,"pattern":"^[a-zA-Z ]*$"},
     {"name":"email","type":"text","label":"Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
     {"name":"phoneNumber","type":"contact","label":"Phone Number","required":true},
+    {"name":"gender","type":"gender","label":"Gender","required":true},
     {"name":"dob","type":"date","label":"Date of birth","required":true,},
     {"name":"reportDate","type":"date","label":"Report creation date","required":true},
-    {"name":"gender","type":"gender","label":"Gender","required":true},
+    
     {"name":"doctorName","type":"pathologist","label":"Pathologist Name","required":false},
     {"name":"message","type":"textArea","label":"Message","required":false},
 ]

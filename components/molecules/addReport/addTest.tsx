@@ -93,13 +93,17 @@ export const AddTestComponent = () => {
                     {!addKeyword ? 
                     <section>  
                       <AddKeyword handleSteps={handleStep}/>
-                       <button className='ml-2 bg-indigo-600 text-white px-4 py-2 rounded-lg' onClick={()=>{handleStep(2)}}>Submit</button>
-                    </section>
+                      <section className='flex justify-between my-2'>
+                        <button className='ml-2 bg-gray-400 text-white px-4 py-2 rounded-lg' onClick={()=>{handleStep(0)}}>Back</button>
+                        <button className='ml-2 bg-indigo-600 text-white px-4 py-2 rounded-lg' onClick={()=>{handleStep(2)}}>Submit</button>
+                      </section>
+                      </section>
                   
                     :<section className='w-[50%] my-10'>
                       <p className='my-4'>Add Test Parameters</p>
                          <DynamicFormCreator buttonText="Continue" handleSubmit={handleSubmit} formProps={testForm} />
                     </section>  }
+                 
                   </div>
                 }
                  {
