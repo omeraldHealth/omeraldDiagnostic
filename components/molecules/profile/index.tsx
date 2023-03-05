@@ -5,8 +5,7 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
   return (
     <div className='mt-10 h-auto'>
         <div className={`w-[70vw] bg-white rounded-lg h-auto text-left  ${style}`}>
-          <img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSj5Q2raMjAzWc3f7P5IK9YmXGlC4V3ZrTQMeHPzNpfx_8RyG_5sizbgCxLVJLXzwaRwAI&usqp=CAU'
-           className='w-[100px] rounded-full border-2' />
+          <img src={profile.brandDetails.logo} className='w-[100px] rounded-full border-2' />
           <section className="flex">
             <section className="w-[50%] grid grid-cols-3 border-r-2 border-gray-100">
                 <section className="mt-4">
