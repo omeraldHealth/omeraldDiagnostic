@@ -171,7 +171,7 @@ export function PathologistManagement() {
             <section className="min-h-[45vh]">
             {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.pathologistDetail} /></div>:
             <section className="w-[50%] my-10 relative">
-            <DynamicFormCreator initial={initialData} handleImage={handleImage}  handleSubmit={handleBranch} buttonText={edit?"update":"submit"} formProps={pathologist}  />
+            <DynamicFormCreator initial={edit && initialData}  handleImage={handleImage}  handleSubmit={handleBranch} buttonText={edit?"update":"submit"} formProps={pathologist}  />
             </section>
             }
            </section>

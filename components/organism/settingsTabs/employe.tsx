@@ -123,7 +123,7 @@ export function EmployeeManagement() {
           if(resp.status==200){
             successAlert("Employee deleted Succesfully")
             dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"managersDetail":data}})
-            ActivityLogger(`removed ${man.managerName} from branch`,diagnosticDetails)
+            ActivityLogger(`removed ${man[0].managerName} from branch`,diagnosticDetails)
           }
       }
     }
@@ -139,7 +139,7 @@ export function EmployeeManagement() {
               <section className="min-h-[45vh]">
                   {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.managersDetail} /></div>:
                     <section className="w-[50%] my-10 relative">
-                      <DynamicFormCreator initial={initialData}  selectedRole={selectedRole} setSelectedRole={setSelectedRole} handleSubmit={handleEmployee} buttonText={edit?"update":"submit"}formProps={employeeDetails}  />
+                      <DynamicFormCreator initial={edit && initialData} selectedRole={selectedRole} setSelectedRole={setSelectedRole} handleSubmit={handleEmployee} buttonText={edit?"update":"submit"}formProps={employeeDetails}  />
                     </section>
                   }
               </section>

@@ -154,7 +154,7 @@ export function BranchManagement() {
              <section className="min-h-[45vh]">
             {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.branchDetails} /></div>:
                  <section className="w-[50%] my-10 relative">
-                 <DynamicFormCreator initial={initialData}  handleSubmit={handleBranch} buttonText={edit? "update":"submit"} formProps={branchForm}  />
+                 <DynamicFormCreator initial={edit && initialData}  handleSubmit={handleBranch} buttonText={edit? "update":"submit"} formProps={branchForm}  />
                </section>
             }
             </section>

@@ -23,7 +23,8 @@ export const DashCard = () => {
  
 const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
 const reportList = useSelector((state:any)=>state.reportListReducer)
-
+const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
+const {data:reports,isLoading:loading} = useQuery(["reports"],fetchReports)
 const dispatch = useDispatch()
 
 const dashCard: DashCardTye[] = [
@@ -43,7 +44,7 @@ const dashCard: DashCardTye[] = [
         tipInfo:"Shows the count of tests offered by your laboratory",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Reports Uploaded",
-        value: reportList?.length
+        value: reports?.data?.length
     },
     {
         href:"/reports",
