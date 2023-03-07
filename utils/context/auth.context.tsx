@@ -74,7 +74,6 @@ function useFirebaseAuth() {
   };
 
   const signOut = async () => {
-    console.log(user)
     if (user) {
       const phoneNumber = user.phoneNumber || "";
       await deleteSession(phoneNumber);

@@ -1,5 +1,3 @@
-
-import { SignInButton } from "@components/atoms/button/button";
 import { Footer } from "@components/molecules/footer";
 import { Navbar } from "@components/molecules/navbar";
 import { PageTemplate } from "@components/templates/pageTemplate";
@@ -17,7 +15,6 @@ export function Error() {
                     <Link href={"/"}>
                         <button className="my-[2vh] w-[10vw] bg-orangeBg px-2 py-2 text-gray-700 font-bold rounded-md">Visit Home</button>
                     </Link>
-                   
                 </div>
             <Footer />
         </div>

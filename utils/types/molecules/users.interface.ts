@@ -9,8 +9,6 @@ export interface DiagnosticUserSession {
 export interface UserDetails {
   email: string;
   branch: string;
-  fullName: string;
-  address?: string;
   updatedAt?: Date;
   reports?: string[];
   tests: ReportTypes[];

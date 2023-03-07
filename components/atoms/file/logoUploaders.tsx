@@ -33,7 +33,7 @@ const LogoUploader = ({handleImage}:any)  => {
 
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
     setFileList(newFileList) 
-    handleImage({"logo":newFileList[0].originFileObj})
+    handleImage({"logo":newFileList})
   };
 
   const uploadButton = (

@@ -13,11 +13,9 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { getDiagnosticReports, getDiagnosticUserApi } from "@utils";
 import AddTestTab from "@components/organism/dashboardTabs/addTest";
-import { Spinner } from "@components/atoms/loader";
 
 
 export const DashboardTemplate = () => {
-
 
   const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
   const {diagnosticDetails} = useAuthContext()

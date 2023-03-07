@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <Fragment>
 			<Head title={'Omerald Diagnostic | 404'} />
-            <Error/>
+        <Error/>
     </Fragment>
   )
 }

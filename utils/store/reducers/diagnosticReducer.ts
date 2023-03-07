@@ -5,10 +5,7 @@ const diagnosticState = {
   sharedReport: [],
   phoneNumber: "",
   diagnosticName: "",
-  fullName: "",
   email: "",
-  branch: "",
-  address: "",
   brandDetails: [
       {
           facebookUrl: "",
@@ -20,7 +17,7 @@ const diagnosticState = {
       {
           managerName: "",
           managerRole: "",
-          managerSignature: ""
+          managerContact: ""
       }
   ],
   activities: []

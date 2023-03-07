@@ -9,7 +9,7 @@ export async function getUserDetails(userId: getUserDetailType) {
     const resp = await axios.get(getDiagnosticUserApi+userId.phoneNumber, {});
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
-    return { status: error.response.status || error.request.code, data: null };
+    return { status: error?.response?.status || error?.request?.code, data: null };
   }
 }
 

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export const ProfileSummaryComponent = ({style,props}:any) => {
   let profile = props
+  console.log(profile)
   return (
     <div className='mt-10 h-auto'>
         <div className={`w-[70vw] bg-white rounded-lg h-auto text-left  ${style}`}>
-          <img src={profile.brandDetails.logo} className='w-[100px] rounded-full border-2' />
+          <img src={profile?.brandDetails?.brandLogo?.[0]?.thumbUrl || profile.brandDetails[0].brandLogo} className='w-[100px] rounded-full border-2' />
           <section className="flex">
             <section className="w-[50%] grid grid-cols-3 border-r-2 border-gray-100">
                 <section className="mt-4">

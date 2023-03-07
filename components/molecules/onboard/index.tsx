@@ -10,6 +10,8 @@ import { setUserDetails, uploadImage } from "utils/hook/userDetail";
 import { basicFormArray, branchDetailsFormArray, brandDetailsFormArray, SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
 import { useRouter } from "next/router";
 import { Spinner } from "@components/atoms/loader";
+import { errorAlert } from "@components/atoms/alerts/alert";
+import { useAuthContext } from "utils/context/auth.context";
 
 const OnboardComponent = () => {
   const [currentStep, setCurrentStep] = useState(onboardSteps[0]);
@@ -20,20 +22,25 @@ const OnboardComponent = () => {
   const dispatch = useDispatch()
   const router = useRouter()
   const [loading, setLoading] = useState(false);
+  const [selectedRole,setSelectedRole] = useState("Select Role")
+  const {user,signIn} = useAuthContext()
 
   const handleForm = (values:BasicDetailsForm | BrandDetailsForm | BranchDetails) => {
     
     let val:any = values;
+    let val2:any = values;
 
     if(Object?.keys(values).includes("brandLogo")){
       Object.assign(values,{"brandLogo":logo,"brandBanner":banner})
       val = {"brandDetails":values}
     }else if(Object?.keys(values).includes("branchName")){
       val = {"branchDetails":[values]}
+      //@ts-ignore
+      val2 = {"managersDetail":[{"managerName":values.managerName,"managerRole":values.managerRole,"managerContact":values.managerContact}]}
+      setDiagnosticProfile(Object.assign(diagnosticProfile, val2))
     }
   
     setDiagnosticProfile(Object.assign(diagnosticProfile, val))
-    console.log(diagnosticProfile)
     setCurrentStep(onboardSteps[currentStep.id])
   }
 
@@ -48,17 +55,18 @@ const OnboardComponent = () => {
 
   const handleSubmit = async () => {
     setLoading(true)
-    console.log(diagnosticProfile?.brandDetails?.brandLogo)
+
     let brandLogoUrl;
     let brandBannerUrl;
+
     // //@ts-ignore
     if(logo){
-      let brandLogoUrl = await uploadImage(logo);
+      brandLogoUrl = await uploadImage(logo[0].originFileObj);
     }
 
-    if(diagnosticProfile?.brandDetails.brandBanner){
+    if(banner.length>0){
          //@ts-ignore
-      brandBannerUrl = await uploadImage(banner);
+      brandBannerUrl = await uploadImage(banner[0].originFileObj);
     }
   
     setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":
@@ -66,10 +74,19 @@ const OnboardComponent = () => {
     }))
 
     let insertDiag = await setUserDetails(diagnosticProfile)
-    if(insertDiag.status==200){
+
+
+    if (insertDiag.status == 200 && user) {
       dispatch({ type: SET_DIAGNOSTIC_DETAILS,payload: diagnosticProfile });
-      setLoading(false)
-      router.push("/dashboard")
+      setLoading(false);
+      signIn(user, "/dashboard");
+    }
+
+    if (insertDiag.status === 409) {
+      // console.log("changing route");
+      setLoading(false);
+      errorAlert("Error creating profile")
+      router.push("/");
     }
   }
 
@@ -90,15 +107,15 @@ const OnboardComponent = () => {
                   </div>
                 }
                 {
-                  currentStep?.id === 3 && <div className="w-[50%] h-auto p-4">
-                  <DynamicFormCreator buttonText="Continue" formProps={branchDetailsFormArray} handleSubmit={handleForm}/>
+                  currentStep?.id === 3 && <div className="w-[100%]  h-auto p-4">
+                  <DynamicFormCreator buttonText="Continue" selectedRole={selectedRole} setSelectedRole={setSelectedRole} formStyle="grid grid-cols-2 gap-4" formProps={branchDetailsFormArray} handleSubmit={handleForm}/>
                   </div>
                 }
                 {
                   currentStep?.id === 4 && <div className="w-[100%] h-auto p-4">
                     <ProfileSummaryComponent props={diagnosticProfile} />
                     <section className="mx-10 mb-4 flex justify-end">
-                    <button onClick={handleSubmit} className="bg-green-900 absolute text-white text-sm font-light px-4 py-2 rounded-md">Submit</button>
+                      <button onClick={handleSubmit} className="bg-green-900 absolute text-white text-sm font-light px-4 py-2 rounded-md">Submit</button>
                     </section>
                   </div>
                 }

@@ -5,7 +5,7 @@ import { SVGProps } from 'react';
 export const onboardSteps = [
     { id: 1, name: "Basic Details" },
     { id: 2, name: "Brand Details" },
-    { id: 3, name: "Report Details" },
+    { id: 3, name: "Branch Details" },
     { id: 4, name: "Summary" },
 ];
 

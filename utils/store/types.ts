@@ -27,15 +27,19 @@ export const basicFormArray = [
 export const brandDetailsFormArray = [
     {"name":"brandLogo","type":"logo","label":"Brand Logo","required":true,pattern:""},
     {"name":"brandBanner","type":"banner","label":"Brand Banner","required":false,pattern:""},
-    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true,pattern:""},
-    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true,pattern:""}
+    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true,pattern:"/.*facebook\.com.*/"},
+    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true,pattern:"/.*instagram\.com.*/"},
 ]
   
 export const branchDetailsFormArray = [
     {"name":"branchName","type":"text","label":"Branch Name","required":true},
-    {"name":"branchEmail","type":"text","label":"Branch Email","required":false},
+    {"name":"managerName","type":"text","label":"Manager Name","required":true,pattern:""},
+    {"name":"branchEmail","type":"email","label":"Branch Email","required":false,pattern:""},
+    {"name":"managerContact","type":"text","label":"Manager Contact","required":true,pattern:""},
     {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
+    {"name":"managerRole","type":"roles","label":"Manager Role","required":true,pattern:""},
     {"name":"branchContact","type":"text","label":"Branch Contact","required":true},
+  
 ]
 
 export interface ReportTableType {

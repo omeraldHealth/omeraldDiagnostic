@@ -2,16 +2,16 @@ import { successAlert } from "@components/atoms/alerts/alert";
 import { Spinner } from "@components/atoms/loader";
 import { useRouter } from "next/router";
 import React, { cloneElement, ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { useAuthContext } from "utils/context/auth.context";
-import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
 
-const allowedPaths = ["","/","/signIn"];
+
+const allowedPaths = ["","/","/signIn","/404"];
 let flag = true;
+
 const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => {
   const auth = useAuthContext();
   const router = useRouter();
-
+  console.log(auth)
   if (allowedPaths.includes(router.pathname) && !auth?.user) {
     return <>{children}</>;
   } else if (auth?.loading) {
@@ -40,7 +40,6 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
     router.push("/onboard");
     return null;
   } else {
-    // router.push("/");
     return null;
   }
 };
