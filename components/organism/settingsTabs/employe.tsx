@@ -2,7 +2,7 @@ import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
 import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
-import { TrashIcon } from "@heroicons/react/20/solid";
+import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { success } from "@styles/color";
 import { getDiagnosticUserApi, insertDiagnosticUserApi, updateDiagnosticUserApi } from "@utils";
 import { Space } from "antd";
@@ -48,8 +48,9 @@ export function EmployeeManagement() {
             title: 'Action',
             dataIndex: 'managerSignature',
             key: 'managerSignature  ',
-            render: (_, record,index) => (
+            render: (i,record,index) => (
               <Space size="middle">
+                 <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> 
                 {(index !== 0 ? <a ><TrashIcon onClick={()=>{handleRemoveEmployee(record.managerName)}} className='w-4 text-red-500' /></a> :<p></p>)}
               </Space>
             ),
@@ -57,14 +58,17 @@ export function EmployeeManagement() {
     ]
     const [selectedRole, setSelectedRole] = useState("Select Role");
     const fetchDiagnostic = async () => {return await axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)}
-
+    const [edit,setEdit] = useState(false)
+    const [initialData,setInitial] = useState()
     const dispatch = useDispatch()
     
     const handleEmployee = async (value:any) => {
       let data = diagnosticDetails?.managersDetail || [];
      
       let duplicate = data.some((manager:any) => {return (manager.managerName===value.managerName || manager.managerContact===value.managerContact)})
-      if(!duplicate){
+
+      if(edit){
+        let data = diagnosticDetails?.managersDetail?.filter((dat)=>dat._id !== initialData.id)
         data.push(value)
         if(diagnosticDetails){
               let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"managersDetail":data})
@@ -76,9 +80,38 @@ export function EmployeeManagement() {
                 // refetch({force:true})
               }
         }
+        setEdit(false)
       }else{
-        errorAlert(`User by name/phoneNumber exists already`)
+        if(!duplicate){
+          data.push(value)
+          if(diagnosticDetails){
+                let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"managersDetail":data})
+                if(resp.status==200){
+                  successAlert("Employee Added Succesfully")
+                  ActivityLogger(`added ${value.managerName} as branch ${value.managerRole}`,diagnosticDetails)
+                  dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:{...diagnosticDetails,"managersDetail":data}})
+                  setAddOperator(false)
+                  // refetch({force:true})
+                }
+          }
+        }else{
+          errorAlert(`User by name/phoneNumber exists already`)
+        }
       }
+     
+    }
+
+    const handleEdit = (value:any) => {
+      let initial = {
+        "managerName": value.managerName,
+        "managerContact":value.managerContact,
+        "managerRole":value.managerRole,
+        "id":value._id
+      }
+      console.log(initial)
+      setInitial(initial)
+      setEdit(true)
+      setAddOperator(true)
     }
 
     const handleRemoveEmployee = async (value:any) => {
@@ -106,12 +139,13 @@ export function EmployeeManagement() {
               <section className="min-h-[45vh]">
                   {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.managersDetail} /></div>:
                     <section className="w-[50%] my-10 relative">
-                      <DynamicFormCreator selectedRole={selectedRole} setSelectedRole={setSelectedRole} handleSubmit={handleEmployee} buttonText="submit" formProps={employeeDetails}  />
+                      <DynamicFormCreator initial={initialData}  selectedRole={selectedRole} setSelectedRole={setSelectedRole} handleSubmit={handleEmployee} buttonText={edit?"update":"submit"}formProps={employeeDetails}  />
                     </section>
                   }
               </section>
             <section className="w-[100%] flex justify-start ">
-                  <button onClick={()=>{setAddOperator(!addOperator)}} className="bg-gray-200 p-2 rounded-md">
+                  <button onClick={()=>{setAddOperator(!addOperator) 
+                  setEdit(false)}} className="bg-gray-200 p-2 rounded-md">
                     {!addOperator ?  "Add Operator" : "View Operator"}
                   </button>
               </section>

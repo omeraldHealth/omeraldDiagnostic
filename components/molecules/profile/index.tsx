@@ -38,6 +38,16 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
           
         }
     }
+    else if(edit && !image){
+      let brandDetails = [{"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}]
+          let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
+          let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
+          if(resp2.status==200){
+            dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:diag})
+            successAlert("Profile updated sucessfully")
+            setEdit(false)
+          }
+    }
 
     setLoading(false)
   }

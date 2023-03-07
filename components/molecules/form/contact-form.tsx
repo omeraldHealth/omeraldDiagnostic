@@ -1,4 +1,5 @@
 import { errorAlert } from '@components/atoms/alerts/alert'
+import { Whatsapp } from '@components/atoms/button/whatsapp'
 import { Spinner } from '@components/atoms/loader'
 import { mailImage } from '@utils'
 import React, { useState } from 'react'
@@ -10,6 +11,7 @@ import { DynamicFormCreator } from './dynamicForm'
 export const ContactForm = ({handleSubmit}:any) => {
   const {diagnosticDetails} = useAuthContext()
   const [loading,setLoading] = useState(false)
+  const [query,setQuery] = useState('')
 
   const handleForm = async (value:any) => {
     setLoading(true)
@@ -42,10 +44,17 @@ export const ContactForm = ({handleSubmit}:any) => {
 
   return (
     <div>
-        <section className='flex w-[100%] justify-center my-10 py-4'>
-            <img src={mailImage} className="w-[25%]"/>
+        <section className='flex w-[100%] justify-center my-10 py-2'>
+            <section className='w-[40%]'>
+              <img src={mailImage} className="w-[65%] m-auto"/>
+            </section>
+        
             <section className='w-[40%] mx-20'>
-              <DynamicFormCreator buttonText="Submit" style={""} formProps={contactForm} handleSubmit={handleForm}/>
+              <p className='text-center'>
+                <Whatsapp message={"Hi, I am having a query about my diagnostic profile, could you please help?"}/>
+              </p>
+              <p className='text-sm text-center my-4'>OR</p> 
+              <DynamicFormCreator buttonText="Send Email" style={""} formProps={contactForm} handleSubmit={handleForm}/>
             </section>    
         </section>    
         {loading && <Spinner/>}

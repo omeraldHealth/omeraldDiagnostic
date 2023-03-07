@@ -1,8 +1,8 @@
-import { successAlert } from "@components/atoms/alerts/alert";
+import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
 import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
-import { TrashIcon } from "@heroicons/react/20/solid";
+import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { Space } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
 export function BranchManagement() {
     const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const [addOperator,setAddOperator] = useState(false)
+    const [edit,setEdit] = useState(false)
     let branchList = []
     diagnosticDetails?.branchDetails?.forEach((man:any) => {
         const obj = { 
@@ -22,6 +23,23 @@ export function BranchManagement() {
         };
         branchList.push(obj)
       });
+    
+      const [initialData,setInitial] = useState()
+
+    const handleEdit = (value:any) => {
+        let initial = {
+          "branchName": value.branchName,
+          "branchEmail":value.branchEmail,
+          "branchContact":value.branchContact,
+          "branchAddress":value.branchAddress,
+          "id":value._id
+        }
+        setInitial(initial)
+        setEdit(true)
+        setAddOperator(true)
+      }
+    
+
     const columns = [
         {
           title: 'Branch Name',
@@ -66,6 +84,7 @@ export function BranchManagement() {
           key: 'branchAddress  ',
           render: (_, record:any,index:any) => (
             <Space size="middle">
+               <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> 
              {index != 0 && <a><TrashIcon onClick={()=>{handleRemoveBranch(record?._id)}} className='w-4 text-red-500' /></a>}
             </Space>
           ),
@@ -80,17 +99,39 @@ export function BranchManagement() {
     ]
     const dispatch = useDispatch()
     const handleBranch = async (value:any) => {
+      let duplicate = diagnosticDetails?.branchDetails.some((branch:any)=>{return (branch.branchName !== value.branchName && branch.branchEmail !== value.branchEmail && branch.branchContact !== value.branchContact)})
       let data = diagnosticDetails?.branchDetails || [];
-      data.push(value)
+   
 
-      if(diagnosticDetails){
-        let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"branchDetails":data})
+      if(edit){
 
-        if(resp.data.acknowledged){
-           ActivityLogger(`created ${value.branchName} branch`,diagnosticDetails)
-           setAddOperator(false)
+        let data = diagnosticDetails.branchDetails.filter((path:any)=>path._id !== initialData.id)
+          data.push(value)
+          let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"branchDetails":data})
+  
+          if(resp.data.acknowledged){
+             
+             ActivityLogger(`created ${value.branchName} branch`,diagnosticDetails)
+             successAlert("Branch pathologist succesfully")
+              dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"branchDetails":data}})
+             setAddOperator(false)
+          }
+      }else{
+        data.push(value)
+        if(diagnosticDetails && duplicate){
+          let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"branchDetails":data})
+  
+          if(resp.data.acknowledged){
+             ActivityLogger(`created ${value.branchName} branch`,diagnosticDetails)
+             successAlert("Branch pathologist succesfully")
+              dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"branchDetails":data}})
+             setAddOperator(false)
+          }
+        }else{
+          errorAlert("Branch with name/email/phone already exists")
         }
       }
+      setEdit(false)
     }
 
     const handleRemoveBranch= async (value:any) => {
@@ -113,12 +154,13 @@ export function BranchManagement() {
              <section className="min-h-[45vh]">
             {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.branchDetails} /></div>:
                  <section className="w-[50%] my-10 relative">
-                 <DynamicFormCreator  handleSubmit={handleBranch} buttonText="submit" formProps={branchForm}  />
+                 <DynamicFormCreator initial={initialData}  handleSubmit={handleBranch} buttonText={edit? "update":"submit"} formProps={branchForm}  />
                </section>
             }
             </section>
            <section className="w-[100%] flex justify-start ">
-                <button onClick={()=>{setAddOperator(!addOperator)}} className="bg-gray-200 p-2 rounded-md">
+                <button onClick={()=>{setAddOperator(!addOperator) 
+                  setEdit(false)}} className="bg-gray-200 p-2 rounded-md">
                   {!addOperator ?  "Add Branch" : "View Branch"}
                 </button>
            </section>

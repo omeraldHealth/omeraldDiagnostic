@@ -22,23 +22,25 @@ interface FormType  {
     selectedRole?:string,
     formStyle?:string,
     button?:Boolean,
+    initial?:Initial,
     setSelectedRole?: (value:any) =>void
     handleSubmit: (value:any) =>void
     handleImage?: (value:any) =>void
     handleDate?: (value:any) => void
 }
 
-export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
+export const DynamicFormCreator = ({formProps,button,initial,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
   const auth = getAuth(firebaseApp);
 
   const roles = ['Admin', 'Manager','Operator','Spoc'];
   const plainOptions = ['Male', 'Female', 'Others'];
-  
+  let init={ remember: true,phoneNumber:auth.currentUser?.phoneNumber }
+  init = {...init,...initial}
   return (
     <div >
         <Form className={formStyle} onFinish={handleSubmit} name="basic" 
-        initialValues={{ remember: true,phoneNumber:auth.currentUser?.phoneNumber }}>
+        initialValues={init}>
         {formProps.map((form,index) => <>
                 {form.type === "text" && 
                 <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
