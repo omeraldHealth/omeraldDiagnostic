@@ -142,7 +142,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
 
   return (
     <div className='p-8 relative h-[50vh]'>
-        <BodyText_3>Do you want to upload a report?</BodyText_3>
+        <BodyText_3>Create report powered by Omerald ?</BodyText_3>
         <section className='my-4'>
             <Radio.Group options={manualOptions} onChange={(event)=>{if(event.target.value){setManual({value:true,label:"True"})}else{ setManual({value:false,label:"False"})}
             }} value={manual.value} />
@@ -158,7 +158,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
                 />
         </section>
         {
-            manual.value ?
+            !manual.value ?
             <section className='w-[15vw]'>
                 <section className='my-6'>
                   {/* <Upload  multiple={false} style={{width:20,display:"flex"}} {...props}>

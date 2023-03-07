@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
 import LogoUploader from '@components/atoms/file/logoUploaders';
 import BannerUploader from '@components/atoms/file/bannerUpload';
@@ -6,7 +6,9 @@ import { useSelector } from 'react-redux';
 import { useAuthContext } from 'utils/context/auth.context';
 import { getAuth } from 'firebase/auth';
 import firebaseApp from 'utils/auth/firebase';
-
+import PhoneInputWithCountrySelect from 'react-phone-number-input';
+import moment from 'moment';
+import { debounce } from 'lodash';
 interface FormProps  {
     name:string,
     type:string,
@@ -23,19 +25,39 @@ interface FormType  {
     formStyle?:string,
     button?:Boolean,
     initial?:Initial,
+    disable?:Boolean,
     setSelectedRole?: (value:any) =>void
     handleSubmit: (value:any) =>void
     handleImage?: (value:any) =>void
     handleDate?: (value:any) => void
 }
 
-export const DynamicFormCreator = ({formProps,button,initial,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
+export const DynamicFormCreator = ({formProps,button,disable,initial,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
   const auth = getAuth(firebaseApp);
 
+  const [isDisabled,setDisabled] = useState(false);
+  const disabledDate = (current:any) => {
+    return current && current > moment().endOf('day');
+  };
+
+  useEffect(()=>{
+    if(disable){
+        setDisabled(true)
+    }
+  },[])
+
+  const [datas, setData] = useState<SelectProps['options']>(diagnosticProfile.pathologistDetail);
+  const handleSearch = (newValue: string) => {
+    let temp = diagnosticProfile.pathologistDetail?.filter((report:any)=> {return report.name.includes(newValue) || report.designation.includes(newValue)})
+    setData(temp)
+};
+
+const debouncedSearch = debounce(handleSearch, 500);
+
   const roles = ['Admin', 'Manager','Operator','Spoc'];
   const plainOptions = ['Male', 'Female', 'Others'];
-  let init={ remember: true,phoneNumber:auth.currentUser?.phoneNumber }
+  let init={ remember: true}
   init = {...init,...initial}
   return (
     <div >
@@ -44,19 +66,23 @@ export const DynamicFormCreator = ({formProps,button,initial,formStyle,handleSub
         {formProps.map((form,index) => <>
                 {form.type === "text" && 
                 <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                   {form.name !== "phoneNumber" && form.type == "text" ? <Input placeholder={form.label} className="border-gray-400 rounded-lg  text-black font-light text-sm" />:
-                   <Input disabled placeholder={form.label} className="border-gray-400 rounded-lg text-black font-light text-sm" />
+                   {form.name !== "phoneNumber" && form.type == "text" ? <Input placeholder={form.label}   disabled={isDisabled} className="border-gray-400 rounded-lg  text-black font-light text-sm" />:
+                   <Input   disabled={isDisabled} placeholder={form.label} className="border-gray-400 rounded-lg text-black font-light text-sm" />
                 } 
                 </Form.Item>
                 }
                 {form.type === "contact" && 
                 <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                     <Input placeholder={form.label} className="border-gray-400 rounded-lg  text-black font-light text-sm" />
+                     <Input onChange={(event)=>{
+                        if(event.target.value.length>9 && event.target.value.length<13){
+                           setDisabled(false)
+                        }else{  setDisabled(true)}
+                     }} placeholder={form.label} className="border-gray-400 rounded-lg  text-black font-light text-sm" />
                 </Form.Item>
                 }
                 {form.type === "email" && 
                 <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern, type: "email",message: `Please input ${form.label}`}]}>
-                     <Input placeholder={form.label} className="border-gray-400 rounded-lg  text-black font-light text-sm" />
+                     <Input   disabled={isDisabled} placeholder={form.label} className="border-gray-400 rounded-lg  text-black font-light text-sm" />
                 </Form.Item>
                 }
                 {form.type === "logo" &&
@@ -82,27 +108,37 @@ export const DynamicFormCreator = ({formProps,button,initial,formStyle,handleSub
                 }
                 {form.type === "pathologist" &&
                 <Form.Item  key={index} className='mb-6  col-span-1' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                        <Select
+                         <Select
+                                showSearch
+                            // value={value}
+                            disabled={isDisabled}
                             style={{ width:340}}
                             defaultValue={"Select Pathologist"}
+                            className="w-[16vw]"
+                            placeholder={"Test Name"}
+                            defaultActiveFirstOption={false}
+                            showArrow={false}
+                            filterOption={false}
+                            onSearch={debouncedSearch}
                             onChange={handleDate}
-                            options={diagnosticProfile?.pathologistDetail?.map((path:any) => ({ label: path.name, value: path._id }))}
+                            notFoundContent={null}
+                            options={datas?.map((path:any) => ({ label: path.name+" ("+path.designation+")", value: path.name }))}
                         />
                 </Form.Item>
                 }
                 {form.type === "date" &&
                 <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
-                       <DatePicker format='YYYY-MM-DD' className='w-[20vw] py-2 border-gray-400 rounded-lg' placeholder={form.label} onChange={handleDate} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}/>
+                       <DatePicker disabled={isDisabled} disabledDate={disabledDate} format='YYYY-MM-DD' className='w-[20vw] py-2 border-gray-400 rounded-lg' placeholder={form.label} onChange={handleDate} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}/>
                 </Form.Item>
                 }
                 {form.type === "gender" &&
                 <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                    <Radio.Group options={plainOptions} onChange={handleDate} value={"male"} />
+                    <Radio.Group   disabled={isDisabled} options={plainOptions} onChange={handleDate} value={"male"} />
                 </Form.Item>
                 }
                 {form.type === "textArea" &&
                 <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                     <textarea className='border-gray-200 rounded-lg' rows={4} cols="36" placeholder={form.label} maxLength={6} />
+                     <textarea   disabled={isDisabled} className='border-gray-200 rounded-lg' rows={4} cols="36" placeholder={form.label} maxLength={6} />
                 </Form.Item>
                 }
                 {form.type === "tags" &&
@@ -116,9 +152,9 @@ export const DynamicFormCreator = ({formProps,button,initial,formStyle,handleSub
                     />
                 </Form.Item>
                 }
-                 
-              </>
-        )}
+                </>
+            )}
+
         <Form.Item className={`flex justify-start col-span-2 ${style}`}>
             <Button className={`bg-blue-500 ${style}`} type="primary" htmlType="submit">{buttonText}</Button>
         </Form.Item>    

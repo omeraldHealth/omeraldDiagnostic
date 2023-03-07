@@ -23,9 +23,9 @@ export type ReportDetails = {
 };
 
 const PatientDetailsForm = [
+    {"name":"phoneNumber","type":"contact","label":"Phone Number","required":true,pattern:"^91[1-9][0-9]{9}$"},
     {"name":"userName","type":"text","label":"Patient Name","required":true,"pattern":"^[a-zA-Z ]*$"},
     {"name":"email","type":"text","label":"Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
-    {"name":"phoneNumber","type":"contact","label":"Phone Number","required":true},
     {"name":"gender","type":"gender","label":"Gender","required":true},
     {"name":"dob","type":"date","label":"Date of birth","required":true,},
     {"name":"reportDate","type":"date","label":"Report creation date","required":true},
@@ -41,6 +41,7 @@ export const PatientDetails = ({handleSteps}:patientType) => {
   const diagnosticProfile = useSelector((state:any)=>state.diagnosticReducer)
   const [pathologist,setPathologist] = useState({})
   const dispatch = useDispatch()
+
 
   const handleForm =(value:any)=> {
     let notFilled:any = [];
@@ -70,7 +71,7 @@ export const PatientDetails = ({handleSteps}:patientType) => {
 
   return (
     <div className='flex'>
-        <DynamicFormCreator formStyle='grid grid-cols-2 gap-x-4 gap-y-4' handleDate={handleDate} buttonText="Continue" formProps={PatientDetailsForm} handleSubmit={handleForm}/>
+        <DynamicFormCreator disable={true} formStyle='grid grid-cols-2 gap-x-4 gap-y-4' handleDate={handleDate} buttonText="Continue" formProps={PatientDetailsForm} handleSubmit={handleForm}/>
     </div>
   )
 }
