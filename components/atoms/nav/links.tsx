@@ -18,7 +18,7 @@ export const NavLinks = () => {
     const [currentNavigation, setCurrentNavigation] = useState<any>(privateRoutes[0]);
     const dispatch = useDispatch()
     const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
-    console.log(currentNavigation)
+
     useEffect(()=>{
         //@ts-ignore
         setCurrentNavigation(privateRoutes[IndexObj[dashboardRoute.href]])

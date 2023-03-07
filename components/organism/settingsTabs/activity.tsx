@@ -35,7 +35,7 @@ export function Activity() {
               key: 'qws',
               title: 'Activity Time',
               dataIndex: 'updatedTime',
-              render: (text:any) => <a>{moment(text).format("DD/mm/yyyy HH:mm:ss")}</a>,
+              render: (text:any) => <a>{moment(text).format("DD/MM/yyyy HH:mm:ss")}</a>,
               sorter: (a:any, b:any) => new Date(a.updatedTime) - new Date(b.updatedTime),
          
           },

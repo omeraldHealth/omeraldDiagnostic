@@ -10,7 +10,7 @@ export async function  ActivityLogger(activity:string,diagnosticDetail:UserDetai
 
     let resp = await updateUserDetails({"phoneNumber":diagnosticDetail.phoneNumber},{"activities":act})
     if(resp.status==200){
-        console.log("action")
+        // console.log("action")
     }
 
 }

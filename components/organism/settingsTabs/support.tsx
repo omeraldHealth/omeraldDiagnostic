@@ -16,24 +16,28 @@ export function Support() {
           dataIndex: 'subject',
           key: 'subjectsss',
           render: (text:any) => <a className='text-blue-800 font-medium'>{text}</a>,
+          sorter: (a:any, b:any) => a.subject.length - b.subject.length,
         },
         {
             title: 'Query',
             dataIndex: 'message',
             key: 'messagesss',
             render: (text:any) => <a className='italic font-bold '>{text}</a>,
+            sorter: (a:any, b:any) => a.message.length - b.message.length,
         },
         {
             title: 'Branch',
             dataIndex: 'branch',
             key: 'branchsss',
             render: (text:any) =><a className='text-blue-800 font-medium'>{text}</a>,
+            sorter: (a:any, b:any) => a.branch.length - b.branch.length,
         },
         {
           title: 'Query Date',
           dataIndex: 'createdAt',
           key: 'createdAt',
           render: (text:any) => <a className='text-blue-800 font-medium'>{text}</a>,
+          sorter: (a:any, b:any) => a.createdAt.length - b.createdAt.length,
       },
     ] 
 
@@ -48,7 +52,6 @@ export function Support() {
         if(diagnosticDetails){
             ActivityLogger("raised query to support",diagnosticDetails)
         }
-   
     }
 
 	return (

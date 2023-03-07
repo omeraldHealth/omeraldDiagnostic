@@ -1,6 +1,13 @@
 import { Spinner } from '@components/atoms/loader';
-import { Table } from 'antd';
+import { Pagination, Table } from 'antd';
 import React from 'react'
 
 
-export const DashboardTable = ({columns,data,pageSize}:any) => <Table pagination={{ pageSize: pageSize || 5,total: data?.length}} rowKey={(data) => Object.keys(data)[0]}  columns={columns} dataSource={data} />;
+export const DashboardTable = ({columns,data,pageSize}:any) => 
+<Table 
+    pagination={{ pageSize: pageSize || 5,total: data?.length}} 
+    rowKey={(data) => Object.keys(data)[0]}  
+    columns={columns} dataSource={data} 
+/>;
+
+

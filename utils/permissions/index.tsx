@@ -11,7 +11,7 @@ let flag = true;
 const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => {
   const auth = useAuthContext();
   const router = useRouter();
-  console.log(auth)
+
   if (allowedPaths.includes(router.pathname) && !auth?.user) {
     return <>{children}</>;
   } else if (auth?.loading) {

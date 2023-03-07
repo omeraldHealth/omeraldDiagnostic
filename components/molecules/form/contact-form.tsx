@@ -1,9 +1,10 @@
+import { errorAlert } from '@components/atoms/alerts/alert'
 import { Spinner } from '@components/atoms/loader'
 import { mailImage } from '@utils'
 import React, { useState } from 'react'
 import { useAuthContext } from 'utils/context/auth.context'
 import { addQuery } from 'utils/hook/userDetail'
-import { ActivityLogger } from '../logger.tsx/activity'
+
 import { DynamicFormCreator } from './dynamicForm'
 
 export const ContactForm = ({handleSubmit}:any) => {
@@ -26,9 +27,11 @@ export const ContactForm = ({handleSubmit}:any) => {
     if(resp.status == 200){
   
       handleSubmit()
-      setLoading(false)
+    
+    }else{
+      errorAlert("Error updating query")
     }
-
+    setLoading(false)
   }
   
   const contactForm = [

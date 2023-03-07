@@ -80,7 +80,6 @@ export const UploadReport = ({handleSteps}:patientType) => {
   }
 
   const handleImage = (value:any) => {
-    console.log(value)
     setUploadedReport(value.logo)
   }
 

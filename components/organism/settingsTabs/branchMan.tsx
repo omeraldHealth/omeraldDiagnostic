@@ -1,3 +1,4 @@
+import { successAlert } from "@components/atoms/alerts/alert";
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
 import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
@@ -13,30 +14,45 @@ import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
 export function BranchManagement() {
     const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const [addOperator,setAddOperator] = useState(false)
+    let branchList = []
+    diagnosticDetails?.branchDetails?.forEach((man:any) => {
+        const obj = { 
+          text: man.branchName, 
+          value: man.branchName 
+        };
+        branchList.push(obj)
+      });
     const columns = [
         {
           title: 'Branch Name',
           dataIndex: 'branchName',
           key: 'branchName',
           render: (text:any) => <a className='text-blue-800 font-medium'>{text}</a>,
+          sorter: (a:any, b:any) => a.branchName.length - b.branchName.length,
+          filters: branchList,
+          onFilter: (value: string, record) => record.branchName.indexOf(value) === 0,
         },
         {
             title: 'Branch Email',
             dataIndex: 'branchEmail',
             key: 'branchEmail',
             render: (text:any) => <a>{text}</a>,
+            sorter: (a:any, b:any) => a.branchEmail.length - b.branchEmail.length,
+   
         },
         {
             title: 'Branch Contact',
             dataIndex: 'branchContact',
             key: 'branchContact',
             render: (text:any) => <a>{text}</a>,
+            sorter: (a:any, b:any) => a.branchContact.length - b.branchContact.length,
         },
         {
           title: 'Branch Address',
           dataIndex: 'branchAddress',
           key: 'branchAddress',
           render: (text:any) => <a>{text}</a>,
+          sorter: (a:any, b:any) => a.branchAddress.length - b.branchAddress.length,
         },
         // {
         //   title: 'Branch Operator',
@@ -48,9 +64,9 @@ export function BranchManagement() {
           title: 'Action',
           dataIndex: 'branchAddress',
           key: 'branchAddress  ',
-          render: (_, record:any) => (
+          render: (_, record:any,index:any) => (
             <Space size="middle">
-             {record?._id && <a><TrashIcon onClick={()=>{handleRemoveBranch(record?._id)}} className='w-4 text-red-500' /></a>}
+             {index != 0 && <a><TrashIcon onClick={()=>{handleRemoveBranch(record?._id)}} className='w-4 text-red-500' /></a>}
             </Space>
           ),
       },
@@ -85,6 +101,7 @@ export function BranchManagement() {
         dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"branchDetails":data}})
 
         if(resp.data.acknowledged){
+          successAlert("Branch deleted succesfully")
            ActivityLogger(`removed ${data.branchName}`,diagnosticDetails)
            setAddOperator(false)
         }

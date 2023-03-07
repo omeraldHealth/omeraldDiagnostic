@@ -44,7 +44,6 @@ export const AddKeyword = ({handleSteps}:any) => {
             ),
       },
   ]
-  console.log(selectedTest)
   return (
     <div>
         {

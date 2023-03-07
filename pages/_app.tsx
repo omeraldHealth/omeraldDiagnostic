@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider, useSelector } from 'react-redux'
 import store from 'utils/store/store'
 import Allowed from 'utils/permissions'
-import { Spinner } from '@components/atoms/loader'
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
