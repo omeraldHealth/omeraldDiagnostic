@@ -7,8 +7,8 @@ import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 
 const IndexObj = {
     "/dashboard":0,
-    "/reports":1,
-    "/test":2,
+    "/test":1,
+    "/reports":2,
     "/profile":3,
     "/settings":4
 }

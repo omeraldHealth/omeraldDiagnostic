@@ -27,15 +27,15 @@ export type onboardStepsType = {
 export const privateRoutes = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
     {
-      name: "View Reports",
-      href: "/reports",
-      icon: ClipboardDocumentListIcon,
-      current: false,
-    },
-    {
       name: "Tests Offered",
       href: "/test",
       icon: BeakerIcon,
+      current: false,
+    },
+    {
+      name: "View Reports",
+      href: "/reports",
+      icon: ClipboardDocumentListIcon,
       current: false,
     },
     {

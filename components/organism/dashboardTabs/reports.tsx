@@ -26,14 +26,14 @@ export default function ReportsTab() {
       key:"reportId",
       title: 'Report Id',
       dataIndex: 'reportId',
-      // sorter: (a, b) => a.userName.length - b.userName.length,
+      sorter: (a, b) => a.reportId.length - b.reportId.length,
       // sortDirections: ['descend'],
     },
     {
       key:"name",
       title: 'Name',
       dataIndex: 'userName',
-      // sorter: (a, b) => a.userName.length - b.userName.length,
+      sorter: (a, b) => a.userName.length - b.userName.length,
       // sortDirections: ['descend'],
     },
     {
@@ -41,13 +41,13 @@ export default function ReportsTab() {
       title: 'Email',
       dataIndex: 'email',
       // defaultSortOrder: 'descend',
-      // sorter: (a, b) => a.email - b.email,
+      sorter: (a, b) => a.email - b.email,
     },
     {
       key:"testName",
-      title: 'Test Name',
+      title: 'Sample Type',
       dataIndex: 'testName',
-      // sorter: (a, b) => a.testName.length - b.testName.length,
+      sorter: (a, b) => a.testName.length - b.testName.length,
     },
     {
       key:"reportDate",
@@ -55,14 +55,15 @@ export default function ReportsTab() {
       dataIndex: 'reportDate',
       render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
       sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() 
+      //  sortDirections: ['ascend'],
     },
-    {
-      key:"updatedAt",
-      title: 'Uploaded Date',
-      dataIndex: 'updatedAt',
-      render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
-      sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() 
-    },
+    // {
+    //   key:"updatedAt",
+    //   title: 'Uploaded Date',
+    //   dataIndex: 'updatedAt',
+    //   render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
+    //   sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() 
+    // },
     {
       key:"click",
       title: 'Click to view',
@@ -97,7 +98,7 @@ export default function ReportsTab() {
 
   return (
     <Fragment>
-        <span className='flex justify-end my-4 mr-4'>
+        <span className='flex justify-end mt-8 mb-4 mr-32'>
           {!addReports ? 
             <button onClick={()=>setAddReports(!addReports)} className='bg-blue-500 text-white text-bold font-light rounded-md p-2'>Add Reports</button>:
            <button onClick={()=>setAddReports(!addReports)} className='bg-green-800 text-white text-bold font-light rounded-md p-2'>View Reports</button>}
