@@ -93,7 +93,7 @@ export function BranchManagement() {
 
     const branchForm = [
       {"name":"branchName","type":"text","label":"Branch Name","required":true},
-      {"name":"branchEmail","type":"text","label":"Branch Email","required":true},
+      {"name":"branchEmail","type":"email","label":"Branch Email","required":true},
       {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
       {"name":"branchContact","type":"text","label":"Branch Contact","required":true}
     ]
@@ -135,6 +135,7 @@ export function BranchManagement() {
     }
 
     const handleRemoveBranch= async (value:any) => {
+      let mem = diagnosticDetails?.branchDetails.filter((branch:any) => branch._id === value) || [];
       let data = diagnosticDetails?.branchDetails.filter((branch:any) => branch._id !== value) || [];
       if(diagnosticDetails){
         let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"branchDetails":data})
@@ -143,7 +144,7 @@ export function BranchManagement() {
 
         if(resp.data.acknowledged){
           successAlert("Branch deleted succesfully")
-           ActivityLogger(`removed ${data.branchName}`,diagnosticDetails)
+           ActivityLogger(`removed ${mem[0].branchName}`,diagnosticDetails)
            setAddOperator(false)
         }
       }

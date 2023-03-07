@@ -73,7 +73,8 @@ export type ReportParamsType = {
   _id: ObjectId;
   keyword: string;
   aliases: string[];
-  normalRange: string;
+  minRange: string;
+  maxRange: string;
   unit: string;
 };
 

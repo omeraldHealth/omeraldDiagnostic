@@ -80,7 +80,7 @@ const Return = ({index}:any) => {
   if(index ==1){
     count = diagnosticDetails?.activities.length;
   }else if(index == 2){
-    count = diagnosticDetails?.brandDetails.length;
+    count = diagnosticDetails?.managersDetail.length;
   }else if(index == 3){
     count = diagnosticDetails?.branchDetails.length;
   }else if(index == 4){

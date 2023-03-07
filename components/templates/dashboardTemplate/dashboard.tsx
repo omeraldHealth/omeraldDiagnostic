@@ -38,7 +38,6 @@ export const DashboardTemplate = () => {
   
 
   useEffect(() =>{
-    console.log("queyr key"+data)
       if(!isLoading && data){
         dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":data.data})
       }

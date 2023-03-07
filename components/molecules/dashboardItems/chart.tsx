@@ -27,6 +27,7 @@ const ReportSharedVsTime2 = () =>{
       const sixMonthsAgo = moment().subtract(6, 'months').toDate();
       const current = moment().toDate();
       initialLoad(sixMonthsAgo,current)
+      setMaxVal(10)
     },[reports])
 
     const initialLoad = (start,end)=>{

@@ -14,14 +14,15 @@ import { SuccessReport } from './successReport';
 import { UploadReport } from './uploadReport';
 
 const testForm = [
-  {"name":"keyword","type":"text","label":"Keyword","required":true},
+  {"name":"keyword","type":"text","label":"Parameters","required":true},
   {"name":"unit","type":"text","label":"unit","required":true},
-  {"name":"normalRange","type":"contact","label":"normalRange","required":true},
+  {"name":"minRange","type":"text","label":"minRange","required":true},
+  {"name":"maxRange","type":"text","label":"minRange","required":true},
   {"name":"aliases","type":"tags","label":"Aliases","required":true},
 ]
 
 
-export const AddTestComponent = () => {
+export const AddTestComponent = ({setTest}:any) => {
   const testDetails = useSelector((state:any)=>state.testReducer)
   const [currentStep, setCurrentStep] = useState(addTestSteps[0]);
   const {sampleName,selectedTest,testName} = useSelector((state:any)=>state.testReducer)
@@ -29,7 +30,8 @@ export const AddTestComponent = () => {
   const [loading, setLoading] = useState(false);
   const [addKeyword, setAddKeywords] = useState(false);
   const dispatch = useDispatch()
-  
+  const [showTable,setShowTable] = useState(false)
+
   const handleStep = async(value:any) => {
 
       if(value==2){
@@ -70,7 +72,11 @@ export const AddTestComponent = () => {
     setAddKeywords(false)
   }
 
-  
+  const handleSuccess = ()=>{
+    console.log("sdnj")
+    setTest(false)
+  }
+
   return (
     <div>
         <div id="steps" className="rounded-md bg-slate-50 w-full p-4 sm:p-0 md:p-4 mb-4">
@@ -78,8 +84,15 @@ export const AddTestComponent = () => {
         </div>
         <div className="h-auto">
                 {
-                  currentStep?.id === 1 && <div className="my-10 w-[90%] sm:w-[70%] md:w-[100%] h-auto p-4">
-                    <TestDetail handleSteps={handleStep}/>
+                  currentStep?.id === 1 && <div className="my-5 w-[90%] sm:w-[70%] md:w-[100%] h-auto p-4 flex">
+                    <section className='w-[3  5%]'>
+                      <TestDetail setShowTable={setShowTable} handleSteps={handleStep}/>
+                    </section>
+                 
+                    {showTable && <section className='w-[65%]'>
+                      <p className='my-8'>Parameters for {selectedTest?.testName}</p>
+                      <AddKeyword action={false} handleSteps={handleStep}/>
+                    </section> }
                   </div>
                 }
                 {
@@ -91,13 +104,13 @@ export const AddTestComponent = () => {
                       <p className='text-sm font-bold'>Test Name :<span className='font-light mx-2'>{selectedTest ? selectedTest?.testName :testName}</span></p>
                     </section>
                     <button onClick={()=>{setAddKeywords(!addKeyword)}} className='p-1 px-2 bg-gray-300 text-black rounded-lg'>
-                     {!addKeyword? "Add Keyword":"View Keyword"}
+                     {!addKeyword? "Add Parameter":"View Parameter"}
                     </button>
                     </section>
                
                     {!addKeyword ? 
                     <section>  
-                      <AddKeyword handleSteps={handleStep}/>
+                      <AddKeyword action={true} handleSteps={handleStep}/>
                       <section className='flex justify-between my-2'>
                         <button className='ml-2 bg-gray-400 text-white px-4 py-2 rounded-lg' onClick={()=>{handleStep(0)}}>Back</button>
                         <button className='ml-2 bg-indigo-600 text-white px-4 py-2 rounded-lg' onClick={()=>{handleStep(2)}}>Submit</button>
@@ -113,7 +126,7 @@ export const AddTestComponent = () => {
                 }
                  {
                   currentStep?.id === 3 && <div className="my-10 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
-                    <SuccessTest />
+                    <SuccessTest handleSucess={handleSuccess} />
                   </div>
                 }{
                   loading && <Spinner/>
