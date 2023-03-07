@@ -8,7 +8,6 @@ export interface DiagnosticUserSession {
 
 export interface UserDetails {
   email: string;
-  branch: string;
   updatedAt?: Date;
   reports?: string[];
   tests: ReportTypes[];

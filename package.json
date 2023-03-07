@@ -46,6 +46,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.2",
     "styled-components": "^5.2.1",
+    "tailwind-styled-components": "^2.2.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

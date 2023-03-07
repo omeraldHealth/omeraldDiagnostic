@@ -50,7 +50,6 @@ const LogoUploader = ({handleImage}:any)  => {
         fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}
-        className="text-left"
       >
         {fileList.length >= 1 ? null : uploadButton}
       </Upload>

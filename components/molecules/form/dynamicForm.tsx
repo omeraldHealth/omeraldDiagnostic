@@ -58,9 +58,8 @@ export const DynamicFormCreator = ({formProps,button,formStyle,handleSubmit,hand
                 </Form.Item>
                 }
                 {form.type === "logo" &&
-                <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 10 }} >
+                <Form.Item  key={index} className='mb-6 w-[20vw]' name={form.name} labelCol={{ span: 10 }} >
                     <LogoUploader handleImage={handleImage} />
-                  
                 </Form.Item>
                 }
                 {form.type === "banner" &&

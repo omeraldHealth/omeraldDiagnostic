@@ -14,7 +14,8 @@ const userNavigation = [
  ]
 export const MenuDropDown = () => {
     
-    const {diagnosticDetails,signOut} = useAuthContext()
+    const {signOut} = useAuthContext()
+    const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const dispatch = useDispatch()
     const router = useRouter()
 
