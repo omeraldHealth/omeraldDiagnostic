@@ -28,10 +28,8 @@ export const DashboardTemplate = () => {
 
   const dashboardTabs = {
     "/dashboard":<DashboardTab/>,
-    "/addReports":<AddReportsTab/>,
     "/reports":<ReportsTab/>,
     "/test":<TestTab/>,
-    "/addTest":<AddTestTab/>,
     "/profile":<ProfileTab/>,
     "/settings":<SettingsTab selectedTabId={dashboardRoute.selectedTabIndex} />
   }

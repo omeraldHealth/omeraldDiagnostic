@@ -1,5 +1,5 @@
 import { DashboardTable } from '@components/molecules/dashboardItems/data-table'
-import { Fragment} from 'react'
+import { Fragment, useState} from 'react'
 import { ColumnsType } from 'antd/es/table';
 import { ReportDetails, UserDetails } from '@utils';
 import { usePDF } from "@react-pdf/renderer";
@@ -13,14 +13,22 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { Spinner } from '@components/atoms/loader';
 import {getDiagnosticReports} from "utils/urls/app"
+import { AddReportComponent } from '@components/molecules/addReport/addReport';
 
 export default function ReportsTab() {
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-
+  const [addReports,setAddReports]=useState(false);
   const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
   const {data:reports,isLoading:loading} = useQuery(["reports"],fetchReports)
 
   const columns: ColumnsType<ReportTableType> = [
+    {
+      key:"reportId",
+      title: 'Report Id',
+      dataIndex: 'reportId',
+      // sorter: (a, b) => a.userName.length - b.userName.length,
+      // sortDirections: ['descend'],
+    },
     {
       key:"name",
       title: 'Name',
@@ -89,9 +97,16 @@ export default function ReportsTab() {
 
   return (
     <Fragment>
-         <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">
-            <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg]'> 
-            {loading ? <Spinner/> :<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }
+        <span className='flex justify-end my-4 mr-4'>
+          {!addReports ? 
+            <button onClick={()=>setAddReports(!addReports)} className='bg-blue-500 text-white text-bold font-light rounded-md p-2'>Add Reports</button>:
+           <button onClick={()=>setAddReports(!addReports)} className='bg-green-800 text-white text-bold font-light rounded-md p-2'>View Reports</button>}
+        </span> 
+         <div className="px-4 sm:px-6 xl:px-8 xl:py-3 bg-signBanner flex w-100 justify-center">
+            <div className='w-[70vw] bg-white shadow-lg h-[70vh] rounded-lg p-4'> 
+            {!addReports ?  
+            <>{loading ? <Spinner/> :<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }</>:
+            <AddReportComponent setAddReports={setAddReports}/>}
             </div>
         </div>
     </Fragment>   

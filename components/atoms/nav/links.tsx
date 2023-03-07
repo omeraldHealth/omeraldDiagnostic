@@ -7,12 +7,10 @@ import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 
 const IndexObj = {
     "/dashboard":0,
-    "/addReports":1,
-    "/reports":2,
-    "/addTest":3,
-    "/test":4,
-    "/profile":5,
-    "/settings":6
+    "/reports":1,
+    "/test":2,
+    "/profile":3,
+    "/settings":4
 }
   
 
@@ -20,7 +18,7 @@ export const NavLinks = () => {
     const [currentNavigation, setCurrentNavigation] = useState<any>(privateRoutes[0]);
     const dispatch = useDispatch()
     const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
-
+    console.log(currentNavigation)
     useEffect(()=>{
         //@ts-ignore
         setCurrentNavigation(privateRoutes[IndexObj[dashboardRoute.href]])
@@ -36,9 +34,9 @@ export const NavLinks = () => {
             <a key={item.name} href='#' onClick={() => handleNavigationChange(item)}
                 className={classNames(
                 item.name === currentNavigation.name
-                    ? "bg-white text-gray-400 border-0 my-4"
+                    ? "bg-white text-gray-400 border-0 my-6"
                     : "text-white hover:bg-white hover:text-gray-600 hover:bg-opacity-75",
-                "group flex items-center px-6 py-2 text-sm font-medium rounded-l-md my-4"
+                "group flex items-center px-6 py-2 text-sm font-medium rounded-l-md my-6"
                 )}>
                 <item.icon
                 className="mr-3 flex-shrink-0 h-6 w-6 text-gray-500"

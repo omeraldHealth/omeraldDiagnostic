@@ -59,6 +59,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
           reportUrl:resp.data.location,
           isManualReport:!manual,
           testName:selectedReport?.testName,
+          reportId: generateReportId(),
           status:"parsing",
           userId:diagnosticDetails?.phoneNumber
         }
@@ -67,8 +68,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
           diagnosticDetails?.phoneNumber as string,
           reportDetails
         );
-        if(resp.status==200){
-          console.log(resp2)
+        if(resp2.status==200){
           handleSteps && handleSteps(2)
           setLoading(false)
         }
@@ -94,8 +94,8 @@ export const UploadReport = ({handleSteps}:patientType) => {
           userId:diagnosticDetails?.phoneNumber,
           parsedData: value,
           status:"parsed",
+          reportId:generateReportId(),
           isManualReport: true,
-          reportId:crypto.randomBytes(20).toString("hex")
         }
         })  
         const resp2 = await createReport(
@@ -135,6 +135,11 @@ export const UploadReport = ({handleSteps}:patientType) => {
     },
   };
 
+  function generateReportId() {
+    const randomNum = Math.floor(Math.random() * 1000000);
+    const reportId = String(randomNum).padStart(6, '0');
+    return reportId;
+  }
 
   return (
     <div className='p-8 relative h-[50vh]'>

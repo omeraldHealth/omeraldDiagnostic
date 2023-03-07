@@ -13,7 +13,7 @@ export function Sidebar() {
             <DashboardLogo/>
             <NavLinks/>
             <p className='font-light text-sm text-center px-2 text-gray-100 absolute bottom-10'>Copyright  
-           <a href='https://omerald.com/' target={"_blank"} className="text-blue-900"> @Omerald </a> 2023. All Rights Reserved.</p>
+           <a href='https://omerald.com/' target={"_blank"} > @Omerald </a> 2023. All Rights Reserved.</p>
           </div>
         </div>
         </div>

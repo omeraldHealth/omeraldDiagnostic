@@ -5,7 +5,7 @@ import { PatientDetails } from './patientDetails';
 import { SuccessReport } from './successReport';
 import { UploadReport } from './uploadReport';
 
-export const AddReportComponent = () => {
+export const AddReportComponent = ({setAddReports}:any) => {
 
   const [currentStep, setCurrentStep] = useState(addReportSteps[0]);
 
@@ -31,7 +31,7 @@ export const AddReportComponent = () => {
                 }
                  {
                   currentStep?.id === 3 && <div className="my-10 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
-                    <SuccessReport />
+                    <SuccessReport setAddReports={setAddReports} />
                   </div>
                 }
         </div>
