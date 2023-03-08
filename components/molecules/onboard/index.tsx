@@ -89,7 +89,7 @@ const OnboardComponent = () => {
       router.push("/");
     }
   }
-
+  let init =  {"phoneNumber":diagnostic.phoneNumber} 
   return (<section className="lg:h-[70vh] mt-[3vh] mb-[12vh]">
           <section className="w-[90vw] sm:h-auto sm:w-[90vw] lg:w-[70vw] md:h-[30vh] lg:h-auto max-h-[80vh] rounded-lg bg-white shadow-xl m-auto self-center pb-5 text-center relative"> 
             <div id="steps" className="rounded-md bg-slate-50 w-full p-4 sm:p-0 md:p-4 mb-4">
@@ -98,7 +98,7 @@ const OnboardComponent = () => {
             <div className="h-auto">
                 {
                   currentStep?.id === 1 && <div className="my-10 w-[90%] sm:w-[70%] md:w-[50%] h-auto p-4">
-                  <DynamicFormCreator buttonText="Continue" formProps={basicFormArray} handleSubmit={handleForm}/>
+                  <DynamicFormCreator initial={init} buttonText="Continue" formProps={basicFormArray} handleSubmit={handleForm}/>
                   </div>
                 }
                 {

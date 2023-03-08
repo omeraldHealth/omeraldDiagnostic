@@ -84,6 +84,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
           testName:selectedReport?.testName,
           userId:diagnosticDetails?.phoneNumber,
           status:"parsed",
+          parsedData: value,
           reportId:generateReportId(),
           isManualReport: true,
           reportDate: Date.now()

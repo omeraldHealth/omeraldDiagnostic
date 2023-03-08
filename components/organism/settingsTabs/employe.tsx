@@ -5,7 +5,7 @@ import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { success } from "@styles/color";
 import { getDiagnosticUserApi, insertDiagnosticUserApi, updateDiagnosticUserApi } from "@utils";
-import { Space } from "antd";
+import { Modal, Space } from "antd";
 import axios from "axios";
 import { useState } from "react";
 import { QueryCache, QueryClient, useMutation, useQuery } from "react-query";
@@ -17,6 +17,7 @@ const queryClient = new QueryClient()
 export function EmployeeManagement() {
     const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const [addOperator,setAddOperator] = useState(false)
+    const { confirm } = Modal;
     const columns =    [
         {
           title: 'Operator Name',
@@ -51,7 +52,15 @@ export function EmployeeManagement() {
             render: (i,record,index) => (
               <Space size="middle">
                  <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> 
-                {(index !== 0 ? <a ><TrashIcon onClick={()=>{handleRemoveEmployee(record.managerName)}} className='w-4 text-red-500' /></a> :<p></p>)}
+                {(index !== 0 ? <a ><TrashIcon onClick={()=>{
+                   confirm({
+                    title: 'Do you want to delete this employee?',
+                        content: 'The action cannot be undone.',
+                    onOk() {
+                      handleRemoveEmployee(record.managerName)}
+                    }
+                   )
+                }} className='w-4 text-red-500' /></a> :<p></p>)}
               </Space>
             ),
         },
@@ -139,7 +148,7 @@ export function EmployeeManagement() {
               <section className="min-h-[45vh]">
                   {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.managersDetail} /></div>:
                     <section className="w-[50%] my-10 relative">
-                      <DynamicFormCreator initial={edit && initialData} selectedRole={selectedRole} setSelectedRole={setSelectedRole} handleSubmit={handleEmployee} buttonText={edit?"update":"submit"}formProps={employeeDetails}  />
+                      <DynamicFormCreator initial={edit && initialData} selectedRole={selectedRole} setSelectedRole={setSelectedRole} handleSubmit={handleEmployee} buttonText={edit?"update":"submit"} formProps={employeeDetails}  />
                     </section>
                   }
               </section>

@@ -2,6 +2,7 @@ import { successAlert } from '@components/atoms/alerts/alert'
 import { ErrorComp } from '@components/atoms/error'
 import { Spinner } from '@components/atoms/loader'
 import { ClockIcon, PencilIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { Modal } from 'antd'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useAuthContext } from 'utils/context/auth.context'
@@ -16,40 +17,49 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
   const [edit,setEdit] = useState(false);
   const [loading,setLoading] = useState(false);
   const [image,setImage] = useState();
-
+  const { confirm } = Modal;
   const dispatch = useDispatch();
   
   const handleSubmit = async (value:any) => {
-    setLoading(true)
-    value["brandLogo"] = image;
-    if(image){
-        let resp = await uploadImage(value["brandLogo"])
 
-        if(resp){
-          let location = resp
-          let brandDetails = [{"brandLogo":location,"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}]
-          let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
-          let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
-          if(resp2.status==200){
-            dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:diag})
-            successAlert("Profile updated sucessfully")
-            setEdit(false)
-          }
-          
+
+    confirm({
+      title: 'Do you want to update this profile?',
+      content: 'The action cannot be undone.',
+     async onOk() {
+        setLoading(true)
+        value["brandLogo"] = image;
+        if( value["brandLogo"]){
+            let resp = await uploadImage(value["brandLogo"])
+    
+            if(resp){
+              let location = resp
+              let brandDetails = [{"brandLogo":location,"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}]
+              let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
+              let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
+              if(resp2.status==200){
+                dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:diag})
+                successAlert("Profile updated sucessfully")
+                setEdit(false)
+              }
+              
+            }
         }
+        else if(edit && ! value["brandLogo"]){
+          let brandDetails = [{"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}]
+              let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
+              let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
+              if(resp2.status==200){
+                dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:diag})
+                successAlert("Profile updated sucessfully")
+                setEdit(false)
+              }
+        }
+    
+        setLoading(false)
+      }
     }
-    else if(edit && !image){
-      let brandDetails = [{"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}]
-          let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
-          let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
-          if(resp2.status==200){
-            dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:diag})
-            successAlert("Profile updated sucessfully")
-            setEdit(false)
-          }
-    }
-
-    setLoading(false)
+     )
   }
 
   const handleImage = (value:any) => {

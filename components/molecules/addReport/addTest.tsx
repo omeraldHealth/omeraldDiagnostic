@@ -1,5 +1,6 @@
 import { StepHeader } from '@components/atoms/form'
 import { Spinner } from '@components/atoms/loader';
+import { Modal } from 'antd';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { updateTests, updateUserDetails } from 'utils/hook/userDetail';
@@ -31,7 +32,7 @@ export const AddTestComponent = ({setTest}:any) => {
   const [addKeyword, setAddKeywords] = useState(false);
   const dispatch = useDispatch()
   const [showTable,setShowTable] = useState(false)
-
+  const { confirm } = Modal;
   const handleStep = async(value:any) => {
 
       if(value==2){
@@ -44,7 +45,6 @@ export const AddTestComponent = ({setTest}:any) => {
 
           let test =  diagnosticDetails?.tests
           test.push(tests)
-
 
           let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"tests":test})
           if(resp.status ===200){
@@ -60,7 +60,6 @@ export const AddTestComponent = ({setTest}:any) => {
     if(selectedTest){
       selectedTest.keywords.push(value)
       dispatch({type:SET_TEST,payload:{...testDetails,"selectedTest":selectedTest}})
-   
     } 
     else{
       let selected = {
@@ -112,7 +111,16 @@ export const AddTestComponent = ({setTest}:any) => {
                     <section>  
                       <AddKeyword action={true} handleSteps={handleStep}/>
                       <section className='flex justify-between my-2'>
-                        <button className='ml-2 bg-gray-400 text-white px-4 py-2 rounded-lg' onClick={()=>{handleStep(0)}}>Back</button>
+                        <button className='ml-2 bg-gray-400 text-white px-4 py-2 rounded-lg' onClick={()=>{
+                          confirm({
+                            title: 'Do you want to go back, this will clear your data?',
+                                content: 'The action cannot be undone.',
+                            onOk() {
+                              handleStep(0)
+                            }
+                        })
+                          
+                          }}>Back</button>
                         <button className='ml-2 bg-indigo-600 text-white px-4 py-2 rounded-lg' onClick={()=>{handleStep(2)}}>Submit</button>
                       </section>
                       </section>

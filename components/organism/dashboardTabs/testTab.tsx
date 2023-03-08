@@ -1,7 +1,7 @@
 import { DashboardTable } from '@components/molecules/dashboardItems/data-table'
 import { Fragment, useState } from 'react'
 import React from 'react'
-import { Popover, Space, Tag } from 'antd';
+import { Modal, Popover, Space, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,15 +30,30 @@ export default function TestTab() {
   const [test,setTest] = useState(false)
 
   const handleEdit = (record:any) =>{}
-
+  const { confirm } = Modal;
   const handleRemove = async (record:any) => {
-    let test = diagnosticDetails?.tests.filter((test:any)=>test.testName !== record.testName)
 
-    dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:{...diagnosticDetails,"tests":test}})
-    let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"tests":test})
-    if(resp.status==200){
-      successAlert("Test removed succesfully")
-    }
+    confirm({
+      title: 'Do you want to delete this test?',
+          content: 'The action cannot be undone.',
+      async onOk() {
+        let test = diagnosticDetails?.tests.filter((test:any)=>test.testName !== record.testName)
+
+        console.log(test)
+        let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"tests":test})
+        console.log(resp)
+        diagnosticDetails["tests"] = test
+        console.log(diagnosticDetails)
+        if(resp.data){
+          dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:{...diagnosticDetails,diagnosticDetails}})
+          setTestData(test)
+          successAlert("Test removed succesfully")
+        }
+      }
+    }) 
+    
+
+   
   }
 
   let pathList = []
@@ -58,8 +73,6 @@ export default function TestTab() {
       dataIndex: 'sampleName',
       render: (text) => <a>{text}</a>,
       sorter: (a:any, b:any) => a.sampleName.length - b.sampleName.length,
-
-      
     },
     {
       key: 'testName',
@@ -105,23 +118,23 @@ export default function TestTab() {
 
   const [tests,setTestData] = useState(diagnosticDetails?.tests)
 
-  const handleSearch = (event) => {
-    let x = diagnosticDetails?.tests.filter((test)=>{return test.sampleName.includes(event.target.value) || test.testName.includes(event.target.value)})
-    setTestData(x)
-  }
+  // const handleSearch = (event) => {
+  //   let x = diagnosticDetails?.tests.filter((test)=>{return test.sampleName.includes(event.target.value) || test.testName.includes(event.target.value)})
+  //   setTestData(x)
+  // }
 
   return (
     <Fragment>
          <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner relative flex w-100 justify-center">
             <section className='absolute left-20 ml-10'>
-            <Search placeholder="input search text" onChange={handleSearch} onSearch={handleSearch} style={{ width: 300 }} />
+            {/* <Search placeholder="input search text" onChange={handleSearch} onSearch={handleSearch} style={{ width: 300 }} /> */}
             </section>
             <section className='absolute right-10 mr-20'>
             {!test ? <button onClick={()=>setTest(!test)} className='bg-blue-500 text-white text-bold font-light rounded-md p-2'>Add Test</button>:<button onClick={()=>setTest(!test)} className='bg-green-800 text-white text-bold font-light rounded-md p-2'>View Test</button>}
             </section>
         
             <div className='w-[70vw] bg-white shadow-lg mt-14 h-[70vh] rounded-lg]'> 
-            {!test?<>{!diagnosticDetails ? <Spinner/> :<DashboardTable pageSize={7} columns={columns} data={tests}/> }</>:
+            {!test?<>{!diagnosticDetails ? <Spinner/> :<DashboardTable pageSize={5} columns={columns} data={tests}/> }</>:
             <AddTestComponent setTest={setTest} />}</div>
         </div>
     </Fragment>   

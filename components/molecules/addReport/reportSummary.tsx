@@ -1,12 +1,15 @@
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert"
 import { TitleText_2 } from "@components/atoms/font"
 import { Spinner } from "@components/atoms/loader"
+import { usePDF } from "@react-pdf/renderer"
+import { ReportDetails, UserDetails } from "@utils"
 import { Modal } from "antd"
 import { useState } from "react"
 import { QueryClient } from "react-query"
 import { useDispatch, useSelector } from "react-redux"
 import { createReport, updateUserDetails, uploadReport } from "utils/hook/userDetail"
 import { SET_REPORT, SET_REPORT_FORM, SET_REPORT_LIST } from "utils/store/types"
+import PdfTesting from "../PdfTesting/PdfTesting"
 
 
 export const ReportSummary =({handleSteps}:any) => {
@@ -106,3 +109,5 @@ export const ReportSummary =({handleSteps}:any) => {
     </div>
   )
 }
+
+

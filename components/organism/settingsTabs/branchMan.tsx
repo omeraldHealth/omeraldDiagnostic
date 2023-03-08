@@ -3,7 +3,7 @@ import { DashboardTable } from "@components/molecules/dashboardItems/data-table"
 import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
 import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { Space } from "antd";
+import { Modal, Space } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuthContext } from "utils/context/auth.context";
@@ -16,6 +16,7 @@ export function BranchManagement() {
     const [addOperator,setAddOperator] = useState(false)
     const [edit,setEdit] = useState(false)
     let branchList = []
+    const { confirm } = Modal;
     diagnosticDetails?.branchDetails?.forEach((man:any) => {
         const obj = { 
           text: man.branchName, 
@@ -85,7 +86,16 @@ export function BranchManagement() {
           render: (_, record:any,index:any) => (
             <Space size="middle">
                <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> 
-             {index != 0 && <a><TrashIcon onClick={()=>{handleRemoveBranch(record?._id)}} className='w-4 text-red-500' /></a>}
+             {index != 0 && <a>
+              <TrashIcon className='w-4 text-red-500' onClick={()=>{
+               confirm({
+                title: 'Do you want to delete this branch?',
+                content: 'The action cannot be undone.',
+                onOk() {
+                  handleRemoveBranch(record.managerName)}
+                }
+               )
+             }}/></a>}
             </Space>
           ),
       },

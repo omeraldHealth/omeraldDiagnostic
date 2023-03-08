@@ -4,7 +4,7 @@ import { DashboardTable } from "@components/molecules/dashboardItems/data-table"
 import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
 import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { Space } from "antd";
+import { Modal, Space } from "antd";
 import { sign } from "crypto";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +21,7 @@ export function PathologistManagement() {
     const [signature,setSignature] = useState()
     const [initialData,setInitial] = useState()
     let pathList = []
+    const { confirm } = Modal;
 
     diagnosticDetails?.pathologistDetail?.forEach((man:any) => {
         const obj = { 
@@ -60,7 +61,15 @@ export function PathologistManagement() {
           key: 'name  ',
           render: (text:any,record) => (
             <Space size="middle">
-             <a ><TrashIcon onClick={()=>{handleRemoveBranch(text)}} className='w-4 text-red-500' /></a> 
+             <a > <TrashIcon className='w-4 text-red-500' onClick={()=>{
+               confirm({
+                title: 'Do you want to delete this pathologist?',
+                content: 'The action cannot be undone.',
+                onOk() {
+                  handleRemoveBranch(record.name)}
+                }
+               )
+             }}/></a> 
              <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> 
             </Space>
           ),

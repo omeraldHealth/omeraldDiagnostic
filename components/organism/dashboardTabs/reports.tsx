@@ -4,7 +4,7 @@ import { ColumnsType } from 'antd/es/table';
 import { ReportDetails, UserDetails } from '@utils';
 import { usePDF } from "@react-pdf/renderer";
 import dayjs from 'dayjs';
-import { ShareIcon } from '@heroicons/react/20/solid';
+import { EyeIcon, ShareIcon } from '@heroicons/react/20/solid';
 import PdfTesting from '@components/molecules/PdfTesting/PdfTesting';
 import { RWebShare } from 'react-web-share';
 import { ReportTableType } from 'utils/store/types';
@@ -15,6 +15,10 @@ import { Spinner } from '@components/atoms/loader';
 import {getDiagnosticReports} from "utils/urls/app"
 import { AddReportComponent } from '@components/molecules/addReport/addReport';
 import { sortBy } from 'lodash';
+import SharePdf from '@components/atoms/button/whatsappShare';
+import { FaWhatsapp } from 'react-icons/fa';
+import { getUserDetails, sendWhatsAppText } from 'utils/hook/userDetail';
+import { successAlert } from '@components/atoms/alerts/alert';
 
 export default function ReportsTab() {
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
@@ -46,6 +50,13 @@ export default function ReportsTab() {
       sorter: (a, b) => a.email - b.email,
     },
     {
+      key:"userId",
+      title: 'Contact',
+      dataIndex: 'userId',
+      // defaultSortOrder: 'descend',
+      sorter: (a, b) => a.userId - b.userId,
+    },
+    {
       key:"testName",
       title: 'Sample Type',
       dataIndex: 'testName',
@@ -66,37 +77,65 @@ export default function ReportsTab() {
     //   render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
     //   sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() 
     // },
-    {
-      key:"click",
-      title: 'Click to view',
-      dataIndex: "isManualReport",
-      render: ((stat:string,person: any) =>  <>{ 
-        !stat ? (
-        <a href={person.reportUrl} target="_blank" className="text-orange-700">View˝</a>
-      ) : (
-        <ViewPdf
-          report={person}
-          diagnosticDetails={diagnosticDetails as UserDetails}
-        />
-      )}</>
-      ),
-    },
+    // {
+    //   key:"click",
+    //   title: 'Click to view',
+    //   dataIndex: "isManualReport",
+    //   render: ((stat:string,person: any) => 
+    //   <>
+    //   { 
+    //     !stat ? (
+    //     <a href={person.reportUrl} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
+    //   ) : (
+    //     <ViewPdf
+    //       report={person}
+    //       diagnosticDetails={diagnosticDetails as UserDetails}
+    //     />
+    //   )}
+    //   </>
+    //   ),
+    // },
     {
       key:"share",
       title: 'Click to Share',
       dataIndex: 'userName',
-      render: ((userName:string) => <>
-           <RWebShare
-                data={{
-                            text: `Hi ${userName}! Welcome to Omerald. Please login with us to get your report`,
-                            url: "https://omerald.com",
-                            title: "Omerald Diagnostic Centre",}}
-                onClick={() => console.log("shared successfully!")}>
-        <ShareIcon className="text-indigo-600 w-4 h-4 hover:text-indigo-900 active:shadow-lg" />
-        </RWebShare>
+      render: ((userName:string,record) => <>
+      <div className='flex justifty-between align-middle items-center h-[1vh]'>
+          <section className='mr-4 '>
+          { 
+            !record?.isManualReport ? (
+            <a href={record.reportUrl} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
+          ) : (
+            <ViewPdf
+              report={record}
+              diagnosticDetails={diagnosticDetails as UserDetails}
+            />
+          )}
+          </section>
+          <section className='self-center'>
+            <a onClick={()=>{handleWhatsapp(record)}}>
+              <FaWhatsapp className='w-6 text-green-700'/>
+            </a>
+          </section>
+
+      </div>
    </>),
     },
   ];
+
+  const handleWhatsapp = async (record) => {
+
+    let message = {
+      "to":record?.userId,
+      "text":`👋 Hi there!,  We hope this message finds you well.${diagnosticDetails?.diagnosticName} has shared your a report with you. 📁Please find the pdf attached, for any questions or concerns, please don't hesitate to reach out to us. 💬\n\n😊Thank you for trusting us with your healthcare needs. \n\nOmerald HealthCare🙌`,
+      "pdfUrl": record?.reportUrl
+    }
+
+    let resp = await sendWhatsAppText(message);
+    if(resp.status===200){
+      successAlert("Report Shared on Whatsapp");
+    }
+  }
 
   return (
     <Fragment>
@@ -136,11 +175,13 @@ const ViewPdf = ({
   return (
     <a
       href={instance.url as string}
+
       target={"_blank"}
       // download={`${report.userName}-${report.testName}.pdf`}
       className="text-indigo-600 hover:text-indigo-900"
     >
-      View
+      <EyeIcon className='w-4'/>
     </a>
   );
 };
+

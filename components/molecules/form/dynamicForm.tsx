@@ -24,7 +24,7 @@ interface FormType  {
     selectedRole?:string,
     formStyle?:string,
     button?:Boolean,
-    initial?:Initial,
+    initial?:any,
     disable?:Boolean,
     label?:Boolean,
     setSelectedRole?: (value:any) =>void

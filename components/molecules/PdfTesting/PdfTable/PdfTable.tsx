@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 const PdfTable = ({ data }) => (
   <View style={styles.tableContainer}>
     <TableHeader />
-    <TableRow items={data} />
+    {/* <TableRow items={data} /> */}
     {/*<TableFooter items={data.items} />*/}
   </View>
 );

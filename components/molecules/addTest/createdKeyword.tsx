@@ -2,7 +2,7 @@ import { successAlert } from '@components/atoms/alerts/alert'
 import { Spinner } from '@components/atoms/loader'
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
 import { success } from '@styles/color'
-import { Space, Tag } from 'antd'
+import { Modal, Space, Tag } from 'antd'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateTests } from 'utils/hook/userDetail'
@@ -11,6 +11,7 @@ import { DashboardTable } from '../dashboardItems/data-table'
 
 export const AddKeyword = ({handleSteps,action}:any) => {
   const {isManual,selectedTest,testName} = useSelector((state:any)=>state.testReducer)
+  const { confirm } = Modal;
   const columns = [
     {
         key: 'keyword',
@@ -76,9 +77,15 @@ export const AddKeyword = ({handleSteps,action}:any) => {
   // ((state:any)=>state.testReducer)
 
   const handleDelete = (value:any)=>{
-      let newArr = selectedTest?.keywords.filter((key:any)=>key.keyword !== value.keyword)
-      dispatch({type:SET_TEST,payload:{selectedTest:{"keywords":newArr}}})
-      successAlert("Keyword removed Sucesfully")
+    confirm({
+      title: 'Do you want to go back, this will clear your data?',
+          content: 'The action cannot be undone.',
+      onOk() {
+        let newArr = selectedTest?.keywords.filter((key:any)=>key.keyword !== value.keyword)
+        dispatch({type:SET_TEST,payload:{selectedTest:{"keywords":newArr}}})
+        successAlert("Keyword removed Sucesfully")
+      }
+    }) 
   }
   return (
     <div>
