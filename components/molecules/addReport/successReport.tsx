@@ -15,8 +15,8 @@ export const SuccessReport = ({setAddReports}:any) => {
                  <a onClick={()=>{ 
                     queryClient.invalidateQueries({ queryKey: ['reports'] })
                   setAddReports(false)}}>
-                 <button type="submit" name="Upload Report"
-                 className="block w-[220px] m-auto bg-green-800 text-white p-2 text-sm rounded-md">View Report</button>
+                    
+                 <button type="submit" name="Upload Report" className="block w-[220px] m-auto bg-green-800 text-white p-2 text-sm rounded-md">View Report</button>
                  </a>
         </section>
     </div>

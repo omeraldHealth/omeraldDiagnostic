@@ -12,7 +12,8 @@ export const onboardSteps = [
 export const addReportSteps = [
   { id: 1, name: "Enter Patient Details" },
   { id: 2, name: "Upload Report" },
-  { id: 3, name: "Success" },
+  { id: 3, name: "Report Summary" },
+  { id: 4, name: "Success" },
 ];
 export const addTestSteps = [
   { id: 1, name: "Enter Test Details" },

@@ -4,7 +4,7 @@ import { BodyText_3 } from '@components/atoms/font';
 import { BodyStyled_2 } from '@components/atoms/font/font.style';
 import { ArrowUpIcon, BookOpenIcon } from '@heroicons/react/20/solid';
 import { getReportTypeApi } from '@utils';
-import { Button, Input, Radio, Select, Upload, UploadProps } from 'antd';
+import { Button, Input, Modal, Radio, Select, Space, Upload, UploadProps } from 'antd';
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useQuery } from 'react-query';
@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { SET_REPORT_FORM } from 'utils/store/types';
 import useSelection from 'antd/es/table/hooks/useSelection';
 import { DynamicFormCreator } from '../form/dynamicForm';
+import { Confirm } from "components/atoms/alerts/confirm"
 const crypto = require("crypto");
 
 const PatientDetailsForm = [
@@ -50,33 +51,24 @@ export const UploadReport = ({handleSteps}:patientType) => {
   const handleSubmit = async () => {
 
     if(selectedReport && reportFile && selectedReport.testName.length>1){
-      setLoading(true)
-     
-      const resp = await uploadReport(reportFile)
-      if(resp?.status==200){
+
         dispatch({type:SET_REPORT_FORM,payload:{
           ...reportDetails,
-          reportUrl:resp.data.location,
+          reportUrl:reportFile,
           isManualReport:!manual,
           testName:selectedReport?.testName,
           reportId: generateReportId(),
           status:"parsing",
-          userId:diagnosticDetails?.phoneNumber
+          userId:diagnosticDetails?.phoneNumber,
+          reportDate: Date.now()
         }
         })
-        const resp2 = await createReport(
-          diagnosticDetails?.phoneNumber as string,
-          reportDetails
-        );
-        if(resp2.status==200){
-          handleSteps && handleSteps(2)
-          setLoading(false)
-        }
-      }
+        handleSteps && handleSteps(2)
     }else{
       errorAlert("please select report type and upload file")
     }
-    setLoading(false)
+
+  
   }
 
   const handleImage = (value:any) => {
@@ -85,26 +77,27 @@ export const UploadReport = ({handleSteps}:patientType) => {
 
   const handleForm =async (value:any)=>{
    
-    if(selectedReport &&selectedReport.testName.length>1){
-      setLoading(true)
+    if(selectedReport && selectedReport.testName.length>1){
+   
         dispatch({type:SET_REPORT_FORM,payload:{
           ...reportDetails,
           testName:selectedReport?.testName,
           userId:diagnosticDetails?.phoneNumber,
-          parsedData: value,
           status:"parsed",
           reportId:generateReportId(),
           isManualReport: true,
+          reportDate: Date.now()
         }
         })  
-        const resp2 = await createReport(
-          diagnosticDetails?.phoneNumber as string,
-          reportDetails
-        );
-        if(resp2.status==200){
-          handleSteps && handleSteps(2)
-          setLoading(false)
-        }
+        handleSteps && handleSteps(2)
+        // const resp2 = await createReport(
+        //   diagnosticDetails?.phoneNumber as string,
+        //   reportDetails
+        // );
+        // if(resp2.status==200){
+        //   handleSteps && handleSteps(2)
+        //   setLoading(false)
+        // }
     }else{
       errorAlert("please select report type")
     }
@@ -139,6 +132,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
     const reportId = String(randomNum).padStart(6, '0');
     return reportId;
   }
+  const { confirm } = Modal;
 
   return (
     <div className='p-8 relative h-[50vh]'>
@@ -161,27 +155,37 @@ export const UploadReport = ({handleSteps}:patientType) => {
             !manual.value ?
             <section className='w-[15vw]'>
                 <section className='my-6'>
-                  {/* <Upload  multiple={false} style={{width:20,display:"flex"}} {...props}>
-                    <Button disabled={reportFile !== null} style={{width:200,display:"flex"}} className="bg-blue-100"><ArrowUpIcon className='w-[10%] mt-[2%] mx-2 ' /> Click to Upload</Button>
-                  </Upload> */}
                   <FileUploader handleImage={handleImage}/>
                 </section>
             </section>
             :
             <div >
             {selectedReport && (
-                <DynamicFormCreator formStyle='grid grid-cols-3 my-4 gap-x-4 gap-y-4'  buttonText="Continue" formProps={getFormType(selectedReport?.keywords)} handleSubmit={handleForm}/>
+                <DynamicFormCreator label={true} formStyle='grid grid-cols-3 my-4 gap-x-4 gap-y-4'  buttonText="Continue" formProps={getFormType(selectedReport?.keywords)} handleSubmit={handleForm}/>
             )}
           </div>
        
         }
-        {manual.value && 
+        {!manual.value && 
         <section className='my-4 flex justify-between'>
-          <button onClick={()=>{handleSteps && handleSteps(0)}} className="p-2 bg-gray-400 text-white w-[8vw] rounded-lg">Back</button>
+        
+          <button onClick={()=>{
+              confirm({
+                title: 'Do you want to go back?',
+                content: 'This action cannot be undone.',
+                onOk() {
+                  // Handle the user's confirmation
+                  handleSteps && handleSteps(0)
+                },
+                onCancel() {
+                  // Handle the user's cancellation
+                },
+              });
+           }} className="p-2 bg-gray-400 text-white w-[8vw] rounded-lg">Back</button>
           <button onClick={handleSubmit} className="p-2 bg-secondary text-white w-[8vw] rounded-lg">Continue</button>
         </section>}
-
         {loading && <Spinner/>}
+      
     </div>  
   )
 }

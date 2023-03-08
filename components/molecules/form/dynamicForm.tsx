@@ -26,13 +26,14 @@ interface FormType  {
     button?:Boolean,
     initial?:Initial,
     disable?:Boolean,
+    label?:Boolean,
     setSelectedRole?: (value:any) =>void
     handleSubmit: (value:any) =>void
     handleImage?: (value:any) =>void
     handleDate?: (value:any) => void
 }
 
-export const DynamicFormCreator = ({formProps,button,disable,initial,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
+export const DynamicFormCreator = ({formProps,button,label,disable,initial,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
   const auth = getAuth(firebaseApp);
 
@@ -55,17 +56,17 @@ export const DynamicFormCreator = ({formProps,button,disable,initial,formStyle,h
 
 const debouncedSearch = debounce(handleSearch, 500);
 
-  const roles = ['Admin', 'Manager','Operator','Spoc'];
-  const plainOptions = ['Male', 'Female', 'Others'];
-  let init={ remember: true}
-  init = {...init,...initial}
-  return (
+const roles = ['Admin', 'Manager','Operator','Spoc'];
+const plainOptions = ['Male', 'Female', 'Others'];
+let init={ remember: true}
+init = {...init,...initial}
+return (
     <div >
-        <Form className={formStyle} onFinish={handleSubmit} name="basic" 
+        <Form className={formStyle} onFinish={handleSubmit}  layout="vertical" name="basic" 
         initialValues={init}>
         {formProps.map((form,index) => <>
                 {form.type === "text" && 
-                <Form.Item key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                <Form.Item label={label && <span style={{ color: 'red' }}>{form.name}</span>} key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
                    {form.name !== "phoneNumber" && form.type == "text" ? <Input placeholder={form.label}   disabled={isDisabled} className="border-gray-400 rounded-lg  text-black font-light text-sm" />:
                    <Input   disabled={isDisabled} placeholder={form.label} className="border-gray-400 rounded-lg text-black font-light text-sm" />
                 } 
@@ -147,8 +148,6 @@ const debouncedSearch = debounce(handleSearch, 500);
                         mode="tags"
                         style={{ width: '100%' }}
                         placeholder="Aliases"
-                        // onChange={handleChange}
-                        // options={options}
                     />
                 </Form.Item>
                 }
@@ -160,6 +159,6 @@ const debouncedSearch = debounce(handleSearch, 500);
         </Form.Item>    
         </Form>
     </div>
-  );
+);
 };
 

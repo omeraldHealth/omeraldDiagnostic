@@ -1,6 +1,6 @@
 import '../styles/tailwind.css'
 import { GlobalStyle, theme } from '@styles/index'
-import { useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { ThemeProvider } from 'styled-components'
 import type { AppProps } from 'next/app'
 import { ToastContainer } from "react-toastify";
@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider, useSelector } from 'react-redux'
 import store from 'utils/store/store'
 import Allowed from 'utils/permissions'
+import { Modal } from 'antd'
 
 
 const queryClient = new QueryClient({
@@ -21,7 +22,6 @@ const queryClient = new QueryClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isMounted, setIsMounted] = useState(false)
-
   useEffect(() => {
 		setIsMounted(true)
 	}, [])

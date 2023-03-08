@@ -3,7 +3,6 @@ import { getAuth, onIdTokenChanged, User,setPersistence,browserSessionPersistenc
 import { AuthContextInterface, UserDetails } from 'utils'
 import { useRouter } from 'next/router';
 import { getUserDetails } from 'utils/hook/userDetail';
-import { deleteSession, setSession } from 'utils/hook/session';
 import { warningAlert } from '@components/atoms/alerts/alert';
 import firebaseApp from 'utils/auth/firebase';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,7 +52,6 @@ function useFirebaseAuth() {
       if (resp.status==200) {
         setDiagnosticDetails(resp.data);
       }
-      await setSession(phoneNumber);
       setUser(rawUser);
       setLoading(false);
     } else {
@@ -76,7 +74,6 @@ function useFirebaseAuth() {
   const signOut = async () => {
     if (user) {
       const phoneNumber = user.phoneNumber || "";
-      await deleteSession(phoneNumber);
     }
 
     setUser(null);

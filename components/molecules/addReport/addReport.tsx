@@ -2,6 +2,7 @@ import { StepHeader } from '@components/atoms/form'
 import React, { useState } from 'react'
 import { addReportSteps } from 'utils/static'
 import { PatientDetails } from './patientDetails';
+import { ReportSummary } from './reportSummary';
 import { SuccessReport } from './successReport';
 import { UploadReport } from './uploadReport';
 
@@ -30,7 +31,12 @@ export const AddReportComponent = ({setAddReports}:any) => {
                   </div>
                 }
                  {
-                  currentStep?.id === 3 && <div className="my-10 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
+                  currentStep?.id === 3 && <div className="my-4 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
+                    <ReportSummary handleSteps={handleStep}/>
+                  </div>
+                }
+                 {
+                  currentStep?.id === 4 && <div className="my-10 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
                     <SuccessReport setAddReports={setAddReports} />
                   </div>
                 }

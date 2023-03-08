@@ -14,6 +14,7 @@ import axios from 'axios';
 import { Spinner } from '@components/atoms/loader';
 import {getDiagnosticReports} from "utils/urls/app"
 import { AddReportComponent } from '@components/molecules/addReport/addReport';
+import { sortBy } from 'lodash';
 
 export default function ReportsTab() {
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
@@ -28,6 +29,7 @@ export default function ReportsTab() {
       dataIndex: 'reportId',
       sorter: (a, b) => a.reportId.length - b.reportId.length,
       // sortDirections: ['descend'],
+  
     },
     {
       key:"name",
@@ -53,9 +55,9 @@ export default function ReportsTab() {
       key:"reportDate",
       title: 'Report Date',
       dataIndex: 'reportDate',
-      render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
-      sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() 
-      //  sortDirections: ['ascend'],
+      render: ((date:string) => dayjs(date).format("MMM D, YYYY, HH:mm:ss") ),
+      sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime(),
+      defaultSortOrder: ['ascend']
     },
     // {
     //   key:"updatedAt",
