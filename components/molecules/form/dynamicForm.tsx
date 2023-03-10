@@ -42,11 +42,11 @@ export const DynamicFormCreator = ({formProps,button,label,disable,initial,formS
     return current && current > moment().endOf('day');
   };
 
-  useEffect(()=>{
-    if(disable){
-        setDisabled(true)
-    }
-  },[])
+//   useEffect(()=>{
+//     if(disable){
+//         setDisabled(true)
+//     }
+//   },[])
 
   const [datas, setData] = useState<SelectProps['options']>(diagnosticProfile.pathologistDetail);
   const handleSearch = (newValue: string) => {
@@ -67,8 +67,8 @@ return (
         {formProps.map((form,index) => <>
                 {form.type === "text" && 
                 <Form.Item label={label && <span style={{ color: 'red' }}>{form.name}</span>} key={index} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                   {form.name !== "phoneNumber" && form.type == "text" ? <Input placeholder={form.label}   disabled={isDisabled} className="border-gray-400 rounded-lg  text-black font-light text-sm" />:
-                   <Input   disabled={isDisabled} placeholder={form.label} className="border-gray-400 rounded-lg text-black font-light text-sm" />
+                   {form.name !== "phoneNumber" && form.type == "text" ? <Input placeholder={form.label}   disabled={isDisabled } className="border-gray-400 rounded-lg  text-black font-light text-sm" />:
+                   <Input   disabled={isDisabled || disable} placeholder={form.label} className="border-gray-400 rounded-lg text-black font-light text-sm" />
                 } 
                 </Form.Item>
                 }
