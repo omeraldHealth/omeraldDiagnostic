@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Modal, Upload } from 'antd';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
-
+import './logo.module.css';
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -46,6 +46,7 @@ const LogoUploader = ({handleImage}:any)  => {
     <>
       <Upload
         action=""
+        className="my-upload"
         listType="picture-circle"
         fileList={fileList}
         onPreview={handlePreview}

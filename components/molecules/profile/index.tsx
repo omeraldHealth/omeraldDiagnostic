@@ -24,12 +24,12 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
 
 
     confirm({
-      title: 'Do you want to update this profile?',
+      title: 'Do you want to update this?',
       content: 'The action cannot be undone.',
      async onOk() {
         setLoading(true)
         value["brandLogo"] = image;
-        if( value["brandLogo"]){
+        if(image){
             let resp = await uploadImage(value["brandLogo"])
     
             if(resp){
@@ -45,7 +45,7 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
               
             }
         }
-        else if(edit && ! value["brandLogo"]){
+        else if(edit && !image){
           let brandDetails = [{"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}]
               let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
               let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
@@ -105,7 +105,7 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
                         <p className="font-light my-6">{profile?.diagnosticName ? profile?.diagnosticName : "Not Found"}   </p> 
                         <p className="font-light my-6">{profile?.phoneNumber ? profile?.phoneNumber: "Not Found"} </p>  
                         <p className="font-light my-6 lowercase">{profile?.email ?profile?.email:"Not found"} </p> 
-                        <p className="font-light my-6">{profile?.branchDetails ? profile?.branchDetails[0].branchName : "Not Found"} </p> 
+                        <p className="font-light my-6">{profile?.branchDetails ? profile?.branchDetails?.[0]?.branchName : "Not Found"} </p> 
                         <p className="font-light my-6 lowercase overflow-hidden max-w-[100%] max-h-[3vh]">
                           {
                             profile?.branchDetails && profile?.branchDetails[0]?.branchAddress ? 
@@ -118,7 +118,6 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
                     </section>
                 </section>
                 <section className="w-[50%] grid grid-cols-3 pl-10">
-                  
                     <section className="mt-4">
                         <p className="font-bold my-6">Facebook url:</p>
                         <p className="font-bold my-6">Instagram url :</p>
@@ -128,8 +127,8 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
                     <section className="mt-4 col-span-2">
                         <a target={"_blank"} href={profile?.brandDetails[0]?.facebookUrl} className="font-light my-6 block text-blue-400">{profile?.brandDetails[0].facebookUrl ? profile?.brandDetails[0].facebookUrl: "Not found"} </a> 
                         <a target={"_blank"} href={profile?.brandDetails[0]?.instaUrl} className="font-light my-6  text-blue-400">{profile?.brandDetails[0].instaUrl ? profile?.brandDetails[0].instaUrl : "Not found"} </a> 
-                        <p className="font-light my-6 lowercase">{profile?.branchDetails[0].branchName ? profile?.branchDetails[0].branchName : "Not found"} </p> 
-                        <p className="font-light my-6 lowercase">{profile?.branchDetails[0].branchAddress ? profile?.branchDetails[0].branchAddress : "Not found"}</p>  
+                        <p className="font-light my-6 lowercase">{profile?.branchDetails[0]?.branchName ? profile?.branchDetails?.[0]?.branchName : "Not found"} </p> 
+                        <p className="font-light my-6 lowercase">{profile?.branchDetails[0]?.branchAddress ? profile?.branchDetails?.[0]?.branchAddress : "Not found"}</p>  
                     </section>
                 </section>
               </section>

@@ -13,7 +13,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { getDiagnosticReports, getDiagnosticUserApi } from "@utils";
 import AddTestTab from "@components/organism/dashboardTabs/addTest";
-
+import "./dashboard.module.css"
 
 export const DashboardTemplate = () => {
 

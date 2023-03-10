@@ -89,41 +89,41 @@ const OnboardComponent = () => {
       router.push("/");
     }
   }
-  let init =  {"phoneNumber":diagnostic.phoneNumber} 
-  return (<section className="lg:h-[70vh] mt-[3vh] mb-[12vh]">
-          <section className="w-[90vw] sm:h-auto sm:w-[90vw] lg:w-[70vw] md:h-[30vh] lg:h-auto max-h-[80vh] rounded-lg bg-white shadow-xl m-auto self-center pb-5 text-center relative"> 
-            <div id="steps" className="rounded-md bg-slate-50 w-full p-4 sm:p-0 md:p-4 mb-4">
-                <StepHeader stepList={onboardSteps} currentStep={currentStep}  />
-            </div>
-            <div className="h-auto">
-                {
-                  currentStep?.id === 1 && <div className="my-10 w-[90%] sm:w-[70%] md:w-[50%] h-auto p-4">
-                  <DynamicFormCreator initial={init} buttonText="Continue" formProps={basicFormArray} handleSubmit={handleForm}/>
-                  </div>
-                }
-                {
-                  currentStep?.id === 2 && <div className=" w-[50%] h-auto p-4">
-                  <DynamicFormCreator buttonText="Continue" formProps={brandDetailsFormArray} handleImage={handleImage} handleSubmit={handleForm}/>
-                  </div>
-                }
-                {
-                  currentStep?.id === 3 && <div className="w-[100%]  h-auto p-4">
-                  <DynamicFormCreator buttonText="Continue" selectedRole={selectedRole} setSelectedRole={setSelectedRole} formStyle="grid grid-cols-2 gap-4" formProps={branchDetailsFormArray} handleSubmit={handleForm}/>
-                  </div>
-                }
-                {
-                  currentStep?.id === 4 && <div className="w-[100%] h-auto p-4">
-                    <ProfileSummaryComponent props={diagnosticProfile} />
-                    <section className="mx-10 mb-4 flex justify-end">
-                      <button onClick={handleSubmit} className="bg-green-900 absolute text-white text-sm font-light px-4 py-2 rounded-md">Submit</button>
-                    </section>
-                  </div>
-                }
-            </div>
-          </section>
-          {loading && <Spinner/>}
-    </section>
-  );
+    let init =  {"phoneNumber":diagnostic.phoneNumber} 
+    return (<section className="lg:h-[70vh] mt-[3vh] mb-[12vh]">
+            <section className="w-[90vw] sm:h-auto sm:w-[90vw] lg:w-[70vw] md:h-[30vh] lg:h-auto max-h-[80vh] rounded-lg bg-white shadow-xl m-auto self-center pb-5 text-center relative"> 
+              <div id="steps" className="rounded-md bg-slate-50 w-full p-4 sm:p-0 md:p-4 mb-4">
+                  <StepHeader stepList={onboardSteps} currentStep={currentStep}  />
+              </div>
+              <div className="h-auto">
+                  {
+                    currentStep?.id === 1 && <div className="my-10 w-[90%] sm:w-[70%] md:w-[50%] h-auto p-4">
+                    <DynamicFormCreator initial={init} buttonText="Continue" formProps={basicFormArray} handleSubmit={handleForm}/>
+                    </div>
+                  }
+                  {
+                    currentStep?.id === 2 && <div className=" w-[50%] h-auto p-4">
+                    <DynamicFormCreator buttonText="Continue" formProps={brandDetailsFormArray} handleImage={handleImage} handleSubmit={handleForm}/>
+                    </div>
+                  }
+                  {
+                    currentStep?.id === 3 && <div className="w-[100%]  h-auto p-4">
+                    <DynamicFormCreator buttonText="Continue" selectedRole={selectedRole} setSelectedRole={setSelectedRole} formStyle="grid grid-cols-2 gap-4" formProps={branchDetailsFormArray} handleSubmit={handleForm}/>
+                    </div>
+                  }
+                  {
+                    currentStep?.id === 4 && <div className="w-[100%] h-auto p-4">
+                      <ProfileSummaryComponent props={diagnosticProfile} />
+                      <section className="mx-10 mb-4 flex justify-end">
+                        <button onClick={handleSubmit} className="bg-green-900 absolute text-white text-sm font-light px-4 py-2 rounded-md">Submit</button>
+                      </section>
+                    </div>
+                  }
+              </div>
+            </section>
+            {loading && <Spinner/>}
+      </section>
+    );
 };
 
 export default OnboardComponent;

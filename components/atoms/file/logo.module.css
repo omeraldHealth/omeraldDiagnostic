@@ -1,0 +1,15 @@
+.my-upload .ant-upload-select {
+    border-color: #1890ff;
+  }
+  
+  .my-upload .ant-upload-select:hover {
+    border-color: #40a9ff;
+  }
+  
+  .my-upload .ant-upload-select-picture-card i {
+    color: #999;
+  }
+
+  .ant-upload-list-picture-circle{
+    display: flex !important;
+  }
