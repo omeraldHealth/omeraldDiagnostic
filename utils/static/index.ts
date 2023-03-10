@@ -1,31 +1,25 @@
-import { ChartBarSquareIcon, ClipboardDocumentListIcon, HomeIcon, UserCircleIcon, WrenchScrewdriverIcon } from '@heroicons/react/20/solid'
+import {ClipboardDocumentListIcon, HomeIcon, UserCircleIcon, WrenchScrewdriverIcon } from '@heroicons/react/20/solid'
 import { BeakerIcon} from '@heroicons/react/24/outline'
-import { SVGProps } from 'react';
+import { OnboardStepsType } from 'utils/types/atoms/atoms';
 
-export const onboardSteps = [
+export const onboardSteps: OnboardStepsType[] = [
     { id: 1, name: "Basic Details" },
     { id: 2, name: "Brand Details" },
     { id: 3, name: "Branch Details" },
     { id: 4, name: "Summary" },
 ];
-
-export const addReportSteps = [
+export const addReportSteps: OnboardStepsType[] = [
   { id: 1, name: "Enter Patient Details" },
   { id: 2, name: "Upload Report" },
   { id: 3, name: "Report Summary" },
   { id: 4, name: "Success" },
 ];
-export const addTestSteps = [
+export const addTestSteps: OnboardStepsType[] = [
   { id: 1, name: "Enter Test Details" },
   { id: 2, name: "Enter Keywords & aliases" },
   { id: 3, name: "Success" },
 ];
-export type onboardStepsType = {
-    id: number;
-    name: string;
-}
-
-export const privateRoutes = [
+export const privateRoutes: OnboardStepsType[] = [
     { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
     {
       name: "Tests Offered",
@@ -52,16 +46,7 @@ export const privateRoutes = [
       current: false,
     },
 ];
-
 export function classNames(...classes: [string, string]) {
     return classes.filter(Boolean).join(" ");
 }
-
-export type NavigationType = {
-    name: string;
-    href: string;
-    icon: (props: SVGProps<SVGSVGElement>) => JSX.Element;
-    current: boolean;
-};
-
 export const settingsTab = ["Billing","Activity Feed","Employee Management","Branch Management","Pathologists","Support"]

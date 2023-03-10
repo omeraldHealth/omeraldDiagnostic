@@ -1,18 +1,36 @@
-import { addQueryApi, getDiagnosticReports, getDiagnosticUserApi, getQueriesApi, insertDiagnosticUserApi, insertReportApi, sendWhatsAppApi, updateDiagnosticUserApi, updateTestApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
+import { getDiagnosticReports, getDiagnosticUserApi, insertDiagnosticUserApi, insertReportApi, sendWhatsAppApi, updateDiagnosticUserApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
 import { getUserDetailType } from "utils/types/atoms/hooks";
-import axios from "axios";
 import { ReportDetails, UserDetails } from "utils/types/molecules/users.interface";
-import { Query } from "utils/types/atoms/atoms";
+import axios from "axios";
 
-export async function getUserDetails(userId: getUserDetailType) {
+//fetch diagnostic profile
+export async function getUserDetails(phoneNumber: getUserDetailType) {
   try {
-    const resp = await axios.get(getDiagnosticUserApi+userId.phoneNumber, {});
-    return { status: resp.status, data: resp.data };
+  const resp = await axios.get(getDiagnosticUserApi+phoneNumber.phoneNumber,{});
+  return { status: resp.status, data: resp.data };
   } catch (error: any) {
-    return { status: error?.response?.status || error?.request?.code, data: null };
+    return { status: error.response.status || error.request.code, data: null };
   }
 }
-
+//insert diagnostic profile
+export async function setUserDetails(userDetails: UserDetails) {
+  try {
+    const resp = await axios.post(insertDiagnosticUserApi, userDetails, {})
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error };
+  }
+}
+//update diagnostic profile
+export async function updateUserDetails(userId: getUserDetailType,data:any) {
+  try {
+    const resp = await axios.post(updateDiagnosticUserApi+userId.phoneNumber, data, {})
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error };
+  }
+}
+//upload image to s3
 export async function uploadImage(file: File) {
   const formData = new FormData();
   formData.append('file',file);
@@ -24,57 +42,7 @@ export async function uploadImage(file: File) {
     return null;
   }
 }
-
-export async function setUserDetails(userDetails: UserDetails) {
-  try {
-    const resp = await axios.post(insertDiagnosticUserApi, userDetails, {})
-    return { status: resp.status, data: resp.data };
-  } catch (error: any) {
-    return { status: error };
-  }
-}
-
-export async function updateUserDetails(userId: getUserDetailType,data:any) {
-  try {
-    const resp = await axios.post(updateDiagnosticUserApi+userId.phoneNumber, data, {})
-    return { status: resp.status, data: resp.data };
-  } catch (error: any) {
-    return { status: error };
-  }
-}
-
-export async function getReports(userId: getUserDetailType) {
-  try {
-    const resp = await axios.get(getDiagnosticReports+userId.phoneNumber,{});
-    return { status: resp.status, data: resp.data };
-  } catch (error: any) {
-    return { status: error.response.status || error.request.code, data: null };
-  }
-}
-
-export async function getQueries(
-  userId: getUserDetailType
-) {
-  try {
-    const resp = await axios.get(getQueriesApi+userId.phoneNumber,{
-    });
-    return { status: resp.status, data: resp.data };
-  } catch (error: any) {
-    return { status: error.response};
-  }
-}
-
-export async function addQuery(
-  contactData: Query
-) {
-  try {
-    const resp = await axios.post(addQueryApi,contactData,{});
-    return { status: resp.status, data: resp.data };
-  } catch (error: any) {
-    return { status: error.response};
-  }
-}
-
+//upload report to s3
 export async function uploadReport(
   file: File,
 ) {
@@ -91,7 +59,16 @@ export async function uploadReport(
     return null;
   }
 }
-
+//fetch diagnostic reports
+export async function getReports(userId: getUserDetailType) {
+  try {
+    const resp = await axios.get(getDiagnosticReports+userId.phoneNumber,{});
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response.status || error.request.code, data: null };
+  }
+}
+//insert diagnostic reports
 export async function createReport(
   userId: string,
   reportDetails: ReportDetails
@@ -107,20 +84,7 @@ export async function createReport(
     return { status: error.response };
   }
 }
-
-export async function updateTests(
-  tests: any,userId: any
-) {
-  try {
-    const resp = await axios.post(updateTestApi+`${userId}`, tests,{
-      // headers: { Authorization: `Bearer ${token}` },
-    });
-    return { status: resp.status, data: resp.data };
-  } catch (error: any) {
-    return { status: error.response};
-  }
-}
-
+//send whatsapp text
 export async function sendWhatsAppText(
   data: any
 ) {

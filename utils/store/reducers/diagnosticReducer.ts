@@ -1,29 +1,8 @@
 import {GET_DIAGNOSTIC_DETAILS,SET_DIAGNOSTIC_DETAILS} from "utils/store/types"
+import { intialDiagnosticState } from "utils/types/molecules/forms.interface";
 
-const diagnosticState = {
-  tests: [],
-  sharedReport: [],
-  phoneNumber: "",
-  diagnosticName: "",
-  email: "",
-  brandDetails: [
-      {
-          facebookUrl: "",
-          instaUrl: "",
-          brandLogo: ""
-      }
-  ],
-  managersDetail: [
-      {
-          managerName: "",
-          managerRole: "",
-          managerContact: ""
-      }
-  ],
-  activities: []
-}
-
-export function diagnosticReducer(state = diagnosticState, action:any) {
+//stores all diagnostic profile created by user
+export function diagnosticReducer(state = intialDiagnosticState, action:any) {
     switch (action.type) {
       case GET_DIAGNOSTIC_DETAILS:
         return {...state};
@@ -32,5 +11,5 @@ export function diagnosticReducer(state = diagnosticState, action:any) {
       default:
         return state;
     }
-  }
+}
   

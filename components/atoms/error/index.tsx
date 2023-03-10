@@ -1,9 +1,10 @@
-import { errorImage } from '@utils'
+
 import Link from 'next/link'
 import React from 'react'
+import { errorImage } from '@utils'
 import { TitleText } from '../font'
 
-export const ErrorComp = ({pageName}:any) => {
+export default function ErrorComp ({pageName}:any) {
   return (
     <div className='my-10 p-20 bg-white rounded-full text-center'>
         <TitleText style="my-10 py-4 text-center">Error fetching {pageName}</TitleText>

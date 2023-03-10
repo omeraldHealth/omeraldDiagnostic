@@ -2,7 +2,7 @@
 import { createGlobalStyle } from 'styled-components'
 
 export default createGlobalStyle`
-.ant-upload-list-picture-circle{
+  .ant-upload-list-picture-circle{
     display: flex !important;
   }
   .ant-btn-primary {

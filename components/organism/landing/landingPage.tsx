@@ -1,23 +1,25 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PageLayout from '@components/organism/layout/pageLayout'
-import { BottomBanner } from '@components/organism/landing/bottomBanner'
-import { BlogContainer } from '@components/organism/landing/blogContainer'
-import { ContactContainer } from '@components/organism/landing/contactContainer'
-import { Testimonial } from '@components/organism/landing/testimonial'
-import { Advertisement } from '@components/organism/landing/advertisement'
-import { HelpYourBusiness } from '@components/organism/landing/helpYourBusiness'
-import { LandingBanner } from '@components/organism/landing/landingBanner'
-import { Partners } from '@components/organism/landing/partners'
-import { HowItWorks } from '@components/organism/landing/howItWorks'
-import { Footer } from '@components/molecules/footer'
 import { useDispatch } from 'react-redux'
+import dynamic from 'next/dynamic'
 
-export function LandingPage() {
+const LandingBanner = dynamic(() => import('@components/organism/landing/landingBanner'))
+const Partners = dynamic(() => import('@components/organism/landing/partners').then(res=>res.Partners))
+const HowItWorks = dynamic(() => import('@components/organism/landing/howItWorks').then(res => res.HowItWorks))
+const HelpYourBusiness = dynamic(() => import('@components/organism/landing/helpYourBusiness').then(res => res.HelpYourBusiness))
+const Advertisement = dynamic(() => import('@components/organism/landing/advertisement').then(res => res.Advertisement))
+const Testimonial = dynamic(() => import('@components/organism/landing/testimonial').then(res => res.Testimonial))
+const ContactContainer = dynamic(() => import('@components/organism/landing/contactContainer').then(res => res.ContactContainer))
+const BottomBanner = dynamic(() => import('@components/organism/landing/bottomBanner').then(res => res.BottomBanner))
+const Footer = dynamic(() => import('@components/molecules/footer').then(res => res.Footer))
+
+
+const LandingPage = () =>{
     const dispatch = useDispatch()
     dispatch({type:"SET_LOADING",payload:false})
 	return (
         <PageLayout>
-            <div >
+            <div>
                 <LandingBanner/>
                 <hr/>
                 <Partners/>
@@ -27,7 +29,6 @@ export function LandingPage() {
                 <Advertisement/>
                 <Testimonial/>
                 <ContactContainer/>
-                {/* <BlogContainer/> */}
                 <BottomBanner/>
                 <Footer />
             </div>
@@ -35,3 +36,4 @@ export function LandingPage() {
     )
 }
 
+export default LandingPage;

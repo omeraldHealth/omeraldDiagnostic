@@ -1,12 +1,17 @@
 import { Fragment } from 'react'
-import { Head } from '@components/atoms'
-import { OnboardComp } from '@components/organism'
+import { Spinner } from '@components/atoms/loader'
+import dynamic from 'next/dynamic'
 
-export default function Onboard() {
+const OnboardTemplate = dynamic(() => import('@components/organism/onboard/index'),{loading: () => <Spinner/>})
+const Head = dynamic(() => import('@components/atoms/head/head'))
+
+function Onboard() {
   return (
     <Fragment>
 	    <Head title={'Omerald Diagnostic | Onboard'} />
-      <OnboardComp/>
+      <OnboardTemplate/>
 	  </Fragment>
   )
 }
+
+export default Onboard;

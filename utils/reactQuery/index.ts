@@ -1,11 +1,19 @@
-import { QueryKey, useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, UseQueryOptions } from 'react-query';
 
-export async function useQueryGetData(queryKey:QueryKey,queryFunction:any) {
-    return useQuery(queryKey, queryFunction);
+//useQuery hook to get data
+export function useQGetData<T>(
+  queryName: string,
+  queryFn: any,
+  options?: UseQueryOptions<T>
+) {
+  const queryKey = [queryName];
+  return useQuery<T>(queryKey, queryFn, options);
 }
-  
-
-export async function useQuerySetData(queryKey:QueryKey,queryFunction:any) {
-    return useMutation(queryKey, queryFunction);
+//useQuery hook to set data
+export function useQuerySetData<T>(
+  queryName: string,
+  queryFn: any,
+) {
+  const queryKey = [queryName];
+  return useMutation<T>(queryKey, queryFn);
 }
-  

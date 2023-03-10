@@ -1,7 +1,7 @@
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert"
 import { TitleText_2 } from "@components/atoms/font"
 import { Spinner } from "@components/atoms/loader"
-import { usePDF } from "@react-pdf/renderer"
+
 import { ReportDetails, UserDetails } from "@utils"
 import { Modal } from "antd"
 import { useState } from "react"

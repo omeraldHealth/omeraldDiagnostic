@@ -3,7 +3,7 @@ import { DashboardTable } from "@components/molecules/dashboardItems/data-table"
 import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
 import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { success } from "@styles/color";
+import { success } from "@styles/styleTemplate/color";
 import { getDiagnosticUserApi, insertDiagnosticUserApi, updateDiagnosticUserApi } from "@utils";
 import { Modal, Space } from "antd";
 import axios from "axios";

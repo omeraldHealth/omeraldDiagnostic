@@ -1,11 +1,8 @@
-import {GET_REPORT,GET_TEST,SET_REPORT, SET_TEST} from "utils/store/types"
-import { ReportDetails } from "utils/types/molecules/users.interface";
+import {GET_TEST,SET_TEST} from "utils/store/types"
+import { initialTestState } from "utils/types/molecules/forms.interface";
 
-const report = {
-
-}
-
-export function testReducer(state = report, action:any) {
+//stores all tests created by user
+export function testReducer(state = initialTestState, action:any) {
     switch (action.type) {
       case GET_TEST:
         return {...state};

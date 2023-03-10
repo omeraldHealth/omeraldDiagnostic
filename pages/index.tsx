@@ -1,6 +1,9 @@
 import { Fragment } from 'react'
-import { Head } from '@components/atoms'
-import { LandingPage } from '@components/organism'
+import { Spinner } from '@components/atoms/loader'
+import dynamic from 'next/dynamic'
+
+const Head = dynamic(() => import('@components/atoms/head/head'))
+const LandingPage = dynamic(() => import('@components/organism/landing/landingPage'),{loading: () => <Spinner/>})
 
 export default function Home() {
   return (

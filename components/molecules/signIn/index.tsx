@@ -51,11 +51,11 @@ const SignInComponent = () => {
     return () => clearInterval(timer);
   }, [seconds]);
 
-  useEffect(()=>{
-    if(diagnosticDetails?.phoneNumber){
-      route.push("/dashboard")
-    }
-  },[])
+  // useEffect(()=>{
+  //   if(diagnosticDetails?.phoneNumber){
+  //     route.push("/dashboard")
+  //   }
+  // },[])
 
   const [isPhoneNumberDisabled, setPhoneNumberDisabled] = useState(false);
 

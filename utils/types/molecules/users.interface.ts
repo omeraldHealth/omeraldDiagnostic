@@ -59,13 +59,13 @@ export type UserQuery = {
 
 export type SampleTypes = {
   _id: ObjectId;
-  sampleName: string;
+  testName: string;
   keywords: ReportParamsType[];
 };
 
 export type ReportTypes = {
   _id: ObjectId;
-  testName: string;
+  sampleName: string;
   sampleType: SampleTypes
 };
 
@@ -110,5 +110,16 @@ export interface AuthContextInterface {
     loading: boolean;
     signIn: (user: User, redirect: string) => Promise<void>;
     signOut: () => Promise<void>;
-    setDiagnosticDetails:() => Promise<void>;
+    // setDiagnosticDetails:() => Promise<void>;
 }
+
+export const initialAuthContext: AuthContextInterface = {
+  user: null,
+  diagnosticDetails: null,
+  loading: false,
+  signIn: async () => {},
+  signOut: async () => {},
+  // setDiagnosticDetails: async() => {}
+};
+
+export const allowedPaths: Array<String> = ["/","/signIn","/404"];

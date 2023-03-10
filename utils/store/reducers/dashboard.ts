@@ -2,6 +2,7 @@ import {GET_DASHBOARD_ROUTE,SET_DASHBOARD_ROUTE} from "utils/store/types"
 
 const dashbordRoute =  { name: "Dashboard", href: "/dashboard",selectedTabIndex:"0",loading:false}
 
+//stores all reports created by user
 export function dashboardReducer(state = dashbordRoute, action:any) {
     switch (action.type) {
       case GET_DASHBOARD_ROUTE:

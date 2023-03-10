@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import TestTab from "@components/organism/dashboardTabs/testTab";
 import ProfileTab from "@components/organism/dashboardTabs/profileTab";
 import SettingsTab from "@components/organism/dashboardTabs/settingsTab";
-import { SET_DIAGNOSTIC_DETAILS, SET_REPORT_LIST } from "utils/store/types";
+import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
 import { useAuthContext } from "utils/context/auth.context";
 import { useQuery } from "react-query";
 import axios from "axios";
@@ -15,7 +15,7 @@ import { getDiagnosticReports, getDiagnosticUserApi } from "@utils";
 import AddTestTab from "@components/organism/dashboardTabs/addTest";
 import "./dashboard.module.css"
 
-export const DashboardTemplate = () => {
+const DashboardTemplate = () => {
 
   const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
   const {diagnosticDetails} = useAuthContext()
@@ -46,7 +46,6 @@ export const DashboardTemplate = () => {
   useEffect(() =>{  
     if(!loading && reports){
       setReportList(reports.data)
-      dispatch({"type":SET_REPORT_LIST,"payload":reportList})
     }
 },[loading])
 
@@ -65,3 +64,4 @@ export const DashboardTemplate = () => {
 };;
 
 
+export default DashboardTemplate

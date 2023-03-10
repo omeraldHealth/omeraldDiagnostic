@@ -1,28 +1,20 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { getAuth, onIdTokenChanged, User,setPersistence,browserSessionPersistence } from "firebase/auth";
-import { AuthContextInterface, UserDetails } from 'utils'
+import { AuthContextInterface, initialAuthContext, UserDetails } from 'utils'
 import { useRouter } from 'next/router';
 import { getUserDetails } from 'utils/hook/userDetail';
 import { warningAlert } from '@components/atoms/alerts/alert';
 import firebaseApp from 'utils/auth/firebase';
-import { useDispatch, useSelector } from 'react-redux';
-import { SET_DIAGNOSTIC_DETAILS } from 'utils/store/types';
-  
-const AuthContext = createContext<AuthContextInterface>(null)
 
-export function AuthContextProvider({ children }: { children: React.ReactNode }) {
-  const auth = useFirebaseAuth();
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
-}
+const AuthContext = createContext<AuthContextInterface>(initialAuthContext)
 
+//context logic and function
 function useFirebaseAuth() {
   const auth = getAuth(firebaseApp);
   const [user, setUser] = useState<User | null>(null);
-  const [diagnosticDetails, setDiagnosticDetails] =useState<UserDetails | null>(null);
+  const [diagnosticDetails, setDiagnosticDetails] = useState<UserDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
-  const dispatch = useDispatch()
 
   useEffect(() => {
     const unsubscribe = onIdTokenChanged(auth, handleUser);
@@ -31,12 +23,6 @@ function useFirebaseAuth() {
 
   setPersistence(auth, browserSessionPersistence)
   .then(() => {
-    // Existing and future Auth states are now persisted in the current
-    // session only. Closing the window would clear any existing state even
-    // if a user forgets to sign out.
-    // ...
-    // New sign-in will be persisted with session persistence.
-    // return signIn(user?.phoneNumber,"/dashboard");
   })
   .catch((error) => {
     // Handle Errors here.
@@ -47,10 +33,10 @@ function useFirebaseAuth() {
   const handleUser = async (rawUser: User | null) => {
     if (rawUser) {
       const phoneNumber = rawUser.phoneNumber || "";
-      dispatch({ type: SET_DIAGNOSTIC_DETAILS,payload: Object.assign(diagnosticProfile,{"phoneNumber":phoneNumber}) });
-      const resp = await getUserDetails({"phoneNumber":phoneNumber});
-      if (resp.status==200) {
-        setDiagnosticDetails(resp.data);
+      const {data,status} = await getUserDetails({phoneNumber:phoneNumber})
+      if (status==200) {
+        // @ts-ignore
+        setDiagnosticDetails(data);
       }
       setUser(rawUser);
       setLoading(false);
@@ -62,9 +48,10 @@ function useFirebaseAuth() {
 
   const signIn = async (user: User, redirect: string) => {
     const phoneNumber = user.phoneNumber || "";
-    const resp = await getUserDetails({"phoneNumber":phoneNumber});
-    if (resp.data) {
-      setDiagnosticDetails(resp.data);
+    const {data,status} = await getUserDetails({phoneNumber:phoneNumber})
+    if (status==200) {
+      // @ts-ignore
+      setDiagnosticDetails(data);
       router.push(redirect);
     } else {
       router.push("/onboard");
@@ -72,14 +59,9 @@ function useFirebaseAuth() {
   };
 
   const signOut = async () => {
-    if (user) {
-      const phoneNumber = user.phoneNumber || "";
-    }
-
+    await auth.signOut();
     setUser(null);
     setDiagnosticDetails(null);
-    dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:null})
-    await auth.signOut();
     warningAlert("User Logged Out")
     router.push("/");
   };
@@ -87,13 +69,19 @@ function useFirebaseAuth() {
   return {
     user,
     diagnosticDetails,
-    setDiagnosticDetails,
     loading,
     signIn,
     signOut,
   };
 }
 
+//exporting context data
+export function AuthContextProvider({ children }: { children: React.ReactNode }) {
+  const auth = useFirebaseAuth();
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+}
+
+//context hook
 export function useAuthContext() {
 	return useContext(AuthContext)
 }

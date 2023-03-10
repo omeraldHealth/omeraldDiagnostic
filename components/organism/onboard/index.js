@@ -4,17 +4,18 @@ import { Navbar } from "@components/molecules/navbar";
 import { PageTemplate } from "@components/templates/pageTemplate";
 import dynamic from "next/dynamic";
 
-const OnboardComponent = dynamic(() => import('@components/molecules/onboard'))
+const OnboardComponents = dynamic(() => import('@components/molecules/onboard/index'))
 
-export function OnboardComp() {
+const OnboardTemplate = () => {
 	return (
         <PageTemplate>
-        <div>
-            <Navbar/>
-                <OnboardComponent/>
-            <Footer />
-        </div>
+            <div>
+                <Navbar/>
+                    <OnboardComponents/>
+                <Footer />
+            </div>
         </PageTemplate>
     )
 }
 
+export default OnboardTemplate;

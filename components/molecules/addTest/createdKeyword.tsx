@@ -1,7 +1,7 @@
 import { successAlert } from '@components/atoms/alerts/alert'
 import { Spinner } from '@components/atoms/loader'
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
-import { success } from '@styles/color'
+import { success } from '@styles/styleTemplate/color'
 import { Modal, Space, Tag } from 'antd'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

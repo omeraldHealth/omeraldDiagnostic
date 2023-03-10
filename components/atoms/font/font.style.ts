@@ -1,6 +1,6 @@
 
 import { Colors } from '@styles/index';
-import { body, header, title } from '@styles/typography';
+import { body, header, title } from '@styles/styleTemplate/typography';
 import styled from 'styled-components';
 
 const screenWidth = typeof window !== "undefined" ? window.screen.width : null;
