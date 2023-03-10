@@ -1,31 +1,43 @@
 import { successAlert } from "@components/atoms/alerts/alert";
 import { Spinner } from "@components/atoms/loader";
 import { useRouter } from "next/router";
-import { useAuthContext } from "utils/context/auth.context";
-import { allowedPaths } from "utils/types/molecules/users.interface";
 import React, { cloneElement, ReactElement } from "react";
+import { useAuthContext } from "utils/context/auth.context";
 
-// Decides the permission of the tabs based on user logged in or not
+
+const allowedPaths = ["","/","/signIn","/404"];
+let flag = true;
+
 const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => {
-  const {loading,user,diagnosticDetails} = useAuthContext();
+  const auth = useAuthContext();
   const router = useRouter();
-  let flag = true;
 
-  if (allowedPaths.includes(router.pathname)) {
+  if (allowedPaths.includes(router.pathname) && !auth?.user) {
     return <>{children}</>;
-  } else if (loading) {
+  } else if (auth?.loading) {
     return <Spinner />;
-  } else if (user && diagnosticDetails) {
+  } else if (auth?.user && auth?.diagnosticDetails) {
+    if (router.pathname === "/onboard") {
       if(flag){
         successAlert("User logged in")
         flag = false;
       }
       router.push("/dashboard");
       return null;
-  } else if (user) {
+    }else if(router.pathname === "/signIn"){
+      if(flag){
+        successAlert("User logged in")
+        flag = false;
+      }
+      router.push("/dashboard");
+      return null;
+    }
+    return cloneElement(children, { auth: auth });
+  } else if (auth?.user) {
     if (router.pathname === "/onboard" || router.pathname === "/") {
       return cloneElement(children);
     }
+    router.push("/onboard");
     return null;
   } else {
     return null;

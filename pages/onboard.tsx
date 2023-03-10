@@ -15,7 +15,9 @@ function Onboard() {
       <PageTemplate>
             <div>
                 <Navbar/>
-                    <OnboardComponents/>
+                    <section className='min-h-[80vh]'>
+                      <OnboardComponents/>
+                    </section>
                 <Footer />
             </div>
         </PageTemplate>

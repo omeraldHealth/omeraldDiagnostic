@@ -37,3 +37,7 @@ export interface phoneNumberType  {
     phoneNumber: string,
     setPhoneNumber: (phone:string) => void
   }
+  export interface otpInputType  {
+    otp: string,
+    setOtp: (phone:string) => void
+  }

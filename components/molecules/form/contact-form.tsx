@@ -1,24 +1,21 @@
 import { errorAlert } from '@components/atoms/alerts/alert'
-import { Whatsapp } from '@components/atoms/button/whatsapp'
 import { Spinner } from '@components/atoms/loader'
 import { mailImage } from '@utils'
-import React, { useState } from 'react'
 import { useAuthContext } from 'utils/context/auth.context'
-import { addQuery } from 'utils/hook/userDetail'
-
 import { DynamicFormCreator } from './dynamicForm'
+import React, { useState } from 'react'
 
 export const ContactForm = ({handleSubmit}:any) => {
   const {diagnosticDetails} = useAuthContext()
   const [loading,setLoading] = useState(false)
-  const [query,setQuery] = useState('')
 
   const handleForm = async (value:any) => {
     setLoading(true)
+    
     const query = {
       "phoneNumber":value.phoneNumber,
       "name":diagnosticDetails?.diagnosticName,
-      "branch": diagnosticDetails?.branchDetails[0].branchName,
+      "branch": diagnosticDetails?.branchDetails?.[0].branchName,
       "email":diagnosticDetails?.email,
       "subject":value.subject,
       "message":value.message,      

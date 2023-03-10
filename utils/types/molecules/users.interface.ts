@@ -19,6 +19,7 @@ export interface UserDetails {
   brandDetails: BrandDetailsForm;
   managersDetail: IManagerDetails[];
   pathologistDetail?: IPathologistDetails[];
+  managerName?: string
 }
 
 export type BrandDetailsForm = {

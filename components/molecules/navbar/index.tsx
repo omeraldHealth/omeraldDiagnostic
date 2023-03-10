@@ -1,9 +1,9 @@
-import { Logo, NavFont } from '@components/atoms'
 import { SignInButton } from '@components/atoms/buttons/button'
 import { MenuDropDown } from '@components/atoms/menu'
+import { Logo } from '@components/atoms/nav/logo'
+import NavFont from '@components/atoms/nav/navFont'
 import Link from 'next/link'
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { useAuthContext } from 'utils/context/auth.context'
 
 const navLinks = [

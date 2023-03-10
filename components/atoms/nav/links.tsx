@@ -1,18 +1,10 @@
 
 
 import React, { useEffect, useState } from 'react'
-import { classNames, privateRoutes } from 'utils/static';
+import { classNames, IndexObj, privateRoutes } from 'utils/static';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 
-const IndexObj = {
-    "/dashboard":0,
-    "/test":1,
-    "/reports":2,
-    "/profile":3,
-    "/settings":4
-}
-  
 
 export const NavLinks = () => {
     const [currentNavigation, setCurrentNavigation] = useState<any>(privateRoutes[0]);

@@ -1,68 +1,94 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useState } from 'react';
 import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
-import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
-import BannerUploader from '@components/atoms/fileUploder/bannerUpload';
 import { useSelector } from 'react-redux';
-import { useAuthContext } from 'utils/context/auth.context';
 import { getAuth } from 'firebase/auth';
-import firebaseApp from 'utils/auth/firebase';
-import PhoneInputWithCountrySelect from 'react-phone-number-input';
-import moment from 'moment';
 import { debounce } from 'lodash';
-interface FormProps  {
-    name:string,
-    type:string,
-    label:string,
-    required:boolean,
-    pattern:RegExp,
+import { DynamicFormType } from 'utils/types/molecules/forms.interface';
+import { SelectProps } from 'rc-select';
+import moment from 'moment';
+import { useAuthContext } from 'utils/context/auth.context';
+import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
+import { roles } from 'utils/static';
+
+
+export const DynamicFormCreator = ({formProps,showLabel,disableElement,initial,formStyle,handleSubmit,handleImage,buttonText,selectedValue,setSelectedValue}:DynamicFormType) => {
+      
+
+    // const handleSearch = (newValue: string) => {
+    //     let temp = diagnosticProfile.pathologistDetail?.filter((report:any)=> {return report.name.includes(newValue) || report.designation.includes(newValue)})
+    //     setPathologist(temp)
+    //   };
+    
+    // const {user,diagnosticDetails} = useAuthContext()
+    // const debouncedSearch = debounce(handleSearch, 500);
+    // const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
+    // const disabledDate = (current:any) => {return current && current > moment().endOf('day')};
+    // const [pathologist, setPathologist] = useState<SelectProps['options']>(diagnosticProfile.pathologistDetail);
+    const initalValue={ remember: true,...initial}
+
+    return (
+        <div>
+            <Form className={formStyle} onFinish={handleSubmit} layout="vertical" name="dynamic" initialValues={initalValue}>
+                {/* Text Fields */}
+                {formProps.map((form,index) => <>
+                    {form.type === "text"  && 
+                        <Form.Item  
+                            label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
+                            key={index} className='mb-6 font-bold text-lg' 
+                            name={form.name} labelCol={{ span: 10 }}  
+                            rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                            <Input disabled={disableElement && form.name =="phoneNumber"} placeholder={form.label} className="border-gray-300 rounded-lg text-black font-light text-sm py-2" />
+                        </Form.Item>
+                    }  
+                    {form.type === "email" && 
+                        <Form.Item  
+                            label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
+                            key={index} className='mb-6 font-bold text-lg' 
+                            name={form.name} labelCol={{ span: 10 }}  
+                            rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                            <Input placeholder={form.label} className="border-gray-300 lowercase rounded-lg text-black font-light text-sm py-2" />
+                        </Form.Item>
+                    } 
+                    {form.type === "image" && 
+                        <Form.Item  
+                            label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
+                            key={index} className='mb-6 font-bold text-lg' 
+                            name={form.name} labelCol={{ span: 10 }}  
+                            rules={[{ pattern: form?.pattern, required: false,message: `Please input ${form.label}`}]}>
+                            <LogoUploader handleImage={handleImage} />
+                        </Form.Item>
+                    }
+                    {form.type === "select" && 
+                        <Form.Item  
+                            label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
+                            key={index} className='mb-6 font-bold text-lg' 
+                            name={form.name} labelCol={{ span: 10 }}  
+                            rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                            <Select
+                                style={{ width: 380 }}
+                                defaultValue={selectedValue}
+                                onChange={(e)=>{setSelectedValue(e)}}
+                                options={roles.map((role) => ({ label: role, value: role }))}
+                            />
+                        </Form.Item>
+                    }  
+
+                </>
+                )}
+
+                 {/* Form Submit Button */}
+                <Form.Item className={`flex justify-start col-span-2`}>
+                    <Button className={`bg-blue-500`} type="primary" htmlType="submit">{buttonText}</Button>
+                </Form.Item>  
+            </Form>
+        </div>
+    )
 }
 
-interface FormType  {
-    formProps: FormProps[],
-    buttonText: string,
-    style?:string,
-    selectedRole?:string,
-    formStyle?:string,
-    button?:Boolean,
-    initial?:any,
-    disable?:Boolean,
-    label?:Boolean,
-    setSelectedRole?: (value:any) =>void
-    handleSubmit: (value:any) =>void
-    handleImage?: (value:any) =>void
-    handleDate?: (value:any) => void
-}
 
-export const DynamicFormCreator = ({formProps,button,label,disable,initial,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
-  const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
-  const auth = getAuth(firebaseApp);
 
-  const [isDisabled,setDisabled] = useState(false);
-  const disabledDate = (current:any) => {
-    return current && current > moment().endOf('day');
-  };
 
-//   useEffect(()=>{
-//     if(disable){
-//         setDisabled(true)
-//     }
-//   },[])
-
-  const [datas, setData] = useState<SelectProps['options']>(diagnosticProfile.pathologistDetail);
-  const handleSearch = (newValue: string) => {
-    let temp = diagnosticProfile.pathologistDetail?.filter((report:any)=> {return report.name.includes(newValue) || report.designation.includes(newValue)})
-    setData(temp)
-};
-
-const debouncedSearch = debounce(handleSearch, 500);
-
-const roles = ['Admin', 'Manager','Operator','Spoc'];
-const plainOptions = ['Male', 'Female', 'Others'];
-let init={ remember: true}
-init = {...init,...initial}
-return (
-    <div >
-        <Form className={formStyle} onFinish={handleSubmit}  layout="vertical" name="basic" 
+     {/* <Form className={formStyle} onFinish={handleSubmit}  layout="vertical" name="basic" 
         initialValues={init}>
         {formProps.map((form,index) => <>
                 {form.type === "text" && 
@@ -157,8 +183,4 @@ return (
         <Form.Item className={`flex justify-start col-span-2 ${style}`}>
             <Button className={`bg-blue-500 ${style}`} type="primary" htmlType="submit">{buttonText}</Button>
         </Form.Item>    
-        </Form>
-    </div>
-);
-};
-
+        </Form> */}

@@ -1,9 +1,14 @@
 import { ReportDetails, ReportTypes } from "./users.interface";
 
+export const textPattern = ""
+export const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+export const phonePattern = /^(?:\+91|0)?[6789]\d{9}$/
+
 export type BasicDetailsForm = {
     diagnosticName: string;
     phoneNumber: string,
     email: string;
+    managerName: string;
 };
 
 export type BrandDetailsForm = {
@@ -35,30 +40,29 @@ export type FormType = {
     type:string,
     label:string,
     required:boolean
+    pattern?:RegExp,
 };
 
 export const basicFormArray:FormType[] = [
+    {"name":"phoneNumber","type":"text","label":"Phone Number","required":true},
     {"name":"diagnosticName","type":"text","label":"Diagnostic Name","required":true},
-    {"name":"email","type":"text","label":"Email","required":true},
-    {"name":"phoneNumber","type":"text","label":"Phone Number","required":true}
+    {"name":"email","type":"email","label":"Email","required":true,pattern:emailPattern},
+    {"name":"managerName","type":"text","label":"Manager Name","required":true}
 ]
   
 export const brandDetailsFormArray:FormType[] = [
-    {"name":"brandLogo","type":"logo","label":"Brand Logo","required":true,pattern:""},
-    {"name":"brandBanner","type":"banner","label":"Brand Banner","required":false,pattern:""},
-    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true,pattern:"/.*facebook\.com.*/"},
-    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true,pattern:"/.*instagram\.com.*/"},
+    {"name":"brandLogo","type":"image","label":"Brand Logo","required":false},
+    // {"name":"brandBanner","type":"image","label":"Brand Banner","required":false,pattern:""},
+    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true,pattern:/.*facebook\.com.*/},
+    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true,pattern:/.*instagram\.com.*/},
 ]
   
 export const branchDetailsFormArray: FormType[] = [
     {"name":"branchName","type":"text","label":"Branch Name","required":true},
-    {"name":"managerName","type":"text","label":"Manager Name","required":true,pattern:""},
-    {"name":"branchEmail","type":"email","label":"Branch Email","required":false,pattern:""},
-    {"name":"managerContact","type":"text","label":"Manager Contact","required":true,pattern:""},
+    {"name":"branchContact","type":"text","label":"Branch Contact","required":true,pattern:phonePattern},
+    {"name":"branchEmail","type":"email","label":"Branch Email","required":true},
     {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
-    {"name":"managerRole","type":"roles","label":"Manager Role","required":true,pattern:""},
-    {"name":"branchContact","type":"text","label":"Branch Contact","required":true},
-  
+   
 ]
 
 export const initialTestState : ReportTypes = {
@@ -114,3 +118,26 @@ export const intialDiagnosticState = {
     ],
     activities: []
 }
+export interface FormProps  {
+  name:string,
+  type:string,
+  label:string,
+  required:boolean,
+  pattern:RegExp,
+}
+
+export interface DynamicFormType  {
+  formProps: FormProps[],
+  buttonText: string,
+  selectedValue?:string,
+  formStyle?:string,
+  button?:boolean,
+  initial?:any,
+  showLabel?:Boolean,
+  disableElement?:Boolean,
+  setSelectedValue?: (value:any) =>void
+  handleSubmit: (value:any) =>void
+  handleImage?: (value:any) =>void
+  handleDate?: (value:any) => void
+}
+
