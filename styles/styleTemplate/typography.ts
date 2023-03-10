@@ -9,7 +9,11 @@ export type FontType = {
     lineHeight: string,
 }
 
-type Header = 'omerald_textStyle_monitor_Title1' | 'omerald_textStyle_mobile_Title2' | 'omerald_textStyle_tab_Title2' | 'omerald_textStyle_laptop_Title2' | 'omerald_textStyle_monitor_Title2' | 'omerald_textStyle_laptop_Title1' | 'omerald_textStyle_tab_Title1' | 'omerald_textStyle_mobile_Title1'
+type Header = 
+'omerald_textStyle_monitor_Title1' | 'omerald_textStyle_mobile_Title2' | 'omerald_textStyle_tab_Title2' 
+| 'omerald_textStyle_laptop_Title2' | 'omerald_textStyle_monitor_Title2' | 'omerald_textStyle_laptop_Title1' | 'omerald_textStyle_tab_Title1' 
+| 'omerald_textStyle_mobile_Title1' 
+| 'omerald_textStyle_monitor_Title3' | 'omerald_textStyle_mobile_Title3' | 'omerald_textStyle_tab_Title3' | 'omerald_textStyle_laptop_Title3'
 export const header: Record<Header, FontType> = {
   omerald_textStyle_monitor_Title1: {
     fontFamily: 'Roboto',
@@ -65,6 +69,34 @@ export const header: Record<Header, FontType> = {
     fontStyle: 'normal',
     fontWeight: '500',
     fontSize: '20px',
+    lineHeight: '20px',
+  },
+  omerald_textStyle_monitor_Title3: {
+    fontFamily: 'Roboto',
+    fontStyle: 'normal',
+    fontWeight: '600',
+    fontSize: '27px',
+    lineHeight: '60px',
+  },
+  omerald_textStyle_laptop_Title3: {
+    fontFamily: 'Roboto',
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: '20px',
+    lineHeight: '30px',
+  },
+  omerald_textStyle_tab_Title3: {
+    fontFamily: 'Roboto',
+    fontStyle: 'normal',
+    fontWeight: '500',
+    fontSize: '20px',
+    lineHeight: '24px',
+  },
+  omerald_textStyle_mobile_Title3: {
+    fontFamily: 'Roboto',
+    fontStyle: 'normal',
+    fontWeight: '500',
+    fontSize: '17px',
     lineHeight: '20px',
   },
 }

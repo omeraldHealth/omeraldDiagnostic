@@ -1,4 +1,4 @@
-import { StepHeader } from '@components/atoms/form'
+import { StepHeader } from '@components/atoms/fileUploder/stepHeader'
 import { Spinner } from '@components/atoms/loader';
 import { Modal } from 'antd';
 import React, { useState } from 'react'

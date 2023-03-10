@@ -1,5 +1,5 @@
 import { successAlert } from '@components/atoms/alerts/alert'
-import { ErrorComp } from '@components/atoms/error'
+import { ErrorComp } from '@components/atoms/alerts/error'
 import { Spinner } from '@components/atoms/loader'
 import { ClockIcon, PencilIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { Modal } from 'antd'

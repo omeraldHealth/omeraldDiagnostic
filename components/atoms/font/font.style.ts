@@ -37,6 +37,14 @@ export const HeaderStyled_2 = styled.p`
     ${Colors.neutral.black}
 `
 
+export const HeaderStyled_3 = styled.p`
+    ${screenWidth && screenWidth > 900 && header.omerald_textStyle_monitor_Title3}
+    ${screenWidth && screenWidth > 771 && screenWidth < 900 && header.omerald_textStyle_laptop_Title3}
+    ${screenWidth && screenWidth > 500 && screenWidth < 770 && header.omerald_textStyle_tab_Title3}
+    ${screenWidth && screenWidth > 200 && screenWidth < 500 && header.omerald_textStyle_mobile_Title3}
+    ${Colors.neutral.black}
+`
+
 export const BodyStyled_1 = styled.p`
     ${screenWidth && screenWidth > 900 && body.omerald_textStyle_monitor_Body1}
     ${screenWidth && screenWidth > 771 && screenWidth < 900 && body.omerald_textStyle_laptop_Body1}

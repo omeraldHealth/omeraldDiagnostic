@@ -11,4 +11,8 @@ export default createGlobalStyle`
     color: white;
     box-shadow: #1890ff 1 1;
   }
+  .PhoneInputInput{
+    padding:10px !important
+  }
+  
 `

@@ -1,6 +1,6 @@
 import { Button, Modal, Space } from 'antd';
 
-export const Confirm = () => {
+export const ConfirmAlert = () => {
 
   const { confirm } = Modal;
   confirm({

@@ -1,4 +1,3 @@
-import { AddReportComponent } from '@components/molecules/addReport/addReport'
 import { AddTestComponent } from '@components/molecules/addReport/addTest'
 import { Fragment } from 'react'
 

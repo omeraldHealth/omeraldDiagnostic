@@ -31,3 +31,9 @@ export interface ReportTableType {
     reportDate: Date;
     status: string;
 }
+
+export interface phoneNumberType  {
+    isPhoneNumberDisabled: boolean | undefined,
+    phoneNumber: string,
+    setPhoneNumber: (phone:string) => void
+  }

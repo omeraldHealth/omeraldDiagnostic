@@ -1,5 +1,5 @@
 import { Logo, NavFont } from '@components/atoms'
-import { SignInButton } from '@components/atoms/button/button'
+import { SignInButton } from '@components/atoms/buttons/button'
 import { MenuDropDown } from '@components/atoms/menu'
 import Link from 'next/link'
 import React from 'react'

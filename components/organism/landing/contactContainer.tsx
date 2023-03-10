@@ -1,5 +1,5 @@
-import { SignInButton } from '@components/atoms/button/button'
-import { BodyText_1, HeaderText_1, HeaderText_2, TitleText } from '@components/atoms/font'
+import { SignInButton } from '@components/atoms/buttons/button'
+import { BodyText_1, HeaderText_2, TitleText } from '@components/atoms/font'
 import React from 'react'
 import styles from "./landing.module.css"
 

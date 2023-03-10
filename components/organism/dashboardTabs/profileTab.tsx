@@ -1,7 +1,6 @@
 import { ProfileSummaryComponent } from '@components/molecules/profile'
 import { Fragment } from 'react'
 
-
 export default function ProfileTab() {
 
   return (

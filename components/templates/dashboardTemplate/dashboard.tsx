@@ -1,31 +1,17 @@
-import DashboardTab from "@components/organism/dashboardTabs/dashboardTab";
-import AddReportsTab from "@components/organism/dashboardTabs/addReports";
-import ReportsTab from "@components/organism/dashboardTabs/reports";
 import DashboardLayout from "@components/organism/layout/dashboardLayout";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import TestTab from "@components/organism/dashboardTabs/testTab";
-import ProfileTab from "@components/organism/dashboardTabs/profileTab";
-import SettingsTab from "@components/organism/dashboardTabs/settingsTab";
-import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
-import { useAuthContext } from "utils/context/auth.context";
-import { useQuery } from "react-query";
-import axios from "axios";
-import { getDiagnosticReports, getDiagnosticUserApi } from "@utils";
-import AddTestTab from "@components/organism/dashboardTabs/addTest";
+import { useSelector } from "react-redux";
+import dynamic from "next/dynamic";
 import "./dashboard.module.css"
 
+const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'))
+const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab'))
+const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'))
+const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'))
+const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab'))
+
 const DashboardTemplate = () => {
-
   const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
-  const {diagnosticDetails} = useAuthContext()
-  const dispatch = useDispatch()
-  const fetchDiagnostic = async () => {return await axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)}
-  const {data,isLoading} = useQuery(["diagnosticProfile",diagnosticDetails],fetchDiagnostic)
-  const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
-  const [reportList,setReportList] = useState([])
-  const {data:reports,isLoading:loading} = useQuery(["reports",reportList],fetchReports)
-
   const dashboardTabs = {
     "/dashboard":<DashboardTab/>,
     "/reports":<ReportsTab/>,
@@ -33,22 +19,8 @@ const DashboardTemplate = () => {
     "/profile":<ProfileTab/>,
     "/settings":<SettingsTab selectedTabId={dashboardRoute.selectedTabIndex} />
   }
-
   let [component,setComponent] = useState(dashboardTabs["/dashboard"]);
-  
-
-  useEffect(() =>{
-      if(!isLoading && data){
-        dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":data.data})
-      }
-  },[isLoading])
-
-  useEffect(() =>{  
-    if(!loading && reports){
-      setReportList(reports.data)
-    }
-},[loading])
-
+    
   useEffect(()=>{
     //@ts-ignore
     setComponent(dashboardTabs[dashboardRoute.href])
@@ -62,6 +34,5 @@ const DashboardTemplate = () => {
     </div>
   )
 };;
-
 
 export default DashboardTemplate

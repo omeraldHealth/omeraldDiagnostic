@@ -7,7 +7,6 @@ import { DashCard } from '@components/molecules/dashboardItems/dashCard';
 import ReportSharedVsTime2 from '@components/molecules/dashboardItems/chart';
 import { DashActivity } from '@components/molecules/dashboardItems/activity';
 
-
 export default function DashboardTab() {
   
   Chart.register(CategoryScale);

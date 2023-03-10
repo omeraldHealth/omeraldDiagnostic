@@ -50,3 +50,22 @@ export function classNames(...classes: [string, string]) {
     return classes.filter(Boolean).join(" ");
 }
 export const settingsTab = ["Billing","Activity Feed","Employee Management","Branch Management","Pathologists","Support"]
+export const advertisement = [
+  {
+      "title":"Get Started",
+      "description":"Please login to get started with uploading and sharing your reports",
+      "button": "Know more"
+
+  },
+  {
+      "title":"Access Demo",
+      "description":"We are currently offering the service free of cost to help you",
+      "button":"Know more"
+
+  },
+  {
+      "title":"Check Offer",
+      "description":"We are currently offering the service free of cost to help you.",
+      "button":"Know more"
+  }
+]

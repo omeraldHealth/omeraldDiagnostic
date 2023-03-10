@@ -1,4 +1,3 @@
-import { NavTextProps } from '@utils'
 import Link from 'next/link'
 import React, { FC } from 'react'
 import { FaFacebook,FaTwitter,FaInstagram,FaYoutube } from 'react-icons/fa'

@@ -1,5 +1,5 @@
 
-import { DashboardLogo } from '@components/atoms/logo';
+import { DashboardLogo } from '@components/atoms/nav/logo';
 import { NavLinks } from '@components/atoms/nav/links';
 
 import React from 'react'

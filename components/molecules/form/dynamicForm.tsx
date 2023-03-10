@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
-import LogoUploader from '@components/atoms/file/logoUploaders';
-import BannerUploader from '@components/atoms/file/bannerUpload';
+import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
+import BannerUploader from '@components/atoms/fileUploder/bannerUpload';
 import { useSelector } from 'react-redux';
 import { useAuthContext } from 'utils/context/auth.context';
 import { getAuth } from 'firebase/auth';

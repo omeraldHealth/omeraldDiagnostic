@@ -1,4 +1,4 @@
-import { StepHeader } from '@components/atoms/form'
+import { StepHeader } from '@components/atoms/fileUploder/stepHeader'
 import React, { useState } from 'react'
 import { addReportSteps } from 'utils/static'
 import { PatientDetails } from './patientDetails';

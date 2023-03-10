@@ -1,4 +1,4 @@
-import { SignInButton } from "@components/atoms/button/button"
+import { SignInButton } from "@components/atoms/buttons/button"
 import { BodyText_1, BodyText_2, HeaderText_1, TitleText } from "@components/atoms/font"
 import { useState } from "react"
 import {FaCheckCircle} from 'react-icons/fa'
