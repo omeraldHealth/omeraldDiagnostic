@@ -131,9 +131,9 @@ export const TestTable = ({}:any) => {
   const handleUpdateKeyword = async ()=> {
   
     let testItem = {
-      "sampleName": sampleName,
+      "sampleName": sampleName?.length>0? sampleName:initialTestDetails?.sampleName,
       "sampleType": {
-        "testName": testName,
+        "testName": testName?.length>0 ?testName:initialTestDetails?.testName,
         "keywords":testDetails?.sampleType?.keywords
       }
 
