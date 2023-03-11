@@ -23,13 +23,15 @@ const ReportSharedVsTime2 = () =>{
     const [date,setDate] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reportCount,setReportCount] = useState([])
-    const reports = useSelector((state:any)=> state.reportReducer)
+    const {diagnosticDetails} = useAuthContext();
+     const {data:reports,isLoading:loading} = useQuery(["reports"],()=>{return axios.get(getDiagnosticReports+diagnosticDetails?.phoneNumber)})
+  
 
     useEffect(()=>{
       const sixMonthsAgo = moment().subtract(6, 'months').toDate();
       const current = moment().toDate();
       initialLoad(sixMonthsAgo,current)
-      setMaxVal(reports?.length || 2)
+      setMaxVal(reports?.data?.length || 0)
     },[reports])
 
     const initialLoad = (start:any,end:any)=>{

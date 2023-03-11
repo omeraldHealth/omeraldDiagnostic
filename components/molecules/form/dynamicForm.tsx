@@ -185,7 +185,7 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             }
                             {form.type === "textArea" &&
                             <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                                <textarea   disabled={isDisabled} className='border-gray-300 border-2 p-2 rounded-lg' rows={4} cols="36" placeholder={form.label} maxLength={6} />
+                                <textarea   disabled={isDisabled} className='border-gray-300 border-2 p-2 rounded-lg' rows={4} cols="36" placeholder={form.label} maxLength={6000} />
                             </Form.Item>
                             }
                     </>

@@ -22,8 +22,7 @@ export const ContactForm = ({handleSubmit,refetch}:any) => {
       "message":value.message,    
     }
         
-    const queryMessage =  {"text": `${diagnosticDetails?.managersDetail?.[0]?.managerName} from ${diagnosticDetails?.diagnosticName} - ${diagnosticDetails?.branchDetails?.[0].branchName} has an issue regarding
-      ${value?.subject} where ${value?.message}, Kinly assist with the above query!!\n You can connect on ${diagnosticDetails?.phoneNumber} for more details`  
+    const queryMessage =  {"text": `${diagnosticDetails?.managersDetail?.[0]?.managerName} from ${diagnosticDetails?.diagnosticName} - ${diagnosticDetails?.branchDetails?.[0].branchName} has an issue.\n${value?.subject} ${value?.message}, Kinly assist with the above query!!\nYou can connect on ${diagnosticDetails?.phoneNumber} for more details`  
     }
     
     //@ts-ignore
