@@ -129,7 +129,15 @@ export const AddKeyword = ({selectedTest,action}:any) => {
 
   const handleEditKeyword = (value:any) => {
     let duplicate = testDetails?.sampleType?.keywords.some((keyword:any) => (keyword.keyword === initialKeywords?.keyword && keyword.keyword === value?.keyword)  )
-    if(duplicate){
+    let count = 0
+        testDetails?.sampleType?.keywords.forEach((keyword:any) =>{ 
+          if(keyword.keyword == value.keyword){
+              ++count;
+          }
+        } )
+          console.log(count)
+    
+    if(count>1){
       errorAlert("Keyword by name exists already")
     }else{
       let keywords = testDetails?.sampleType.keywords?.map((keyword) => {

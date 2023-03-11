@@ -52,9 +52,8 @@ export const TestDetail = ({handleSteps}:any) => {
     }
 
      const handleSubmit = () => {
-        let duplicate = diagnosticDetails?.tests.length>0 && diagnosticDetails?.tests?.some((test:any)=>test.testName !== sampleName) || true
-        if(duplicate){
-            if(selectedReport && sampleName.length > 0 && selectedValue){
+            delete testDetail.testDetails
+            if(selectedReport && selectedValue){
                 dispatch({type:SET_TEST,payload:{"sampleName":sampleName,
                 "sampleType":{
                     "testName": selectedReport?.testName,
@@ -62,23 +61,17 @@ export const TestDetail = ({handleSteps}:any) => {
                 }}})
                 handleSteps(1)
             }else if(!selectedValue){
-                delete testDetail.testDetails
-
                 dispatch({type:SET_TEST,payload:{
                 "sampleName":sampleName,
                 "sampleType":{
                     "testName": testName,
                     "keywords": []
                 }}})
-
                 handleSteps(1)
             }
             else{
                 errorAlert("Please fill all fields")
             }
-        }else{
-            errorAlert("Test by name already exists")
-        }
     }
 
     return (

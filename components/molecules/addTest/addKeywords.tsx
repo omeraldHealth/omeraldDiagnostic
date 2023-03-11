@@ -1,5 +1,8 @@
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert'
+import { getDiagnosticUserApi } from '@utils'
+import axios from 'axios'
 import React, { useState } from 'react'
+import { useQuery } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { useAuthContext } from 'utils/context/auth.context'
 import { updateUserDetails } from 'utils/hook/userDetail'
@@ -8,16 +11,23 @@ import { testForm } from 'utils/types/molecules/forms.interface'
 import { DynamicFormCreator } from '../form/dynamicForm'
 import { AddKeyword } from './createdKeyword'
 
-export const AddKeywords = ({handleSucess,handleBack,refetch}:any) => {
+export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
 
   const testDetails = useSelector((state:any)=>state.testReducer)
-  const {diagnosticDetails} = useAuthContext()
+  const {diagnosticDetails} = useAuthContext();
+  const {data:diagnostic,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
+
   const [addKeyword,setAddKeyword] = useState(false)
   const dispatcher = useDispatch()
 
   const handleSubmit = (value:any) => {
-        let duplicate = testDetails?.sampleType?.keywords.some((keyword:any) =>{ return keyword.keyword === initial.keyword} )
-        if(duplicate){
+        let count = 0
+        testDetails?.sampleType?.keywords.forEach((keyword:any) =>{ 
+          if(keyword.keyword == value.keyword){
+              ++count;
+          }
+        } )
+        if(count>1){
             errorAlert("Keyword by name already exists")
         }else{
             let keywords = testDetails?.sampleType.keywords;
@@ -33,19 +43,16 @@ export const AddKeywords = ({handleSucess,handleBack,refetch}:any) => {
   }
 
   const handleUpdateTest =async() => {
-
-    let duplicate = diagnosticDetails?.tests?.some((test:any) =>{ return test.sampleName === testDetails.sampleName} )
-    if(testDetails && !duplicate){
-      let updateTest = diagnosticDetails?.tests
+    if(testDetails ){
+      let updateTest = diagnostic?.data?.tests
       updateTest?.push(testDetails)
-
-      let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"tests":updateTest})
+      let resp = await updateUserDetails({"phoneNumber":diagnostic?.data?.phoneNumber},{"tests":updateTest})
       if(resp){
         successAlert("Test Added succesfully")
         handleSucess()
       }
     }else{
-      errorAlert("Test with name already exists")
+      // errorAlert("Test with name already exists")
     }
   }
 
@@ -59,7 +66,7 @@ export const AddKeywords = ({handleSucess,handleBack,refetch}:any) => {
              </section>}
              <section className='flex'>
               <button onClick={handleBack} className='bg-gray-400 mx-3 text-white px-2 py-2 rounded-lg'>Back</button>
-              <button onClick={handleUpdateTest} className='bg-green-700 text-white px-2 py-2 rounded-lg'>Submit</button>
+              <button onClick={!edit ? handleUpdateTest : handleSucess} className='bg-green-700 text-white px-2 py-2 rounded-lg'>Submit</button>
              </section>
         </div>
   )
