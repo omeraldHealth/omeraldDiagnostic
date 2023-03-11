@@ -1,4 +1,4 @@
-import { SignInButton } from '@components/atoms/button/button'
+import { SignInButton } from '@components/atoms/buttons/button'
 import { BodyText_1, BodyText_2, HeaderText_1, HeaderText_2, TitleText, TitleText_2 } from '@components/atoms/font'
 import {FaTrophy,FaHandSparkles,FaSun} from 'react-icons/fa'
 import styles from "./landing.module.css"

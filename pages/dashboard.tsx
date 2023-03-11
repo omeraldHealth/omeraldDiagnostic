@@ -1,9 +1,11 @@
 import { Fragment} from 'react'
-import { Head } from '@components/atoms'
-import { DashboardTemplate } from '@components/templates/dashboardTemplate/dashboard'
+import { Spinner } from '@components/atoms/loader'
+import dynamic from 'next/dynamic'
+
+const Head = dynamic(() => import('@components/atoms/head/head'))
+const DashboardTemplate = dynamic(() => import('@components/templates/dashboardTemplate/dashboard'),{loading: () => <Spinner/>})
 
 export default function Dashboard() {
-
   return (
     <Fragment>
 			<Head title={'Omerald Diagnostic | Dashboard'} />

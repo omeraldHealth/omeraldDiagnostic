@@ -1,33 +1,22 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Link from 'next/link';
 import { BeakerIcon,ChartBarIcon,InformationCircleIcon, ShareIcon } from '@heroicons/react/20/solid';
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
-import { report } from 'process';
 import { Tooltip } from 'antd';
+import {DashCardTyes} from "utils/types/atoms/atoms"
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { getDiagnosticReports } from '@utils';
 
-interface DashCardTye {
-    href:string,
-    style:string,
-    icon: any,
-    tipInfo:string,
-    icon2:any,
-    title:string,
-    value: number
-}
-
 export const DashCard = () => {
  
 const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-const reportList = useSelector((state:any)=>state.reportListReducer)
-const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
-const {data:reports,isLoading:loading} = useQuery(["reports"],fetchReports)
+const reportList = useSelector((state:any)=>state.reportReducer)
 const dispatch = useDispatch()
+const {data:reports,isLoading:loading} = useQuery(["reports"],()=>{return axios.get(getDiagnosticReports+diagnosticDetails?.phoneNumber)})
 
-const dashCard: DashCardTye[] = [
+
+const dashCard: DashCardTyes[] = [
     {
         href:"/test",
         style:" bg-blue-900",

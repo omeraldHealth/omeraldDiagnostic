@@ -1,31 +1,12 @@
-import {GET_DASHBOARD_ROUTE,SET_DASHBOARD_ROUTE} from "utils/store/types"
-import { ReportDetails, UserDetails } from "utils/types/molecules/users.interface";
+import { initialReportFormState } from "utils/types/molecules/forms.interface";
+import { GET_REPORT_FORM, SET_REPORT_FORM } from "../types";
 
-const reportInitial:ReportDetails =  { 
-    //@ts-ignore
-    dob: "",
-    email: "",
-    gender: "",
-    userId: "",
-    userName: "",
-    testName: "",
-     //@ts-ignore
-    reportDate: "",
-    reportId: "",
-    reportUrl: "",
-    doctorName: "",
-    isManualReport: false,
-    //@ts-ignore
-    status: "parsing",
-    //@ts-ignore
-    parsedData: []
-}
-
-export function reportFormReducer(state = reportInitial, action:any) {
+//stores all reports created by user
+export function reportFormReducer(state = initialReportFormState, action:any) {
     switch (action.type) {
-      case "GET_REPORT_FORM":
+      case GET_REPORT_FORM:
         return {...state};
-      case "SET_REPORT_FORM":
+      case SET_REPORT_FORM:
         return { ...state, ...action.payload };
       default:
         return state;

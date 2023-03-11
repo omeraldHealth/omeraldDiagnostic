@@ -1,9 +1,8 @@
 import {GET_REPORT,SET_REPORT} from "utils/store/types"
-import { ReportDetails } from "utils/types/molecules/users.interface";
+import { initialReportState } from "utils/types/molecules/forms.interface";
 
-const report:ReportDetails[] = []
-
-export function reportReducer(state = report, action:any) {
+//stores all reports created by user
+export function reportReducer(state = initialReportState, action:any) {
     switch (action.type) {
       case GET_REPORT:
         return {...state};

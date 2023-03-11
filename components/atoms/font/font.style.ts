@@ -1,6 +1,6 @@
 
 import { Colors } from '@styles/index';
-import { body, header, title } from '@styles/typography';
+import { body, header, title } from '@styles/styleTemplate/typography';
 import styled from 'styled-components';
 
 const screenWidth = typeof window !== "undefined" ? window.screen.width : null;
@@ -34,6 +34,14 @@ export const HeaderStyled_2 = styled.p`
     ${screenWidth && screenWidth > 771 && screenWidth < 900 && header.omerald_textStyle_laptop_Title2}
     ${screenWidth && screenWidth > 500 && screenWidth < 770 && header.omerald_textStyle_tab_Title2}
     ${screenWidth && screenWidth > 200 && screenWidth < 500 && header.omerald_textStyle_mobile_Title2}
+    ${Colors.neutral.black}
+`
+
+export const HeaderStyled_3 = styled.p`
+    ${screenWidth && screenWidth > 900 && header.omerald_textStyle_monitor_Title3}
+    ${screenWidth && screenWidth > 771 && screenWidth < 900 && header.omerald_textStyle_laptop_Title3}
+    ${screenWidth && screenWidth > 500 && screenWidth < 770 && header.omerald_textStyle_tab_Title3}
+    ${screenWidth && screenWidth > 200 && screenWidth < 500 && header.omerald_textStyle_mobile_Title3}
     ${Colors.neutral.black}
 `
 

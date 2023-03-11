@@ -1,5 +1,5 @@
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
-import { SignInButton } from '@components/atoms/button/button';
+import { SignInButton } from '@components/atoms/buttons/button';
 import { BodyText_3 } from '@components/atoms/font';
 import { BodyStyled_2 } from '@components/atoms/font/font.style';
 import { ArrowUpIcon, BookOpenIcon } from '@heroicons/react/20/solid';
@@ -9,8 +9,8 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useQuery } from 'react-query';
 import { createReport, uploadImage, uploadReport } from 'utils/hook/userDetail';
-import LogoUploader from "components/atoms/file/logoUploaders"
-import { FileUploader } from '@components/atoms/file/fileUpload';
+import LogoUploader from "@components/atoms/fileUploder/logoUploaders"
+import { FileUploader } from '@components/atoms/fileUploder/fileUpload';
 import { Spinner } from '@components/atoms/loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_REPORT_FORM } from 'utils/store/types';

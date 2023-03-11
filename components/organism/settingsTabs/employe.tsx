@@ -1,176 +1,134 @@
-import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
-import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
-import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
-import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
+
+import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { success } from "@styles/color";
-import { getDiagnosticUserApi, insertDiagnosticUserApi, updateDiagnosticUserApi } from "@utils";
+import { getDiagnosticUserApi } from "@utils";
 import { Modal, Space } from "antd";
-import axios from "axios";
 import { useState } from "react";
-import { QueryCache, QueryClient, useMutation, useQuery } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useQuery} from "react-query";
+import { useAuthContext } from "utils/context/auth.context";
 import { updateUserDetails } from "utils/hook/userDetail";
-import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
-const queryClient = new QueryClient()
+import { EmployeeDetails } from "utils/types/molecules/forms.interface";
+import { SettingsCommon } from "./settings";
+import axios from "axios";
 
-export function EmployeeManagement() {
-    const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-    const [addOperator,setAddOperator] = useState(false)
+export function EmployeeManagement() {    
     const { confirm } = Modal;
-    const columns =    [
-        {
-          title: 'Operator Name',
-          dataIndex: 'managerName',
-          key: 'managerName',
-          render: (text:any) => <a className='text-blue-800 font-medium'>{text}</a>,
-          sorter: (a:any, b:any) => a.managerName.length - b.managerName.length,
-        },
-        {
-            title: 'Operator Role',
-            dataIndex: 'managerRole',
-            key: 'managerRole',
-            render: (text:any) => <a>{text}</a>,
-            sorter: (a:any, b:any) => a.managerRole.length - b.managerRole.length,
-            filters: [{"text":"Admin",value:"Admin"},
-            {"text":"Manager",value:"Manager"},
-            {"text":"Operator",value:"Operator"},
-            {"text":"Spoc",value:"Spoc"}],
-            onFilter: (value: string, record) => record.managerRole.indexOf(value) === 0,
-        },
-        {
-          title: 'Operator Contact',
-          dataIndex: 'managerContact',
-          key: 'managerContact',
-          render: (text:any) => <a>{text}</a>,
-          sorter: (a:any, b:any) => a.managerContact.length - b.managerContact.length,
-        },
-        {
-            title: 'Action',
-            dataIndex: 'managerSignature',
-            key: 'managerSignature  ',
-            render: (i,record,index) => (
-              <Space size="middle">
-                 <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> 
-                {(index !== 0 ? <a ><TrashIcon onClick={()=>{
-                   confirm({
-                    title: 'Do you want to delete this employee?',
-                        content: 'The action cannot be undone.',
-                    onOk() {
-                      handleRemoveEmployee(record.managerName)}
-                    }
-                   )
-                }} className='w-4 text-red-500' /></a> :<p></p>)}
-              </Space>
-            ),
-        },
-    ]
-    const [selectedRole, setSelectedRole] = useState("Select Role");
-    const fetchDiagnostic = async () => {return await axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)}
     const [edit,setEdit] = useState(false)
-    const [initialData,setInitial] = useState()
-    const dispatch = useDispatch()
-    
-    const handleEmployee = async (value:any) => {
-      let data = diagnosticDetails?.managersDetail || [];
-     
-      let duplicate = data.some((manager:any) => {return (manager.managerName===value.managerName || manager.managerContact===value.managerContact)})
+    const [initialData,setInitial] = useState({})
+    const [addElement,setAddElement] = useState(false)
+    const [selectedValue,setSelectedValue] = useState("Select Role")
+    const {diagnosticDetails} = useAuthContext()
+    const {data:diag,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
 
-      if(edit){
-        let data = diagnosticDetails?.managersDetail?.filter((dat)=>dat._id !== initialData.id)
-        data.push(value)
-        if(diagnosticDetails){
-              let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"managersDetail":data})
-              if(resp.status==200){
-                successAlert("Employee Added Succesfully")
-                ActivityLogger(`added ${value.managerName} as branch ${value.managerRole}`,diagnosticDetails)
-                dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:{...diagnosticDetails,"managersDetail":data}})
-                setAddOperator(false)
-                // refetch({force:true})
-              }
-        }
+    const handleRemove = async (value:any) => {
+
+      let updatedManager = diag?.data?.managersDetail?.filter((manager:any) => manager?._id !== value._id)
+      let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"managersDetail":updatedManager})
+
+      if(resp.status==200){
+        warningAlert("Employee removed succesfully")
         setEdit(false)
-      }else{
-        if(!duplicate){
-          data.push(value)
-          if(diagnosticDetails){
-                let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"managersDetail":data})
-                if(resp.status==200){
-                  successAlert("Employee Added Succesfully")
-                  ActivityLogger(`added ${value.managerName} as branch ${value.managerRole}`,diagnosticDetails)
-                  dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:{...diagnosticDetails,"managersDetail":data}})
-                  setAddOperator(false)
-                  // refetch({force:true})
-                }
-          }
-        }else{
-          errorAlert(`User by name/phoneNumber exists already`)
-        }
+        setAddElement(false)
+        refetch();
       }
-     
     }
 
     const handleEdit = (value:any) => {
       let initial = {
-        "managerName": value.managerName,
-        "managerContact":value.managerContact,
-        "managerRole":value.managerRole,
-        "id":value._id
+        "managerName": value?.managerName,
+        "managerContact":value?.managerContact,
+        "managerRole":value?.managerRole,
+        "_id":value._id
       }
-      console.log(initial)
+
       setInitial(initial)
-      setEdit(true)
-      setAddOperator(true)
+      setEdit(!edit)
+      setAddElement(!addElement)
     }
 
-    const handleRemoveEmployee = async (value:any) => {
-      let man = diagnosticDetails?.managersDetail.filter((manager:any) => manager.managerName === value) || [];
-      let data = diagnosticDetails?.managersDetail.filter((manager:any) => manager.managerName !== value) || [];
+    const handleSubmit = async (value:any) => {
+      let duplicate = diag?.data?.managersDetail.some((manager:any) => {return (manager.managerName===value.managerName || manager.managerContact===value.managerContact)})
 
-      if(diagnosticDetails){
-          let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"managersDetail":data})
-          if(resp.status==200){
-            successAlert("Employee deleted Succesfully")
-            dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"managersDetail":data}})
-            ActivityLogger(`removed ${man[0].managerName} from branch`,diagnosticDetails)
-          }
+      if(!edit && duplicate){
+        errorAlert("Duplicate Record found with name or contact")
+      }else if(edit){
+        let updated = {...initialData,...value}
+        let updatedManager = diag?.data?.managersDetail?.map((manager:any) => {
+          if( manager._id == initialData?._id){
+            return {...manager,...updated}
+          } return manager
+        })
+        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"managersDetail":updatedManager})
+        if(resp.status==200){
+          successAlert("Employee Updated succesfully")
+          setEdit(false)
+          setAddElement(false)
+          refetch();
+        }
+      }else{
+        let filter = diag?.data?.managersDetail
+        filter?.push(value)
+        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"managersDetail":filter})
+
+        if(resp.status==200){
+          successAlert("Employee added succesfully")
+          setEdit(false)
+          setAddElement(false)
+          refetch();
+        }
       }
     }
 
-    const employeeDetails = [
-      {"name":"managerName","type":"text","label":"Operator Name","required":true},
-      {"name":"managerContact","type":"text","label":"Operator Contact","required":true},
-      {"name":"managerRole","type":"roles","label":"Operator Role","required":true}
-    ]
+    const columns =  [
+      {
+        title: 'Operator Name',
+        dataIndex: 'managerName',
+        key: 'managerName',
+        render: (text:any) => <a className='text-blue-800 font-medium'>{text}</a>,
+        sorter: (a:any, b:any) => a.managerName.length - b.managerName.length,
+      },
+      {
+          title: 'Operator Role',
+          dataIndex: 'managerRole',
+          key: 'managerRole',
+          render: (text:any) => <a>{text}</a>,
+          sorter: (a:any, b:any) => a.managerRole.length - b.managerRole.length,
+          filters: [{"text":"Admin",value:"Admin"},
+          {"text":"Manager",value:"Manager"},
+          {"text":"Operator",value:"Operator"},
+          {"text":"Spoc",value:"Spoc"}],
+          onFilter: (value: string, record:any) => record.managerRole.indexOf(value) === 0,
+      },
+      {
+        title: 'Operator Contact',
+        dataIndex: 'managerContact',
+        key: 'managerContact',
+        render: (text:any) => <a>{text}</a>,
+        sorter: (a:any, b:any) => a.managerContact.length - b.managerContact.length,
+      },
+      {
+          title: 'Action',
+          dataIndex: 'managerSignature',
+          key: 'managerSignature  ',
+          render: (i,record,index) => (
+            <Space size="middle">
+               {(record?.managerRole !== "Owner") && <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> }
 
-    return (
-          <section >
-              <section className="min-h-[45vh]">
-                  {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.managersDetail} /></div>:
-                    <section className="w-[50%] my-10 relative">
-                      <DynamicFormCreator initial={edit && initialData} selectedRole={selectedRole} setSelectedRole={setSelectedRole} handleSubmit={handleEmployee} buttonText={edit?"update":"submit"} formProps={employeeDetails}  />
-                    </section>
+              {((record?.managerRole !== "Owner") ? <a ><TrashIcon onClick={()=>{
+                 confirm({
+                  title: 'Do you want to delete this employee?',
+                      content: 'The action cannot be undone.',
+                  onOk() {
+                    handleRemove(record)}
                   }
-              </section>
-            <section className="w-[100%] flex justify-start ">
-                  <button onClick={()=>{setAddOperator(!addOperator) 
-                  setEdit(false)}} className="bg-gray-200 p-2 rounded-md">
-                    {!addOperator ?  "Add Operator" : "View Operator"}
-                  </button>
-              </section>
-          </section>
+                 )
+              }} className='w-4 text-red-500' /></a> :<p></p>)}
+            </Space>
+          ),
+      },
+    ]
+ 
+    return (
+      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diag?.data?.managersDetail} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={EmployeeDetails} />
     )
-}
-
-
-function diagnosticProfile(){
-  const dispatch = useDispatch()
-  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-  const fetchDiagnostic = async () => {return await axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)}
-  const {data,isLoading} = useQuery(["diagnosticProfile",diagnosticDetails],fetchDiagnostic)
-
-  if(!isLoading){
-    successAlert("Diagnostic profile")
-    dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:data})
-  }
 }

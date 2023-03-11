@@ -1,6 +1,10 @@
 import { Fragment } from 'react'
-import { Head } from '@components/atoms'
-import { Error } from '@components/organism'
+import { Spinner } from '@components/atoms/loader'
+import dynamic from 'next/dynamic'
+
+
+const Head = dynamic(() => import('@components/atoms/head/head'))
+const Error = dynamic(() => import('@components/organism/error/index').then(res=>res.Error),{loading: () => <Spinner/>})
 
 export default function Home() {
   return (

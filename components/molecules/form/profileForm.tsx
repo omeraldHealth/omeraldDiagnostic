@@ -1,32 +1,14 @@
 import React, { useState } from 'react';
 import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
-import LogoUploader from '@components/atoms/file/logoUploaders';
-import BannerUploader from '@components/atoms/file/bannerUpload';
+import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
+import BannerUploader from '@components/atoms/fileUploder/bannerUpload';
 import { useSelector } from 'react-redux';
 import { useAuthContext } from 'utils/context/auth.context';
 import { getAuth } from 'firebase/auth';
 import firebaseApp from 'utils/auth/firebase';
+import { FormType } from 'utils/types/molecules/forms.interface';
 
-interface FormProps  {
-    name:string,
-    type:string,
-    label:string,
-    required:boolean,
-    pattern:RegExp,
-}
 
-interface FormType  {
-    formProps: FormProps[],
-    buttonText: string,
-    style?:string,
-    selectedRole?:string,
-    formStyle?:string,
-    button?:Boolean,
-    setSelectedRole?: (value:any) =>void
-    handleSubmit: (value:any) =>void
-    handleImage?: (value:any) =>void
-    handleDate?: (value:any) => void
-}
 
 export const ProfileForm = ({formProps,button,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)

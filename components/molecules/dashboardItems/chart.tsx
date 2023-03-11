@@ -1,36 +1,40 @@
 
 import { InputNumber, Modal } from 'antd';
 import { useEffect, useState } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar} from 'react-chartjs-2';
 import { DatePicker } from 'antd';
-import moment from 'moment';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
-const { RangePicker } = DatePicker;
+import { getDiagnosticReports } from '@utils';
+import { useQuery } from 'react-query';
 import 'chartjs-adapter-moment'
 import axios from 'axios';
-import { getDiagnosticReports } from '@utils';
+import moment from 'moment';
+import { Spinner } from '@components/atoms/loader';
+import { useAuthContext } from 'utils/context/auth.context';
+import useSelection from 'antd/es/table/hooks/useSelection';
 import { useSelector } from 'react-redux';
-import { useQuery } from 'react-query';
+
+const { RangePicker } = DatePicker;
+
 const ReportSharedVsTime2 = () =>{
 
-    const [maxVal,setMaxVal] = useState(100)
+    const [maxVal,setMaxVal] = useState(20)
     const [dateRange,setDateRange] = useState()
     const [date,setDate] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const [reportCount,setReportCount] = useState([])
-
-    const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
-    const {data:reports,isLoading:loading} = useQuery(["reports"],fetchReports)
+    const {diagnosticDetails} = useAuthContext();
+     const {data:reports,isLoading:loading} = useQuery(["reports"],()=>{return axios.get(getDiagnosticReports+diagnosticDetails?.phoneNumber)})
+  
 
     useEffect(()=>{
       const sixMonthsAgo = moment().subtract(6, 'months').toDate();
       const current = moment().toDate();
       initialLoad(sixMonthsAgo,current)
-      setMaxVal(10)
+      setMaxVal(reports?.data?.length || 0)
     },[reports])
 
-    const initialLoad = (start,end)=>{
+    const initialLoad = (start:any,end:any)=>{
       const startDate = new Date(start);
       const endDate = new Date(end);
       const {monthYearArray,counts} = getMonthYearArray(startDate, endDate,reports?.data);
@@ -47,8 +51,6 @@ const ReportSharedVsTime2 = () =>{
 
       setDate(monthYearArray);
       setReportCount(counts)
-      // setMaxVal(Math.max.apply(null, counts))
-     
     }
 
     const  option = {
@@ -124,19 +126,28 @@ const ReportSharedVsTime2 = () =>{
       setIsModalOpen(false)
     } 
 
+    const handleCancel = (val:any)=>{
+      const sixMonthsAgo = moment().subtract(6, 'months').toDate();
+      const current = moment().toDate();
+      initialLoad(sixMonthsAgo,current)
+      setMaxVal(reports?.length || 2)
+      setIsModalOpen(false)
+    } 
+
     const disabledDate = (current:any) => {
       return current && current < moment().subtract(6, 'months').endOf('day') || current > moment().endOf('day');;
     };
 
-    return   <section className="sm:w-[65%] xl:w-[50%] h-[30vh] sm:h-auto bg-white p-2"> 
+    return (  
+    <section className="sm:w-[65%] xl:w-[50%] h-[30vh] sm:h-auto bg-white p-2"> 
       <a href='#' onClick={()=>{setIsModalOpen(true)}}><span className='flex font-light text-sm justify-end text-red-700'>Choose Range <PencilSquareIcon className='w-4 mx-2' /></span></a>
-      <Modal open={isModalOpen} onOk={handleOk} onCancel={handleOk}>
-        <div className='my-2'>
-          <p className='my-2'>Enter Range of report count (Between 0 to 1000)</p>
-          <InputNumber min={1} max={1000} defaultValue={100} onChange={handleOnchange} />
+      <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+          <div className='my-2'>
+            <p className='my-2'>Enter Range of report count (Between 0 to 1000)</p>
+            <InputNumber min={1} max={1000} defaultValue={100} onChange={handleOnchange} />
           </div>
          
-        <div className='my-2'> 
+          <div className='my-2'> 
            <p className='my-2'>Choose Date range (6 months range)</p>
           <RangePicker onChange={(date:any)=>{setDateRange(date)}} disabledDate={disabledDate} picker="month" /></div>
       </Modal>
@@ -147,11 +158,12 @@ const ReportSharedVsTime2 = () =>{
         className="w-[100vw]"
       />
     </section>
+    )
 }
 
 export default ReportSharedVsTime2
 
-function getMonthYearArray(startDate, endDate,data) {
+function getMonthYearArray(startDate:any, endDate:any,data:any) {
   const startYear = startDate.getFullYear();
   const startMonth = startDate.getMonth();
   const endYear = endDate.getFullYear();
@@ -168,10 +180,6 @@ function getMonthYearArray(startDate, endDate,data) {
   const counts = [];
 
   for (let i = 0; i <= monthDifference; i++) {
-    // const countObj = {
-    //   // month: new Date(startYear, startMonth + i, 1).toLocaleString('default', { month: 'long', year: 'numeric' }), 
-    //   count: 0
-    // };
     let count = 0;
     if(data){
       for (let j = 0; j < data?.length; j++) {
@@ -182,11 +190,8 @@ function getMonthYearArray(startDate, endDate,data) {
           }
         }
       }
-  
       counts.push(count)
     }
-
   }
-
   return {monthYearArray,counts};
 }

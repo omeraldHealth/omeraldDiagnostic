@@ -1,20 +1,11 @@
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import moment from "moment";
-import { useState } from "react";
 import { useSelector } from "react-redux";
 
 export function Activity() {
-   
     const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-    let managersList = []
-    const managers = diagnosticDetails?.managersDetail.forEach((man:any) => {
-        const obj = { 
-          text: man.managerName, 
-          value: man.managerName 
-        };
-        managersList.push(obj)
-      });
-    const columns = [   
+    const managersList = diagnosticDetails?.managersList?.map((manager:any)=> manager?.managerName )
+    const ActivityForm  = [   
         {
             key: 'sdas',
             title: 'Activity',
@@ -29,21 +20,22 @@ export function Activity() {
               render: (text:any) => <a>{text.managerName}</a>,
               sorter: (a:any, b:any) => a.user.length - b.user.length,
               filters: managersList,
-              onFilter: (value: string, record) => record.user.managerName.indexOf(value) === 0,
+              onFilter: (value: string, record:any) => record.user.managerName.indexOf(value) === 0,
           },
           {
               key: 'qws',
               title: 'Activity Time',
               dataIndex: 'updatedTime',
               render: (text:any) => <a>{moment(text).format("DD/MM/yyyy HH:mm:ss")}</a>,
+              //@ts-ignore
               sorter: (a:any, b:any) => new Date(a.updatedTime) - new Date(b.updatedTime),
          
           },
     ]
-
+      
 	return (
         <div className="min-h-[45vh]">
-            <DashboardTable columns={columns} data={diagnosticDetails?.activities} />
+            <DashboardTable columns={ActivityForm} data={diagnosticDetails?.activities} />
         </div>
     )
 }
