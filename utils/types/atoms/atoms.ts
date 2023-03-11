@@ -47,4 +47,15 @@ export type NavigationType = {
     current: boolean;
 };
 
+export interface DashCardTyes {
+    href:string,
+    style:string,
+    icon: any,
+    tipInfo:string,
+    icon2:any,
+    title:string,
+    value: number
+}
+
+
 export const DIAGNOSTIC_PROFILE = "DIAGNOSTIC_PROFILE"

@@ -43,6 +43,14 @@ export type FormType = {
     pattern?:RegExp,
 };
 
+export const profileForm: FormType = [
+    {"name":"brandLogo","type":"image","label":"Logo","required":true},
+    {"name":"diagnosticName","type":"text","label":"Diagnostic Center Name","required":true},
+    {"name":"email","type":"email","label":"Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
+    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true},
+    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true},
+  ]
+
 export const basicFormArray:FormType[] = [
     {"name":"phoneNumber","type":"text","label":"Phone Number","required":true},
     {"name":"diagnosticName","type":"text","label":"Diagnostic Name","required":true},

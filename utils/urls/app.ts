@@ -14,3 +14,4 @@ export const uploadReportApi = backendApiPath+`/api/diagnostic/uploadReport`
 export const insertReportApi = backendApiPath+`/api/diagnostic/reports/insertDiagnosticReport`
 export const updateTestApi = backendApiPath+`/api/diagnostic/updateDiagnosticUser?userId=`
 export const sendWhatsAppApi = backendApiPath+`/api/diagnostic/sendWhatsAppText`
+export const sendWhatsAppQueryApi = backendApiPath+`/api/diagnostic/sendWhatsAppQuery`

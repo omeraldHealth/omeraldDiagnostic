@@ -17,7 +17,7 @@ import { AddReportComponent } from '@components/molecules/addReport/addReport';
 import { sortBy } from 'lodash';
 import SharePdf from '@components/atoms/button/whatsappShare';
 import { FaWhatsapp } from 'react-icons/fa';
-import { getUserDetails, sendWhatsAppText } from 'utils/hook/userDetail';
+import { sendWhatsAppText } from 'utils/hook/userDetail';
 import { successAlert } from '@components/atoms/alerts/alert';
 
 export default function ReportsTab() {

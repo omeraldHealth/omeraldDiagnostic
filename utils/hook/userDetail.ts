@@ -1,4 +1,4 @@
-import { getDiagnosticReports, getDiagnosticUserApi, insertDiagnosticUserApi, insertReportApi, sendWhatsAppApi, updateDiagnosticUserApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
+import { addQueryApi, getDiagnosticReports, getDiagnosticUserApi, insertDiagnosticUserApi, insertReportApi, sendWhatsAppApi, sendWhatsAppQueryApi, updateDiagnosticUserApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
 import { getUserDetailType } from "utils/types/atoms/hooks";
 import { ReportDetails, UserDetails } from "utils/types/molecules/users.interface";
 import axios from "axios";
@@ -11,6 +11,10 @@ export async function getUserDetails(phoneNumber: getUserDetailType) {
   } catch (error: any) {
     return { status: error.response.status || error.request.code, data: null };
   }
+}
+
+export async function fetchUserDetails(phoneNumber: getUserDetailType) {
+  () => {return axios.get(getDiagnosticUserApi+phoneNumber?.phoneNumber)}
 }
 //insert diagnostic profile
 export async function setUserDetails(userDetails: UserDetails) {
@@ -90,6 +94,28 @@ export async function sendWhatsAppText(
 ) {
   try {
     const resp = await axios.post(sendWhatsAppApi,data);
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response};
+  }
+}
+//send whatsapp query
+export async function sendWhatsAppQuery(
+  data: any
+) {
+  try {
+  const resp = await axios.post(sendWhatsAppQueryApi,data);
+    return { status: resp.status, data: resp.data };
+  } catch (error: any) {
+    return { status: error.response};
+  }
+}
+//send whatsapp query
+export async function addEmailQuery(
+  data: any
+) {
+  try {
+  const resp = await axios.post(addQueryApi,data);
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error.response};

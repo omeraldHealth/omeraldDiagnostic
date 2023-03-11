@@ -58,6 +58,15 @@ export const DynamicFormCreator = ({formProps,showLabel,disableElement,initial,f
                             <LogoUploader handleImage={handleImage} />
                         </Form.Item>
                     }
+                    {form.type === "textArea" && 
+                        <Form.Item  
+                                label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
+                                key={index} className='mb-6 font-bold text-lg' 
+                                name={form.name} labelCol={{ span: 10 }}  
+                                rules={[{ pattern: form?.pattern, required: false,message: `Please input ${form.label}`}]}>
+                          <textarea className='border-gray-200 border-2 p-3 rounded-lg' rows={4} cols="49" placeholder={form.label} maxLength={1000} />
+                        </Form.Item>
+                    }
                     {form.type === "select" && 
                         <Form.Item  
                             label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 

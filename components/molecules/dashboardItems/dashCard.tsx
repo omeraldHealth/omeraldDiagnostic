@@ -1,33 +1,17 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Link from 'next/link';
 import { BeakerIcon,ChartBarIcon,InformationCircleIcon, ShareIcon } from '@heroicons/react/20/solid';
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
-import { report } from 'process';
 import { Tooltip } from 'antd';
-import { useQuery } from 'react-query';
-import axios from 'axios';
-import { getDiagnosticReports } from '@utils';
-
-interface DashCardTye {
-    href:string,
-    style:string,
-    icon: any,
-    tipInfo:string,
-    icon2:any,
-    title:string,
-    value: number
-}
+import {DashCardTyes} from "utils/types/atoms/atoms"
 
 export const DashCard = () => {
  
 const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-const reportList = useSelector((state:any)=>state.reportListReducer)
-const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
-const {data:reports,isLoading:loading} = useQuery(["reports"],fetchReports)
+const reportList = useSelector((state:any)=>state.reportReducer)
 const dispatch = useDispatch()
 
-const dashCard: DashCardTye[] = [
+const dashCard: DashCardTyes[] = [
     {
         href:"/test",
         style:" bg-blue-900",
@@ -44,7 +28,7 @@ const dashCard: DashCardTye[] = [
         tipInfo:"Shows the count of tests offered by your laboratory",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Reports Uploaded",
-        value: reports?.data?.length
+        value: reportList?.data?.length
     },
     {
         href:"/reports",

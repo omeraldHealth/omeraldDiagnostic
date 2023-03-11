@@ -1,7 +1,7 @@
 import { useMutation, useQuery, UseQueryOptions } from 'react-query';
 
 //useQuery hook to get data
-export function useQGetData<T>(
+export function useQueryGetData<T>(
   queryName: string,
   queryFn: any,
   options?: UseQueryOptions<T>
@@ -17,3 +17,4 @@ export function useQuerySetData<T>(
   const queryKey = [queryName];
   return useMutation<T>(queryKey, queryFn);
 }
+

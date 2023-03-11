@@ -4,7 +4,6 @@ import { onboardSteps } from "utils/static";
 import {DynamicFormCreator} from "components/molecules/form/dynamicForm"
 import { BasicDetailsForm, basicFormArray, BranchDetails, branchDetailsFormArray, brandDetailsFormArray } from "utils/types/molecules/forms.interface";
 import { BrandDetailsForm, UserDetails } from "@utils";
-import { ProfileSummaryComponent } from "../profile";
 import { setUserDetails, uploadImage } from "utils/hook/userDetail";
 import { useRouter } from "next/router";
 import { Spinner } from "@components/atoms/loader";
@@ -12,6 +11,9 @@ import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
 import { useAuthContext } from "utils/context/auth.context";
 import { BackwardIcon } from "@heroicons/react/20/solid";
 import { ForwardIcon } from "@heroicons/react/24/outline";
+import dynamic from "next/dynamic";
+
+const ProfileSummaryComponent = dynamic(() => import('../profile').then(res=>res.ProfileSummaryComponent),{loading: () => <Spinner/>})
 
 const OnboardComponents = () => {
   const [loading, setLoading] = useState(false);
