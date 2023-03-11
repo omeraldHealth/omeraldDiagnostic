@@ -7,7 +7,6 @@ import { useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 
-const queryClient = new QueryClient()
 export function Support() {
     const {diagnosticDetails} = useAuthContext()
     const [query,setQuery] = useState(false);

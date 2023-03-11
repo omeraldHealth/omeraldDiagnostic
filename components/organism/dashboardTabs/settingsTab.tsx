@@ -14,7 +14,7 @@ const Billing = dynamic(() => import('@components/organism/settingsTabs/billing'
 const Activity = dynamic(() => import('@components/organism/settingsTabs/activity').then(res=>res.Activity),{loading: () => <Spinner/>})
 const BranchManagement = dynamic(() => import('@components/organism/settingsTabs/branchMan').then(res=>res.BranchManagement),{loading: () => <Spinner/>})
 const EmployeeManagement = dynamic(() => import('@components/organism/settingsTabs/employe').then(res=>res.EmployeeManagement),{loading: () => <Spinner/>})
-const PathologistManagement = dynamic(() => import('@components/organism/settingsTabs/pathologis').then(res=>res.PathologistManagement),{loading: () => <Spinner/>})
+const PathologistManagement = dynamic(() => import('@components/organism/settingsTabs/pathologist').then(res=>res.PathologistManagement),{loading: () => <Spinner/>})
 const Support = dynamic(() => import('@components/organism/settingsTabs/support').then(res=>res.Support),{loading: () => <Spinner/>})
 
 const components = [
@@ -67,7 +67,7 @@ const SettingsBadeCount = ({index}:any) => {
   }else if(index == 4){
     count = diagnosticDetail?.data?.pathologistDetail?.length;
   }else if(index == 5){
-    count = queries?.data?.length || 10; 
+    count = queries?.data?.length
   }
 
  return <p>

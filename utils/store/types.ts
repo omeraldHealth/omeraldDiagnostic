@@ -41,3 +41,14 @@ export interface phoneNumberType  {
     otp: string,
     setOtp: (phone:string) => void
   }
+
+export interface DataType {
+  key: string;
+  testName: string;
+  sampleType: SampleType;
+}
+
+export interface SampleType {
+  sampleName: string,
+  keywords: any[];
+}

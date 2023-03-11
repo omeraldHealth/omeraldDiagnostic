@@ -3,6 +3,8 @@ import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
 import { DynamicFormType } from 'utils/types/molecules/forms.interface';
 import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
 import { roles } from 'utils/static';
+import { FileUploader } from '@components/atoms/fileUploder/fileUpload';
+import BannerUploader from '@components/atoms/fileUploder/bannerUpload';
 
 
 export const DynamicFormCreator = ({formProps,showLabel,disableElement,initial,formStyle,handleSubmit,handleImage,buttonText,selectedValue,setSelectedValue}:DynamicFormType) => {
@@ -52,13 +54,22 @@ export const DynamicFormCreator = ({formProps,showLabel,disableElement,initial,f
                             <Input placeholder={form.label} className="border-gray-300 lowercase rounded-lg text-black font-light text-sm py-2" />
                         </Form.Item>
                     } 
-                    {form.type === "image" && 
+                    {form.type === "image" &&  form.name != "signature" &&
                         <Form.Item  
                             label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
                             key={index} className='mb-6 font-bold text-lg' 
                             name={form.name} labelCol={{ span: 10 }}  
                             rules={[{ pattern: form?.pattern, required: false,message: `Please input ${form.label}`}]}>
                             <LogoUploader handleImage={handleImage} />
+                        </Form.Item>
+                    }
+                     {form.type === "image" && form.name ==="signature" && 
+                        <Form.Item  
+                            label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
+                            key={index} className='mb-6 font-bold text-lg' 
+                            name={form.name} labelCol={{ span: 10 }}  
+                            rules={[{ pattern: form?.pattern, required: false,message: `Please input ${form.label}`}]}>
+                            <BannerUploader text="Signature" handleImage={handleImage} />
                         </Form.Item>
                     }
                     {form.type === "textArea" && 
@@ -83,7 +94,21 @@ export const DynamicFormCreator = ({formProps,showLabel,disableElement,initial,f
                                 options={roles.map((role) => ({ label: role, value: role }))}
                             />
                         </Form.Item>
-                    }  
+                    } 
+                    {/* {form.type === "select" && 
+                        <Form.Item  
+                            label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
+                            key={index} className='mb-6 font-bold text-lg' 
+                            name={form.name} labelCol={{ span: 10 }}  
+                            rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                            <Select
+                                style={{ width: 380 }}
+                                defaultValue={selectedValue}
+                                onChange={(e)=>{setSelectedValue(e)}}
+                                options={roles.map((role) => ({ label: role, value: role }))}
+                            />
+                        </Form.Item>
+                    }   */}
 
                 </>
                 )}

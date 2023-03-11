@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Upload } from 'antd';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 
-const BannerUploader = ({handleImage}:any) => {
+const BannerUploader = ({handleImage,text}:any) => {
   const [fileList, setFileList] = useState<UploadFile[]>([
   ]);
 
@@ -40,7 +40,7 @@ const BannerUploader = ({handleImage}:any) => {
         onPreview={onPreview}
         className={"text-left"}
       >
-        {fileList.length < 1 && '+ Upload Banner'}
+        {fileList.length < 1 && '+ Upload '+text}
       </Upload>
   );
 };

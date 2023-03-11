@@ -81,6 +81,12 @@ export const branchDetailsEditFormArray: FormType[] = [
    
 ]
 
+export const pathologistFormArray = [
+    {"name":"signature","type":"image","label":"Pathologist Signature","required":true},
+    {"name":"name","type":"text","label":"Pathologist Name","required":true},
+    {"name":"designation","type":"text","label":"Pathologist Designation","required":true},
+]
+
 export const initialTestState : ReportTypes = {
 	sampleName:"",
 	//@ts-ignore
