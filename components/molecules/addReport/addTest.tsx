@@ -3,27 +3,16 @@ import { Spinner } from '@components/atoms/loader';
 import { Modal } from 'antd';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { updateTests, updateUserDetails } from 'utils/hook/userDetail';
-import { addReportSteps, addTestSteps } from 'utils/static'
+import { updateUserDetails } from 'utils/hook/userDetail';
+import {  addTestSteps } from 'utils/static'
 import { SET_TEST } from 'utils/store/types';
 import { AddKeyword } from '../addTest/createdKeyword';
 import { SuccessTest } from '../addTest/successTest';
 import { TestDetail } from '../addTest/testDetail';
 import { DynamicFormCreator } from '../form/dynamicForm';
-import { PatientDetails } from './patientDetails';
-import { SuccessReport } from './successReport';
-import { UploadReport } from './uploadReport';
-
-const testForm = [
-  {"name":"keyword","type":"text","label":"Parameters","required":true},
-  {"name":"unit","type":"text","label":"unit","required":true},
-  {"name":"minRange","type":"text","label":"minRange","required":true},
-  {"name":"maxRange","type":"text","label":"minRange","required":true},
-  {"name":"aliases","type":"tags","label":"Aliases","required":true},
-]
 
 
-export const AddTestComponent = ({setTest}:any) => {
+export const AddTestComponent = ({setTest,refetch}:any) => {
   const testDetails = useSelector((state:any)=>state.testReducer)
   const [currentStep, setCurrentStep] = useState(addTestSteps[0]);
   const {sampleName,selectedTest,testName} = useSelector((state:any)=>state.testReducer)
@@ -33,6 +22,7 @@ export const AddTestComponent = ({setTest}:any) => {
   const dispatch = useDispatch()
   const [showTable,setShowTable] = useState(false)
   const { confirm } = Modal;
+
   const handleStep = async(value:any) => {
 
       if(value==2){
@@ -48,8 +38,8 @@ export const AddTestComponent = ({setTest}:any) => {
 
           let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"tests":test})
           if(resp.status ===200){
-          setLoading(false)
-          setCurrentStep(addTestSteps[value])
+            setLoading(false)
+            setCurrentStep(addTestSteps[value])
           }
       }else{
         setCurrentStep(addTestSteps[value])
@@ -72,7 +62,7 @@ export const AddTestComponent = ({setTest}:any) => {
   }
 
   const handleSuccess = ()=>{
-    console.log("sdnj")
+    refetch()
     setTest(false)
   }
 

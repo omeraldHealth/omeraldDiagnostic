@@ -44,7 +44,6 @@ export const TestDetail = ({handleSteps,setShowTable}:any) => {
     }
 
     useEffect(()=>{
-        console.log(selectedReport)
         if(sampleName!="" && manual.value && selectedReport?._id){
             setShowTable(true)
         }else{
@@ -59,7 +58,7 @@ export const TestDetail = ({handleSteps,setShowTable}:any) => {
     useEffect(()=>{setData(reportTypes)},[])
    
     const handleSearch = (newValue: string) => {
-            let temp = reportTypes?.filter((report:any)=> report.testName.includes(newValue))
+            let temp = reportTypes?.filter((report:any)=> report.testName.toLowerCase().includes(newValue))
             setData(temp)
     };
     

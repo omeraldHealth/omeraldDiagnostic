@@ -3,6 +3,7 @@ import { ReportDetails, ReportTypes } from "./users.interface";
 export const textPattern = ""
 export const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 export const phonePattern = /^(?:\+91|0)?[6789]\d{9}$/
+export const numberPattern = /^[1-7]+$/
 
 export type BasicDetailsForm = {
     diagnosticName: string;
@@ -80,6 +81,14 @@ export const branchDetailsEditFormArray: FormType[] = [
     {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
    
 ]
+
+export const testForm:FormType = [
+    {"name":"keyword","type":"text","label":"Parameters","required":true},
+    {"name":"unit","type":"text","label":"unit","required":true},
+    {"name":"minRange","type":"text","label":"minRange","required":true,pattern:numberPattern},
+    {"name":"maxRange","type":"text","label":"minRange","required":true,pattern:numberPattern},
+    {"name":"aliases","type":"tags","label":"Aliases","required":true},
+  ]
 
 export const pathologistFormArray = [
     {"name":"signature","type":"image","label":"Pathologist Signature","required":true},

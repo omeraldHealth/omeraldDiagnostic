@@ -3,9 +3,8 @@ import { Spinner } from '@components/atoms/loader'
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
 import { success } from '@styles/styleTemplate/color'
 import { Modal, Space, Tag } from 'antd'
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateTests } from 'utils/hook/userDetail'
 import { SET_TEST } from 'utils/store/types'
 import { DashboardTable } from '../dashboardItems/data-table'
 
@@ -44,35 +43,49 @@ export const AddKeyword = ({handleSteps,action}:any) => {
         // render: (text:any) => text.map((t:any) => <Tag color={"green"}>{t}</Tag>),
 
         render: tags => {
-          const displayTags = tags.slice(0, 6);
-          const remainingTags = tags.slice(6);
+          console.log(tags)
+          if(!tags && tags?.length<1){
+            return <p></p>
+          }
+
+          const displayTags =tags &&  tags.slice(0, 6);
+          const remainingTags =tags &&   tags.slice(6);
+
           return (
             <>
-              {displayTags.map(tag => (
+              {(!displayTags || displayTags?.length==0)  ?
+              <p></p>:<>
+                 {displayTags.map(tag => (
                 <Tag key={tag}>{tag}</Tag>
-              ))}
-              {remainingTags.length > 0 && (
-                <>
-                  <Tag>...</Tag>
-                  <Tag>{remainingTags.length} more</Tag>
-                </>
-              )}
+                  ))}
+                  {remainingTags.length > 0 && (
+                    <>
+                      <Tag  color={'green'}>...</Tag>
+                      <Tag color={'green'}>{remainingTags.length} more</Tag>
+                    </>
+                  )}
+              </>}  
             </>
           );
         }
       },
-      {
-            title: 'Action',
-            dataIndex: 'unit',
-            key: 'unit  ',
-            render: (text:any,record:any) => (
-              <Space size="middle">
-                {action && <a ><TrashIcon onClick={()=>{handleDelete(record)}} className='w-4 text-red-500' /></a> }
-                {/* <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a>  */}
-            </Space>
-            ),
-      },
   ]
+
+  if(action){
+    columns?.push(
+      {
+        title: 'Action',
+        dataIndex: 'unit',
+        key: 'unit  ',
+        render: (text:any,record:any) => (
+          <Space size="middle">
+            {action && <a ><TrashIcon onClick={()=>{handleDelete(record)}} className='w-4 text-red-500' /></a> }
+            <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> 
+        </Space>
+        ),
+  },
+    )
+  }
   const dispatch = useDispatch()
   // ((state:any)=>state.testReducer)
 
@@ -86,6 +99,10 @@ export const AddKeyword = ({handleSteps,action}:any) => {
         successAlert("Keyword removed Sucesfully")
       }
     }) 
+  }
+
+  const handleEdit = (value:any)=>{
+  
   }
   return (
     <div>

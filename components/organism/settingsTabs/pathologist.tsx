@@ -52,32 +52,44 @@ export function PathologistManagement() {
 
     const handleSubmit = async (value:any) => {
       let duplicate = diag?.data?.pathologistDetail.some((path:any) => {return (path.name===value.name)})
+      let flag = true;
       setLoading(true)
       if(!edit && duplicate){
         errorAlert("Duplicate Record found with name or contact")
-      }else if(edit && !duplicate){
-        if(image){
-          let location = await uploadImage(image)
-          if(location){
-            value["signature"] = location
-          }
+      }else if(edit){
+        
+        if(duplicate){
+           diag?.data?.pathologistDetail?.map((path:any)=>{
+              if( path._id !== initialData?._id && path.name === value.name){
+                errorAlert("Pathologist with same name already exists")
+                flag = false;
+              }
+           })
         }
-        let updated = {...initialData,...value}
-        let updatedPath = diag?.data?.pathologistDetail?.map((path:any) => {
-          if( path._id == initialData?._id){
-            return {...path,...updated}
-          } return path
-        })
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"pathologistDetail":updatedPath})
-        if(resp.status==200){
-          successAlert("Branch Updated succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
+        console.log(flag)
+        if(flag){
+          if(image){
+            let location = await uploadImage(image)
+            if(location){
+              value["signature"] = location
+            }
+          }
+          let updated = {...initialData,...value}
+          let updatedPath = diag?.data?.pathologistDetail?.map((path:any) => {
+            if( path._id == initialData?._id){
+              return {...path,...updated}
+            } return path
+          })
+          let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"pathologistDetail":updatedPath})
+          if(resp.status==200){
+            successAlert("Branch Updated succesfully")
+            setEdit(false)
+            setAddElement(false)
+            refetch();
+          }
         }
       }else{
         let filter = diag?.data?.pathologistDetail
-        console.log(filter  )
         if(image){
           let location = await uploadImage(image)
           if(location){
@@ -89,7 +101,7 @@ export function PathologistManagement() {
         let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"pathologistDetail":filter})
 
         if(resp.status==200){
-          successAlert("Employee added succesfully")
+          successAlert("Pathologist added succesfully")
           setEdit(false)
           setAddElement(false)
           refetch();

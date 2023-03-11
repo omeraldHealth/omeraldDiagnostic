@@ -95,20 +95,15 @@ export const DynamicFormCreator = ({formProps,showLabel,disableElement,initial,f
                             />
                         </Form.Item>
                     } 
-                    {/* {form.type === "select" && 
-                        <Form.Item  
-                            label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
-                            key={index} className='mb-6 font-bold text-lg' 
-                            name={form.name} labelCol={{ span: 10 }}  
-                            rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                            <Select
-                                style={{ width: 380 }}
-                                defaultValue={selectedValue}
-                                onChange={(e)=>{setSelectedValue(e)}}
-                                options={roles.map((role) => ({ label: role, value: role }))}
+                    {form.type === "tags" &&
+                        <Form.Item  key={index} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
+                        <Select
+                                mode="tags"
+                                style={{ width: '100%' }}
+                                placeholder="Aliases"
                             />
                         </Form.Item>
-                    }   */}
+                        }
 
                 </>
                 )}
