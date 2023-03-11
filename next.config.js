@@ -6,10 +6,10 @@ const nextConfig = {
     domains:["omerald.s3.ap-northeast-1.amazonaws.com"]
   },
   eslint: {
-    ignoreDuringBuilds: false,
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
 };
 

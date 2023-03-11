@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { UploadOutlined } from '@ant-design/icons';
 import { Button, message, Upload } from 'antd';
 import type { UploadProps } from 'antd/es/upload/interface';
 

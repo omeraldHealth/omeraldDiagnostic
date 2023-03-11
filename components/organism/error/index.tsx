@@ -3,7 +3,7 @@ import { Navbar } from "@components/molecules/navbar";
 import { PageTemplate } from "@components/templates/pageTemplate";
 import { notFound } from "@utils";
 import Link from "next/link";
-import styles from "@styles/SignIn.module.css"
+import styles from "@styles/signIn.module.css"
 
 export function Error() {
 	return (

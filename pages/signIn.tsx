@@ -2,8 +2,8 @@ import { Fragment, useEffect } from 'react'
 import { useAuthContext } from 'utils/context/auth.context'
 import { useRouter } from 'next/router'
 import { PageTemplate } from '@components/templates/pageTemplate'
-import styles from "styles/signIn.module.css"
 import dynamic from 'next/dynamic'
+import styles from "styles/signIn.module.css"
 import { Spinner } from '@components/atoms/loader'
 
 const Head = dynamic(() => import('@components/atoms/head/head'))

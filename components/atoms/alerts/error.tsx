@@ -3,8 +3,6 @@ import Link from 'next/link'
 import React, { Fragment } from 'react'
 import { errorImage } from '@utils'
 import { TitleText } from '../font'
-import { Navbar } from '@components/molecules/navbar'
-import { Footer } from '@components/molecules/footer'
 
 export default function ErrorComp ({pageName}:any) {
   return (
