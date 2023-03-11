@@ -5,9 +5,5 @@ export { ContactContainer } from '@components/organism/landing/contactContainer'
 export { Testimonial } from '@components/organism/landing/testimonial';
 export { Advertisement } from '@components/organism/landing/advertisement';
 export { HelpYourBusiness } from '@components/organism/landing/helpYourBusiness';
-export { LandingBanner } from '@components/organism/landing/landingBanner';
 export { HowItWorks } from '@components/organism/landing/howItWorks';
-export { LandingPage } from '@components/organism/landing/landingPage';
-export { SignIn } from '@components/organism/signIn/index';
 export { Error } from '@components/organism/error/index';
-export { OnboardComp } from '@components/organism/onboard/index';

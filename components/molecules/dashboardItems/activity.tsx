@@ -1,12 +1,13 @@
 import { UserCircleIcon } from '@heroicons/react/20/solid'
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import moment from 'moment';
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
+import moment from 'moment';
+import React from 'react'
 
 export const DashActivity = () => {
 
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
+  //@ts-ignore
   let activities = diagnosticDetails?.activities.sort((a:any,b:any)=>new Date(b.updatedTime) - new Date(a.updatedTime)).slice(0,5)
 
   return (
@@ -20,11 +21,6 @@ export const DashActivity = () => {
             </section> 
     </section>
 )}
-
-const DateConverter = (dateString:any) => {
-    const date = new Date(dateString);
-    return date
-}  
 
 const ActivityItem = ({activityList}:any) => {
     const dispatch = useDispatch()
@@ -49,3 +45,8 @@ const ActivityItem = ({activityList}:any) => {
     <a href="#" onClick={()=>{dispatch({type:SET_DASHBOARD_ROUTE,payload:{name:"Settings",href:"/settings",selectedTabIndex:"1"}})}} className='font-light text-xs text-blue-700'>Read More....</a>
     </section>
 }
+
+const DateConverter = (dateString:any) => {
+    const date = new Date(dateString);
+    return date
+}  

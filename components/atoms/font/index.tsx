@@ -1,6 +1,6 @@
 import { FontTextProp, NavTextProps } from '@utils'
 import React, { FC } from 'react'
-import { BodyStyled_1, BodyStyled_2, BodyStyled_3, HeaderStyled_1, HeaderStyled_2, TitleTextStyled, TitleTextStyled_2 } from './font.style'
+import { BodyStyled_1, BodyStyled_2, BodyStyled_3, HeaderStyled_1, HeaderStyled_2, HeaderStyled_3, TitleTextStyled, TitleTextStyled_2 } from './font.style'
 
 export const CopyRightFont: FC<NavTextProps> = ({children}: NavTextProps) => (
 	<span className={"font-md text-base leading-[26px]"}>{children}</span>
@@ -28,6 +28,10 @@ export const HeaderText_1: FC<FontTextProp> = ({style,children}: FontTextProp) =
 
 export const HeaderText_2: FC<FontTextProp> = ({style,children}: FontTextProp) => (
 	<span className={`${style}`}><HeaderStyled_2>{children}</HeaderStyled_2></span>
+)
+
+export const HeaderText_3: FC<FontTextProp> = ({style,children}: FontTextProp) => (
+	<span className={`${style}`}><HeaderStyled_3>{children}</HeaderStyled_3></span>
 )
 
 export const BodyText_1: FC<FontTextProp> = ({style,children}: FontTextProp) => (

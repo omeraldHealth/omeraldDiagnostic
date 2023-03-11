@@ -1,6 +1,6 @@
-import { SubscribeButton } from '@components/atoms/button/button'
+import { SubscribeButton } from '@components/atoms/buttons/button'
 import { CopyRightFont, FooterHeaderFont, FooterLinkFont } from '@components/atoms/font'
-import { SocialMediaIcons } from '@components/atoms/icons/socialMedia'
+import { SocialMediaIcons } from '@components/atoms/buttons/socialMedia'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -31,13 +31,13 @@ export function Footer() {
                 </section>
                 <section>
                     <FooterHeaderFont>{"Company"}</FooterHeaderFont>
-                    <section className='mt-6'>
-                    {navFooterLinks.map((nav,index) => <Link key={index} href={nav.navLink}><FooterLinkFont>{nav.navText}</FooterLinkFont></Link> )}
+                    <section className='mt-6 grid gap-2 text-gray-400'>
+                        {navFooterLinks.map((nav,index) => <Link key={index} className="text-gray-400" href={nav.navLink}><FooterLinkFont>{nav.navText}</FooterLinkFont></Link> )}
                     </section>
                 </section>
                 <section>
                     <FooterHeaderFont>{"Resources"}</FooterHeaderFont>
-                    <section className='mt-6'>
+                    <section className='mt-6 grid gap-2'>
                     {navFooterLinks2.map((nav,index) => <Link key={index} href={nav.navLink}><FooterLinkFont>{nav.navText}</FooterLinkFont></Link> )}
                     </section>
                 </section>    
@@ -45,7 +45,7 @@ export function Footer() {
                     <FooterHeaderFont>{"Join our newsletter"}</FooterHeaderFont>
                     <section>
                         <section className='flex border-2 mt-6'>
-                            <input className='border-4 border-black bg-slate-50 text-slate-600' type={"text"} placeholder="Your email address" id="email" name="email" value={email} onChange={(e)=>{setEmail(e.target.value)}} />
+                            <input className='border-1 p-2 border-black bg-slate-50 text-slate-600' type={"text"} placeholder="Your email address" id="email" name="email" value={email} onChange={(e)=>{setEmail(e.target.value)}} />
                             <SubscribeButton>{"Subscribe"}</SubscribeButton>
                         </section>
                         <p className='font-xs text-light text-[#181433] opacity-50 my-6'>* Will send you weekly updates for your better finance management.</p>

@@ -1,32 +1,70 @@
-import { successAlert } from '@components/atoms/alerts/alert'
-import { ErrorComp } from '@components/atoms/error'
+import { errorAlert, successAlert } from '@components/atoms/alerts/alert'
+import ErrorComp from '@components/atoms/alerts/error'
 import { Spinner } from '@components/atoms/loader'
-import { ClockIcon, PencilIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { PencilIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { Modal } from 'antd'
-import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useAuthContext } from 'utils/context/auth.context'
 import { updateUserDetails, uploadImage } from 'utils/hook/userDetail'
 import { SET_DIAGNOSTIC_DETAILS } from 'utils/store/types'
+import { profileForm } from 'utils/types/molecules/forms.interface'
+import { DynamicFormCreator } from '../form/dynamicForm'
+import React, { useState } from 'react'
 
-import { ProfileForm } from '../form/profileForm'
+export const ProfileSummaryComponent = ({style,props,summary}:any) => {
 
-export const ProfileSummaryComponent = ({style,props}:any) => {
-  
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
+  const profile = summary ? props: diagnosticDetails
+
+  return (
+    <div className='h-auto '>
+        {summary && <>{profile && profile.diagnosticName && <ProfileSummary profile={profile} style={style} />}</>}
+        {!summary && <>{profile && profile.diagnosticName && <ProfileView profile={profile} style={style} />}</> }
+        {!profile?.diagnosticName && <ErrorComp/>}
+    </div>
+  )
+}
+
+const ProfileSummary = ({profile,style}:any) => {
+  return (
+    <section>
+               <div className={`w-[70vw] p-4 bg-white relative rounded-lg h-auto text-left ${style}`}>
+                  <section>
+                    <img src={profile?.brandDetails?.brandLogo?.[0]?.thumbUrl } alt="logo" className='w-[5vw] rounded-full border-2' />
+                     <section className='grid grid-cols-2 w-[70%]'> 
+                        <aside>
+                          <p className='my-8 font-bold text-sm'>{"Diagnostic Center Name: "}<span className='text-black font-light'>{profile?.diagnosticName}</span></p>
+                          <p className='my-8 font-bold text-sm'>{"Email: "}<span className='text-black font-light lowercase'>{profile?.email}</span></p>
+                          <p className='my-8 font-bold text-sm'>{"Contact: "}<span className='text-black font-light'>{profile?.phoneNumber}</span></p>
+
+                          <p className='my-8 font-bold text-sm'>{"Facebook Url "}<a href={profile?.brandDetails?.facebookUrl} className='text-black font-light'>{profile?.brandDetails?.facebookUrl}</a></p>
+                          <p className='my-8 font-bold text-sm'>{"Instagram Url: "}<a href={profile?.brandDetails?.instaUrl} className='text-black font-light lowercase'>{profile?.brandDetails?.instaUrl}</a></p>
+                        </aside>
+                        <aside>
+                          <p className='my-8 font-bold text-sm'>{"Branch Name: "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchName}</span></p>
+                          <p className='my-8 font-bold text-sm'>{"Branch Email: "}<span className='text-black font-light lowercase'>{profile?.branchDetails?.[0]?.branchEmail}</span></p>
+                          <p className='my-8 font-bold text-sm'>{"Branch Contact: "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchContact}</span></p>
+                          <p className='my-8 font-bold text-sm'>{"Branch Address "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchAddress}</span></p>
+                        </aside>
+                     </section>
+                  </section>
+               </div>
+    </section>
+  )
+} 
+
+const ProfileView = ({profile,style}:any) => {
   const [edit,setEdit] = useState(false);
   const [loading,setLoading] = useState(false);
   const [image,setImage] = useState();
   const { confirm } = Modal;
   const dispatch = useDispatch();
   
+  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
   const handleSubmit = async (value:any) => {
-
-
     confirm({
       title: 'Do you want to update this?',
       content: 'The action cannot be undone.',
-     async onOk() {
+      async onOk() {
         setLoading(true)
         value["brandLogo"] = image;
         if(image){
@@ -34,7 +72,7 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
     
             if(resp){
               let location = resp
-              let brandDetails = [{"brandLogo":location,"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}]
+              let brandDetails = {"brandLogo":location,"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}
               let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
               let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
               if(resp2.status==200){
@@ -42,12 +80,13 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
                 successAlert("Profile updated sucessfully")
                 setEdit(false)
               }
-              
+            }else{
+              errorAlert("Error uploading profile")
             }
         }
-        else if(edit && !image){
-          let brandDetails = [{"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}]
-              let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
+        else {
+              let brandDetails = {"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl,"brandLogo":diagnosticDetails?.brandDetails?.brandLogo}
+              let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,"brandDetails":brandDetails}
               let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
               if(resp2.status==200){
                 dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:diag})
@@ -55,93 +94,64 @@ export const ProfileSummaryComponent = ({style,props}:any) => {
                 setEdit(false)
               }
         }
-    
         setLoading(false)
       }
     }
-     )
+    )
   }
 
   const handleImage = (value:any) => {
     setImage(value.logo[0].originFileObj)
   }
 
+  let initialValues={
+    remember: true,
+    phoneNumber:diagnosticDetails?.phoneNumber,
+    diagnosticName: diagnosticDetails?.diagnosticName,
+    email: diagnosticDetails?.email,
+    facebookUrl: diagnosticDetails?.brandDetails?.facebookUrl,
+    instaUrl: diagnosticDetails?.brandDetails?.instaUrl,
+    brandLogo: diagnosticDetails?.brandDetails?.brandLogo
+  }
 
-  const profileForm = [
-    {"name":"brandLogo","type":"logo","label":"Logo","required":true},
-    {"name":"diagnosticName","type":"text","label":"Diagnostic Name","required":true},
-    {"name":"email","type":"email","label":"Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
-    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true},
-    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true},
-  ]
-
-  let profile = diagnosticDetails;
   return (
-    <div className='mt-10 h-auto'>
-        
-        {profile ?  
-          <div className={`w-[70vw] p-10 pb-20 bg-white relative rounded-lg h-auto text-left  ${style}`}>
-            {!edit?<a href='#' onClick={()=>{setEdit(true)}}><PencilIcon className='w-6 absolute right-20' /></a> :
-            <a href='#' onClick={()=>{setEdit(false)}}><XMarkIcon className='w-6 absolute right-20' /></a>
-            }
-            {edit?
-            <section className='my-2 w-[50%]'>  
-            <p className='mb-6 italic font-bold text-md'>Edit your profile</p>
-            <ProfileForm formProps={profileForm} style="" buttonText='Update' handleImage={handleImage} handleSubmit={handleSubmit} />
-            </section>:
-            <section>
-              <img src={profile?.brandDetails?.brandLogo?.[0]?.thumbUrl || profile.brandDetails[0].brandLogo} className='w-[70px] rounded-full border-2' />
-              <section className="flex">
-                <section className="w-[50%] grid grid-cols-3 border-r-2 border-gray-100">
-                    <section className="mt-4">
-                        <p className="font-bold my-6">Diagnostic Center :</p>
-                        <p className="font-bold my-6">Phone Number :</p>
-                        <p className="font-bold my-6">Email address :</p>
-                        <p className="font-bold my-6">Current Branch :</p>
-                        <p className="font-bold my-6">Address :</p>
-                        <p className="font-bold my-6">Total tests offered :</p>
-                    </section>
-                    <section className="mt-4 col-span-2">
-                        <p className="font-light my-6">{profile?.diagnosticName ? profile?.diagnosticName : "Not Found"}   </p> 
-                        <p className="font-light my-6">{profile?.phoneNumber ? profile?.phoneNumber: "Not Found"} </p>  
-                        <p className="font-light my-6 lowercase">{profile?.email ?profile?.email:"Not found"} </p> 
-                        <p className="font-light my-6">{profile?.branchDetails ? profile?.branchDetails?.[0]?.branchName : "Not Found"} </p> 
-                        <p className="font-light my-6 lowercase overflow-hidden max-w-[100%] max-h-[3vh]">
-                          {
-                            profile?.branchDetails && profile?.branchDetails[0]?.branchAddress ? 
-                            profile?.branchDetails[0]?.branchAddress :"Not found"
-                          } 
-                        </p>
-                        <p className="font-light my-6">{profile?.tests ? profile?.tests?.length : 10} </p> 
-                        {/* <p className="font-light my-6">{profile?.brandDetails[0]?.facebookUrl ? profile?.brandDetails[0]?.facebookUrl: "Not found"} </p> 
-                        <p className="font-light my-6">{profile?.brandDetails[0]?.instaUrl ? profile?.brandDetails[0]?.facebookUrl : "Not found"} </p>  */}
-                    </section>
-                </section>
-                <section className="w-[50%] grid grid-cols-3 pl-10">
-                    <section className="mt-4">
-                        <p className="font-bold my-6">Facebook url:</p>
-                        <p className="font-bold my-6">Instagram url :</p>
-                        <p className="font-bold my-6">Branch Name :</p>
-                        <p className="font-bold my-6">Branch Location :</p>
-                    </section>
-                    <section className="mt-4 col-span-2">
-                        <a target={"_blank"} href={profile?.brandDetails[0]?.facebookUrl} className="font-light my-6 block text-blue-400">{profile?.brandDetails[0].facebookUrl ? profile?.brandDetails[0].facebookUrl: "Not found"} </a> 
-                        <a target={"_blank"} href={profile?.brandDetails[0]?.instaUrl} className="font-light my-6  text-blue-400">{profile?.brandDetails[0].instaUrl ? profile?.brandDetails[0].instaUrl : "Not found"} </a> 
-                        <p className="font-light my-6 lowercase">{profile?.branchDetails[0]?.branchName ? profile?.branchDetails?.[0]?.branchName : "Not found"} </p> 
-                        <p className="font-light my-6 lowercase">{profile?.branchDetails[0]?.branchAddress ? profile?.branchDetails?.[0]?.branchAddress : "Not found"}</p>  
-                    </section>
-                </section>
+    <section>
+        <div className={`w-auto p-4 bg-white mt-14 relative rounded-lg h-auto text-left ${style}`}>
+          {!edit ? <a href='#' onClick={()=>{setEdit(!edit)}}><PencilIcon className='w-6 absolute right-20' /></a> :<a href='#' onClick={()=>{setEdit(!edit)}}><XMarkIcon className='w-6 absolute right-20' /></a>}
+          {
+            !edit ? 
+            <>
+              <section>
+              <img src={profile?.brandDetails?.brandLogo} alt="logo" className='w-[7vw] h-[7vw] rounded-full border-2' />
+              <section className='grid grid-cols-2 gap-[10vw] w-[100%]'> 
+                          <aside>
+                            <p className='my-8 font-bold text-sm'>{"Diagnostic Center Name: "}<span className='text-black font-light'>{profile?.diagnosticName}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Email: "}<span className='text-black font-light lowercase'>{profile?.email}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Contact: "}<span className='text-black font-light'>{profile?.phoneNumber}</span></p>
+
+                            <p className='my-8 font-bold text-sm'>{"Facebook Url "}<a href={profile?.brandDetails?.facebookUrl} className='text-black font-light'>{profile?.brandDetails?.facebookUrl}</a></p>
+                            <p className='my-8 font-bold text-sm'>{"Instagram Url: "}<a href={profile?.brandDetails?.instaUrl} className='text-black font-light lowercase'>{profile?.brandDetails?.instaUrl}</a></p>
+                          </aside>
+                          <aside>
+                            <p className='my-8 font-bold text-sm'>{"Branch Name: "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchName}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Email: "}<span className='text-black font-light lowercase'>{profile?.branchDetails?.[0]?.branchEmail}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Contact: "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchContact}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Address "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchAddress}</span></p>
+                          </aside>
               </section>
-            </section>
-            }
-          </div>: <ErrorComp pageName={"Profile"}/>
-        }
-        {
-          loading && <Spinner/>
-        }
-       
-    </div>
+              </section>
+            </>:
+            <>
+              <section className='my-2 w-[50vw] pr-[16vw]'>  
+                <p className='mb-6 italic font-bold text-md'>Edit your profile</p>
+                {/* <img className="w-20 h-20 rounded-full" src={diagnosticDetails?.brandDetails?.brandLogo} alt="logo"/> */}
+                <DynamicFormCreator initial={initialValues} handleImage={handleImage} formStyle=' my-4 gap-x-4 gap-y-4'  buttonText="Continue" 
+                formProps={profileForm} handleSubmit={handleSubmit}/>
+              </section>
+            </>
+          }
+        </div>
+        {loading && <Spinner/>}
+    </section>
   )
-}
-
-
+} 

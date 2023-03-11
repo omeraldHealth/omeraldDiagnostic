@@ -1,45 +1,85 @@
-import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
-import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
-import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
-import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
+
+import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { getDiagnosticUserApi } from "@utils";
 import { Modal, Space } from "antd";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useQuery} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 import { updateUserDetails } from "utils/hook/userDetail";
-import { SET_DIAGNOSTIC_DETAILS } from "utils/store/types";
+import { branchDetailsEditFormArray} from "utils/types/molecules/forms.interface";
+import { SettingsCommon } from "./settings";
+import axios from "axios";
 
-
-export function BranchManagement() {
-    const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-    const [addOperator,setAddOperator] = useState(false)
-    const [edit,setEdit] = useState(false)
-    let branchList = []
+export function BranchManagement() {    
     const { confirm } = Modal;
-    diagnosticDetails?.branchDetails?.forEach((man:any) => {
-        const obj = { 
-          text: man.branchName, 
-          value: man.branchName 
-        };
-        branchList.push(obj)
-      });
-    
-      const [initialData,setInitial] = useState()
+    const [edit,setEdit] = useState(false)
+    const [initialData,setInitial] = useState({})
+    const [addElement,setAddElement] = useState(false)
+    const [selectedValue,setSelectedValue] = useState("Select Role")
+    const {diagnosticDetails} = useAuthContext()
+    const {data:diag,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
+
+    const branchList:any = diag?.data?.branchDetails?.map((branch:any) =>  {return {"text": branch?.branchName,"value":branch?.branchName}})
+
+    const handleRemove = async (value:any) => {
+      let updatedBranch = diag?.data?.branchDetails?.filter((branch:any) => branch?._id !== value?._id)
+      let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"branchDetails":updatedBranch})
+
+      if(resp.status==200){
+        warningAlert("Branch removed succesfully")
+        setEdit(false)
+        setAddElement(false)
+        refetch();
+      }
+    }
 
     const handleEdit = (value:any) => {
-        let initial = {
-          "branchName": value.branchName,
-          "branchEmail":value.branchEmail,
-          "branchContact":value.branchContact,
-          "branchAddress":value.branchAddress,
-          "id":value._id
-        }
-        setInitial(initial)
-        setEdit(true)
-        setAddOperator(true)
+      let initial = {
+        "branchName": value?.branchName,
+        "branchContact":value?.branchContact,
+        "branchEmail":value?.branchEmail,
+        "branchAddress":value?.branchAddress,
+        "_id":value._id
       }
-    
+
+      setInitial(initial)
+      setEdit(!edit)
+      setAddElement(!addElement)
+    }
+
+    const handleSubmit = async (value:any) => {
+      let duplicate = diag?.data?.branchDetails.some((branch:any) => {return (branch.branchName===value.branchName || branch.branchContact===value.branchContact)})
+
+      if(!edit && duplicate){
+        errorAlert("Duplicate Record found with name or contact")
+      }else if(edit){
+        let updated = {...initialData,...value}
+        let updatedBranch = diag?.data?.branchDetails?.map((branch:any) => {
+          if( branch._id == initialData?._id){
+            return {...branch,...updated}
+          } return branch
+        })
+        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"branchDetails":updatedBranch})
+        if(resp.status==200){
+          successAlert("Branch Updated succesfully")
+          setEdit(false)
+          setAddElement(false)
+          refetch();
+        }
+      }else{
+        let filter = diag?.data?.branchDetails
+        filter?.push(value)
+        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"branchDetails":filter})
+
+        if(resp.status==200){
+          successAlert("Employee added succesfully")
+          setEdit(false)
+          setAddElement(false)
+          refetch();
+        }
+      }
+    }
 
     const columns = [
         {
@@ -49,7 +89,7 @@ export function BranchManagement() {
           render: (text:any) => <a className='text-blue-800 font-medium'>{text}</a>,
           sorter: (a:any, b:any) => a.branchName.length - b.branchName.length,
           filters: branchList,
-          onFilter: (value: string, record) => record.branchName.indexOf(value) === 0,
+          onFilter: (value: string, record) => record?.branchName?.indexOf(value) === 0,
         },
         {
             title: 'Branch Email',
@@ -73,26 +113,20 @@ export function BranchManagement() {
           render: (text:any) => <a>{text}</a>,
           sorter: (a:any, b:any) => a.branchAddress.length - b.branchAddress.length,
         },
-        // {
-        //   title: 'Branch Operator',
-        //   dataIndex: 'branchManager',
-        //   key: 'branchManager',
-        //   render: (text:any) => <a>{text}</a>,
-        // },
         {
           title: 'Action',
           dataIndex: 'branchAddress',
           key: 'branchAddress  ',
           render: (_, record:any,index:any) => (
             <Space size="middle">
-               <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> 
-             {index != 0 && <a>
+             {(record?.branchContact !== diagnosticDetails?.phoneNumber) &&  <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> }
+             {(record?.branchContact !== diagnosticDetails?.phoneNumber)&& <a>
               <TrashIcon className='w-4 text-red-500' onClick={()=>{
                confirm({
                 title: 'Do you want to delete this branch?',
                 content: 'The action cannot be undone.',
                 onOk() {
-                  handleRemoveBranch(record.managerName)}
+                  handleRemove(record)}
                 }
                )
              }}/></a>}
@@ -100,81 +134,8 @@ export function BranchManagement() {
           ),
       },
     ]
-
-    const branchForm = [
-      {"name":"branchName","type":"text","label":"Branch Name","required":true},
-      {"name":"branchEmail","type":"email","label":"Branch Email","required":true},
-      {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
-      {"name":"branchContact","type":"text","label":"Branch Contact","required":true}
-    ]
-    const dispatch = useDispatch()
-    const handleBranch = async (value:any) => {
-      let duplicate = diagnosticDetails?.branchDetails.some((branch:any)=>{return (branch.branchName !== value.branchName && branch.branchEmail !== value.branchEmail && branch.branchContact !== value.branchContact)})
-      let data = diagnosticDetails?.branchDetails || [];
-   
-
-      if(edit){
-
-        let data = diagnosticDetails.branchDetails.filter((path:any)=>path._id !== initialData.id)
-          data.push(value)
-          let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"branchDetails":data})
-  
-          if(resp.data.acknowledged){
-             
-             ActivityLogger(`created ${value.branchName} branch`,diagnosticDetails)
-             successAlert("Branch pathologist succesfully")
-              dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"branchDetails":data}})
-             setAddOperator(false)
-          }
-      }else{
-        data.push(value)
-        if(diagnosticDetails && duplicate){
-          let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"branchDetails":data})
-  
-          if(resp.data.acknowledged){
-             ActivityLogger(`created ${value.branchName} branch`,diagnosticDetails)
-             successAlert("Branch pathologist succesfully")
-              dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"branchDetails":data}})
-             setAddOperator(false)
-          }
-        }else{
-          errorAlert("Branch with name/email/phone already exists")
-        }
-      }
-      setEdit(false)
-    }
-
-    const handleRemoveBranch= async (value:any) => {
-      let mem = diagnosticDetails?.branchDetails.filter((branch:any) => branch._id === value) || [];
-      let data = diagnosticDetails?.branchDetails.filter((branch:any) => branch._id !== value) || [];
-      if(diagnosticDetails){
-        let resp = await updateUserDetails({"phoneNumber":diagnosticDetails.phoneNumber},{"branchDetails":data})
-        // setDiagnosticDetails({...diagnosticDetails,"branchDetails":data})
-        dispatch({"type":SET_DIAGNOSTIC_DETAILS,"payload":{...diagnosticDetails,"branchDetails":data}})
-
-        if(resp.data.acknowledged){
-          successAlert("Branch deleted succesfully")
-           ActivityLogger(`removed ${mem[0].branchName}`,diagnosticDetails)
-           setAddOperator(false)
-        }
-      }
-    }
-
-	  return (
-        <section >
-             <section className="min-h-[45vh]">
-            {!addOperator ? <div className=""> <DashboardTable columns={columns} data={diagnosticDetails?.branchDetails} /></div>:
-                 <section className="w-[50%] my-10 relative">
-                 <DynamicFormCreator initial={edit && initialData}  handleSubmit={handleBranch} buttonText={edit? "update":"submit"} formProps={branchForm}  />
-               </section>
-            }
-            </section>
-           <section className="w-[100%] flex justify-start ">
-                <button onClick={()=>{setAddOperator(!addOperator) 
-                  setEdit(false)}} className="bg-gray-200 p-2 rounded-md">
-                  {!addOperator ?  "Add Branch" : "View Branch"}
-                </button>
-           </section>
-        </section>
+ 
+    return (
+      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diag?.data?.branchDetails} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={branchDetailsEditFormArray} />
     )
 }

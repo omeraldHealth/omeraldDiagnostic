@@ -1,4 +1,4 @@
-import { SignInButton } from '@components/atoms/button/button'
+import { SignInButton } from '@components/atoms/buttons/button'
 import styles from "./landing.module.css"
 
 export function HowItWorks() {
