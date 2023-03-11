@@ -6,7 +6,7 @@ import { DynamicFormCreator } from './dynamicForm'
 import React, { useState } from 'react'
 import { addEmailQuery, sendWhatsAppQuery } from 'utils/hook/userDetail'
 
-export const ContactForm = ({handleSubmit}:any) => {
+export const ContactForm = ({handleSubmit,refetch}:any) => {
   const {diagnosticDetails} = useAuthContext()
   const [loading,setLoading] = useState(false)
 
@@ -34,6 +34,7 @@ export const ContactForm = ({handleSubmit}:any) => {
           if(resp2.status == 200){
             successAlert("Email send to support succesfully")
           }
+          refetch()
           handleSubmit()
       }else{
           errorAlert("Error updating query")

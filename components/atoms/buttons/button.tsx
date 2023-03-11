@@ -9,7 +9,6 @@ export const SubscribeButton: FC<any> = ({children}) => (
 )
 
 export const RequestOtpButton: any = (handleRequestOtp) => {
-	console.log(handleRequestOtp)
 	return <button onClick={handleRequestOtp} className="block  w-[80%] sm:w-[60%]  bg-blue-800 text-white p-2 text-sm rounded-md">SEND OTP</button>
 }
 

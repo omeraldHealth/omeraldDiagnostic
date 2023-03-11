@@ -46,7 +46,6 @@ export function Support() {
     const handleSubmit = () =>{
         setQuery(!query)
         refetch()
-        // ActivityLogger("Sent a query to omerald support")
     }
 
 	return (
@@ -55,7 +54,7 @@ export function Support() {
                 <section className="min-h-[45vh]">
                     {!query ? <div className=""> 
                     <DashboardTable columns={SupportForm} data={queries?.data} /></div>
-                    :<ContactForm handleSubmit={handleSubmit}/>}
+                    :<ContactForm refetch={refetch} handleSubmit={handleSubmit}/>}
                 </section>
                 {/* Toggle Button */}
                 <section className="w-[100%] flex justify-start">

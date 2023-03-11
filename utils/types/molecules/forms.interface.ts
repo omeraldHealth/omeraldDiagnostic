@@ -3,7 +3,7 @@ import { ReportDetails, ReportTypes } from "./users.interface";
 export const textPattern = ""
 export const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 export const phonePattern = /^(?:\+91|0)?[6789]\d{9}$/
-export const numberPattern = /^[1-7]+$/
+export const numberPattern = /^[1-50000]+$/
 
 export type BasicDetailsForm = {
     diagnosticName: string;
@@ -50,7 +50,12 @@ export const profileForm: FormType[] = [
     {"name":"email","type":"email","label":"Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
     {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true},
     {"name":"instaUrl","type":"text","label":"Instagram Url","required":true},
-  ]
+]
+
+export const selectForm: FormType[] = [
+    {"name":"reportType","type":"select","label":"Select Report type","required":true}
+]
+
 
 export const basicFormArray:FormType[] = [
     {"name":"phoneNumber","type":"text","label":"Phone Number","required":true},
@@ -161,7 +166,7 @@ export interface FormProps  {
 export interface DynamicFormType  {
   formProps: FormProps[],
   buttonText: string,
-  selectedValue?:string,
+  selectedValue?:any,
   formStyle?:string,
   button?:boolean,
   initial?:any,
