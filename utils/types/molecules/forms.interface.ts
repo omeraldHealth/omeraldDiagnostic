@@ -43,7 +43,7 @@ export type FormType = {
     pattern?:RegExp,
 };
 
-export const profileForm: FormType = [
+export const profileForm: FormType[] = [
     {"name":"brandLogo","type":"image","label":"Logo","required":true},
     {"name":"diagnosticName","type":"text","label":"Diagnostic Center Name","required":true},
     {"name":"email","type":"email","label":"Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
@@ -68,6 +68,14 @@ export const brandDetailsFormArray:FormType[] = [
 export const branchDetailsFormArray: FormType[] = [
     {"name":"branchName","type":"text","label":"Branch Name","required":true},
     {"name":"branchContact","type":"text","label":"Branch Contact","required":true,pattern:phonePattern},
+    {"name":"branchEmail","type":"email","label":"Branch Email","required":true},
+    {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
+   
+]
+
+export const branchDetailsEditFormArray: FormType[] = [
+    {"name":"branchName","type":"text","label":"Branch Name","required":true},
+    {"name":"branchContact","type":"contact","label":"Branch Contact","required":true,pattern:phonePattern},
     {"name":"branchEmail","type":"email","label":"Branch Email","required":true},
     {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
    
@@ -126,6 +134,7 @@ export const intialDiagnosticState = {
     ],
     activities: []
 }
+
 export interface FormProps  {
   name:string,
   type:string,
@@ -149,3 +158,8 @@ export interface DynamicFormType  {
   handleDate?: (value:any) => void
 }
 
+export const EmployeeDetails:FormType[] = [
+    {"name":"managerName","type":"text","label":"Operator Name","required":true},
+    {"name":"managerContact","type":"text","label":"Operator Contact","required":true,pattern:phonePattern},
+    {"name":"managerRole","type":"select","label":"Operator Role","required":true}
+  ]

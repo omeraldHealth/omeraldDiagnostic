@@ -32,7 +32,7 @@ const OnboardComponents = () => {
     "instaUrl": diagnosticProfile?.brandDetails?.instaUrl,
     "branchName": diagnosticProfile?.branchDetails?.[0]?.branchName,
     "branchEmail": diagnosticProfile?.branchDetails?.[0]?.branchEmail,
-    "branchContact": diagnosticProfile?.branchDetails?.[0]?.branchContact,
+    "branchContact": user?.phoneNumber,
     "branchAddress": diagnosticProfile?.branchDetails?.[0]?.branchAddress,
   }
 
@@ -43,6 +43,7 @@ const OnboardComponents = () => {
       Object.assign(values,{"brandLogo":logo})
       val = {"brandDetails":values}
     }else if(Object?.keys(values).includes("branchName")){
+      values["branchContact"] = diagnosticProfile?.phoneNumber
       val = {"branchDetails":[values]}
     }
    
@@ -67,7 +68,7 @@ const OnboardComponents = () => {
     //save brandDetails with location
     brandLogoUrl && setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":brandLogoUrl})}))
      //creating admin role
-    setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"admin"})}))
+    setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
     let insertDiag = await setUserDetails(diagnosticProfile)
 
     if (insertDiag.status == 200 && user) {
@@ -123,7 +124,7 @@ const OnboardComponents = () => {
                   }
                   {
                     currentStep?.id === 3 && <div className="w-[60%]  h-auto p-4">
-                    <DynamicFormCreator buttonText="Continue" initial={initial} selectedValue={selectedRole} setSelectedValue={setSelectedRole} formStyle="" formProps={branchDetailsFormArray} handleSubmit={handleContinueForm}/>
+                    <DynamicFormCreator disableElement={true}  buttonText="Continue" initial={initial} selectedValue={selectedRole} setSelectedValue={setSelectedRole} formStyle="" formProps={branchDetailsFormArray} handleSubmit={handleContinueForm}/>
                     </div>
                   }
                   {

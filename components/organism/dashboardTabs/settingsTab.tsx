@@ -7,6 +7,7 @@ import { settingsTab } from 'utils/static';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { Spinner } from '@components/atoms/loader';
+import { useAuthContext } from 'utils/context/auth.context';
 
 
 const Billing = dynamic(() => import('@components/organism/settingsTabs/billing').then(res=>res.Billing),{loading: () => <Spinner/>})
@@ -51,17 +52,20 @@ export default function SettingsTab({selectedTabId}:any) {
 }
 
 const SettingsBadeCount = ({index}:any) => {
-  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
+  const {diagnosticDetails} = useAuthContext()
+  const {data:diagnosticDetail} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
   const {data:queries} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
   let count = 0;
+
+
   if(index ==1){
     count = diagnosticDetails?.activities?.length;
   }else if(index == 2){
-    count = diagnosticDetails?.managersDetail?.length;
+    count = diagnosticDetail?.data?.managersDetail?.length;
   }else if(index == 3){
-    count = diagnosticDetails?.branchDetails?.length;
+    count = diagnosticDetail?.data?.branchDetails?.length;
   }else if(index == 4){
-    count = diagnosticDetails?.pathologistDetail?.length;
+    count = diagnosticDetail?.data?.pathologistDetail?.length;
   }else if(index == 5){
     count = queries?.data?.length || 10; 
   }

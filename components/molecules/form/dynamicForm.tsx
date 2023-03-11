@@ -1,12 +1,6 @@
 import React, {useState } from 'react';
 import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
-import { useSelector } from 'react-redux';
-import { getAuth } from 'firebase/auth';
-import { debounce } from 'lodash';
 import { DynamicFormType } from 'utils/types/molecules/forms.interface';
-import { SelectProps } from 'rc-select';
-import moment from 'moment';
-import { useAuthContext } from 'utils/context/auth.context';
 import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
 import { roles } from 'utils/static';
 
@@ -37,7 +31,16 @@ export const DynamicFormCreator = ({formProps,showLabel,disableElement,initial,f
                             key={index} className='mb-6 font-bold text-lg' 
                             name={form.name} labelCol={{ span: 10 }}  
                             rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                            <Input disabled={disableElement && form.name =="phoneNumber"} placeholder={form.label} className="border-gray-300 rounded-lg text-black font-light text-sm py-2" />
+                            <Input disabled={disableElement && form.name =="phoneNumber" || form.name =="branchContact"} placeholder={form.label} className="border-gray-300 rounded-lg text-black font-light text-sm py-2" />
+                        </Form.Item>
+                    }
+                     {form.type === "contact"  && 
+                        <Form.Item  
+                            label={showLabel && <span style={{ color: 'red' }}>{form.name}</span>} 
+                            key={index} className='mb-6 font-bold text-lg' 
+                            name={form.name} labelCol={{ span: 10 }}  
+                            rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                            <Input placeholder={form.label} className="border-gray-300 rounded-lg text-black font-light text-sm py-2" />
                         </Form.Item>
                     }  
                     {form.type === "email" && 
