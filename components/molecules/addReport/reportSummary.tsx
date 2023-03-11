@@ -63,7 +63,7 @@ export const ReportSummary =({handleSteps}:any) => {
     const { confirm } = Modal;
   return (
     <div>
-         <section className="w-[100%] max-h-[70vh] ">
+         <section className="w-[100%] max-h-[70vh] relative ">
             <p>Report Summary</p>
             <section className="grid grid-cols-2 my-4 gap-x-10 relative">
                 {
@@ -75,20 +75,22 @@ export const ReportSummary =({handleSteps}:any) => {
                         }
                     })
                 }
-                {reportForm.parsedData &&<section  >
+            </section>
+            {reportForm.parsedData && reportForm?.isManualReport &&<section  >
                     <p className="my-2">Parsed Data</p>
                     <section className="grid grid-cols-3 my-2 gap-x-10 ">
                     {
                         Object.keys(reportForm?.parsedData).map((key)=>{
                             {
-                                return  <p className="my-2 capitalize rounded-lg border-2 p-2 grid grid-cols-2 justify-between ">{key}: <span className="font-light">{
+                                return  <p className="my-2 capitalize rounded-xl border-gray-50 border-2 p-2 grid grid-cols-2 justify-between ">{key}: <span className="font-light">{
                                     reportForm.parsedData[key]}</span></p>
         
                             }
                         })
                     }  
                     </section>
-                </section>}
+            </section>}
+            <section className=" absolute right-2 bottom-0 ">
                 <button onClick={()=>{
                      confirm({
                         title: 'Do you want to go back?',
@@ -101,10 +103,10 @@ export const ReportSummary =({handleSteps}:any) => {
                           // Handle the user's cancellation
                         },
                       })
-                }} className="p-2 bg-gray-400 text-white w-[4vw] absolute right-20 bottom-0 rounded-lg">Back</button>
-                <button onClick={handleSubmit} className="px-2 py-2 bg-indigo-600 absolute right-0 text-white bottom-0 rounded-md">Submit</button>
+                }} className="p-2 bg-gray-400 text-white w-[4vw] mx-2 rounded-lg">Back</button>
+                <button onClick={handleSubmit} className="px-2 py-2 bg-indigo-600 mx-4 text-white bottom-0 rounded-lg">Submit</button>
             </section>
-            {loading&& <Spinner/>}
+            {loading && <Spinner/>}
         </section>
     </div>
   )

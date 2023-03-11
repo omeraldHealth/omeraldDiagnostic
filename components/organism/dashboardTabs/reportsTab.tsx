@@ -4,9 +4,8 @@ import { ColumnsType } from 'antd/es/table';
 import { ReportDetails, UserDetails } from '@utils';
 import { usePDF } from "@react-pdf/renderer";
 import dayjs from 'dayjs';
-import { EyeIcon, ShareIcon } from '@heroicons/react/20/solid';
+import { EyeIcon} from '@heroicons/react/20/solid';
 import PdfTesting from '@components/molecules/PdfTesting/PdfTesting';
-import { RWebShare } from 'react-web-share';
 import { ReportTableType } from 'utils/store/types';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
@@ -14,8 +13,6 @@ import axios from 'axios';
 import { Spinner } from '@components/atoms/loader';
 import {getDiagnosticReports} from "utils/urls/app"
 import { AddReportComponent } from '@components/molecules/addReport/addReport';
-import { sortBy } from 'lodash';
-import SharePdf from '@components/atoms/button/whatsappShare';
 import { FaWhatsapp } from 'react-icons/fa';
 import { sendWhatsAppText } from 'utils/hook/userDetail';
 import { successAlert } from '@components/atoms/alerts/alert';
@@ -24,7 +21,7 @@ export default function ReportsTab() {
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
   const [addReports,setAddReports]=useState(false);
   const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
-  const {data:reports,isLoading:loading} = useQuery(["reports"],fetchReports)
+  const {data:reports,isLoading:loading,refetch} = useQuery(["reports"],fetchReports)
 
   const columns: ColumnsType<ReportTableType> = [
     {
@@ -148,7 +145,7 @@ export default function ReportsTab() {
             <div className='w-[70vw] bg-white shadow-lg h-[70vh] rounded-lg p-4'> 
             {!addReports ?  
             <>{loading ? <Spinner/> :<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }</>:
-            <AddReportComponent setAddReports={setAddReports}/>}
+            <AddReportComponent refetch={refetch} setAddReports={setAddReports}/>}
             </div>
         </div>
     </Fragment>   
