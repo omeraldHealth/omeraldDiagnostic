@@ -8,7 +8,7 @@ export const SubscribeButton: FC<any> = ({children}) => (
 	<button className={`bg-[#00E1F0] text-white px-4 h-[52px] mx-8 font-sm text-light`}>{children}</button>
 )
 
-export const RequestOtpButton: any = (handleRequestOtp) => {
+export const RequestOtpButton: any = (handleRequestOtp:any) => {
 	return <button onClick={handleRequestOtp} className="block  w-[80%] sm:w-[60%]  bg-blue-800 text-white p-2 text-sm rounded-md">SEND OTP</button>
 }
 

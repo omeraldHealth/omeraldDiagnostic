@@ -1,9 +1,9 @@
+import { OnboardStepsType } from '@utils'
 import React, { Fragment } from 'react'
-import { onboardStepsType } from 'utils/static'
 
 interface StepHeaderType {
-    "stepList":onboardStepsType[],
-    "currentStep":onboardStepsType
+    "stepList":OnboardStepsType[],
+    "currentStep":OnboardStepsType
 }
 export const StepHeader = ({stepList,currentStep}:StepHeaderType) => {
   return (<>

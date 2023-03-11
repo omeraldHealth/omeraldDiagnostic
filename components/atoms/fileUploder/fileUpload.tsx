@@ -21,7 +21,7 @@ export const FileUploader = ({handleImage}:any) => {
         beforeUpload: beforeUpload,
       };
 
-   function beforeUpload(file) {
+   function beforeUpload(file:any) {
         const allowedTypes = ['image/jpeg', 'image/png','image/jpg', 'application/pdf'];
         const isAllowed = allowedTypes.includes(file.type);
         if (!isAllowed) {

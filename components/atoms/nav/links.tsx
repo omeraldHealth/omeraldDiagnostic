@@ -30,10 +30,10 @@ export const NavLinks = () => {
                     : "text-white hover:bg-white hover:text-gray-600 hover:bg-opacity-75",
                 "group flex items-center px-6 py-2 text-sm font-medium rounded-l-md my-6"
                 )}>
-                <item.icon
+                {/* <item.icon
                 className="mr-3 flex-shrink-0 h-6 w-6 text-gray-500"
                 aria-hidden="true"
-                />
+                /> */}
                 {item.name}
             </a>
         ))}
