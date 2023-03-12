@@ -33,20 +33,20 @@ const OnboardComponents = () => {
     "branchName": diagnosticProfile?.branchDetails?.[0]?.branchName,
     "branchEmail": diagnosticProfile?.branchDetails?.[0]?.branchEmail,
     "branchContact": user?.phoneNumber,
+    "managerName":diagnosticProfile?.managerName,
     "branchAddress": diagnosticProfile?.branchDetails?.[0]?.branchAddress,
   }
 
   const handleContinueForm = (values:BasicDetailsForm | BrandDetailsForm | BranchDetails) => {
     let val:any = values;
-
+    console.log(val)
     if(Object?.keys(values).includes("brandLogo")){
       Object.assign(values,{"brandLogo":logo})
       val = {"brandDetails":values}
     }else if(Object?.keys(values).includes("branchName")){
       values["branchContact"] = diagnosticProfile?.phoneNumber
       val = {"branchDetails":[values]}
-    }
-   
+    }   
     setDiagnosticProfile(Object.assign(diagnosticProfile, val))
     setCurrentStep(onboardSteps[currentStep.id])
   }

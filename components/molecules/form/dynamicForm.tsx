@@ -19,7 +19,7 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
     };
   
     useEffect(()=>{
-      if(disableElement){
+      if(reportsValidation){
           setDisabled(true)
       }
     },[])
@@ -46,7 +46,7 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             key={index} className='mb-6 font-bold text-lg' 
                             name={form.name} labelCol={{ span: 10 }}  
                             rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
-                           <Input disabled={isDisabled || disableElement && (form.name =="phoneNumber" || form.name =="branchContact")} placeholder={form.label} className="border-gray-300 rounded-lg text-black font-light text-sm py-2" />
+                           <Input disabled={isDisabled || ( disableElement && (form.name =="phoneNumber" || form.name =="branchContact"))} placeholder={form.label} className="border-gray-300 rounded-lg text-black font-light text-sm py-2" />
                            
                         </Form.Item>
                     }

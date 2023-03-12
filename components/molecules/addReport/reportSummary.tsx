@@ -63,7 +63,7 @@ export const ReportSummary =({handleSteps}:any) => {
     const { confirm } = Modal;
   return (
     <div>
-         <section className="w-[100%] max-h-[70vh] relative ">
+         <section className="w-[100%] min-h-[50vh] max-h-[70vh] relative ">
             <p>Report Summary</p>
             <section className="grid grid-cols-2 my-4 gap-x-10 relative">
                 {
@@ -78,7 +78,7 @@ export const ReportSummary =({handleSteps}:any) => {
             </section>
             {reportForm.parsedData && reportForm?.isManualReport &&<section  >
                     <p className="my-2">Parsed Data</p>
-                    <section className="grid grid-cols-3 my-2 gap-x-10 ">
+                    <section className="grid  grid-cols-3 my-2 gap-x-10 ">
                     {
                         Object.keys(reportForm?.parsedData).map((key)=>{
                             {
@@ -90,7 +90,7 @@ export const ReportSummary =({handleSteps}:any) => {
                     }  
                     </section>
             </section>}
-            <section className=" absolute right-2 bottom-0 ">
+            <section className="absolute right-2 bottom-0">
                 <button onClick={()=>{
                      confirm({
                         title: 'Do you want to go back?',

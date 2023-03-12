@@ -16,7 +16,8 @@ const navLinks = [
 export function Navbar() {
 
     const {diagnosticDetails} = useAuthContext()
-
+    const {user,signOut} = useAuthContext()
+    console.log(user)
 	return (
         <div  className={`flex justify-between items-center px-[1%] sm:px-[4%] xl:px-[10%]`}>
             <Link href={"/"}><span className='flex'>
@@ -28,8 +29,12 @@ export function Navbar() {
                 {navLinks.map((nav,index) => <Link key={index} href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
             </section>
 
-            {!diagnosticDetails?.phoneNumber ? <section className='lg:flex items-center'>
-               <span className='lg:flex'><Link href={"/signIn"}><NavFont>{"Sign In"}</NavFont></Link></span>
+            {!diagnosticDetails?.phoneNumber ? 
+            <section className='lg:flex items-center'>
+               {!user ?
+                <span className='lg:flex'><Link href={"/signIn"}><NavFont>{"Sign In"}</NavFont></Link></span>:
+                <a onClick={signOut} href="#" className='lg:flex'><NavFont>{"Sign Out"}</NavFont></a>
+               }
                <span className='hidden lg:flex'><Link href={"/signIn"}><SignInButton style="mx-8">{"Start Free"}</SignInButton></Link></span>
             </section>:
             <MenuDropDown/>

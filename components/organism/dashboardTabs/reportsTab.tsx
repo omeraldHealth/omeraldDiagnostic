@@ -15,7 +15,7 @@ import {getDiagnosticReports} from "utils/urls/app"
 import { AddReportComponent } from '@components/molecules/addReport/addReport';
 import { FaWhatsapp } from 'react-icons/fa';
 import { sendWhatsAppText } from 'utils/hook/userDetail';
-import { successAlert } from '@components/atoms/alerts/alert';
+import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 
 export default function ReportsTab() {
   const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
@@ -131,6 +131,8 @@ export default function ReportsTab() {
     let resp = await sendWhatsAppText(message);
     if(resp.status===200){
       successAlert("Report Shared on Whatsapp");
+    }else{
+      errorAlert("Error Sharing report")
     }
   }
 

@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import dynamic from "next/dynamic";
 import "./dashboard.module.css"
+import { Spinner } from "@components/atoms/loader";
 
-const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'))
-const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab'))
-const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'))
-const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'))
-const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab'))
+const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'),{loading: () => <Spinner/>})
+const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab'),{loading: () => <Spinner/>})
+const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'),{loading: () => <Spinner/>})
+const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'),{loading: () => <Spinner/>})
+const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab'),{loading: () => <Spinner/>})
 
 const DashboardTemplate = () => {
   const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)

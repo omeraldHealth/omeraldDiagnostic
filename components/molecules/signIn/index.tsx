@@ -95,7 +95,6 @@ const SignInComponent = () => {
         })
         .catch((error: any) => {
           if (error?.code === "auth/invalid-verification-code") {
-            setError("Invalid OTP");
             errorAlert("Invalid OTP ");
           }
           setLoading(false)

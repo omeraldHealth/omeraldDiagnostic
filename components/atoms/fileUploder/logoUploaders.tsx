@@ -3,6 +3,7 @@ import { Modal, Upload } from 'antd';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
 import './logo.module.css';
+import { PlusIcon } from '@heroicons/react/20/solid';
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -37,7 +38,7 @@ const LogoUploader = ({handleImage}:any)  => {
 
   const uploadButton = (
     <div>
-      <PlusOutlined />
+      <PlusIcon className='w-8 text-gray-400  m-auto' />
       <div style={{ marginTop: 8 }}>Brand Logo</div>
     </div>
   );

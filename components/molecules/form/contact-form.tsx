@@ -29,10 +29,10 @@ export const ContactForm = ({handleSubmit,refetch}:any) => {
     const resp = await sendWhatsAppQuery(queryMessage)
       if(resp.status == 200){
           successAlert("Sent Query to support succesfully")
-          const resp2 = await addEmailQuery(queryEmail)
-          if(resp2.status == 200){
-            successAlert("Email send to support succesfully")
-          }
+          // const resp2 = await addEmailQuery(queryEmail)
+          // if(resp2.status == 200){
+          //   successAlert("Email send to support succesfully")
+          // }
           refetch()
           handleSubmit()
       }else{

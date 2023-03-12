@@ -93,7 +93,14 @@ export async function sendWhatsAppText(
   data: any
 ) {
   try {
-    const resp = await axios.post(sendWhatsAppApi,data);
+    const resp = await axios.post(sendWhatsAppApi,data,{
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods':'*',
+        'Content-Type': 'multipart/form-data'
+      }
+    });
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error.response};
@@ -104,7 +111,14 @@ export async function sendWhatsAppQuery(
   data: any
 ) {
   try {
-  const resp = await axios.post(sendWhatsAppQueryApi,data);
+  const resp = await axios.post(sendWhatsAppQueryApi,data,{
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+      'Access-Control-Allow-Methods':'*',
+      'Content-Type': 'multipart/form-data'
+    }
+  });
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error.response};
