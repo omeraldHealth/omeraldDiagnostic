@@ -30,7 +30,6 @@ export default function ReportsTab() {
       dataIndex: 'reportId',
       sorter: (a, b) => a.reportId.length - b.reportId.length,
       // sortDirections: ['descend'],
-  
     },
     {
       key:"name",
@@ -146,7 +145,7 @@ export default function ReportsTab() {
          <div className="px-4 sm:px-6 xl:px-8 xl:py-3 bg-signBanner flex w-100 justify-center">
             <div className='w-[70vw] bg-white shadow-lg h-[70vh] rounded-lg p-4'> 
             {!addReports ?  
-            <>{loading ? <Spinner/> :<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }</>:
+            <>{<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }</>:
             <AddReportComponent refetch={refetch} setAddReports={setAddReports}/>}
             </div>
         </div>
