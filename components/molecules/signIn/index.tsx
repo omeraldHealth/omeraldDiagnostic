@@ -39,28 +39,22 @@ const SignInComponent = () => {
   }, [seconds]);
 
   const generateRecaptcha = () => {
-    if (window.recaptchaVerifier) {
-      const recaptchaElement = document.getElementById('recaptcha-container');
-      // If the element has a reCAPTCHA widget rendered in it
-      if (recaptchaElement?.childNodes && recaptchaElement?.childNodes.length > 0) {
-        // Remove the existing reCAPTCHA widget
-        recaptchaElement.removeChild(recaptchaElement.childNodes[0]);
-       
-      }
-      window.recaptchaVerifier.clear()
+    const recaptchaElement = document.getElementById("recaptcha-container")
+    if (!window.recaptchaVerifier || (recaptchaElement && recaptchaElement?.childNodes.length==0) ){
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: () => {},
+        },
+        auth
+      );
     }
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-        callback: () => {},
-      },
-      auth
-    );
   };
   
   const requestOTP = (e:any) => {
     e.preventDefault();
+
     if (isValidPhoneNumber(phoneNumber)) {
       setLoading(true)
       generateRecaptcha();
@@ -106,7 +100,7 @@ const SignInComponent = () => {
 
   return (
     <section className="lg:h-[70vh] my-[10vh] ">
-          <section className="w-[90vw] sm:w-[80vw] lg:w-[40vw] sm:h-[30vh] lg:h-[45vh] rounded-lg bg-white shadow-xl m-auto self-center p-1 py-10 sm:p-10 text-center"> 
+          <section className="w-[90vw] sm:w-[80vw] min-h-[350px] lg:w-[40vw] sm:h-[30vh] lg:h-[45vh] rounded-lg bg-white shadow-xl m-auto self-center p-1 py-10 sm:p-10 text-center"> 
               <BodyText_2 style="text-black">Welcome Back 👋</BodyText_2>
               <p className="text-black font-md text-xl mb-10">Sign In to your Account</p>
               <section>
@@ -122,7 +116,7 @@ const SignInComponent = () => {
                     </div>
                     {otpRequestSent && <><section className="mt-4">
                           {seconds > 0 && <p>Did'nt receive otp? resend in <span className="text-red-500">{seconds}</span> seconds</p>}
-                          {seconds == 0 && <button onClick={requestOTP} className="p-2 border-2 bg-gray-300 rounded-lg">Resend</button>}
+                          {seconds == 0 &&<p>Did'nt receive otp? <a href="#" onClick={requestOTP} className="text-green-900">Resend Otp</a></p>}
                     </section></>}
                     <div id="recaptcha-container"></div>
               </section>

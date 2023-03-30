@@ -39,8 +39,8 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
     }
     router.push("/onboard");
     return null;
-  } else {
-    return null;
+  } else if(!auth?.user) {
+    router.push("/error");
   }
 };
 

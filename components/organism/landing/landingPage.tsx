@@ -2,8 +2,8 @@ import React from 'react'
 import PageLayout from '@components/organism/layout/pageLayout'
 import { useDispatch } from 'react-redux'
 import dynamic from 'next/dynamic'
+import LandingBanner from './landingBanner'
 
-const LandingBanner = dynamic(() => import('@components/organism/landing/landingBanner'))
 const Partners = dynamic(() => import('@components/organism/landing/partners').then(res=>res.Partners))
 const HowItWorks = dynamic(() => import('@components/organism/landing/howItWorks').then(res => res.HowItWorks))
 const HelpYourBusiness = dynamic(() => import('@components/organism/landing/helpYourBusiness').then(res => res.HelpYourBusiness))
@@ -21,12 +21,10 @@ const LandingPage = () =>{
         <PageLayout>
             <div>
                 <LandingBanner/>
-                <hr/>
                 <Partners/>
-                <hr/>
                 <HowItWorks/>
                 <HelpYourBusiness/>
-                <Advertisement/>
+                <Advertisement/>    
                 <Testimonial/>
                 <ContactContainer/>
                 <BottomBanner/>
