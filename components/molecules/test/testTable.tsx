@@ -11,12 +11,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAuthContext } from 'utils/context/auth.context';
 import { updateUserDetails } from 'utils/hook/userDetail';
 import { DataType, SET_TEST } from 'utils/store/types';
-import { testForm } from 'utils/types/molecules/forms.interface';
-import { AddKeyword } from '../addTest/createdKeyword';
-import { ShowTable } from '../addTest/showTable';
 import { DashboardTable } from '../dashboardItems/data-table'
-import { DynamicFormCreator } from '../form/dynamicForm';
 import { AddKeywords } from '../addTest/addKeywords';
+
 export const TestTable = ({}:any) => {
   const { confirm } = Modal;
   const [editTest,setEdit] = useState(false);
@@ -66,7 +63,6 @@ export const TestTable = ({}:any) => {
     }
     dispatch({type:SET_TEST,payload:initial2})
     setInitalTest(initial)
-    console.log(initial)
     setEdit(!editTest)
   }
 

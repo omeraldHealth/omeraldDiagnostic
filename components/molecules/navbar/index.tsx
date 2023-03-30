@@ -17,7 +17,7 @@ export function Navbar() {
 
     const {diagnosticDetails} = useAuthContext()
     const {user,signOut} = useAuthContext()
-    console.log(user)
+
 	return (
         <div  className={`flex justify-between items-center px-[1%] sm:px-[4%] xl:px-[10%]`}>
             <Link href={"/"}><span className='flex'>

@@ -39,7 +39,7 @@ const OnboardComponents = () => {
 
   const handleContinueForm = (values:BasicDetailsForm | BrandDetailsForm | BranchDetails) => {
     let val:any = values;
-    console.log(val)
+
     if(Object?.keys(values).includes("brandLogo")){
       Object.assign(values,{"brandLogo":logo})
       val = {"brandDetails":values}
