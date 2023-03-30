@@ -1,6 +1,5 @@
 import React from 'react'
 import PageLayout from '@components/organism/layout/pageLayout'
-import { useDispatch } from 'react-redux'
 import dynamic from 'next/dynamic'
 import LandingBanner from './landingBanner'
 
@@ -15,8 +14,6 @@ const Footer = dynamic(() => import('@components/molecules/footer').then(res => 
 
 
 const LandingPage = () =>{
-    const dispatch = useDispatch()
-    dispatch({type:"SET_LOADING",payload:false})
 	return (
         <PageLayout>
             <div>
