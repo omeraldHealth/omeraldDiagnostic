@@ -7,7 +7,7 @@ export const DashboardTable = ({columns,data,pageSize}:any) =>
 <Table 
     sortOrder="ascend"
     pagination={{ pageSize: pageSize || 5,total: data?.length}} 
-    rowKey={(data) => Object.keys(data)[0]}  
+    rowKey={(data,index) => {data?._id ? data?.id: index?.toString()}}  
     columns={columns} dataSource={data} 
 />;
 

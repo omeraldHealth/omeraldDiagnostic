@@ -9,8 +9,6 @@ import { QueryClient } from "react-query"
 import { useDispatch, useSelector } from "react-redux"
 import { createReport, updateUserDetails, uploadReport } from "utils/hook/userDetail"
 import { SET_REPORT, SET_REPORT_FORM, SET_REPORT_LIST } from "utils/store/types"
-import PdfTesting from "../PdfTesting/PdfTesting"
-
 
 export const ReportSummary =({handleSteps}:any) => {
     const reportForm = useSelector((state:any)=>state.reportFormReducer)
@@ -80,9 +78,9 @@ export const ReportSummary =({handleSteps}:any) => {
                     <p className="my-2">Parsed Data</p>
                     <section className="grid  grid-cols-3 my-2 gap-x-10 ">
                     {
-                        Object.keys(reportForm?.parsedData).map((key)=>{
+                        Object.keys(reportForm?.parsedData).map((key,index)=>{
                             {
-                                return  <p className="my-2 capitalize rounded-xl border-gray-50 border-2 p-2 grid grid-cols-2 justify-between ">{key}: <span className="font-light">{
+                                return  <p key={key} className="my-2 capitalize rounded-xl border-gray-50 border-2 p-2 grid grid-cols-2 justify-between ">{key}: <span className="font-light">{
                                     reportForm.parsedData[key]}</span></p>
         
                             }
