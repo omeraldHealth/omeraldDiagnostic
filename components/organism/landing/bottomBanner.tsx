@@ -10,7 +10,7 @@ export function BottomBanner() {
                 <HeaderText_2 style='text-white uppercase my-4 mr-10'>Efficient, streamlined diagnostic centre operations</HeaderText_2>
                 <BodyText_2 style='uppercase my-4'>Digital solutions for diagnostic centre</BodyText_2>
             </section>
-            <section className='flex '>
+            <section className='flex xl:justify-start justify-center mt-6'>
                <SignInButton style="w-[500px] uppercase h-[20%] self-center">Login</SignInButton>
             </section>
         </div>

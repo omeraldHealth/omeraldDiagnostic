@@ -34,8 +34,8 @@ export function HelpYourBusiness() {
                 <SignInButton style={"rounded-full"}>Get Started</SignInButton>
             </section> */}
         
-            <HeaderText_2 style='mt-10 sm:mt-0'>We help your business grow faster.</HeaderText_2>
-            <BodyText_1 style='lg:w-[40%] m-auto my-6'>Omerald's efficient software solution accelerates business growth for diagnostic centre's.</BodyText_1>
+            <HeaderText_2 style='mt-10 xl:mt-0 '>We help your business grow faster.</HeaderText_2>
+            <BodyText_1 style='lg:w-[40%] m-auto my-6 '>Omerald's efficient software solution accelerates business growth for diagnostic centre's.</BodyText_1>
             <section className="lg:flex gap-[2%] my-[7%] w-[100%] justify-around  ">
                 {
                     helpBusiness.map((help,index) => {
