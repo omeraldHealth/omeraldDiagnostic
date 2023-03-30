@@ -10,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^4.14.0",
+    "@clerk/nextjs": "^4.13.0",
     "@headlessui/react": "^1.7.12",
     "@heroicons/react": "^2.0.16",
     "@react-pdf/renderer": "^3.1.6",

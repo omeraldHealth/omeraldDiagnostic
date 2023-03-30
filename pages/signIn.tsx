@@ -9,7 +9,6 @@ import { Spinner } from '@components/atoms/loader'
 const Head = dynamic(() => import('@components/atoms/head/head'),{loading: () => <Spinner/>})
 const Navbar = dynamic(() => import('@components/molecules/navbar').then(res=>res.Navbar),{loading:()=><Spinner/>})
 const SignInComponent = dynamic(() => import('@components/molecules/signIn'),{loading: () => <Spinner/>})
-const Footer = dynamic(() => import('@components/molecules/footer').then(res=>res.Footer))
 
 export default function Home() {
 
@@ -33,7 +32,6 @@ export default function Home() {
                   <section className='min-h-[70vh]'>
                     <SignInComponent/>
                   </section>
-                <Footer />
             </div>
         </PageTemplate>
 	  </Fragment>

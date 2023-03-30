@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import React, { cloneElement, ReactElement } from "react";
 import { useAuthContext } from "utils/context/auth.context";
 
-
 const allowedPaths = ["","/","/signIn","/404"];
 let flag = true;
 
@@ -39,8 +38,8 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
     }
     router.push("/onboard");
     return null;
-  } else {
-    return null;
+  } else if(!auth?.user) {
+    router.push("/404");
   }
 };
 

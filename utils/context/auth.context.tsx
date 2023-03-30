@@ -47,12 +47,14 @@ function useFirebaseAuth() {
   };
 
   const signIn = async (user: User, redirect: string) => {
+    let flag=true
     const phoneNumber = user.phoneNumber || "";
     const {data,status} = await getUserDetails({phoneNumber:phoneNumber})
     if (status==200) {
       // @ts-ignore
       setDiagnosticDetails(data);
-      router.push(redirect);
+      flag && router.push(redirect);
+      flag=false
     } else {
       router.push("/onboard");
     }

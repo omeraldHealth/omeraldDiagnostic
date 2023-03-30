@@ -2,13 +2,13 @@ import { SignInButton } from "@components/atoms/buttons/button"
 import { BodyText_1, BodyText_2, HeaderText_1, TitleText } from "@components/atoms/font"
 import { useState } from "react"
 import {FaCheckCircle} from 'react-icons/fa'
-import { Spinner } from "@components/atoms/loader"
 import styles from "./landing.module.css"
-import dynamic from "next/dynamic"
+
 import { Animation } from "utils/animation"
 import { m } from "framer-motion";
+import { Navbar } from "@components/molecules/navbar"
 
-const Navbar = dynamic(() => import('@components/molecules/navbar/index').then(res=>res.Navbar),{loading: () => <Spinner/>})
+
 const LandingBanner = () => {
     const [phone,setPhone] = useState("")
     
