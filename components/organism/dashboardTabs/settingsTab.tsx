@@ -73,7 +73,7 @@ const SettingsBadeCount = ({index}:any) => {
  return <p>
   {settingsTab[index]}
   {index!=0 &&<span className='mx-2'>
-    <Badge showZero count={count}></Badge>
+    {/* <Badge showZero count={count}></Badge> */}
   </span>}
   </p>
 }

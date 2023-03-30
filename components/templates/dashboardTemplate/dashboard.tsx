@@ -28,12 +28,12 @@ const DashboardTemplate = () => {
   },[dashboardRoute])
 
   return (
-    <div className="w-{100vw} h-[100vh] flex justify-start bg-gray-100">
+    <div className="w-{100vw} h-[100vh] flex justify-start ">
       <DashboardLayout>
         {component}
       </DashboardLayout>
     </div>
   )
-};;
+};
 
 export default DashboardTemplate

@@ -68,7 +68,7 @@ return (
                                 {dash.icon2}
                             </Tooltip>
                             <p className="font-bold text-2xl flex justify-center my-2 mt-4">{dash.value ?? 0 }</p>
-                            <p className="font-light text-xs xl:text-sm">{dash.title}</p>
+                            <p className="font-light text-xs xl:text-sm -mt-2">{dash.title}</p>
                         </span>
                     </section>
                     </a>

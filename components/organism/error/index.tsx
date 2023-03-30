@@ -10,8 +10,8 @@ export function Error() {
         <PageTemplate>
             <div className={`pt-[1vh] ${styles["signInContainer"]}`}>
                 <Navbar/>
-                    <div className="h-[60vh] text-center">
-                        <img src={notFound} className="w-[30vw] mb-10 mt-20 m-auto" alt="" />
+                    <div className="sm:h-[75vh] text-center">
+                        <img src={notFound} className="sm:w-[30vw] w-[60vw] mb-10 mt-20 m-auto" alt="" />
                         <Link href={"/"}>
                             <button className="my-[2vh] md:w-[10vw] bg-orangeBg px-2 py-2 text-gray-700 font-bold rounded-md">Visit Home</button>
                         </Link>
