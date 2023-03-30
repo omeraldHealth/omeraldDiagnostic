@@ -39,7 +39,7 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
     router.push("/onboard");
     return null;
   } else if(!auth?.user) {
-    router.push("/404");
+    router.push("/");
   }
 };
 
