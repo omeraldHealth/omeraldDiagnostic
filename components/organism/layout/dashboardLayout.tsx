@@ -6,10 +6,10 @@ import { Fragment, ReactElement } from "react";
 export default function DashboardLayout({children}: {children: ReactElement}) {
   return (
     <Fragment>
-        <aside className="w-64">
+        <aside className="xl:w-80">
           <Sidebar/>
         </aside>
-        <main className="w-[100%]">
+        <main className="w-[110%]">
           <DashboardHeader/>
           {children}
         </main>

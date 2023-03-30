@@ -50,7 +50,7 @@ export function Support() {
 
 	return (
         <section>
-                {/* Query Table */}
+                Query Table
                 <section className="min-h-[45vh]">
                     {!query ? <div className=""> 
                     <DashboardTable columns={SupportForm} data={queries?.data} /></div>

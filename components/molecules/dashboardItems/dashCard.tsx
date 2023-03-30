@@ -56,12 +56,12 @@ const dashCard: DashCardTyes[] = [
 ]
 
 return (
-    <section className="my-6 grid grid-cols-2 gap-4 sm:flex justify-between" >
+    <section className="my-6 grid grid-cols-2 gap-4 lg:flex justify-between" >
         {
             dashCard?.map((dash,index) => {
                 return (
                     <a key={index} href="#" onClick={()=> dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:dash.title,href:dash.href,loading:false,selectedTabIndex:"2"} })}>
-                    <section className={`sm:w-[23%] xl:w-[15vw] h-[12vh] sm:h-[14vh] p-2 flex justify-between rounded-md text-white ${dash.style}`}>
+                    <section className={`lg:w-[15vw] h-[12vh] sm:h-[14vh] p-2 flex justify-between rounded-md text-white ${dash.style}`}>
                         {dash.icon}
                         <span className="">
                             <Tooltip color={'#e3a909'} title={dash.tipInfo}>

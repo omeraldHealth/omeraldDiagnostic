@@ -30,7 +30,7 @@ const ProfileSummary = ({profile,style}:any) => {
                <div className={`w-[70vw] p-4 bg-white relative rounded-lg h-auto text-left ${style}`}>
                   <section>
                     <img src={profile?.brandDetails?.brandLogo?.[0]?.thumbUrl } alt="logo" className='w-[5vw] rounded-full border-2' />
-                     <section className='grid grid-cols-2 w-[70%]'> 
+                     <section className='grid grid-cols-2    w-[70%]'> 
                         <aside>
                           <p className='my-8 font-bold text-sm'>{"Diagnostic Center Name: "}<span className='text-black font-light'>{profile?.diagnosticName}</span></p>
                           <p className='my-8 font-bold text-sm'>{"Email: "}<span className='text-black font-light lowercase'>{profile?.email}</span></p>
@@ -123,7 +123,7 @@ const ProfileView = ({profile,style}:any) => {
             <>
               <section>
               <img src={profile?.brandDetails?.brandLogo} alt="logo" className='w-[7vw] h-[7vw] rounded-full border-2' />
-              <section className='grid grid-cols-2 gap-[10vw] w-[100%]'> 
+              <section className='grid sm:grid-cols-2 grid-cols-1 gap-[10vw] w-[100%]'> 
                           <aside>
                             <p className='my-8 font-bold text-sm'>{"Diagnostic Center Name: "}<span className='text-black font-light'>{profile?.diagnosticName}</span></p>
                             <p className='my-8 font-bold text-sm'>{"Email: "}<span className='text-black font-light lowercase'>{profile?.email}</span></p>

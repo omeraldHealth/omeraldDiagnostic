@@ -35,7 +35,7 @@ export function Activity() {
       
 	return (
         <div className="min-h-[45vh]">
-            <DashboardTable columns={ActivityForm} data={diagnosticDetails?.activities} />
+            {/* <DashboardTable columns={ActivityForm} data={diagnosticDetails?.activities} /> */}
         </div>
     )
 }

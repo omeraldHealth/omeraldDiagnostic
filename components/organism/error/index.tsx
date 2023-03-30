@@ -13,7 +13,7 @@ export function Error() {
                     <div className="h-[60vh] text-center">
                         <img src={notFound} className="w-[30vw] mb-10 mt-20 m-auto" alt="" />
                         <Link href={"/"}>
-                            <button className="my-[2vh] w-[10vw] bg-orangeBg px-2 py-2 text-gray-700 font-bold rounded-md">Visit Home</button>
+                            <button className="my-[2vh] md:w-[10vw] bg-orangeBg px-2 py-2 text-gray-700 font-bold rounded-md">Visit Home</button>
                         </Link>
                     </div>
                 <Footer />
