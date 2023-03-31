@@ -6,7 +6,7 @@ import { QueryClient, useQueryClient } from "react-query"
 import { useDispatch, useSelector } from "react-redux"
 import { useAuthContext } from "utils/context/auth.context"
 import { createReport, uploadReport } from "utils/hook/userDetail"
-import { useUpdateDiagnostic, useUpdateReports } from "utils/reactQuery"
+import { useUpdateDiagnostic, useUpdateReports, useUploadReportFile } from "utils/reactQuery"
 import { SET_REPORT_FORM } from "utils/store/types"
 
 export const ReportSummary =({handleSteps}:any) => {
@@ -43,15 +43,15 @@ export const ReportSummary =({handleSteps}:any) => {
         },
     });
 
-    const uploadReportFile = useUpdateDiagnostic({
-        onSuccess: (data:any) => {
-            reportForm["reportUrl"] = data?.data.location
-            updateDiagnostic.mutate({data:reportForm,phoneNumber:diagnosticDetails?.phoneNumber})
-        },
-        onError: (error) => {
-          successAlert("Error uploading report")
-        },
-    });
+    // const uploadReportFile = useUploadReportFile({
+    //     onSuccess: (data:any) => {
+    //         reportForm["reportUrl"] = data?.data.location
+    //         updateDiagnostic.mutate({data:reportForm,phoneNumber:diagnosticDetails?.phoneNumber})
+    //     },
+    //     onError: (error) => {
+    //       successAlert("Error uploading report")
+    //     },
+    // });
 
     const handleSubmit = async () => {
         setLoading(true)
@@ -59,7 +59,7 @@ export const ReportSummary =({handleSteps}:any) => {
             reportForm.userId = diagnosticDetails?.phoneNumber.split(" ").join("");
             addReports.mutate(reportForm)
         }else{
-            uploadReportFile.mutate(reportForm.reportUrl)
+            // uploadReportFile.mutate(reportForm.reportUrl)
         }
     }
 

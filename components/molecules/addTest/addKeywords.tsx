@@ -59,7 +59,6 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
       if(testDetails ){
         let updateTest = diagnostic?.data?.tests
         updateTest?.push(testDetails)
-       
         //@ts-ignore
         updateDiagnostic?.mutate({phoneNumber:diagnostic?.data?.phoneNumber,data:{"tests":updateTest}})
       }else{

@@ -53,7 +53,7 @@ export function useUploadReportFile<TData, TVariables>({
   onError,
 }: UseMutationProps<TData, TVariables>) {
   const formData = new FormData();
-
+  console.log(formData)
   return useMutation((data:any) => axios.post(uploadReportApi, formData.append('file',data), {
       headers: {
         'Content-Type': 'multipart/form-data'
