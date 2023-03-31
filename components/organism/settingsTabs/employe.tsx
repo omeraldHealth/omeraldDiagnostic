@@ -1,15 +1,14 @@
 
-import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import { errorAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { getDiagnosticUserApi } from "@utils";
 import { Modal, Space } from "antd";
 import { useState } from "react";
-import { useQuery} from "react-query";
+import { useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
-import { updateUserDetails } from "utils/hook/userDetail";
 import { EmployeeDetails } from "utils/types/molecules/forms.interface";
 import { SettingsCommon } from "./settings";
-import axios from "axios";
+import { useQueryGetData, useUpdateDiagnostic } from "utils/reactQuery";
 
 export function EmployeeManagement() {    
     const { confirm } = Modal;
@@ -18,19 +17,24 @@ export function EmployeeManagement() {
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
     const {diagnosticDetails} = useAuthContext()
-    const {data:diag,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
+    const queryClient = useQueryClient();
+    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
-    const handleRemove = async (value:any) => {
-
-      let updatedManager = diag?.data?.managersDetail?.filter((manager:any) => manager?._id !== value._id)
-      let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"managersDetail":updatedManager})
-
-      if(resp.status==200){
-        warningAlert("Employee removed succesfully")
+    const updateDiagnostic = useUpdateDiagnostic({
+      onSuccess: (data) => {
+        warningAlert("Employee updated succesfully")
         setEdit(false)
         setAddElement(false)
-        refetch();
-      }
+        queryClient.invalidateQueries("getDiagnostic")
+      },
+      onError: (error) => {
+
+      },
+  });
+
+    const handleRemove = async (value:any) => {
+      let updatedManager = diagnostic?.data?.managersDetail?.filter((manager:any) => manager?._id !== value._id)
+      updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":updatedManager}})
     }
 
     const handleEdit = (value:any) => {
@@ -47,35 +51,23 @@ export function EmployeeManagement() {
     }
 
     const handleSubmit = async (value:any) => {
-      let duplicate = diag?.data?.managersDetail.some((manager:any) => {return (manager.managerName===value.managerName || manager.managerContact===value.managerContact)})
+      let duplicate = diagnostic?.data?.managersDetail.some((manager:any) => (manager._id !== initialData._id && (manager.managerName === value.managerName || manager.managerContact === value.managerContact)));
 
-      if(!edit && duplicate){
+      if( duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
         let updated = {...initialData,...value}
-        let updatedManager = diag?.data?.managersDetail?.map((manager:any) => {
+        let updatedManager = diagnostic?.data?.managersDetail?.map((manager:any) => {
           if( manager._id == initialData?._id){
             return {...manager,...updated}
           } return manager
         })
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"managersDetail":updatedManager})
-        if(resp.status==200){
-          successAlert("Employee Updated succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
-        }
+        updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":updatedManager}})
+    
       }else{
-        let filter = diag?.data?.managersDetail
+        let filter = diagnostic?.data?.managersDetail
         filter?.push(value)
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"managersDetail":filter})
-
-        if(resp.status==200){
-          successAlert("Employee added succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
-        }
+        updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":filter}})
       }
     }
 
@@ -129,6 +121,6 @@ export function EmployeeManagement() {
     ]
  
     return (
-      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diag?.data?.managersDetail} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={EmployeeDetails} />
+      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diagnostic?.data?.managersDetail} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={EmployeeDetails} />
     )
 }

@@ -1,15 +1,14 @@
 
-import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import { errorAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { getDiagnosticUserApi } from "@utils";
 import { Modal, Space } from "antd";
 import { useState } from "react";
-import { useQuery} from "react-query";
+import { useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
-import { updateUserDetails } from "utils/hook/userDetail";
 import { branchDetailsEditFormArray} from "utils/types/molecules/forms.interface";
 import { SettingsCommon } from "./settings";
-import axios from "axios";
+import { useQueryGetData, useUpdateDiagnostic } from "utils/reactQuery";
 
 export function BranchManagement() {    
     const { confirm } = Modal;
@@ -18,20 +17,27 @@ export function BranchManagement() {
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
     const {diagnosticDetails} = useAuthContext()
-    const {data:diag,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
-
-    const branchList:any = diag?.data?.branchDetails?.map((branch:any) =>  {return {"text": branch?.branchName,"value":branch?.branchName}})
-
-    const handleRemove = async (value:any) => {
-      let updatedBranch = diag?.data?.branchDetails?.filter((branch:any) => branch?._id !== value?._id)
-      let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"branchDetails":updatedBranch})
-
-      if(resp.status==200){
-        warningAlert("Branch removed succesfully")
+    const queryClient = useQueryClient();
+    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+    
+    const updateDiagnostic = useUpdateDiagnostic({
+      onSuccess: (data) => {
+        warningAlert("Branch updated succesfully")
         setEdit(false)
         setAddElement(false)
-        refetch();
-      }
+        queryClient.invalidateQueries("getDiagnostic")
+      },
+      onError: (error) => {
+
+      },
+    });
+
+    const branchList:any = diagnostic?.data?.branchDetails?.map((branch:any) =>  {return {"text": branch?.branchName,"value":branch?.branchName}})
+
+    const handleRemove = async (value:any) => {
+      let updatedBranch = diagnostic?.data?.branchDetails?.filter((branch:any) => branch?._id !== value?._id)
+      updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
+ 
     }
 
     const handleEdit = (value:any) => {
@@ -49,35 +55,22 @@ export function BranchManagement() {
     }
 
     const handleSubmit = async (value:any) => {
-      let duplicate = diag?.data?.branchDetails.some((branch:any) => {return (branch.branchName===value.branchName || branch.branchContact===value.branchContact)})
-
-      if(!edit && duplicate){
+      let duplicate = diagnostic?.data?.branchDetails.some((branch:any) => (branch._id !== initialData._id && (branch.branchName.trim() === value.branchName.trim() || branch.branchContact === value.branchContact)));
+      if(duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
         let updated = {...initialData,...value}
-        let updatedBranch = diag?.data?.branchDetails?.map((branch:any) => {
+        let updatedBranch = diagnostic?.data?.branchDetails?.map((branch:any) => {
           if( branch._id == initialData?._id){
             return {...branch,...updated}
           } return branch
         })
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"branchDetails":updatedBranch})
-        if(resp.status==200){
-          successAlert("Branch Updated succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
-        }
+        updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
+   
       }else{
-        let filter = diag?.data?.branchDetails
+        let filter = diagnostic?.data?.branchDetails
         filter?.push(value)
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"branchDetails":filter})
-
-        if(resp.status==200){
-          successAlert("Employee added succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
-        }
+        updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":filter}})
       }
     }
 
@@ -136,6 +129,6 @@ export function BranchManagement() {
     ]
  
     return (
-      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diag?.data?.branchDetails} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={branchDetailsEditFormArray} />
+      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diagnostic?.data?.branchDetails} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={branchDetailsEditFormArray} />
     )
 }
