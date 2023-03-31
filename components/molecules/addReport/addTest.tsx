@@ -23,7 +23,8 @@ export const AddTestComponent = ({setTest,refetch}:any) => {
                   currentStep?.id === 1 && <TestDetail handleSteps={()=>{setCurrentStep(addTestSteps[1])}}/>
                 }
                 {
-                  currentStep?.id === 2 && <AddKeywords refetch={refetch} handleBack={()=>{setCurrentStep(addTestSteps[0])}} handleSucess={()=>{setCurrentStep(addTestSteps[2])}}/>
+                  currentStep?.id === 2 && <AddKeywords refetch={refetch} handleBack={()=>{setCurrentStep(addTestSteps[0])}} 
+                  handleSucess={()=>{setCurrentStep(addTestSteps[2])}}/>
                 }
                 {
                   currentStep?.id === 3 && <SuccessTest refetch={refetch} handleSucess={handleSuccess} /> 

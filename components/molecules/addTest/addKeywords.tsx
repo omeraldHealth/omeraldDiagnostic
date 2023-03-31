@@ -2,10 +2,10 @@ import { errorAlert, successAlert } from '@components/atoms/alerts/alert'
 import { getDiagnosticUserApi } from '@utils'
 import axios from 'axios'
 import React, { useState } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { useAuthContext } from 'utils/context/auth.context'
-import { updateUserDetails } from 'utils/hook/userDetail'
+import { useUpdateDiagnostic } from 'utils/reactQuery'
 import { SET_TEST } from 'utils/store/types'
 import { testForm } from 'utils/types/molecules/forms.interface'
 import { DynamicFormCreator } from '../form/dynamicForm'
@@ -15,12 +15,23 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
 
   const testDetails = useSelector((state:any)=>state.testReducer)
   const {diagnosticDetails} = useAuthContext();
-  const {data:diagnostic,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
-
+  const {data:diagnostic} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
   const [addKeyword,setAddKeyword] = useState(false)
   const dispatcher = useDispatch()
+  const queryClient = useQueryClient();
+  
+  const updateDiagnostic = useUpdateDiagnostic({
+    onSuccess: (data) => {
+      successAlert("Tests Added succesfully")
+      queryClient.invalidateQueries('getDiagnostic');
+      handleSucess()
+    },
+    onError: (error) => {
+      successAlert("Error adding tests")
+    },
+  });
 
-  const handleSubmit = (value:any) => {
+  const handleAddKeyword = (value:any) => {
         let count = 0
         testDetails?.sampleType?.keywords.forEach((keyword:any) =>{ 
           if(keyword.keyword == value.keyword){
@@ -42,18 +53,28 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
         }
   }
 
-  const handleUpdateTest =async() => {
-    if(testDetails ){
-      let updateTest = diagnostic?.data?.tests
-      updateTest?.push(testDetails)
-      let resp = await updateUserDetails({"phoneNumber":diagnostic?.data?.phoneNumber},{"tests":updateTest})
-      if(resp){
-        successAlert("Test Added succesfully")
-        handleSucess()
-      }
+  const handleAddTest =async() => {
+    if(testDetails?.sampleType?.keywords.length==0){
+      errorAlert("please add keywords to proceed")
     }else{
-      // errorAlert("Test with name already exists")
+      if(testDetails ){
+        let updateTest = diagnostic?.data?.tests
+        updateTest?.push(testDetails)
+       
+        //@ts-ignore
+        updateDiagnostic?.mutate({phoneNumber:diagnostic?.data?.phoneNumber,data:{"tests":updateTest}})
+      }else{
+        // errorAlert("Test with name already exists")
+      }
     }
+   
+  }
+
+  const handleSuccessTest =async() => {
+      if(testDetails?.sampleType?.keywords.length==0){
+        errorAlert("please add keywords to proceed")
+      }
+      handleSucess()
   }
 
   return (
@@ -62,11 +83,11 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
              {!addKeyword ?
              <AddKeyword selectedTest={testDetails?.sampleType} action={true}/>:
              <section className='w-[60%] my-4'>
-                 <DynamicFormCreator button={true} buttonText="Continue" handleSubmit={handleSubmit} formProps={testForm} />
+                 <DynamicFormCreator button={true} buttonText="Add Keyword" handleSubmit={handleAddKeyword} formProps={testForm} />
              </section>}
              <section className='flex'>
               <button onClick={handleBack} className='bg-gray-400 mx-3 text-white px-2 py-2 rounded-lg'>Back</button>
-              <button onClick={!edit ? handleUpdateTest : handleSucess} className='bg-green-700 text-white px-2 py-2 rounded-lg'>Submit</button>
+              <button onClick={!edit ? handleAddTest : handleSuccessTest} className='bg-green-700 text-white px-2 py-2 rounded-lg'>Submit</button>
              </section>
         </div>
   )

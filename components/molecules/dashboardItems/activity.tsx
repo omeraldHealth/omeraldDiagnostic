@@ -19,7 +19,7 @@ export const DashActivity = () => {
                 <ActivityItem activityList={activities} /> :
                 <p className="text-light text-sm text-gray-600 mt-8">No Activities....</p>}
             </section> 
-    </section>
+</section>
 )}
 
 const ActivityItem = ({activityList}:any) => {

@@ -4,7 +4,7 @@ import { BeakerIcon,ChartBarIcon,InformationCircleIcon, ShareIcon } from '@heroi
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 import { Tooltip } from 'antd';
 import {DashCardTyes} from "utils/types/atoms/atoms"
-import { getDiagnosticReports } from '@utils';
+import { getDiagnosticReports, getDiagnosticUserApi } from '@utils';
 import { useQueryGetData } from 'utils/reactQuery';
 import { useAuthContext } from 'utils/context/auth.context';
 
@@ -12,7 +12,8 @@ export const DashCard = () => {
     
 const {diagnosticDetails} = useAuthContext();
 const dispatch = useDispatch()
-const {data:reports,isLoading:loading} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
+const {data:reports} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
+const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
 const dashCard: DashCardTyes[] = [
     {
@@ -22,7 +23,7 @@ const dashCard: DashCardTyes[] = [
         tipInfo:"Shows the count of tests offered by your laboratory",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Tests Offered",
-        value: diagnosticDetails?.tests?.length
+        value: diagnostic?.data?.tests?.length
     },
     {
         href:"/reports",
