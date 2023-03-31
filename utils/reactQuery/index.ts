@@ -1,6 +1,6 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { MutationFunction, useMutation, UseMutationOptions, UseMutationResult, useQuery, UseQueryOptions } from 'react-query';
-import { useAuthContext } from 'utils/context/auth.context';
+import axios, { AxiosResponse } from 'axios';
+import { useMutation, useQuery, UseQueryOptions } from 'react-query';
+
 import { updateDiagnosticUserApi,insertReportApi, uploadReportApi } from 'utils/urls/app';
 
 //useQuery hook to get data
@@ -12,7 +12,6 @@ export function useQueryGetData<T>(
   const queryKey = [queryName];
   return useQuery<T>(queryKey, () => { return axios.get(query)}, options);
 }
-
 
 //useQuery hook to set data
 interface UseMutationProps<TData, TVariables> {
@@ -52,9 +51,7 @@ export function useUploadReportFile<TData, TVariables>({
   onSuccess,
   onError,
 }: UseMutationProps<TData, TVariables>) {
-  const formData = new FormData();
-  console.log(formData)
-  return useMutation((data:any) => axios.post(uploadReportApi, formData.append('file',data), {
+  return useMutation((data:any) => axios.post(uploadReportApi,data, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }}

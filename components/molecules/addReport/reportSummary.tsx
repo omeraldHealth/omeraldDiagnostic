@@ -1,13 +1,16 @@
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert"
 import { Spinner } from "@components/atoms/loader"
+import { usePDF } from "@react-pdf/renderer"
+import { ReportDetails, UserDetails } from "@utils"
 import { Modal } from "antd"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { QueryClient, useQueryClient } from "react-query"
 import { useDispatch, useSelector } from "react-redux"
 import { useAuthContext } from "utils/context/auth.context"
 import { createReport, uploadReport } from "utils/hook/userDetail"
 import { useUpdateDiagnostic, useUpdateReports, useUploadReportFile } from "utils/reactQuery"
 import { SET_REPORT_FORM } from "utils/store/types"
+import PdfTesting from "../PdfTesting/PdfTesting"
 
 export const ReportSummary =({handleSteps}:any) => {
 
@@ -16,6 +19,13 @@ export const ReportSummary =({handleSteps}:any) => {
     const [loading,setLoading] = useState(false)
     const queryClient = useQueryClient();
     const dispatch = useDispatch()
+    const [instance, updateInstance] = usePDF({
+        document: (
+          //@ts-ignore
+          <PdfTesting report={reportForm} diagnosticDetails={diagnosticDetails} />
+        ),
+    });
+
 
     const updateDiagnostic = useUpdateDiagnostic({
         onSuccess: (data) => {
@@ -43,23 +53,38 @@ export const ReportSummary =({handleSteps}:any) => {
         },
     });
 
-    // const uploadReportFile = useUploadReportFile({
-    //     onSuccess: (data:any) => {
-    //         reportForm["reportUrl"] = data?.data.location
-    //         updateDiagnostic.mutate({data:reportForm,phoneNumber:diagnosticDetails?.phoneNumber})
-    //     },
-    //     onError: (error) => {
-    //       successAlert("Error uploading report")
-    //     },
-    // });
+    const uploadReportFile = useUploadReportFile({
+        onSuccess: (data:any) => {
+            console.log(data)
+            reportForm["reportUrl"] = data?.data.location
+            reportForm.userId = diagnosticDetails?.phoneNumber.split(" ").join("");
+            addReports.mutate(reportForm)
+        },
+        onError: (error) => {
+          errorAlert("Error uploading report")
+          setLoading(false)
+        },
+    });
 
     const handleSubmit = async () => {
         setLoading(true)
         if(reportForm && reportForm.isManualReport){
-            reportForm.userId = diagnosticDetails?.phoneNumber.split(" ").join("");
-            addReports.mutate(reportForm)
+            // reportForm.userId = diagnosticDetails?.phoneNumber.split(" ").join("");
+            
+            // addReports.mutate(reportForm)
+               // Fetch blob data from URL
+               const formData = new FormData()
+                const response = await fetch(instance.url);
+                const blob = await response.blob();
+
+        // Convert blob to FormData
+
+        formData.append('file', new File([blob], 'filename.pdf'));
+        uploadReportFile.mutate(formData)
         }else{
-            // uploadReportFile.mutate(reportForm.reportUrl)
+            const formData = new FormData()
+            formData.append("file",reportForm.reportUrl)
+            uploadReportFile.mutate(formData)
         }
     }
 

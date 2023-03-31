@@ -15,6 +15,8 @@ import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 import { useQueryGetData } from 'utils/reactQuery';
 import PdfTesting from '@components/molecules/PdfTesting/PdfTesting';
 import { useAuthContext } from 'utils/context/auth.context';
+import { saveAs } from 'file-saver';
+
 
 export default function ReportsTab() {
   const [addReports,setAddReports]=useState(false);
@@ -96,15 +98,7 @@ export default function ReportsTab() {
       render: ((userName:string,record) => <>
       <div className='flex justifty-between align-middle items-center h-[1vh]'>
           <section className='mr-4 '>
-          { 
-            !record?.isManualReport ? (
-            <a href={record.reportUrl} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
-          ) : (
-            <ViewPdf
-              report={record}
-              diagnosticDetails={diagnosticDetails as UserDetails}
-            />
-          )}
+            <a href={record.reportUrl} type="application/pdf" download={false} rel="noopener noreferrer" target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
           </section>
           <section className='self-center'>
             <a onClick={()=>{handleWhatsapp(record)}}>
@@ -117,8 +111,10 @@ export default function ReportsTab() {
     },
   ];
 
-  const handleWhatsapp = async (record) => {
+  const pdfBlob = new Blob(["blob:http://localhost:3000/fc9ff33c-a8c0-414b-b688-4b8db8c762d9"], { type: 'application/pdf' });
 
+
+  const handleWhatsapp = async (record) => {
     let message = {
       "to":record?.userId,
       "text":`👋 Hi there!,  We hope this message finds you well.${diagnosticDetails?.diagnosticName} has shared your a report with you. 📁Please find the pdf attached, for any questions or concerns, please don't hesitate to reach out to us. 💬\n\n😊Thank you for trusting us with your healthcare needs. \n\nOmerald HealthCare🙌`,

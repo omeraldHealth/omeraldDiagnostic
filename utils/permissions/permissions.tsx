@@ -32,14 +32,15 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
       return null;
     }
     return cloneElement(children, { auth: auth });
-  } else if (auth?.user) {
-    if (router.pathname === "/onboard" || router.pathname === "/") {
+  } else if (auth?.user && !auth?.diagnosticDetails) {
+    if (router.pathname === "/onboard" ) {
       return cloneElement(children);
+    }
+    if (router.pathname === "/dashboard" || router.pathname === "/") {
+      router.push("/onboard");
     }
     router.push("/onboard");
     return null;
-  } else if(!auth?.user) {
-    router.push("/");
   }
 };
 

@@ -28,7 +28,7 @@ export const TestTable = () => {
   const { confirm } = Modal;
 
 
-  const {data:diagnostic,refetch}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
@@ -110,7 +110,7 @@ export const TestTable = () => {
 
   const handleRemoveTest = async (record:any) => {
     let test = tests.filter((test:any)=>test._id !== record._id)
-    updateDiagnostic?.mutate({data:{"tests":test},phoneNumber:diagnostic?.data?.phoneNumber})
+    updateDiagnostic?.mutate({data:{"tests":test},phoneNumber:diagnosticDetails?.phoneNumber})
   }
 
   const handleEditTest = async (value:any) => {
@@ -148,7 +148,7 @@ export const TestTable = () => {
     let updatedTest = diagnostic?.data.tests.filter((test)=>test._id !== initialTestDetails?._id)
     updatedTest.push(testItem)
 
-    updateDiagnostic?.mutate({data:{"tests":updatedTest},phoneNumber:diagnostic?.data?.phoneNumber})
+    updateDiagnostic?.mutate({data:{"tests":updatedTest},phoneNumber:diagnosticDetails?.phoneNumber})
     setEdit(!editTest)
   }
 
