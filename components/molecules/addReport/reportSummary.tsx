@@ -94,24 +94,24 @@ export const ReportSummary =({handleSteps}:any) => {
     <div>
          <section className="w-[100%] min-h-[50vh] max-h-[70vh] relative ">
             <p>Report Summary</p>
-            <section className="grid grid-cols-2 my-4 gap-x-10 relative">
+            <section className="grid grid-cols-2 my-1 gap-x-4 relative">
                 {
                     Object.keys(reportForm).map((key)=>{
                         {
                             if(reportForm[key] && reportForm[key]?.length>0 && key!='userId' && key!='reportUrl'){
-                                return  <p className="my-2 font-bold capitalize border-2 p-2 grid grid-cols-2 justify-between ">{key}: <span className="font-light">{reportForm[key]}</span></p>
+                                return  <p className="my-2 font-bold text-sm capitalize border-2 p-1 grid grid-cols-2 justify-between ">{key}: <span className="font-light text-xs">{reportForm[key]}</span></p>
                             }
                         }
                     })
                 }
             </section>
             {reportForm.parsedData && reportForm?.isManualReport &&<section  >
-                    <p className="my-2">Parsed Data</p>
-                    <section className="grid  grid-cols-3 my-2 gap-x-10 ">
+                    <p className="my-2 font-light text-sm underline">Report Data</p>
+                    <section className="grid  grid-cols-12 my-1 gap-x-4 ">
                     {
                         Object.keys(reportForm?.parsedData).map((key,index)=>{
                             {
-                                return  <p key={key} className="my-2 capitalize rounded-xl border-gray-50 border-2 p-2 grid grid-cols-2 justify-between ">{key}: <span className="font-light">{
+                                return  <p key={key} className="my-2  capitalize rounded-xl border-gray-50 border-2 p-1  font-light text-sm grid grid-cols-2 justify-between ">{key}: <span className="font-light">{
                                     reportForm.parsedData[key]}</span></p>
         
                             }

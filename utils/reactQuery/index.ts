@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery, UseQueryOptions } from 'react-query';
 
-import { updateDiagnosticUserApi,insertReportApi, uploadReportApi } from 'utils/urls/app';
+import { updateDiagnosticUserApi,insertReportApi, uploadReportApi, uploadImageApi } from 'utils/urls/app';
 
 //useQuery hook to get data
 export function useQueryGetData<T>(
@@ -52,6 +52,22 @@ export function useUploadReportFile<TData, TVariables>({
   onError,
 }: UseMutationProps<TData, TVariables>) {
   return useMutation((data:any) => axios.post(uploadReportApi,data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }}
+    ), 
+    {
+      onSuccess: onSuccess,
+      onError: onError,
+    },
+  );
+}
+
+export function useUploadBranding<TData, TVariables>({
+  onSuccess,
+  onError,
+}: UseMutationProps<TData, TVariables>) {
+  return useMutation((data:any) => axios.post(uploadImageApi,data, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }}
