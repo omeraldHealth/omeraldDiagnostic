@@ -10,6 +10,7 @@ import 'chartjs-adapter-moment'
 import axios from 'axios';
 import moment from 'moment';
 import { useAuthContext } from 'utils/context/auth.context';
+import { useQueryGetData } from 'utils/reactQuery';
 
 const { RangePicker } = DatePicker;
 
@@ -21,9 +22,8 @@ const ReportSharedVsTime2 = () =>{
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reportCount,setReportCount] = useState([])
     const {diagnosticDetails} = useAuthContext();
-    const {data:reports,isLoading:loading} = useQuery(["reports"],()=>{return axios.get(getDiagnosticReports+diagnosticDetails?.phoneNumber)})
-  
-
+    const {data:reports,isLoading:loading} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
+ 
     useEffect(()=>{
       const sixMonthsAgo = moment().subtract(6, 'months').toDate();
       const current = moment().toDate();

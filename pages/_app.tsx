@@ -11,7 +11,16 @@ import Allowed from 'utils/permissions/permissions'
 import type { AppProps } from 'next/app'
 import '../styles/tailwind.css'
 
-const queryClient = new QueryClient({})
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: false,
+      staleTime: 10 * (60 * 1000), // 10 mins 
+    },
+  },
+})
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isMounted, setIsMounted] = useState(false)

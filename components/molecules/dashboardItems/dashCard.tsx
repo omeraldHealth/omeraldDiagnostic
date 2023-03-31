@@ -4,16 +4,15 @@ import { BeakerIcon,ChartBarIcon,InformationCircleIcon, ShareIcon } from '@heroi
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 import { Tooltip } from 'antd';
 import {DashCardTyes} from "utils/types/atoms/atoms"
-import { useQuery } from 'react-query';
-import axios from 'axios';
 import { getDiagnosticReports } from '@utils';
+import { useQueryGetData } from 'utils/reactQuery';
+import { useAuthContext } from 'utils/context/auth.context';
 
 export const DashCard = () => {
- 
-const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
+    
+const {diagnosticDetails} = useAuthContext();
 const dispatch = useDispatch()
-const {data:reports,isLoading:loading} = useQuery(["reports"],()=>{return axios.get(getDiagnosticReports+diagnosticDetails?.phoneNumber)})
-
+const {data:reports,isLoading:loading} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
 
 const dashCard: DashCardTyes[] = [
     {

@@ -15,10 +15,15 @@ function useFirebaseAuth() {
   const [diagnosticDetails, setDiagnosticDetails] = useState<UserDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  let flag = true;
 
   useEffect(() => {
-    const unsubscribe = onIdTokenChanged(auth, handleUser);
-    return () => unsubscribe();}, []
+    if(flag){
+      const unsubscribe = onIdTokenChanged(auth, handleUser);
+      flag=false;
+      return () => unsubscribe();
+    }
+  }, []
   );
 
   setPersistence(auth, browserSessionPersistence)

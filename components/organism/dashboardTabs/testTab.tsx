@@ -14,10 +14,10 @@ export default function TestTab() {
   const [showTest,setShowTest] = useState(false)
 
   const {diagnosticDetails} = useAuthContext();
-  const {data:diagnostic,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
+  // const {data:diagnostic,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
   const [tests,setTestData] = useState([])
 
-  useEffect(()=>{setTestData(diagnostic?.data?.tests)},[])
+  // useEffect(()=>{setTestData(diagnostic?.data?.tests)},[])
 
   const handleSearch = (event:any) => {
     let x = diagnostic?.data.tests.filter((test:any)=>{return test?.sampleName?.includes(event.target.value) || test?.sampleType?.testName.includes(event.target.value)})
@@ -30,9 +30,9 @@ export default function TestTab() {
          <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner relative flex w-100 justify-center">
             <TestToggle showTest={showTest} setShowTest={setShowTest} debouncedSearch={debouncedSearch} />
             <div className='w-[70vw] bg-white shadow-lg mt-14 h-[70vh] rounded-lg]'> 
-            {
+            {/* {
               !showTest ? <TestTable refetch={refetch} tests={tests}/> : <AddTestComponent setTest={setShowTest} refetch={refetch} />
-            }
+            } */}
             </div>
         </div>
     </Fragment>   
