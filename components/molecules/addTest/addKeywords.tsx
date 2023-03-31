@@ -1,11 +1,10 @@
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert'
 import { getDiagnosticUserApi } from '@utils'
-import axios from 'axios'
 import React, { useState } from 'react'
-import { useQuery, useQueryClient } from 'react-query'
+import { useQueryClient } from 'react-query'
 import { useDispatch, useSelector } from 'react-redux'
 import { useAuthContext } from 'utils/context/auth.context'
-import { useUpdateDiagnostic } from 'utils/reactQuery'
+import { useQueryGetData, useUpdateDiagnostic } from 'utils/reactQuery'
 import { SET_TEST } from 'utils/store/types'
 import { testForm } from 'utils/types/molecules/forms.interface'
 import { DynamicFormCreator } from '../form/dynamicForm'
@@ -15,11 +14,11 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
 
   const testDetails = useSelector((state:any)=>state.testReducer)
   const {diagnosticDetails} = useAuthContext();
-  const {data:diagnostic} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
   const [addKeyword,setAddKeyword] = useState(false)
-  const dispatcher = useDispatch()
   const queryClient = useQueryClient();
-  
+  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+  const dispatcher = useDispatch()
+
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert("Tests Added succesfully")

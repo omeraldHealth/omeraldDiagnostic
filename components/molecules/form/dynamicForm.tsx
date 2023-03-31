@@ -8,11 +8,16 @@ import BannerUploader from '@components/atoms/fileUploder/bannerUpload';
 import { useSelector } from 'react-redux';
 import { debounce, isElement } from 'lodash';
 import moment from 'moment';
+import { useQueryGetData } from 'utils/reactQuery';
+import { getDiagnosticUserApi } from '@utils';
+import { useAuthContext } from 'utils/context/auth.context';
 
 
 export const DynamicFormCreator = ({formProps,button=true,showLabel,disableElement,initial,formStyle,reportsValidation,handleSubmit,handleImage,buttonText,selectedValue,setSelectedValue}:DynamicFormType) => {
-    const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
-  
+
+    const {diagnosticDetails} = useAuthContext();
+    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+
     const [isDisabled,setDisabled] = useState(false);
     const disabledDate = (current:any) => {
       return current && current > moment().endOf('day');
@@ -24,9 +29,9 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
       }
     },[])
   
-    const [datas, setData] = useState<SelectProps['options']>(diagnosticProfile.pathologistDetail);
+    const [datas, setData] = useState<SelectProps['options']>(diagnostic?.data?.pathologistDetail);
     const handleSearch = (newValue: string) => {
-      let temp = diagnosticProfile.pathologistDetail?.filter((report:any)=> {return report.name.includes(newValue) || report.designation.includes(newValue)})
+      let temp = diagnostic?.data?.pathologistDetail?.filter((report:any)=> {return report.name.includes(newValue) || report.designation.includes(newValue)})
       setData(temp)
   };
   

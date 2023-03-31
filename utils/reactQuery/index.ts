@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { MutationFunction, useMutation, UseMutationOptions, UseMutationResult, useQuery, UseQueryOptions } from 'react-query';
 import { useAuthContext } from 'utils/context/auth.context';
-import { updateDiagnosticUserApi } from 'utils/urls/app';
+import { updateDiagnosticUserApi,insertReportApi, uploadReportApi } from 'utils/urls/app';
 
 //useQuery hook to get data
 export function useQueryGetData<T>(
@@ -31,5 +31,37 @@ export function useUpdateDiagnostic<TData, TVariables>({
       onError: onError,
     },
     
+  );
+}
+
+export function useUpdateReports<TData, TVariables>({
+  onSuccess,
+  onError,
+}: UseMutationProps<TData, TVariables>) {
+  return useMutation(
+    (data:any) => axios.post(insertReportApi, data), 
+    {
+      onSuccess: onSuccess,
+      onError: onError,
+    },
+    
+  );
+}
+
+export function useUploadReportFile<TData, TVariables>({
+  onSuccess,
+  onError,
+}: UseMutationProps<TData, TVariables>) {
+  const formData = new FormData();
+
+  return useMutation((data:any) => axios.post(uploadReportApi, formData.append('file',data), {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }}
+    ), 
+    {
+      onSuccess: onSuccess,
+      onError: onError,
+    },
   );
 }

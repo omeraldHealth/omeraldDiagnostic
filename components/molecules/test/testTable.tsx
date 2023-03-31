@@ -15,18 +15,20 @@ import { useQueryGetData, useUpdateDiagnostic } from 'utils/reactQuery';
 import { useQueryClient } from 'react-query';
 
 export const TestTable = () => {
-  const { confirm } = Modal;
+
   const [editTest,setEdit] = useState(false);
   const [initialTestDetails,setInitalTest] = useState();
   const {diagnosticDetails} = useAuthContext()
-  
   const testDetails = useSelector((state:any)=>state.testReducer)
   const [sampleName,setSampleName] = useState();
   const [testName,setTestName] = useState();
-  const {data:diagnostic,refetch}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
-  const dispatch = useDispatch()
   const queryClient = useQueryClient();
   
+  const dispatch = useDispatch()
+  const { confirm } = Modal;
+
+
+  const {data:diagnostic,refetch}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
@@ -165,7 +167,7 @@ export const TestTable = () => {
                 <Input value={testName} onChange={(e)=>{setTestName(e.target.value)}}  defaultValue={initialTestDetails?.testName} name="sampleName" placeholder={"sampleName"} className="border-gray-300 w-[75%] mt-2 mb-10 rounded-lg text-black font-light text-sm py-2" />
               </span>
               </section>
-              <AddKeywords edit={true} refetch={refetch} handleSucess={()=>{handleUpdateKeyword()}}  />
+              <AddKeywords edit={true} handleSucess={()=>{handleUpdateKeyword()}}  />
           </section>
         }
     </div>

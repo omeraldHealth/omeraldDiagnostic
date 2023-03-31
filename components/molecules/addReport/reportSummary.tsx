@@ -1,64 +1,70 @@
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert"
-import { TitleText_2 } from "@components/atoms/font"
 import { Spinner } from "@components/atoms/loader"
-
-import { ReportDetails, UserDetails } from "@utils"
 import { Modal } from "antd"
 import { useState } from "react"
-import { QueryClient } from "react-query"
+import { QueryClient, useQueryClient } from "react-query"
 import { useDispatch, useSelector } from "react-redux"
-import { createReport, updateUserDetails, uploadReport } from "utils/hook/userDetail"
-import { SET_REPORT, SET_REPORT_FORM, SET_REPORT_LIST } from "utils/store/types"
+import { useAuthContext } from "utils/context/auth.context"
+import { createReport, uploadReport } from "utils/hook/userDetail"
+import { useUpdateDiagnostic, useUpdateReports } from "utils/reactQuery"
+import { SET_REPORT_FORM } from "utils/store/types"
 
 export const ReportSummary =({handleSteps}:any) => {
+
     const reportForm = useSelector((state:any)=>state.reportFormReducer)
+    const {diagnosticDetails} = useAuthContext();
     const [loading,setLoading] = useState(false)
-    const diagnosticDetails = useSelector((state:any)=> state.diagnosticReducer)
+    const queryClient = useQueryClient();
     const dispatch = useDispatch()
-    const queryClient = new QueryClient()
+
+    const updateDiagnostic = useUpdateDiagnostic({
+        onSuccess: (data) => {
+            handleSteps && handleSteps(3)
+            setLoading(false)
+            successAlert("Report updated sucessfully ")
+            queryClient.invalidateQueries("getReports")
+            dispatch({type:SET_REPORT_FORM,payload:null})
+        },
+        onError: (error) => {
+          successAlert("Error adding reports")
+        },
+    });
+
+    const addReports = useUpdateReports({
+        onSuccess: (data) => {
+            queryClient.invalidateQueries("getReports")
+            if(data && diagnosticDetails){
+                //@ts-ignore
+                updateDiagnostic.mutate({data:{"reports":[...diagnosticDetails?.reports,data?.data[0]._id]},phoneNumber:diagnosticDetails?.phoneNumber})
+            }
+        },
+        onError: (error) => {
+          successAlert("Error adding reports")
+        },
+    });
+
+    const uploadReportFile = useUpdateDiagnostic({
+        onSuccess: (data:any) => {
+            reportForm["reportUrl"] = data?.data.location
+            updateDiagnostic.mutate({data:reportForm,phoneNumber:diagnosticDetails?.phoneNumber})
+        },
+        onError: (error) => {
+          successAlert("Error uploading report")
+        },
+    });
+
     const handleSubmit = async () => {
         setLoading(true)
         if(reportForm && reportForm.isManualReport){
-            const resp2 = await createReport(diagnosticDetails?.phoneNumber as string,reportForm);
-            if(resp2.status==200){
-                    const resp3 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"reports":[...diagnosticDetails.reports,resp2.data[0]._id]})
-
-                      handleSteps && handleSteps(3)
-                      queryClient.invalidateQueries({ queryKey: ['reports'] })
-                      setLoading(false)
-                      successAlert("Report updated sucessfully ")
-                      dispatch({type:SET_REPORT_FORM,payload:null})
-                    
-            }else{
-                errorAlert("Error updating report, please try again")
-                setLoading(false)
-            }
+            reportForm.userId = diagnosticDetails?.phoneNumber.split(" ").join("");
+            addReports.mutate(reportForm)
         }else{
-
-            const resp = await uploadReport(reportForm.reportUrl)
-
-            if(resp.status==200){
-                reportForm["reportUrl"] = resp?.data.location
-                const resp2 = await createReport(diagnosticDetails?.phoneNumber as string,reportForm);
-                if(resp2.status==200){
-                    handleSteps && handleSteps(3)
-                    queryClient.invalidateQueries({ queryKey: ['reports'] })
-                    setLoading(false)
-                    successAlert("Report updated sucessfully ")
-                    dispatch({type:SET_REPORT_FORM,payload:null})
-                }else{
-                    errorAlert("Error updating report, please try again")
-                    setLoading(false)
-                }
-            }else{
-                errorAlert("Error updating image, please try again")
-                setLoading(false)
-            }
+            uploadReportFile.mutate(reportForm.reportUrl)
         }
-      
     }
 
     const { confirm } = Modal;
+
   return (
     <div>
          <section className="w-[100%] min-h-[50vh] max-h-[70vh] relative ">

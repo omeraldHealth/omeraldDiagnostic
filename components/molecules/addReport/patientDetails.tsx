@@ -39,9 +39,7 @@ interface patientType {handleSteps?: (value:any) => void}
 export const PatientDetails = ({handleSteps}:patientType) => {
 
   const diagnosticProfile = useSelector((state:any)=>state.diagnosticReducer)
-  const [pathologist,setPathologist] = useState({})
   const dispatch = useDispatch()
-
 
   const handleForm =(value:any)=> {
     let notFilled:any = [];

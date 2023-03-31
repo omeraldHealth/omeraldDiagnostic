@@ -5,23 +5,21 @@ import { ReportDetails, UserDetails } from '@utils';
 import { usePDF } from "@react-pdf/renderer";
 import dayjs from 'dayjs';
 import { EyeIcon} from '@heroicons/react/20/solid';
-import PdfTesting from '@components/molecules/PdfTesting/PdfTesting';
 import { ReportTableType } from 'utils/store/types';
-import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { Spinner } from '@components/atoms/loader';
-import {getDiagnosticReports} from "utils/urls/app"
+import {getDiagnosticReports, getDiagnosticUserApi} from "utils/urls/app"
 import { AddReportComponent } from '@components/molecules/addReport/addReport';
 import { FaWhatsapp } from 'react-icons/fa';
 import { sendWhatsAppText } from 'utils/hook/userDetail';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { useQueryGetData } from 'utils/reactQuery';
+import PdfTesting from '@components/molecules/PdfTesting/PdfTesting';
+import { useAuthContext } from 'utils/context/auth.context';
 
 export default function ReportsTab() {
-  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
   const [addReports,setAddReports]=useState(false);
-  const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
-  const {data:reports,isLoading:loading,refetch} = useQuery(["reports"],fetchReports)
+  const {diagnosticDetails} = useAuthContext();
+  const {data:reports} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
 
   const columns: ColumnsType<ReportTableType> = [
     {
@@ -145,8 +143,7 @@ export default function ReportsTab() {
          <div className="px-4 sm:px-6 xl:px-8 xl:py-3 bg-signBanner flex w-100 justify-center">
             <div className='w-[70vw] bg-white shadow-lg h-[70vh] rounded-lg p-4'> 
             {!addReports ?  
-            <>{<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }</>:
-            <AddReportComponent refetch={refetch} setAddReports={setAddReports}/>}
+            <>{<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }</>:<AddReportComponent setAddReports={setAddReports}/>}
             </div>
         </div>
     </Fragment>   
