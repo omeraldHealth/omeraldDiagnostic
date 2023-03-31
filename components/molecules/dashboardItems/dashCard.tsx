@@ -11,7 +11,6 @@ import { getDiagnosticReports } from '@utils';
 export const DashCard = () => {
  
 const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-const reportList = useSelector((state:any)=>state.reportReducer)
 const dispatch = useDispatch()
 const {data:reports,isLoading:loading} = useQuery(["reports"],()=>{return axios.get(getDiagnosticReports+diagnosticDetails?.phoneNumber)})
 
@@ -51,7 +50,7 @@ const dashCard: DashCardTyes[] = [
         tipInfo:"Shows the count of tests offered by your laboratory",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Total Users",
-        value: diagnosticDetails.managersDetail?.length
+        value: diagnosticDetails?.managersDetail?.length
     }
 ]
 

@@ -9,10 +9,7 @@ import { useQuery } from 'react-query';
 import 'chartjs-adapter-moment'
 import axios from 'axios';
 import moment from 'moment';
-import { Spinner } from '@components/atoms/loader';
 import { useAuthContext } from 'utils/context/auth.context';
-import useSelection from 'antd/es/table/hooks/useSelection';
-import { useSelector } from 'react-redux';
 
 const { RangePicker } = DatePicker;
 
@@ -24,7 +21,7 @@ const ReportSharedVsTime2 = () =>{
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reportCount,setReportCount] = useState([])
     const {diagnosticDetails} = useAuthContext();
-     const {data:reports,isLoading:loading} = useQuery(["reports"],()=>{return axios.get(getDiagnosticReports+diagnosticDetails?.phoneNumber)})
+    const {data:reports,isLoading:loading} = useQuery(["reports"],()=>{return axios.get(getDiagnosticReports+diagnosticDetails?.phoneNumber)})
   
 
     useEffect(()=>{

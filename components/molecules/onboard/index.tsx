@@ -56,31 +56,32 @@ const OnboardComponents = () => {
   }
 
   const handleSubmit = async () => {
-    setLoading(true)
-
     let brandLogoUrl;
-
     // //@ts-ignore
     if(logo?.length>0){
+      setLoading(true)
       brandLogoUrl = await uploadImage(logo?.[0]?.originFileObj);
-    }
+      //save brandDetails with location
+      brandLogoUrl && setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":brandLogoUrl})}))
+      
+      //creating admin role
+      setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
+      let insertDiag = await setUserDetails(diagnosticProfile)
 
-    //save brandDetails with location
-    brandLogoUrl && setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":brandLogoUrl})}))
-     //creating admin role
-    setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
-    let insertDiag = await setUserDetails(diagnosticProfile)
+      if (insertDiag.status == 200 && user) {
+        setLoading(false);
+        successAlert("Profile Created Succesfully")
+        signIn(user, "/dashboard");
+      }
 
-    if (insertDiag.status == 200 && user) {
-      setLoading(false);
-      successAlert("Profile Created Succesfully")
-      signIn(user, "/dashboard");
-    }
-
-    if (insertDiag.status === 409) {
-      setLoading(false);
-      errorAlert("Error creating profile")
-      router.push("/404");
+      if (insertDiag.status === 409) {
+        setLoading(false);
+        errorAlert("Error creating profile")
+        router.push("/404");
+      }
+    }else{
+      errorAlert("Please add logo image");
+      return
     }
   }
 

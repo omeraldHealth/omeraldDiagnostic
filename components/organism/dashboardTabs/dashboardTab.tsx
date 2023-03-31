@@ -27,9 +27,6 @@ export default function DashboardTab() {
     if(diagnostic?.data){
       dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:diagnostic?.data})
     }
-    if(reports?.data){
-      dispatch({type:SET_REPORT,payload:reports?.data})
-    }
   },[diagnostic,reports])
 
   return (
