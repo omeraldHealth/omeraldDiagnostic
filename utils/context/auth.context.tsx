@@ -39,14 +39,16 @@ function useFirebaseAuth() {
 
   const handleUser = async (rawUser: User | null) => {
     if (rawUser) {
+      let flag=true
       const phoneNumber = rawUser.phoneNumber || "";
       const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
       const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
-      if (status==200  && (data?.phoneNumber || employees[0]?._id) ) {
+      if (status==200 && (data?.phoneNumber || employees[0]?._id)) {
         // @ts-ignore
         setDiagnosticDetails(data);
-     
+        // @ts-ignore
         employees.length>0 ? setOperator(employees[0]) : setOperator(data?.managersDetail[0])
+        flag=false
       }
       setUser(rawUser);
       setLoading(false);
@@ -59,7 +61,6 @@ function useFirebaseAuth() {
   const signIn = async (user: User, redirect: string) => {
     let flag=true
     const phoneNumber = user.phoneNumber || "";
-
     const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
     const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
 

@@ -123,7 +123,7 @@ const ProfileView = ({profile,style}:any) => {
     <section>
         <div className={`w-auto p-4 bg-white mt-14 relative rounded-lg h-auto text-left ${style}`}>
           
-          { operator?.role === "owner" && <>
+          { operator?.managerRole.toLowerCase() === "owner" && <>
           {!edit ? <a href='#' onClick={()=>{setEdit(!edit)}}><PencilIcon className='w-6 absolute right-20' /></a> :<a href='#' onClick={()=>{setEdit(!edit)}}><XMarkIcon className='w-6 absolute right-20' /></a>}
           </> }
           {
