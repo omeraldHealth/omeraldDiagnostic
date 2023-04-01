@@ -1,14 +1,14 @@
 
 import { errorAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { getBranchById, getDiagnosticUserApi } from "@utils";
-import { Modal, Space } from "antd";
+import { getDiagnosticUserApi } from "@utils";
+import { Modal, Space, Tag } from "antd";
 import { useState } from "react";
 import { useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 import { branchDetailsEditFormArray} from "utils/types/molecules/forms.interface";
 import { SettingsCommon } from "./settings";
-import { useAddBranch, useDeleteBranch, useQueryGetData, useUpdateBranch, useUpdateDiagnostic } from "utils/reactQuery";
+import { useQueryGetData, useUpdateDiagnostic } from "utils/reactQuery";
 import axios from "axios";
 
 export function BranchManagement() {    
@@ -50,17 +50,20 @@ export function BranchManagement() {
         "branchAddress":value?.branchAddress,
         "_id":value._id
       }
-      let resp = await axios.get(getBranchById+value?.branchContact)
-      if(resp?.status==200){
-        setBranchId(resp?.data[0]?._id)
-      }
+      // let resp = await axios.get(getBranchById+value?.branchContact)
+      // if(resp?.status==200){
+      //   setBranchId(resp?.data[0]?._id)
+      // }
       setInitial(initial)
       setEdit(!edit)
       setAddElement(!addElement)
     }
 
     const handleSubmit = async (value:any) => {
-      let duplicate = diagnostic?.data?.branchDetails.some((branch:any) => (branch._id !== initialData._id && (branch.branchName.trim() === value.branchName.trim() || branch.branchContact === value.branchContact)));
+      value.branchOperator = value.branchOperator ? value.branchOperator.map(oper => oper.key):null;
+      let duplicate = diagnostic?.data?.branchDetails.some((branch:any) => (branch._id !== initialData._id && 
+        (branch?.branchName.trim() === value?.branchName.trim() || branch.branchContact === value.branchContact)));
+        
       if(duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
@@ -112,6 +115,13 @@ export function BranchManagement() {
           sorter: (a:any, b:any) => a.branchAddress.length - b.branchAddress.length,
         },
         {
+          title: 'Branch Operator',
+          dataIndex: 'branchOperator',
+          key: 'branchOperator',
+          render: (text:any) => {return text.map((tag:any) => <Tag color="green" key={tag}>{getEmployee(tag)}</Tag>)}
+          // sorter: (a:any, b:any) => a.branchAddress.length - b.branchAddress.length,
+        },
+        {
           title: 'Action',
           dataIndex: 'branchAddress',
           key: 'branchAddress  ',
@@ -132,6 +142,12 @@ export function BranchManagement() {
           ),
       },
     ]
+
+    function getEmployee(number:any){
+
+      const found = diagnostic?.data?.managersDetail.find(manager => manager.managerContact === number);
+      return found ? found.managerName : null;
+    }
  
     return (
       <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diagnostic?.data?.branchDetails} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={branchDetailsEditFormArray} />

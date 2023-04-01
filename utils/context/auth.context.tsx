@@ -15,6 +15,7 @@ function useFirebaseAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [diagnosticDetails, setDiagnosticDetails] = useState<UserDetails | null>(null);
   const [operator, setOperator] = useState<UserDetails | null>(null);
+  const [activeBranch, setActiveBranch] = useState< any | null>();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   let flag = true;
@@ -27,6 +28,14 @@ function useFirebaseAuth() {
     }
   }, []
   );
+
+  useEffect(()=>{
+    if(diagnosticDetails){
+        let branchListTmp = diagnosticDetails?.branchDetails?.[0];
+        setActiveBranch(branchListTmp)
+    }
+   
+},[diagnosticDetails])
 
   setPersistence(auth, browserSessionPersistence)
   .then(() => {
@@ -90,6 +99,8 @@ function useFirebaseAuth() {
     operator,
     diagnosticDetails,
     loading,
+    activeBranch,
+    setActiveBranch,
     signIn,
     signOut,
   };

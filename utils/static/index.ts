@@ -21,27 +21,27 @@ export const addTestSteps: OnboardStepsType[] = [
   { id: 3, name: "Success" },
 ];
 export const privateRoutes: any[] = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true,  allowedRoles: ["admin", "operator","owner","spoc"] },
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true,  allowedRoles: ["admin", "operator","owner","spoc","manager"] },
     {
       name: "Tests Offered",
       href: "/test",
       icon: BeakerIcon,
       current: false,
-      allowedRoles: ["admin", "operator","owner","spoc"]
+      allowedRoles: ["admin", "operator","owner","spoc","manager"]
     },
     {
       name: "View Reports",
       href: "/reports",
       icon: ClipboardDocumentListIcon,
       current: false,
-      allowedRoles: ["admin", "operator","owner","spoc"]
+      allowedRoles: ["admin", "operator","owner","spoc","manager"]
     },
     {
       name: "Profile",
       href: "/profile",
       icon: UserCircleIcon,
       current: false,
-      allowedRoles: ["admin", "operator","owner","spoc"]
+      allowedRoles: ["admin", "operator","owner","spoc","manager"]
     },
     {
       name: "Settings",

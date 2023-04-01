@@ -9,6 +9,7 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
   const auth = useAuthContext();
   const router = useRouter();
 
+
   if (allowedPaths.includes(router.pathname)) {
     return <>{children}</>;
   } else if (auth?.loading) {
@@ -16,6 +17,9 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
   }else if (auth?.user && auth?.diagnosticDetails?.phoneNumber) {
     return cloneElement(children, { auth: auth });
   } else if (auth?.user && !auth?.diagnosticDetails){
+    if(router.pathname==="/onboard"){
+      return cloneElement(children, { auth: auth });
+    }
     router.push("/onboard")
   }
 };

@@ -84,7 +84,7 @@ export const branchDetailsEditFormArray: FormType[] = [
     {"name":"branchContact","type":"contact","label":"Branch Contact","required":true,pattern:phonePattern},
     {"name":"branchEmail","type":"email","label":"Branch Email","required":true},
     {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
-   
+    {"name":"branchOperator","type":"multiSelect","label":"Branch Operator","required":true},
 ]
 
 export const testForm:FormType = [

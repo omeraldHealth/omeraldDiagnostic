@@ -42,6 +42,7 @@ export default function SettingsTab({selectedTabId}:any) {
                 items={settingsTab.map((_, i) => {
                   const id = String(i);
                   if(operator?.managerRole?.toLowerCase() == "admin" && [0,2,3].includes(i)) return null
+                  // if((operator?.managerRole?.toLowerCase() !== "owner" || operator?.managerRole?.toLowerCase() !== "admin") && [0,1,2,3,4,5,6].includes(i)) return null
                   return {
                     label: <SettingsBadeCount index={i}/>,
                     key: id,

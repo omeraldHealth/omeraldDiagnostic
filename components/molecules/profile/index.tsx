@@ -73,7 +73,7 @@ const ProfileView = ({profile,style}:any) => {
     },
   });
   
-  const {diagnosticDetails} = useAuthContext();
+  const {diagnosticDetails,activeBranch} = useAuthContext();
   const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
   const handleSubmit = async (value:any) => {
@@ -141,10 +141,10 @@ const ProfileView = ({profile,style}:any) => {
                             <p className='my-8 font-bold text-sm'>{"Instagram Url: "}<a href={profile?.brandDetails?.instaUrl} className='text-black font-light lowercase'>{profile?.brandDetails?.instaUrl}</a></p>
                           </aside>
                           <aside>
-                            <p className='my-8 font-bold text-sm'>{"Branch Name: "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchName}</span></p>
-                            <p className='my-8 font-bold text-sm'>{"Branch Email: "}<span className='text-black font-light lowercase'>{profile?.branchDetails?.[0]?.branchEmail}</span></p>
-                            <p className='my-8 font-bold text-sm'>{"Branch Contact: "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchContact}</span></p>
-                            <p className='my-8 font-bold text-sm'>{"Branch Address "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchAddress}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Name: "}<span className='text-black font-light'>{activeBranch?.branchName}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Email: "}<span className='text-black font-light lowercase'>{activeBranch?.branchEmail}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Contact: "}<span className='text-black font-light'>{activeBranch?.branchContact}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Address "}<span className='text-black font-light'>{activeBranch?.branchAddress}</span></p>
                           </aside>
               </section>
               </section>
