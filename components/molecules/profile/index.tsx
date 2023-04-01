@@ -64,7 +64,6 @@ const ProfileView = ({profile,style}:any) => {
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
-      console.log(data)
       successAlert("Profile updated sucessfully")
       queryClient?.invalidateQueries('getDiagnostic')
       setEdit(false)

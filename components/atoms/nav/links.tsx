@@ -27,7 +27,6 @@ export const NavLinks = () => {
     return <nav className="">
         {privateRoutes.map((item) => (
             <>{
-                // console.log(item.allowedRoles.includes(operator?.managerRole?.toLowerCase()))
                 !item?.allowedRoles?.includes(operator?.managerRole.toLowerCase()) ? null :
                 <a key={item.name} href='#' onClick={() => handleNavigationChange(item)}
                     className={classNames(

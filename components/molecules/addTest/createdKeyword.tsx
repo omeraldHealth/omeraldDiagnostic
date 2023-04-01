@@ -1,5 +1,4 @@
 import { errorAlert, successAlert, warningAlert } from '@components/atoms/alerts/alert'
-import { Spinner } from '@components/atoms/loader'
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid'
 import { Modal, Space, Tag } from 'antd'
 import React, { useState } from 'react'
@@ -135,7 +134,6 @@ export const AddKeyword = ({selectedTest,action}:any) => {
               ++count;
           }
         } )
-          console.log(count)
     
     if(count>1){
       errorAlert("Keyword by name exists already")

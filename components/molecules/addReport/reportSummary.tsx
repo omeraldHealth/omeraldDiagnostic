@@ -55,7 +55,6 @@ export const ReportSummary =({handleSteps}:any) => {
 
     const uploadReportFile = useUploadReportFile({
         onSuccess: (data:any) => {
-            console.log(data)
             reportForm["reportUrl"] = data?.data.location
             reportForm.userId = diagnosticDetails?.phoneNumber.split(" ").join("");
             addReports.mutate(reportForm)
