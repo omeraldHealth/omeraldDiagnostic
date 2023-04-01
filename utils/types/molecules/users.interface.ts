@@ -106,8 +106,9 @@ export type ActivityDetails = {
 };
 
 export interface AuthContextInterface {
-	user: User | null
+	  user: User | null
     diagnosticDetails: UserDetails | null;
+    operator: any | null;
     loading: boolean;
     signIn: (user: User, redirect: string) => Promise<void>;
     signOut: () => Promise<void>;
@@ -117,6 +118,7 @@ export interface AuthContextInterface {
 export const initialAuthContext: AuthContextInterface = {
   user: null,
   diagnosticDetails: null,
+  operator: null,
   loading: false,
   signIn: async () => {},
   signOut: async () => {},

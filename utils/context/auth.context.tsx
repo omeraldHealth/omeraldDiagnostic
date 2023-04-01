@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { getAuth, onIdTokenChanged, User,setPersistence,browserSessionPersistence } from "firebase/auth";
-import { AuthContextInterface, initialAuthContext, UserDetails } from 'utils'
+import { AuthContextInterface, getEmployeeById, initialAuthContext, UserDetails } from 'utils'
 import { useRouter } from 'next/router';
 import { getUserDetails } from 'utils/hook/userDetail';
 import { warningAlert } from '@components/atoms/alerts/alert';
 import firebaseApp from 'utils/auth/firebase';
+import axios from 'axios';
 
 const AuthContext = createContext<AuthContextInterface>(initialAuthContext)
 
@@ -13,6 +14,7 @@ function useFirebaseAuth() {
   const auth = getAuth(firebaseApp);
   const [user, setUser] = useState<User | null>(null);
   const [diagnosticDetails, setDiagnosticDetails] = useState<UserDetails | null>(null);
+  const [operator, setOperator] = useState<UserDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   let flag = true;
@@ -38,10 +40,13 @@ function useFirebaseAuth() {
   const handleUser = async (rawUser: User | null) => {
     if (rawUser) {
       const phoneNumber = rawUser.phoneNumber || "";
-      const {data,status} = await getUserDetails({phoneNumber:phoneNumber})
-      if (status==200) {
+      const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
+      const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
+      if (status==200  && (data?.phoneNumber || employees[0]?._id) ) {
         // @ts-ignore
         setDiagnosticDetails(data);
+     
+        employees.length>0 ? setOperator(employees[0]) : setOperator(data?.managersDetail[0])
       }
       setUser(rawUser);
       setLoading(false);
@@ -54,13 +59,19 @@ function useFirebaseAuth() {
   const signIn = async (user: User, redirect: string) => {
     let flag=true
     const phoneNumber = user.phoneNumber || "";
-    const {data,status} = await getUserDetails({phoneNumber:phoneNumber})
-    if (status==200) {
+
+    const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
+    const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
+
+    if (status==200 && (data?.phoneNumber || employees[0]?._id)) {
       // @ts-ignore
       setDiagnosticDetails(data);
+      // @ts-ignore
+      employees.length>0 ? setOperator(employees[0]) : setOperator(data?.managersDetail[0])
       flag && router.push(redirect);
       flag=false
-    } else {
+    }
+    else {
       router.push("/onboard");
     }
   };
@@ -75,6 +86,7 @@ function useFirebaseAuth() {
 
   return {
     user,
+    operator,
     diagnosticDetails,
     loading,
     signIn,

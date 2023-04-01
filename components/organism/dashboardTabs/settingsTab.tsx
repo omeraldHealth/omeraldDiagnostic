@@ -2,12 +2,12 @@ import { getDiagnosticUserApi, getQueriesApi } from '@utils';
 import { Badge, Tabs } from 'antd';
 import { Fragment } from 'react'
 import { useQuery } from 'react-query';
-import { useSelector } from 'react-redux';
-import { settingsTab } from 'utils/static';
+// import { settingsTab } from 'utils/static';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { Spinner } from '@components/atoms/loader';
 import { useAuthContext } from 'utils/context/auth.context';
+import { settingsTab } from 'utils/static';
 
 
 const Billing = dynamic(() => import('@components/organism/settingsTabs/billing').then(res=>res.Billing),{loading: () => <Spinner/>})
@@ -17,7 +17,7 @@ const EmployeeManagement = dynamic(() => import('@components/organism/settingsTa
 const PathologistManagement = dynamic(() => import('@components/organism/settingsTabs/pathologist').then(res=>res.PathologistManagement),{loading: () => <Spinner/>})
 const Support = dynamic(() => import('@components/organism/settingsTabs/support').then(res=>res.Support),{loading: () => <Spinner/>})
 
-const components = [
+let components = [
   <Billing />,
   <Activity />,
   <EmployeeManagement  />,
@@ -27,6 +27,9 @@ const components = [
 ]
 
 export default function SettingsTab({selectedTabId}:any) {
+
+  const {operator} = useAuthContext();
+
   return (
     <Fragment>
           <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">
@@ -38,6 +41,7 @@ export default function SettingsTab({selectedTabId}:any) {
                 }}
                 items={settingsTab.map((_, i) => {
                   const id = String(i);
+                  if(operator?.managerRole?.toLowerCase() == "admin" && [0,2,3].includes(i)) return null
                   return {
                     label: <SettingsBadeCount index={i}/>,
                     key: id,

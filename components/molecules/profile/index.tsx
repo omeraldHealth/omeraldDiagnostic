@@ -59,6 +59,7 @@ const ProfileView = ({profile,style}:any) => {
   const [loading,setLoading] = useState(false);
   const [image,setImage] = useState();
   const queryClient = useQueryClient();
+  const {operator}=useAuthContext();
   const { confirm } = Modal;
 
   const updateDiagnostic = useUpdateDiagnostic({
@@ -122,7 +123,10 @@ const ProfileView = ({profile,style}:any) => {
   return (
     <section>
         <div className={`w-auto p-4 bg-white mt-14 relative rounded-lg h-auto text-left ${style}`}>
+          
+          { operator?.role === "owner" && <>
           {!edit ? <a href='#' onClick={()=>{setEdit(!edit)}}><PencilIcon className='w-6 absolute right-20' /></a> :<a href='#' onClick={()=>{setEdit(!edit)}}><XMarkIcon className='w-6 absolute right-20' /></a>}
+          </> }
           {
             !edit ? 
             <>
