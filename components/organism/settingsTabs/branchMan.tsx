@@ -1,14 +1,15 @@
 
 import { errorAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { getDiagnosticUserApi } from "@utils";
+import { getBranchById, getDiagnosticUserApi } from "@utils";
 import { Modal, Space } from "antd";
 import { useState } from "react";
 import { useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 import { branchDetailsEditFormArray} from "utils/types/molecules/forms.interface";
 import { SettingsCommon } from "./settings";
-import { useQueryGetData, useUpdateDiagnostic } from "utils/reactQuery";
+import { useAddBranch, useDeleteBranch, useQueryGetData, useUpdateBranch, useUpdateDiagnostic } from "utils/reactQuery";
+import axios from "axios";
 
 export function BranchManagement() {    
     const { confirm } = Modal;
@@ -19,7 +20,8 @@ export function BranchManagement() {
     const {diagnosticDetails} = useAuthContext()
     const queryClient = useQueryClient();
     const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
-    
+    const [branchId,setBranchId] = useState(null)
+
     const updateDiagnostic = useUpdateDiagnostic({
       onSuccess: (data) => {
         warningAlert("Branch updated succesfully")
@@ -32,15 +34,42 @@ export function BranchManagement() {
       },
     });
 
+    const addBranch = useAddBranch({
+      onSuccess: (data) => {
+        // warningAlert("Branch added succesfully")
+      },
+      onError: (error) => {
+
+      },
+    });
+
+    const updateBranch = useUpdateBranch({
+      onSuccess: (data) => {
+        // warningAlert("Branch added succesfully")
+      },
+      onError: (error) => {
+
+      },
+    });
+
+    const deleteBranch = useDeleteBranch({
+      onSuccess: (data) => {
+        // warningAlert("Branch deleted succesfully")
+      },
+      onError: (error) => {
+
+      },
+    });
+
     const branchList:any = diagnostic?.data?.branchDetails?.map((branch:any) =>  {return {"text": branch?.branchName,"value":branch?.branchName}})
 
     const handleRemove = async (value:any) => {
       let updatedBranch = diagnostic?.data?.branchDetails?.filter((branch:any) => branch?._id !== value?._id)
       updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
- 
+      deleteBranch.mutate({userId:value?.branchContact})
     }
 
-    const handleEdit = (value:any) => {
+    const handleEdit = async (value:any) => {
       let initial = {
         "branchName": value?.branchName,
         "branchContact":value?.branchContact,
@@ -48,7 +77,10 @@ export function BranchManagement() {
         "branchAddress":value?.branchAddress,
         "_id":value._id
       }
-
+      let resp = await axios.get(getBranchById+value?.branchContact)
+      if(resp?.status==200){
+        setBranchId(resp?.data[0]?._id)
+      }
       setInitial(initial)
       setEdit(!edit)
       setAddElement(!addElement)
@@ -59,6 +91,7 @@ export function BranchManagement() {
       if(duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
+       
         let updated = {...initialData,...value}
         let updatedBranch = diagnostic?.data?.branchDetails?.map((branch:any) => {
           if( branch._id == initialData?._id){
@@ -66,11 +99,14 @@ export function BranchManagement() {
           } return branch
         })
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
-   
+        value.mainBranchId =  diagnosticDetails?.phoneNumber;
+        updateBranch.mutate({userId:branchId,data:value})
       }else{
         let filter = diagnostic?.data?.branchDetails
         filter?.push(value)
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":filter}})
+        value.mainBranchId =  diagnosticDetails?.phoneNumber;
+        addBranch.mutate(value)
       }
     }
 
