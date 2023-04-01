@@ -16,8 +16,8 @@ export const updateTestApi = backendApiPath+`/api/diagnostic/updateDiagnosticUse
 export const sendWhatsAppApi = backendApiPath+`/api/diagnostic/sendWhatsAppText`
 export const sendWhatsAppQueryApi = backendApiPath+`/api/diagnostic/sendWhatsAppQuery`
 
-export const getBranches = backendApiPath+`/api/branch/getAllBranch`
-export const getBranchById = backendApiPath+`/api/branch/getBranch?userId=`
-export const insertBranches = backendApiPath+`/api/branch/addBranch`
-export const updateBranches = backendApiPath+`/api/branch/updateBranch?userId=`
-export const deleteBranches = backendApiPath+`/api/branch/deleteBranch?userId=`
+export const getEmployees = backendApiPath+`/api/employee/getAllEmployees`
+export const getEmployeeById = backendApiPath+`/api/employee/getEmployee?userId=`
+export const insertEmployee = backendApiPath+`/api/employee/addEmployee`
+export const updateEmployee = backendApiPath+`/api/employee/updateEmployee?userId=`
+export const deleteEmployee = backendApiPath+`/api/employee/deleteEmployee?userId=`

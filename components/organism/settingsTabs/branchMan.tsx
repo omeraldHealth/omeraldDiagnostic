@@ -34,39 +34,12 @@ export function BranchManagement() {
       },
     });
 
-    const addBranch = useAddBranch({
-      onSuccess: (data) => {
-        // warningAlert("Branch added succesfully")
-      },
-      onError: (error) => {
-
-      },
-    });
-
-    const updateBranch = useUpdateBranch({
-      onSuccess: (data) => {
-        // warningAlert("Branch added succesfully")
-      },
-      onError: (error) => {
-
-      },
-    });
-
-    const deleteBranch = useDeleteBranch({
-      onSuccess: (data) => {
-        // warningAlert("Branch deleted succesfully")
-      },
-      onError: (error) => {
-
-      },
-    });
 
     const branchList:any = diagnostic?.data?.branchDetails?.map((branch:any) =>  {return {"text": branch?.branchName,"value":branch?.branchName}})
 
     const handleRemove = async (value:any) => {
       let updatedBranch = diagnostic?.data?.branchDetails?.filter((branch:any) => branch?._id !== value?._id)
       updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
-      deleteBranch.mutate({userId:value?.branchContact})
     }
 
     const handleEdit = async (value:any) => {
@@ -99,14 +72,10 @@ export function BranchManagement() {
           } return branch
         })
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
-        value.mainBranchId =  diagnosticDetails?.phoneNumber;
-        updateBranch.mutate({userId:branchId,data:value})
       }else{
         let filter = diagnostic?.data?.branchDetails
         filter?.push(value)
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":filter}})
-        value.mainBranchId =  diagnosticDetails?.phoneNumber;
-        addBranch.mutate(value)
       }
     }
 

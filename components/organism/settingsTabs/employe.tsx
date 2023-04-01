@@ -1,14 +1,15 @@
 
 import { errorAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { getDiagnosticUserApi } from "@utils";
+import { getDiagnosticUserApi, getEmployeeById } from "@utils";
 import { Modal, Space } from "antd";
 import { useState } from "react";
 import { useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 import { EmployeeDetails } from "utils/types/molecules/forms.interface";
 import { SettingsCommon } from "./settings";
-import { useQueryGetData, useUpdateDiagnostic } from "utils/reactQuery";
+import { useAddEmployee, useDeleteEmployee, useQueryGetData, useUpdateDiagnostic, useUpdateEmployee } from "utils/reactQuery";
+import axios from "axios";
 
 export function EmployeeManagement() {    
     const { confirm } = Modal;
@@ -19,6 +20,7 @@ export function EmployeeManagement() {
     const {diagnosticDetails} = useAuthContext()
     const queryClient = useQueryClient();
     const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+    const [employeeId,setEmployeeId] = useState(null)
 
     const updateDiagnostic = useUpdateDiagnostic({
       onSuccess: (data) => {
@@ -32,19 +34,51 @@ export function EmployeeManagement() {
       },
   });
 
+  const addEmployee = useAddEmployee({
+    onSuccess: (data) => {
+      // warningAlert("Branch added succesfully")
+    },
+    onError: (error) => {
+
+    },
+  });
+
+  const updateEmployee = useUpdateEmployee({
+    onSuccess: (data) => {
+      // warningAlert("Branch added succesfully")
+    },
+    onError: (error) => {
+
+    },
+  });
+
+  const deleteEmployee = useDeleteEmployee({
+    onSuccess: (data) => {
+      // warningAlert("Branch deleted succesfully")
+    },
+    onError: (error) => {
+
+    },
+  });
+
+
     const handleRemove = async (value:any) => {
       let updatedManager = diagnostic?.data?.managersDetail?.filter((manager:any) => manager?._id !== value._id)
       updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":updatedManager}})
+      deleteEmployee.mutate({userId:value?.managerContact})
     }
 
-    const handleEdit = (value:any) => {
+    const handleEdit = async (value:any) => {
       let initial = {
         "managerName": value?.managerName,
         "managerContact":value?.managerContact,
         "managerRole":value?.managerRole,
         "_id":value._id
       }
-
+      let resp = await axios.get(getEmployeeById+value?.managerContact)
+      if(resp?.status==200){
+        setEmployeeId(resp?.data[0]?._id)
+      }
       setInitial(initial)
       setEdit(!edit)
       setAddElement(!addElement)
@@ -63,11 +97,14 @@ export function EmployeeManagement() {
           } return manager
         })
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":updatedManager}})
-    
+        value.mainBranchId =  diagnosticDetails?.phoneNumber;
+        updateEmployee.mutate({userId:employeeId,data:value})
       }else{
         let filter = diagnostic?.data?.managersDetail
         filter?.push(value)
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":filter}})
+        value.mainBranchId =  diagnosticDetails?.phoneNumber;
+        addEmployee.mutate(value)
       }
     }
 

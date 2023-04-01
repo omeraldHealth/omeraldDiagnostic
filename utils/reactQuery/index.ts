@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery, UseQueryOptions } from 'react-query';
 
-import { updateDiagnosticUserApi,insertReportApi, uploadReportApi, uploadImageApi, insertBranches,updateBranches,deleteBranches } from 'utils/urls/app';
+import { updateDiagnosticUserApi,insertReportApi, uploadReportApi, uploadImageApi, insertBranches,updateBranches,deleteBranches, insertEmployee, updateEmployee, deleteEmployee } from 'utils/urls/app';
 
 //useQuery hook to get data
 export function useQueryGetData<T>(
@@ -79,11 +79,11 @@ export function useUploadBranding<TData, TVariables>({
   );
 }
 
-export function useAddBranch<TData, TVariables>({
+export function useAddEmployee<TData, TVariables>({
   onSuccess,
   onError,
 }: UseMutationProps<TData, TVariables>) {
-  return useMutation((data:any) => axios.post(insertBranches,data),
+  return useMutation((data:any) => axios.post(insertEmployee,data),
     {
       onSuccess: onSuccess,
       onError: onError,
@@ -91,11 +91,11 @@ export function useAddBranch<TData, TVariables>({
   );
 }
 
-export function useUpdateBranch<TData, TVariables>({
+export function useUpdateEmployee<TData, TVariables>({
   onSuccess,
   onError,
 }: UseMutationProps<TData, TVariables>) {
-  return useMutation((data:any) => axios.post(updateBranches+data?.userId,data?.data),
+  return useMutation((data:any) => axios.post(updateEmployee+data?.userId,data?.data),
     {
       onSuccess: onSuccess,
       onError: onError,
@@ -103,11 +103,11 @@ export function useUpdateBranch<TData, TVariables>({
   );
 }
 
-export function useDeleteBranch<TData, TVariables>({
+export function useDeleteEmployee<TData, TVariables>({
   onSuccess,
   onError,
 }: UseMutationProps<TData, TVariables>) {
-  return useMutation((data:any) => axios.delete(deleteBranches+data?.userId),
+  return useMutation((data:any) => axios.delete(deleteEmployee+data?.userId),
     {
       onSuccess: onSuccess,
       onError: onError,
