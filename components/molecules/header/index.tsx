@@ -11,11 +11,13 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useAuthContext } from 'utils/context/auth.context'
 import { useQueryGetData, useUpdateDiagnostic } from 'utils/reactQuery'
+import { Sidebar } from '../sidebar'
+import { useMediaQuery } from 'react-responsive'
 
 
 
 
-export function DashboardHeader() {
+export function DashboardHeader({showSidebar,setSidebarOpen}:any) {
 
   
     const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
@@ -24,9 +26,9 @@ export function DashboardHeader() {
     const router = useRouter()
     const [selectedBranch,setSelectedBranch] = useState(null)
     const [branchList,setBrancList] = useState(null)
-
+    const laptop = useMediaQuery({ maxWidth: 1224 })
     let [loading,setLoading] = useState(false)
-
+    console.log(laptop)
     const updateDiagnostic = useUpdateDiagnostic({
         onSuccess: (data) => {
 
@@ -60,19 +62,11 @@ export function DashboardHeader() {
 
 	return (
         <div className={`flex justify-between items-center`}>
-             <div className="flex flex-1 flex-col">
+            <div className="flex flex-1 flex-col">
                 <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow">
-                    {/* <button
-                    type="button"
-                    className="border-r border-gray-200 px-4 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
-                    //   onClick={() => setSidebarOpen(true)}
-                    >
-                    <span className="sr-only">Open sidebar</span>
-                    <Bars3BottomLeftIcon className="h-6 w-6" aria-hidden="true" />
-                    </button> */}
                     <div className="flex flex-1 justify-between px-4">
                     <div className="flex flex-1">
-                       <p className='flex font-bold text-lg self-center'><Bars3Icon className='w-6 mx-4'/>{dashboardRoute?.name}</p>
+                       <p className='flex font-bold text-lg self-center'><Bars3Icon  onClick={() => laptop && setSidebarOpen(!showSidebar)} className='w-6 mx-4'/>{dashboardRoute?.name}</p>
 
                     </div>
                     <div className="ml-4 flex items-center lg:ml-6">
@@ -89,7 +83,7 @@ export function DashboardHeader() {
                     </div>
                     </div>
                 </div>
-            </div>
+            </div>          
             {loading && <Spinner/>}
         </div>
         

@@ -137,7 +137,7 @@ const ReportSharedVsTime2 = () =>{
     };
 
     return (  
-    <section className="sm:w-[65%] xl:w-[50%] h-[30vh] sm:h-auto bg-white p-2 shadow-xl"> 
+    <section className="sm:w-[100%] lg:w-[50%] h-[30vh] sm:h-auto bg-white p-2 shadow-xl"> 
       <a href='#' onClick={()=>{setIsModalOpen(true)}}><span className='flex font-light text-sm justify-end text-red-700'>Choose Range <PencilSquareIcon className='w-4 mx-2' /></span></a>
       <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
           <div className='my-2'>

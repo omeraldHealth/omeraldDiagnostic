@@ -1,19 +1,29 @@
 import { DashboardHeader } from "@components/molecules/header";
 import { Sidebar } from "@components/molecules/sidebar";
-import { Fragment, ReactElement } from "react";
+import { Fragment, ReactElement, useEffect, useState } from "react";
 
 
 export default function DashboardLayout({children}: {children: ReactElement}) {
+
+  const [showSidebar,setSidebarOpen] = useState(false)
+
   return (
-    <Fragment>
-        <aside className="xl:w-80">
+    <Fragment >
+        <aside className="w-64 xl:flex hidden">
           <Sidebar/>
         </aside>
-        <main className="w-[110%]">
-          <DashboardHeader/>
+        {showSidebar && <>
+         <div className="relative z-50" id="sideContainer">
+           <section className="absolute top-0 left-0">
+           <Sidebar showSidebar={showSidebar} setSidebarOpen={setSidebarOpen}/>
+           </section>
+         </div>
+         </>
+        }
+        <main className="w-[100%]">
+          <DashboardHeader showSidebar={showSidebar} setSidebarOpen={setSidebarOpen}/>
           {children}
         </main>
     </Fragment>
-   
   )
 }
