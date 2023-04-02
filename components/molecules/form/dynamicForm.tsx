@@ -117,7 +117,6 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
                             <Select
                                 placeholder={form.label} 
-                                style={{ width: 380 }}
                                 defaultValue={selectedValue}
                                 onChange={(e)=>{setSelectedValue(e)}}
                                 options={roles.map((role) => ({key:role, label: role, value: role }))}
