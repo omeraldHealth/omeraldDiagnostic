@@ -9,6 +9,7 @@ import 'chartjs-adapter-moment'
 import moment from 'moment';
 import { useAuthContext } from 'utils/context/auth.context';
 import { useQueryGetData } from 'utils/reactQuery';
+import { Spinner } from '@components/atoms/loader';
 
 const { RangePicker } = DatePicker;
 
@@ -22,21 +23,19 @@ const ReportSharedVsTime2 = () =>{
     const {diagnosticDetails,activeBranch} = useAuthContext();
     const {data:reports,isLoading:loading} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
 
-    const reportsList = reports?.data?.filter((report:any) => report?.branchId === activeBranch?._id )
-
+    let reportsList = reports?.data?.filter((report:any) => report?.branchId === activeBranch?._id)
+    
     useEffect(()=>{
-
         const sixMonthsAgo = moment().subtract(6, 'months').toDate();
         const current = moment().toDate();
         initialLoad(sixMonthsAgo,current)
         setMaxVal(reportsList?.length || 0)
-    },[activeBranch])
+    },[activeBranch,reports?.data])
 
     const initialLoad = (start:any,end:any)=>{
       const startDate = new Date(start);
       const endDate = new Date(end);
       const {monthYearArray,counts} = getMonthYearArray(startDate, endDate,reportsList);
-
       setDate(monthYearArray);
       setReportCount(counts)
       setMaxVal(Math.max.apply(null, counts))
@@ -150,11 +149,12 @@ const ReportSharedVsTime2 = () =>{
           <RangePicker onChange={(date:any)=>{setDateRange(date)}} disabledDate={disabledDate} picker="month" /></div>
       </Modal>
     
-      <Bar 
+      
+      {loading ?<Spinner/>:<Bar 
         data={data}
         options={option}
         className="w-[100vw]"
-      />
+      />}
     </section>
     )
 }
