@@ -16,12 +16,16 @@ import { useQueryGetData } from 'utils/reactQuery';
 import PdfTesting from '@components/molecules/PdfTesting/PdfTesting';
 import { useAuthContext } from 'utils/context/auth.context';
 import { saveAs } from 'file-saver';
+import { ActivityLogger } from '@components/molecules/logger.tsx/activity';
+import { useQueryClient } from 'react-query';
 
 
 export default function ReportsTab() {
   const [addReports,setAddReports]=useState(false);
-  const {diagnosticDetails,activeBranch} = useAuthContext();
+  const {diagnosticDetails,activeBranch,operator} = useAuthContext();
   const {data:reports} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
+  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+  const queryClient = useQueryClient();
 
   let reportsList = reports?.data?.filter((report:any) => report?.branchId === activeBranch?._id)
   const columns: ColumnsType<ReportTableType> = [
@@ -125,6 +129,8 @@ export default function ReportsTab() {
     let resp = await sendWhatsAppText(message);
     if(resp.status===200){
       successAlert("Report Shared on Whatsapp");
+      ActivityLogger("Shared Report with "+record?.userName,diagnostic?.data,operator,activeBranch)
+      queryClient.invalidateQueries("getDiagnostic")
     }else{
       errorAlert("Error Sharing report")
     }

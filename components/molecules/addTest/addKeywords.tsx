@@ -9,11 +9,12 @@ import { SET_TEST } from 'utils/store/types'
 import { testForm } from 'utils/types/molecules/forms.interface'
 import { DynamicFormCreator } from '../form/dynamicForm'
 import { AddKeyword } from './createdKeyword'
+import { ActivityLogger } from '../logger.tsx/activity'
 
 export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
 
   const testDetails = useSelector((state:any)=>state.testReducer)
-  const {diagnosticDetails,activeBranch} = useAuthContext();
+  const {diagnosticDetails,activeBranch,operator} = useAuthContext();
   const [addKeyword,setAddKeyword] = useState(false)
   const queryClient = useQueryClient();
   const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
@@ -23,6 +24,7 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
     onSuccess: (data) => {
       successAlert("Tests Added succesfully")
       queryClient.invalidateQueries('getDiagnostic');
+  
       handleSucess()
     },
     onError: (error) => {
@@ -53,20 +55,23 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
   }
 
   const handleAddTest =async() => {
+  
     if(testDetails?.sampleType?.keywords.length==0){
       errorAlert("please add keywords to proceed")
     }else{
       if(testDetails ){
         testDetails.branchId = activeBranch?._id
         let updateTest = diagnostic?.data?.tests
+        
         updateTest?.push(testDetails)
+        console.log("test")
         //@ts-ignore
         updateDiagnostic?.mutate({phoneNumber:diagnostic?.data?.phoneNumber,data:{"tests":updateTest}})
+        ActivityLogger("Added Test "+testDetails?.sampleName,diagnostic?.data,operator,activeBranch)
       }else{
         // errorAlert("Test with name already exists")
       }
     }
-   
   }
 
   const handleSuccessTest =async() => {
