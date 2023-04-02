@@ -13,12 +13,13 @@ import { DashboardTable } from '../dashboardItems/data-table'
 import { AddKeywords } from '../addTest/addKeywords';
 import { useQueryGetData, useUpdateDiagnostic } from 'utils/reactQuery';
 import { useQueryClient } from 'react-query';
+import { ActivityLogger } from '../logger.tsx/activity';
 
 export const TestTable = () => {
 
   const [editTest,setEdit] = useState(false);
   const [initialTestDetails,setInitalTest] = useState();
-  const {diagnosticDetails,activeBranch} = useAuthContext()
+  const {diagnosticDetails,activeBranch,operator} = useAuthContext()
   const testDetails = useSelector((state:any)=>state.testReducer)
   const [sampleName,setSampleName] = useState();
   const [testName,setTestName] = useState();
@@ -111,6 +112,8 @@ export const TestTable = () => {
   const handleRemoveTest = async (record:any) => {
     let test = tests.filter((test:any)=>test._id !== record._id)
     updateDiagnostic?.mutate({data:{"tests":test},phoneNumber:diagnosticDetails?.phoneNumber})
+    
+    ActivityLogger("Removed Test "+record?.sampleName,diagnostic?.data,operator,activeBranch)
   }
 
   const handleEditTest = async (value:any) => {

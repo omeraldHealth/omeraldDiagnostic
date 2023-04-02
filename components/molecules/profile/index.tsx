@@ -11,6 +11,7 @@ import { useQueryGetData, useUpdateDiagnostic } from 'utils/reactQuery'
 import { getDiagnosticUserApi } from '@utils'
 import React, { useState } from 'react'
 import { useQueryClient } from 'react-query'
+import { ActivityLogger } from '../logger.tsx/activity'
 
 export const ProfileSummaryComponent = ({style,props,summary}:any) => {
 
@@ -65,6 +66,8 @@ const ProfileView = ({profile,style}:any) => {
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert("Profile updated sucessfully")
+      ActivityLogger("Edited Profile",diagnostic?.data,operator,activeBranch)
+
       queryClient?.invalidateQueries('getDiagnostic')
       setEdit(false)
     },

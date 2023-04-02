@@ -1,21 +1,22 @@
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert"
 import { Spinner } from "@components/atoms/loader"
 import { usePDF } from "@react-pdf/renderer"
-import { ReportDetails, UserDetails } from "@utils"
+import { ReportDetails, UserDetails, getDiagnosticUserApi } from "@utils"
 import { Modal } from "antd"
 import { useEffect, useState } from "react"
 import { QueryClient, useQueryClient } from "react-query"
 import { useDispatch, useSelector } from "react-redux"
 import { useAuthContext } from "utils/context/auth.context"
 import { createReport, uploadReport } from "utils/hook/userDetail"
-import { useUpdateDiagnostic, useUpdateReports, useUploadReportFile } from "utils/reactQuery"
+import { useQueryGetData, useUpdateDiagnostic, useUpdateReports, useUploadReportFile } from "utils/reactQuery"
 import { SET_REPORT_FORM } from "utils/store/types"
 import PdfTesting from "../PdfTesting/PdfTesting"
+import { ActivityLogger } from "../logger.tsx/activity"
 
 export const ReportSummary =({handleSteps}:any) => {
 
     const reportForm = useSelector((state:any)=>state.reportFormReducer)
-    const {diagnosticDetails,activeBranch} = useAuthContext();
+    const {diagnosticDetails,activeBranch,operator} = useAuthContext();
     const [loading,setLoading] = useState(false)
     const queryClient = useQueryClient();
     const dispatch = useDispatch()
@@ -25,6 +26,9 @@ export const ReportSummary =({handleSteps}:any) => {
           <PdfTesting report={reportForm} diagnosticDetails={diagnosticDetails} />
         ),
     });
+    
+
+    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
     const updateDiagnostic = useUpdateDiagnostic({
         onSuccess: (data) => {
@@ -45,6 +49,8 @@ export const ReportSummary =({handleSteps}:any) => {
             if(data && diagnosticDetails){
                 //@ts-ignore
                 updateDiagnostic.mutate({data:{"reports":[...diagnosticDetails?.reports,data?.data[0]._id]},phoneNumber:diagnosticDetails?.phoneNumber})
+                queryClient.invalidateQueries("getDiagnostic")
+             
             }
         },
         onError: (error) => {
@@ -72,12 +78,14 @@ export const ReportSummary =({handleSteps}:any) => {
             const response = await fetch(instance.url);
             const blob = await response.blob();
             formData.append('file', new File([blob], 'filename.pdf'));
+            ActivityLogger("Added Report for "+reportForm?.userName,diagnostic?.data,operator,activeBranch)
             uploadReportFile.mutate(formData)
             }else{
                 const formData = new FormData()
                 formData.append("file",reportForm.reportUrl)
                 uploadReportFile.mutate(formData)
             }
+         
     }
 
     const { confirm } = Modal;

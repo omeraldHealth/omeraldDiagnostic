@@ -10,6 +10,7 @@ import { EmployeeDetails } from "utils/types/molecules/forms.interface";
 import { SettingsCommon } from "./settings";
 import { useAddEmployee, useDeleteEmployee, useQueryGetData, useUpdateDiagnostic, useUpdateEmployee } from "utils/reactQuery";
 import axios from "axios";
+import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 
 export function EmployeeManagement() {    
     const { confirm } = Modal;
@@ -17,7 +18,7 @@ export function EmployeeManagement() {
     const [initialData,setInitial] = useState({})
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
-    const {diagnosticDetails,activeBranch} = useAuthContext()
+    const {diagnosticDetails,activeBranch,operator} = useAuthContext()
     const queryClient = useQueryClient();
     const {data:diagnostic}  = useQueryGetData("diagnosticDetails",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
     const [employeeId,setEmployeeId] = useState(null)
@@ -69,6 +70,7 @@ export function EmployeeManagement() {
       let updatedManager = diagnostic?.data?.managersDetail?.filter((manager:any) => manager?._id !== value._id)
       updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":updatedManager}})
       deleteEmployee.mutate({userId:value?.managerContact})
+      ActivityLogger("Deleted "+value?.managerName+"as "+value?.managerRole,diagnostic?.data,operator,activeBranch)
     }
 
     const handleEdit = async (value:any) => {
@@ -102,6 +104,8 @@ export function EmployeeManagement() {
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":updatedManager}})
         value.mainBranchId =  diagnosticDetails?.phoneNumber;
         updateEmployee.mutate({userId:employeeId,data:value})
+        ActivityLogger("Modified "+value?.managerName+" as "+value?.managerRole,diagnostic?.data,operator,activeBranch)
+
       }else{
         let filter = diagnostic?.data?.managersDetail
         filter?.push(value)
@@ -109,6 +113,7 @@ export function EmployeeManagement() {
         value.mainBranchId =  diagnosticDetails?.phoneNumber;
         value.branchId = activeBranch?._id
         addEmployee.mutate(value)
+        ActivityLogger("Added "+value?.managerName+" as "+value?.managerRole,diagnostic?.data,operator,activeBranch)
       }
     }
 

@@ -10,6 +10,7 @@ import { branchDetailsEditFormArray} from "utils/types/molecules/forms.interface
 import { SettingsCommon } from "./settings";
 import { useQueryGetData, useUpdateDiagnostic } from "utils/reactQuery";
 import axios from "axios";
+import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 
 export function BranchManagement() {    
     const { confirm } = Modal;
@@ -17,7 +18,7 @@ export function BranchManagement() {
     const [initialData,setInitial] = useState({})
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
-    const {diagnosticDetails} = useAuthContext()
+    const {diagnosticDetails,operator,activeBranch} = useAuthContext()
     const queryClient = useQueryClient();
     const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
     const [branchId,setBranchId] = useState(null)
@@ -40,6 +41,7 @@ export function BranchManagement() {
     const handleRemove = async (value:any) => {
       let updatedBranch = diagnostic?.data?.branchDetails?.filter((branch:any) => branch?._id !== value?._id)
       updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
+      ActivityLogger("Removed branch: "+value?.branchName,diagnostic?.data,operator,activeBranch)
     }
 
     const handleEdit = async (value:any) => {
@@ -75,10 +77,12 @@ export function BranchManagement() {
           } return branch
         })
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
+        ActivityLogger("Updated branch: "+value?.branchName,diagnostic?.data,operator,activeBranch)
       }else{
         let filter = diagnostic?.data?.branchDetails
         filter?.push(value)
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":filter}})
+        ActivityLogger("Added new branch: "+value?.branchName,diagnostic?.data,operator,activeBranch)
       }
     }
 
@@ -118,7 +122,7 @@ export function BranchManagement() {
           title: 'Branch Operator',
           dataIndex: 'branchOperator',
           key: 'branchOperator',
-          render: (text:any) => {return text.map((tag:any) => <Tag color="green" key={tag}>{getEmployee(tag)}</Tag>)}
+          render: (text:any) => {return text?.map((tag:any) => <Tag color="green" key={tag}>{getEmployee(tag)}</Tag>)}
           // sorter: (a:any, b:any) => a.branchAddress.length - b.branchAddress.length,
         },
         {

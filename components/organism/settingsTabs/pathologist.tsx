@@ -12,6 +12,7 @@ import { SettingsCommon } from "./settings";
 import axios from "axios";
 import { Spinner } from "@components/atoms/loader";
 import { useQueryGetData, useUpdateDiagnostic } from "utils/reactQuery";
+import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
 
 export function PathologistManagement() {    
     const { confirm } = Modal;
@@ -19,7 +20,7 @@ export function PathologistManagement() {
     const [initialData,setInitial] = useState({})
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
-    const {diagnosticDetails,activeBranch} = useAuthContext()
+    const {diagnosticDetails,activeBranch,operator} = useAuthContext()
     const [image,setImage] = useState([]);
     const [loading,setLoading] = useState(false);
     const queryClient = useQueryClient();
@@ -42,6 +43,7 @@ export function PathologistManagement() {
     const handleRemove = async (value:any) => {
       let updatedPath = diagnostic?.data?.pathologistDetail?.filter((path:any) => { return path?._id !== value?._id})
       updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"pathologistDetail":updatedPath}})
+      ActivityLogger("Removed pathologist: "+value?.name,diagnostic?.data,operator,activeBranch)
     }
 
     const handleEdit = (value:any) => {
@@ -81,7 +83,7 @@ export function PathologistManagement() {
           })
 
           updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"pathologistDetail":updatedPath}})
-   
+          ActivityLogger("Updated pathologist: "+value?.name,diagnostic?.data,operator,activeBranch)
         }
       }else{
         let filter = diagnostic?.data?.pathologistDetail
@@ -94,7 +96,7 @@ export function PathologistManagement() {
         value.branchId = activeBranch?._id
         filter?.push(value)
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"pathologistDetail":filter}})
-  
+        ActivityLogger("Added pathologist: "+value?.name,diagnostic?.data,operator,activeBranch)
       }
       setImage(null)
       setLoading(false)
