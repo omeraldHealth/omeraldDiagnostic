@@ -4,6 +4,8 @@
     background-size: 130vw;
     background-position-x: -1vw;
     background-repeat: no-repeat;
+    box-sizing: border-box;
+    max-height: 80vh !important;
 }
 
 @media (min-width:430px) and (max-width:769px) {

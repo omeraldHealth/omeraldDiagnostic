@@ -13,9 +13,9 @@ export default function Home() {
     <Fragment>
 			<Head title={'Omerald Diagnostic | Sign In'} />
       <PageTemplate>
-            <div className={`pt-[1vh] ${styles["signInContainer"]}`}>
+            <div className={`max-h-[100vh] ${styles["signInContainer"]}`}>
                 <Navbar/>
-                  <section className='min-h-[70vh]'>
+                  <section>
                     <SignInComponent/>
                   </section>
             </div>
