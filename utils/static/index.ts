@@ -84,3 +84,31 @@ export const IndexObj = {
 }
 export const roles = ['Admin', 'Manager','Operator','Spoc'];
 export const plainOptions = ['Male', 'Female', 'Others'];
+
+export const navigation = {
+  policies: [
+    { name: "Disclaimer", href: "/info/disclaimer" },
+    { name: "Privacy Policy", href: "/info/privacy" },
+    { name: "Terms of Service", href: "/info/terms" },
+    { name: "Platform Consent", href: "/info/consent" },
+  ],
+  support: [
+    { name: "FAQ", href: "/faq" },
+    { name: "Pricing", href: "/pricingTab" },
+    { name: "Support", href: "/info/support" },
+    { name: "Documentation", href: "/info/documentation" },
+  ],
+  company: [
+    { name: "Blog", href: "https:/blog.omerald.com/" },
+    { name: "Register", href: "/signin" },
+    { name: "About", href: "/about" },
+    { name: "Partners", href: "/info/team" },
+  ],
+  legal: [
+    { name: "Terms", href: "/info/terms" },
+    // { name: "Claim", href: "/privacy" },
+  ],
+  social: [
+   
+  ],
+};
