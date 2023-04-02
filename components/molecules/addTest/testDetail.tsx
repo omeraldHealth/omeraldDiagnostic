@@ -75,8 +75,8 @@ export const TestDetail = ({handleSteps}:any) => {
     }
 
     return (
-        <div className="my-5 w-[100%] sm:w-[70%] md:w-[100%] h-auto p-4 flex">
-            <section className='w-[45%]'>
+        <div className="my-5 w-[100%] sm:w-[70%] md:w-[100%] h-auto p-4 grid lg:flex">
+            <section className='w-[80%] lg:w-[45%]'>
                 <BodyText_3>You want to choose from existing reports?</BodyText_3>
                 <section className='my-4 w-[100%]'>
                     <section className="my-6">
@@ -87,7 +87,7 @@ export const TestDetail = ({handleSteps}:any) => {
                     </section>
                     <section>
                     <BodyText_3 style='mb-4'>Please Enter Customised Test Name</BodyText_3>
-                    <Input defaultValue={sampleName} className="w-[16vw] border-gray-300 rounded-md" 
+                    <Input defaultValue={sampleName} className="w-full md:w-[32vw] lg:w-[16vw] border-gray-300 rounded-md" 
                         onChange={(e:any)=>{setSampleName(e.target.value)}} 
                         required placeholder="Custom Report Name" />
                     </section>
@@ -100,7 +100,7 @@ export const TestDetail = ({handleSteps}:any) => {
                             </section>: 
                             <section className="my-4">
                                <BodyText_3 style='mb-4'>Please Enter Test Name</BodyText_3>
-                                <Input defaultValue={testName} className="w-[16vw] border-gray-300 rounded-md" onChange={(e:any)=>{setTestName(e.target.value)}} required placeholder="Test Name" />
+                                <Input defaultValue={testName} className="w-full md:w-[32vw]  lg:w-[16vw] border-gray-300 rounded-md" onChange={(e:any)=>{setTestName(e.target.value)}} required placeholder="Test Name" />
                             </section>
                         }
                     </section>
