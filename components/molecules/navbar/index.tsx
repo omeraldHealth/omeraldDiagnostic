@@ -25,7 +25,7 @@ export function Navbar() {
                 <p className='font-sans hidden sm:block sm:text-lg sm:font-bold self-center'>OMERALD DIAGNOSTICS</p>
             </span>
             </Link>
-            <section className='hidden lg:flex'>
+            <section className='hidden xl:flex'>
                 {navLinks.map((nav,index) => <Link key={index} href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
             </section>
 

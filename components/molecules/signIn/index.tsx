@@ -100,7 +100,7 @@ const SignInComponent = () => {
 
   return (
     <section className="h-auto my-[10vh]">
-          <section className="w-[90vw] sm:w-[80vw] lg:w-[40vw] sm:h-[30vh] lg:h-[45vh] rounded-lg bg-white shadow-xl m-auto self-center p-1 py-10 sm:p-10 text-center"> 
+          <section className="w-[90vw] sm:w-[80vw] md:w-[60vw] xl:w-[40vw] sm:h-[30vh] lg:h-[45vh] rounded-lg bg-white shadow-xl m-auto self-center p-1 py-10 sm:p-10 text-center"> 
               <BodyText_2 style="text-black">Welcome Back 👋</BodyText_2>
               <p className="text-black font-md text-xl mb-10">Sign In to your Account</p>
               <section>
