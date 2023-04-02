@@ -15,3 +15,9 @@ export const insertReportApi = backendApiPath+`/api/reports/insertDiagnosticRepo
 export const updateTestApi = backendApiPath+`/api/diagnostic/updateDiagnosticUser?userId=`
 export const sendWhatsAppApi = backendApiPath+`/api/diagnostic/sendWhatsAppText`
 export const sendWhatsAppQueryApi = backendApiPath+`/api/diagnostic/sendWhatsAppQuery`
+
+export const getEmployees = backendApiPath+`/api/employee/getAllEmployees`
+export const getEmployeeById = backendApiPath+`/api/employee/getEmployee?userId=`
+export const insertEmployee = backendApiPath+`/api/employee/addEmployee`
+export const updateEmployee = backendApiPath+`/api/employee/updateEmployee?userId=`
+export const deleteEmployee = backendApiPath+`/api/employee/deleteEmployee?userId=`

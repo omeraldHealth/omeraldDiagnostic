@@ -1,86 +1,109 @@
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert"
-import { TitleText_2 } from "@components/atoms/font"
 import { Spinner } from "@components/atoms/loader"
-
+import { usePDF } from "@react-pdf/renderer"
 import { ReportDetails, UserDetails } from "@utils"
 import { Modal } from "antd"
-import { useState } from "react"
-import { QueryClient } from "react-query"
+import { useEffect, useState } from "react"
+import { QueryClient, useQueryClient } from "react-query"
 import { useDispatch, useSelector } from "react-redux"
-import { createReport, updateUserDetails, uploadReport } from "utils/hook/userDetail"
-import { SET_REPORT, SET_REPORT_FORM, SET_REPORT_LIST } from "utils/store/types"
+import { useAuthContext } from "utils/context/auth.context"
+import { createReport, uploadReport } from "utils/hook/userDetail"
+import { useUpdateDiagnostic, useUpdateReports, useUploadReportFile } from "utils/reactQuery"
+import { SET_REPORT_FORM } from "utils/store/types"
+import PdfTesting from "../PdfTesting/PdfTesting"
 
 export const ReportSummary =({handleSteps}:any) => {
+
     const reportForm = useSelector((state:any)=>state.reportFormReducer)
+    const {diagnosticDetails,activeBranch} = useAuthContext();
     const [loading,setLoading] = useState(false)
-    const diagnosticDetails = useSelector((state:any)=> state.diagnosticReducer)
+    const queryClient = useQueryClient();
     const dispatch = useDispatch()
-    const queryClient = new QueryClient()
+    const [instance, updateInstance] = usePDF({
+        document: (
+          //@ts-ignore
+          <PdfTesting report={reportForm} diagnosticDetails={diagnosticDetails} />
+        ),
+    });
+
+    const updateDiagnostic = useUpdateDiagnostic({
+        onSuccess: (data) => {
+            handleSteps && handleSteps(3)
+            setLoading(false)
+            successAlert("Report updated sucessfully ")
+            queryClient.invalidateQueries("getReports")
+            dispatch({type:SET_REPORT_FORM,payload:null})
+        },
+        onError: (error) => {
+          successAlert("Error adding reports")
+        },
+    });
+
+    const addReports = useUpdateReports({
+        onSuccess: (data) => {
+            queryClient.invalidateQueries("getReports")
+            if(data && diagnosticDetails){
+                //@ts-ignore
+                updateDiagnostic.mutate({data:{"reports":[...diagnosticDetails?.reports,data?.data[0]._id]},phoneNumber:diagnosticDetails?.phoneNumber})
+            }
+        },
+        onError: (error) => {
+          successAlert("Error adding reports")
+        },
+    });
+
+    const uploadReportFile = useUploadReportFile({
+        onSuccess: (data:any) => {
+            reportForm["reportUrl"] = data?.data.location
+            reportForm.userId = diagnosticDetails?.phoneNumber.split(" ").join("");
+            reportForm.branchId = activeBranch?._id
+            addReports.mutate(reportForm)
+        },
+        onError: (error) => {
+          errorAlert("Error uploading report")
+          setLoading(false)
+        },
+    });
+
     const handleSubmit = async () => {
         setLoading(true)
         if(reportForm && reportForm.isManualReport){
-            const resp2 = await createReport(diagnosticDetails?.phoneNumber as string,reportForm);
-            if(resp2.status==200){
-                    const resp3 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"reports":[...diagnosticDetails.reports,resp2.data[0]._id]})
-
-                      handleSteps && handleSteps(3)
-                      queryClient.invalidateQueries({ queryKey: ['reports'] })
-                      setLoading(false)
-                      successAlert("Report updated sucessfully ")
-                      dispatch({type:SET_REPORT_FORM,payload:null})
-                    
+            const formData = new FormData()
+            const response = await fetch(instance.url);
+            const blob = await response.blob();
+            formData.append('file', new File([blob], 'filename.pdf'));
+            uploadReportFile.mutate(formData)
             }else{
-                errorAlert("Error updating report, please try again")
-                setLoading(false)
+                const formData = new FormData()
+                formData.append("file",reportForm.reportUrl)
+                uploadReportFile.mutate(formData)
             }
-        }else{
-
-            const resp = await uploadReport(reportForm.reportUrl)
-
-            if(resp.status==200){
-                reportForm["reportUrl"] = resp?.data.location
-                const resp2 = await createReport(diagnosticDetails?.phoneNumber as string,reportForm);
-                if(resp2.status==200){
-                    handleSteps && handleSteps(3)
-                    queryClient.invalidateQueries({ queryKey: ['reports'] })
-                    setLoading(false)
-                    successAlert("Report updated sucessfully ")
-                    dispatch({type:SET_REPORT_FORM,payload:null})
-                }else{
-                    errorAlert("Error updating report, please try again")
-                    setLoading(false)
-                }
-            }else{
-                errorAlert("Error updating image, please try again")
-                setLoading(false)
-            }
-        }
-      
     }
 
     const { confirm } = Modal;
+
   return (
     <div>
          <section className="w-[100%] min-h-[50vh] max-h-[70vh] relative ">
             <p>Report Summary</p>
-            <section className="grid grid-cols-2 my-4 gap-x-10 relative">
+            <section className="grid grid-cols-2 my-1 gap-x-4 relative">
                 {
                     Object.keys(reportForm).map((key)=>{
                         {
                             if(reportForm[key] && reportForm[key]?.length>0 && key!='userId' && key!='reportUrl'){
-                                return  <p className="my-2 font-bold capitalize border-2 p-2 grid grid-cols-2 justify-between ">{key}: <span className="font-light">{reportForm[key]}</span></p>
+                                return  <p className="my-2 font-bold text-sm capitalize border-2 p-1 grid grid-cols-2 justify-between ">{key}: <span className="font-light text-xs">{reportForm[key]}</span></p>
                             }
                         }
                     })
                 }
             </section>
             {reportForm.parsedData && reportForm?.isManualReport &&<section  >
-                    <p className="my-2">Parsed Data</p>
-                    <section className="grid  grid-cols-3 my-2 gap-x-10 ">
+                    <p className="my-2 font-light text-sm underline">Report Data</p>
+                    <section className="grid  grid-cols-12 my-1 gap-x-4 ">
                     {
                         Object.keys(reportForm?.parsedData).map((key,index)=>{
                             {
-                                return  <p key={key} className="my-2 capitalize rounded-xl border-gray-50 border-2 p-2 grid grid-cols-2 justify-between ">{key}: <span className="font-light">{
+                                return  <p key={key} className="my-2  capitalize rounded-xl border-gray-50 border-2 p-1  font-light text-sm grid grid-cols-2 justify-between ">{key}: <span className="font-light">{
                                     reportForm.parsedData[key]}</span></p>
         
                             }

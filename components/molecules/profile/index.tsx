@@ -1,25 +1,27 @@
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert'
-import ErrorComp from '@components/atoms/alerts/error'
 import { Spinner } from '@components/atoms/loader'
 import { PencilIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { Modal } from 'antd'
-import { useDispatch, useSelector } from 'react-redux'
-import { updateUserDetails, uploadImage } from 'utils/hook/userDetail'
-import { SET_DIAGNOSTIC_DETAILS } from 'utils/store/types'
+import { useDispatch } from 'react-redux'
+import { uploadImage } from 'utils/hook/userDetail'
 import { profileForm } from 'utils/types/molecules/forms.interface'
 import { DynamicFormCreator } from '../form/dynamicForm'
+import { useAuthContext } from 'utils/context/auth.context'
+import { useQueryGetData, useUpdateDiagnostic } from 'utils/reactQuery'
+import { getDiagnosticUserApi } from '@utils'
 import React, { useState } from 'react'
+import { useQueryClient } from 'react-query'
 
 export const ProfileSummaryComponent = ({style,props,summary}:any) => {
 
-  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
-  const profile = summary ? props: diagnosticDetails
+  const {diagnosticDetails} = useAuthContext();
+  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+  const profile = summary ? props: diagnostic?.data
 
   return (
     <div className='h-auto '>
         {summary && <>{profile && profile.diagnosticName && <ProfileSummary profile={profile} style={style} />}</>}
         {!summary && <>{profile && profile.diagnosticName && <ProfileView profile={profile} style={style} />}</> }
-        {!profile?.diagnosticName && <ErrorComp/>}
     </div>
   )
 }
@@ -56,10 +58,24 @@ const ProfileView = ({profile,style}:any) => {
   const [edit,setEdit] = useState(false);
   const [loading,setLoading] = useState(false);
   const [image,setImage] = useState();
+  const queryClient = useQueryClient();
+  const {operator}=useAuthContext();
   const { confirm } = Modal;
-  const dispatch = useDispatch();
+
+  const updateDiagnostic = useUpdateDiagnostic({
+    onSuccess: (data) => {
+      successAlert("Profile updated sucessfully")
+      queryClient?.invalidateQueries('getDiagnostic')
+      setEdit(false)
+    },
+    onError: (error) => {
+      successAlert("Error updating profile")
+    },
+  });
   
-  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
+  const {diagnosticDetails,activeBranch} = useAuthContext();
+  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+
   const handleSubmit = async (value:any) => {
     confirm({
       title: 'Do you want to update this?',
@@ -69,30 +85,19 @@ const ProfileView = ({profile,style}:any) => {
         value["brandLogo"] = image;
         if(image){
             let resp = await uploadImage(value["brandLogo"])
-    
             if(resp){
               let location = resp
               let brandDetails = {"brandLogo":location,"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl}
-              let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
-              let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
-              if(resp2.status==200){
-                dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:diag})
-                successAlert("Profile updated sucessfully")
-                setEdit(false)
-              }
+              let diag = {...diagnostic?.data,"diagnosticName":value.diagnosticName,"email":value.email,brandDetails:brandDetails}
+              updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:diag})
             }else{
               errorAlert("Error uploading profile")
             }
         }
         else {
-              let brandDetails = {"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl,"brandLogo":diagnosticDetails?.brandDetails?.brandLogo}
-              let diag = {...diagnosticDetails,"diagnosticName":value.diagnosticName,"email":value.email,"brandDetails":brandDetails}
-              let resp2 = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},diag)
-              if(resp2.status==200){
-                dispatch({type:SET_DIAGNOSTIC_DETAILS,payload:diag})
-                successAlert("Profile updated sucessfully")
-                setEdit(false)
-              }
+              let brandDetails = {"facebookUrl":value.facebookUrl,"instaUrl":value.instaUrl,"brandLogo":diagnostic?.data?.brandDetails?.brandLogo}
+              let diag = {...diagnostic?.data,"diagnosticName":value.diagnosticName,"email":value.email,"brandDetails":brandDetails}
+              updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:diag})
         }
         setLoading(false)
       }
@@ -117,7 +122,10 @@ const ProfileView = ({profile,style}:any) => {
   return (
     <section>
         <div className={`w-auto p-4 bg-white mt-14 relative rounded-lg h-auto text-left ${style}`}>
+          
+          { operator?.managerRole.toLowerCase() === "owner" && <>
           {!edit ? <a href='#' onClick={()=>{setEdit(!edit)}}><PencilIcon className='w-6 absolute right-20' /></a> :<a href='#' onClick={()=>{setEdit(!edit)}}><XMarkIcon className='w-6 absolute right-20' /></a>}
+          </> }
           {
             !edit ? 
             <>
@@ -133,10 +141,10 @@ const ProfileView = ({profile,style}:any) => {
                             <p className='my-8 font-bold text-sm'>{"Instagram Url: "}<a href={profile?.brandDetails?.instaUrl} className='text-black font-light lowercase'>{profile?.brandDetails?.instaUrl}</a></p>
                           </aside>
                           <aside>
-                            <p className='my-8 font-bold text-sm'>{"Branch Name: "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchName}</span></p>
-                            <p className='my-8 font-bold text-sm'>{"Branch Email: "}<span className='text-black font-light lowercase'>{profile?.branchDetails?.[0]?.branchEmail}</span></p>
-                            <p className='my-8 font-bold text-sm'>{"Branch Contact: "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchContact}</span></p>
-                            <p className='my-8 font-bold text-sm'>{"Branch Address "}<span className='text-black font-light'>{profile?.branchDetails?.[0]?.branchAddress}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Name: "}<span className='text-black font-light'>{activeBranch?.branchName}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Email: "}<span className='text-black font-light lowercase'>{activeBranch?.branchEmail}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Contact: "}<span className='text-black font-light'>{activeBranch?.branchContact}</span></p>
+                            <p className='my-8 font-bold text-sm'>{"Branch Address "}<span className='text-black font-light'>{activeBranch?.branchAddress}</span></p>
                           </aside>
               </section>
               </section>

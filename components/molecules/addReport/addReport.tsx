@@ -6,7 +6,7 @@ import { ReportSummary } from './reportSummary';
 import { SuccessReport } from './successReport';
 import { UploadReport } from './uploadReport';
 
-export const AddReportComponent = ({setAddReports,refetch}:any) => {
+export const AddReportComponent = ({setAddReports}:any) => {
 
   const [currentStep, setCurrentStep] = useState(addReportSteps[0]);
 
@@ -37,7 +37,7 @@ export const AddReportComponent = ({setAddReports,refetch}:any) => {
                 }
                  {
                   currentStep?.id === 4 && <div className="my-10 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
-                    <SuccessReport refetch={refetch} setAddReports={setAddReports} />
+                    <SuccessReport  setAddReports={setAddReports} />
                   </div>
                 }
         </div>

@@ -20,31 +20,35 @@ export const addTestSteps: OnboardStepsType[] = [
   { id: 2, name: "Enter Keywords & aliases" },
   { id: 3, name: "Success" },
 ];
-export const privateRoutes: OnboardStepsType[] = [
-    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true },
+export const privateRoutes: any[] = [
+    { name: "Dashboard", href: "/dashboard", icon: HomeIcon, current: true,  allowedRoles: ["admin", "operator","owner","spoc","manager"] },
     {
       name: "Tests Offered",
       href: "/test",
       icon: BeakerIcon,
       current: false,
+      allowedRoles: ["admin", "operator","owner","spoc","manager"]
     },
     {
       name: "View Reports",
       href: "/reports",
       icon: ClipboardDocumentListIcon,
       current: false,
+      allowedRoles: ["admin", "operator","owner","spoc","manager"]
     },
     {
       name: "Profile",
       href: "/profile",
       icon: UserCircleIcon,
       current: false,
+      allowedRoles: ["admin", "operator","owner","spoc","manager"]
     },
     {
       name: "Settings",
       href: "/settings",
       icon: WrenchScrewdriverIcon,
       current: false,
+      allowedRoles: ["owner","admin"]
     },
 ];
 export function classNames(...classes: [string, string]) {

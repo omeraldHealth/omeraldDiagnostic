@@ -3,31 +3,31 @@ import { BodyText_3 } from "@components/atoms/font"
 import { getReportTypeApi } from "@utils";
 import { Input, Radio, SelectProps } from "antd"
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_TEST } from "utils/store/types";
 import { debounce } from 'lodash';
 import { DynamicFormCreator } from "../form/dynamicForm";
 import { selectForm } from "utils/types/molecules/forms.interface";
 import { ShowTable } from "./showTable";
-import axios from "axios";
+import { useQueryGetData } from "utils/reactQuery";
 
 export const TestDetail = ({handleSteps}:any) => {
     const [selectedValue,setSelectedValue] = useState(false)
-    const {data:reportTypes} = useQuery(["reportTypes"],()=>{return axios.get(getReportTypeApi)})
+  
     const [selectedReport,setSelectedReport] = useState()
     const [selectedReportId,setSelectedReportId] = useState()
-    const [datas, setData] = useState<SelectProps['options']>(reportTypes?.data);
     const [sampleName,setSampleName] = useState("")
     const [testName,setTestName] = useState("")
     const [showTable,setShowTable] = useState(false)
-    const dispatch = useDispatch()
-    const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const testDetail = useSelector((state:any)=>state.testReducer)
     const initialTestDetails = {
         "sampleName":sampleName,
         "testName":testName
     }
+
+    const {data:reportTypes}  = useQueryGetData("reportTypes",getReportTypeApi)
+    const [datas, setData] = useState<SelectProps['options']>(reportTypes?.data);
+    const dispatch = useDispatch()
 
     useEffect(()=>{
         if(selectedValue && selectedReportId){
@@ -60,7 +60,7 @@ export const TestDetail = ({handleSteps}:any) => {
                     "keywords": selectedReport?.keywords
                 }}})
                 handleSteps(1)
-            }else if(!selectedValue){
+            }else if(!selectedValue && sampleName.length>0 && testName.length>0){
                 dispatch({type:SET_TEST,payload:{
                 "sampleName":sampleName,
                 "sampleType":{

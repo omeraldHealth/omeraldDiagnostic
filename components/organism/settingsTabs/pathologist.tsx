@@ -4,13 +4,14 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { getDiagnosticUserApi } from "@utils";
 import { Modal, Space } from "antd";
 import { useState } from "react";
-import { useQuery} from "react-query";
+import { useQuery, useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 import { updateUserDetails, uploadImage } from "utils/hook/userDetail";
 import {  pathologistFormArray} from "utils/types/molecules/forms.interface";
 import { SettingsCommon } from "./settings";
 import axios from "axios";
 import { Spinner } from "@components/atoms/loader";
+import { useQueryGetData, useUpdateDiagnostic } from "utils/reactQuery";
 
 export function PathologistManagement() {    
     const { confirm } = Modal;
@@ -18,23 +19,29 @@ export function PathologistManagement() {
     const [initialData,setInitial] = useState({})
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
-    const {diagnosticDetails} = useAuthContext()
+    const {diagnosticDetails,activeBranch} = useAuthContext()
     const [image,setImage] = useState([]);
     const [loading,setLoading] = useState(false);
-    const {data:diag,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
-
-    const pathList:any = diag?.data?.pathologistDetail?.map((path:any) =>  {return {"text": path?.name,"value":path?.name}})
-
-    const handleRemove = async (value:any) => {
-      let updatedPath = diag?.data?.pathologistDetail?.filter((path:any) => { return path?._id !== value?._id})
-      let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"pathologistDetail":updatedPath })
-
-      if(resp.status==200){
-        warningAlert("Pathologist removed succesfully")
+    const queryClient = useQueryClient();
+    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+  
+    const updateDiagnostic = useUpdateDiagnostic({
+      onSuccess: (data) => {
+        warningAlert("pathologist data updated succesfully")
         setEdit(false)
         setAddElement(false)
-        refetch();
-      }
+        queryClient.invalidateQueries("getDiagnostic")
+      },
+      onError: (error) => {
+
+      },
+    });
+
+    const pathList:any = diagnostic?.data?.pathologistDetail?.map((path:any) =>  {return {"text": path?.name,"value":path?.name}})
+
+    const handleRemove = async (value:any) => {
+      let updatedPath = diagnostic?.data?.pathologistDetail?.filter((path:any) => { return path?._id !== value?._id})
+      updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"pathologistDetail":updatedPath}})
     }
 
     const handleEdit = (value:any) => {
@@ -51,21 +58,14 @@ export function PathologistManagement() {
     }
 
     const handleSubmit = async (value:any) => {
-      let duplicate = diag?.data?.pathologistDetail.some((path:any) => {return (path.name===value.name)})
+     
+      let duplicate = diagnostic?.data?.pathologistDetail.some((path:any) => (path._id !== initialData._id && path.name.trim() === value.name.trim()))
+   
       let flag = true;
       setLoading(true)
-      if(!edit && duplicate){
+      if(duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
-        
-        if(duplicate){
-           diag?.data?.pathologistDetail?.map((path:any)=>{
-              if( path._id !== initialData?._id && path.name === value.name){
-                errorAlert("Pathologist with same name already exists")
-                flag = false;
-              }
-           })
-        }
         if(flag){
           if(image){
             let location = await uploadImage(image)
@@ -74,37 +74,27 @@ export function PathologistManagement() {
             }
           }
           let updated = {...initialData,...value}
-          let updatedPath = diag?.data?.pathologistDetail?.map((path:any) => {
+          let updatedPath = diagnostic?.data?.pathologistDetail?.map((path:any) => {
             if( path._id == initialData?._id){
               return {...path,...updated}
             } return path
           })
-          let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"pathologistDetail":updatedPath})
-          if(resp.status==200){
-            successAlert("Branch Updated succesfully")
-            setEdit(false)
-            setAddElement(false)
-            refetch();
-          }
+
+          updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"pathologistDetail":updatedPath}})
+   
         }
       }else{
-        let filter = diag?.data?.pathologistDetail
+        let filter = diagnostic?.data?.pathologistDetail
         if(image){
           let location = await uploadImage(image)
           if(location){
             value["signature"] = location
           }
         } 
-
+        value.branchId = activeBranch?._id
         filter?.push(value)
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"pathologistDetail":filter})
-
-        if(resp.status==200){
-          successAlert("Pathologist added succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
-        }
+        updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"pathologistDetail":filter}})
+  
       }
       setImage(null)
       setLoading(false)
@@ -159,9 +149,12 @@ export function PathologistManagement() {
       setImage(value.banner)
     }
  
+
+    let pathologistList = diagnostic?.data?.pathologistDetail?.filter((path:any) => path.branchId == activeBranch?._id)
+   
     return (
       <>
-      <SettingsCommon selectedValue={selectedValue} handleImage={handleImage} setSelectedValue={setSelectedValue} columns={columns} data={diag?.data?.pathologistDetail} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={pathologistFormArray} />
+      <SettingsCommon selectedValue={selectedValue} handleImage={handleImage} setSelectedValue={setSelectedValue} columns={columns} data={pathologistList} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={pathologistFormArray} />
       {loading && <Spinner/>}
       </>
   )

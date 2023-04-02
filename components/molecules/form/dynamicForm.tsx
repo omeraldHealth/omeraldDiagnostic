@@ -8,11 +8,17 @@ import BannerUploader from '@components/atoms/fileUploder/bannerUpload';
 import { useSelector } from 'react-redux';
 import { debounce, isElement } from 'lodash';
 import moment from 'moment';
+import { useQueryGetData } from 'utils/reactQuery';
+import { getDiagnosticUserApi } from '@utils';
+import { useAuthContext } from 'utils/context/auth.context';
+import { Option } from 'antd/es/mentions';
 
 
 export const DynamicFormCreator = ({formProps,button=true,showLabel,disableElement,initial,formStyle,reportsValidation,handleSubmit,handleImage,buttonText,selectedValue,setSelectedValue}:DynamicFormType) => {
-    const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
-  
+
+    const {diagnosticDetails} = useAuthContext();
+    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+
     const [isDisabled,setDisabled] = useState(false);
     const disabledDate = (current:any) => {
       return current && current > moment().endOf('day');
@@ -24,9 +30,11 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
       }
     },[])
   
-    const [datas, setData] = useState<SelectProps['options']>(diagnosticProfile.pathologistDetail);
+    const employees = diagnostic?.data?.managersDetail.map((person:any) => {return {"value":person.managerName,"key":person.managerContact}});
+
+    const [datas, setData] = useState<SelectProps['options']>(diagnostic?.data?.pathologistDetail);
     const handleSearch = (newValue: string) => {
-      let temp = diagnosticProfile.pathologistDetail?.filter((report:any)=> {return report.name.includes(newValue) || report.designation.includes(newValue)})
+      let temp = diagnostic?.data?.pathologistDetail?.filter((report:any)=> {return report.name.includes(newValue) || report.designation.includes(newValue)})
       setData(temp)
   };
   
@@ -186,6 +194,17 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             {form.type === "textArea" &&
                             <Form.Item      key={form.label+13} className='mb-6' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
                                 <textarea   disabled={isDisabled} className='border-gray-300 border-2 p-2 rounded-lg' rows={4} cols="36" placeholder={form.label} maxLength={6000} />
+                            </Form.Item>
+                            } 
+                            {form.type === "multiSelect" &&
+                            <Form.Item key={form.label+13} className='mb-6' name={form.name} labelCol={{ span: 0 }}>
+                                <Select
+                                    mode="multiple"
+                                    labelInValue
+                                    placeholder="Select Operators"
+                                    style={{ width: '100%' }}
+                                    options={employees}
+                                />
                             </Form.Item>
                             } 
                     </Fragment>

@@ -11,7 +11,6 @@ export const SuccessReport = ({setAddReports,refetch}:any) => {
                  <span className="my-8 text-gray-500 flex justify-center"><CheckBadgeIcon className="w-10 text-green-800" /> 
                  <span className="mt-2">Report Generated successfully</span></span>
                  <a onClick={()=>{ 
-                  refetch()
                   setAddReports(false)}}>
                     
                  <button type="submit" name="Upload Report" className="block w-[220px] m-auto bg-green-800 text-white p-2 text-sm rounded-md">View Report</button>

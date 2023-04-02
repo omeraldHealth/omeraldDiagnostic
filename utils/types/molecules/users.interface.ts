@@ -102,24 +102,31 @@ export type ReportDetails = {
 export type ActivityDetails = {
   activity: string;
   updatedTime?: Date;
-  user:IManagerDetails
+  user:IManagerDetails,
+  branchId: string
 };
 
 export interface AuthContextInterface {
-	user: User | null
+	  user: User | null
     diagnosticDetails: UserDetails | null;
+    operator: any | null;
+    activeBranch: any;
     loading: boolean;
     signIn: (user: User, redirect: string) => Promise<void>;
     signOut: () => Promise<void>;
+    setActiveBranch: () => void
     // setDiagnosticDetails:() => Promise<void>;
 }
 
 export const initialAuthContext: AuthContextInterface = {
   user: null,
   diagnosticDetails: null,
+  activeBranch:null,
+  operator: null,
   loading: false,
   signIn: async () => {},
   signOut: async () => {},
+  setActiveBranch: async () => {},
   // setDiagnosticDetails: async() => {}
 };
 

@@ -1,14 +1,14 @@
 
-import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import { errorAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { getDiagnosticUserApi } from "@utils";
+import { getDiagnosticUserApi, getEmployeeById } from "@utils";
 import { Modal, Space } from "antd";
 import { useState } from "react";
-import { useQuery} from "react-query";
+import { useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
-import { updateUserDetails } from "utils/hook/userDetail";
 import { EmployeeDetails } from "utils/types/molecules/forms.interface";
 import { SettingsCommon } from "./settings";
+import { useAddEmployee, useDeleteEmployee, useQueryGetData, useUpdateDiagnostic, useUpdateEmployee } from "utils/reactQuery";
 import axios from "axios";
 
 export function EmployeeManagement() {    
@@ -17,65 +17,98 @@ export function EmployeeManagement() {
     const [initialData,setInitial] = useState({})
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
-    const {diagnosticDetails} = useAuthContext()
-    const {data:diag,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
+    const {diagnosticDetails,activeBranch} = useAuthContext()
+    const queryClient = useQueryClient();
+    const {data:diagnostic}  = useQueryGetData("diagnosticDetails",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+    const [employeeId,setEmployeeId] = useState(null)
 
-    const handleRemove = async (value:any) => {
-
-      let updatedManager = diag?.data?.managersDetail?.filter((manager:any) => manager?._id !== value._id)
-      let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"managersDetail":updatedManager})
-
-      if(resp.status==200){
-        warningAlert("Employee removed succesfully")
+    const updateDiagnostic = useUpdateDiagnostic({
+      onSuccess: (data) => {
+        warningAlert("Employee updated succesfully")
         setEdit(false)
         setAddElement(false)
-        refetch();
-      }
+        queryClient.invalidateQueries("getDiagnostic")
+      },
+      onError: (error) => {
+
+      },
+  });
+
+  const addEmployee = useAddEmployee({
+    onSuccess: (data) => {
+      // warningAlert("Branch added succesfully")
+      queryClient.invalidateQueries("diagnosticDetails")
+    },
+    onError: (error) => {
+
+    },
+  });
+
+  const updateEmployee = useUpdateEmployee({
+    onSuccess: (data) => {
+      // warningAlert("Branch added succesfully")
+      queryClient.invalidateQueries("diagnosticDetails")
+    },
+    onError: (error) => {
+
+    },
+  });
+
+  const deleteEmployee = useDeleteEmployee({
+    onSuccess: (data) => {
+      // warningAlert("Branch deleted succesfully")
+      queryClient.invalidateQueries("diagnosticDetails")
+    },
+    onError: (error) => {
+
+    },
+  });
+
+
+    const handleRemove = async (value:any) => {
+      let updatedManager = diagnostic?.data?.managersDetail?.filter((manager:any) => manager?._id !== value._id)
+      updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":updatedManager}})
+      deleteEmployee.mutate({userId:value?.managerContact})
     }
 
-    const handleEdit = (value:any) => {
+    const handleEdit = async (value:any) => {
       let initial = {
         "managerName": value?.managerName,
         "managerContact":value?.managerContact,
         "managerRole":value?.managerRole,
         "_id":value._id
       }
-
+      let resp = await axios.get(getEmployeeById+value?.managerContact)
+      if(resp?.status==200){
+        setEmployeeId(resp?.data[0]?._id)
+      }
       setInitial(initial)
       setEdit(!edit)
       setAddElement(!addElement)
     }
 
     const handleSubmit = async (value:any) => {
-      let duplicate = diag?.data?.managersDetail.some((manager:any) => {return (manager.managerName===value.managerName || manager.managerContact===value.managerContact)})
+      let duplicate = diagnostic?.data?.managersDetail.some((manager:any) => (manager._id !== initialData._id && (manager.managerName === value.managerName || manager.managerContact === value.managerContact)));
 
-      if(!edit && duplicate){
+      if( duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
         let updated = {...initialData,...value}
-        let updatedManager = diag?.data?.managersDetail?.map((manager:any) => {
+        let updatedManager = diagnostic?.data?.managersDetail?.map((manager:any) => {
           if( manager._id == initialData?._id){
             return {...manager,...updated}
           } return manager
         })
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"managersDetail":updatedManager})
-        if(resp.status==200){
-          successAlert("Employee Updated succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
-        }
+        updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":updatedManager}})
+        value.mainBranchId =  diagnosticDetails?.phoneNumber;
+        updateEmployee.mutate({userId:employeeId,data:value})
       }else{
-        let filter = diag?.data?.managersDetail
+        let filter = diagnostic?.data?.managersDetail
         filter?.push(value)
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"managersDetail":filter})
-
-        if(resp.status==200){
-          successAlert("Employee added succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
-        }
+        updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":filter}})
+        value.mainBranchId =  diagnosticDetails?.phoneNumber;
+        value.branchId = activeBranch?._id
+        addEmployee.mutate(value)
       }
     }
 
@@ -127,8 +160,9 @@ export function EmployeeManagement() {
           ),
       },
     ]
- 
+
+    let employeeList = diagnostic?.data?.managersDetail?.filter((emp:any) => emp.branchId === activeBranch?._id || emp?.managerRole.toLowerCase() == "owner")
     return (
-      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diag?.data?.managersDetail} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={EmployeeDetails} />
+      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={employeeList} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={EmployeeDetails} />
     )
 }

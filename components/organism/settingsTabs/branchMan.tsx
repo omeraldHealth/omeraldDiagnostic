@@ -1,14 +1,14 @@
 
-import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import { errorAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { getDiagnosticUserApi } from "@utils";
-import { Modal, Space } from "antd";
+import { Modal, Space, Tag } from "antd";
 import { useState } from "react";
-import { useQuery} from "react-query";
+import { useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
-import { updateUserDetails } from "utils/hook/userDetail";
 import { branchDetailsEditFormArray} from "utils/types/molecules/forms.interface";
 import { SettingsCommon } from "./settings";
+import { useQueryGetData, useUpdateDiagnostic } from "utils/reactQuery";
 import axios from "axios";
 
 export function BranchManagement() {    
@@ -18,23 +18,31 @@ export function BranchManagement() {
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
     const {diagnosticDetails} = useAuthContext()
-    const {data:diag,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
+    const queryClient = useQueryClient();
+    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+    const [branchId,setBranchId] = useState(null)
 
-    const branchList:any = diag?.data?.branchDetails?.map((branch:any) =>  {return {"text": branch?.branchName,"value":branch?.branchName}})
-
-    const handleRemove = async (value:any) => {
-      let updatedBranch = diag?.data?.branchDetails?.filter((branch:any) => branch?._id !== value?._id)
-      let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"branchDetails":updatedBranch})
-
-      if(resp.status==200){
-        warningAlert("Branch removed succesfully")
+    const updateDiagnostic = useUpdateDiagnostic({
+      onSuccess: (data) => {
+        warningAlert("Branch updated succesfully")
         setEdit(false)
         setAddElement(false)
-        refetch();
-      }
+        queryClient.invalidateQueries("getDiagnostic")
+      },
+      onError: (error) => {
+
+      },
+    });
+
+
+    const branchList:any = diagnostic?.data?.branchDetails?.map((branch:any) =>  {return {"text": branch?.branchName,"value":branch?.branchName}})
+
+    const handleRemove = async (value:any) => {
+      let updatedBranch = diagnostic?.data?.branchDetails?.filter((branch:any) => branch?._id !== value?._id)
+      updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
     }
 
-    const handleEdit = (value:any) => {
+    const handleEdit = async (value:any) => {
       let initial = {
         "branchName": value?.branchName,
         "branchContact":value?.branchContact,
@@ -42,42 +50,35 @@ export function BranchManagement() {
         "branchAddress":value?.branchAddress,
         "_id":value._id
       }
-
+      // let resp = await axios.get(getBranchById+value?.branchContact)
+      // if(resp?.status==200){
+      //   setBranchId(resp?.data[0]?._id)
+      // }
       setInitial(initial)
       setEdit(!edit)
       setAddElement(!addElement)
     }
 
     const handleSubmit = async (value:any) => {
-      let duplicate = diag?.data?.branchDetails.some((branch:any) => {return (branch.branchName===value.branchName || branch.branchContact===value.branchContact)})
-
-      if(!edit && duplicate){
+      value.branchOperator = value.branchOperator ? value.branchOperator.map(oper => oper.key):null;
+      let duplicate = diagnostic?.data?.branchDetails.some((branch:any) => (branch._id !== initialData._id && 
+        (branch?.branchName.trim() === value?.branchName.trim() || branch.branchContact === value.branchContact)));
+        
+      if(duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
+       
         let updated = {...initialData,...value}
-        let updatedBranch = diag?.data?.branchDetails?.map((branch:any) => {
+        let updatedBranch = diagnostic?.data?.branchDetails?.map((branch:any) => {
           if( branch._id == initialData?._id){
             return {...branch,...updated}
           } return branch
         })
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"branchDetails":updatedBranch})
-        if(resp.status==200){
-          successAlert("Branch Updated succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
-        }
+        updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":updatedBranch}})
       }else{
-        let filter = diag?.data?.branchDetails
+        let filter = diagnostic?.data?.branchDetails
         filter?.push(value)
-        let resp = await updateUserDetails({"phoneNumber":diag?.data?.phoneNumber},{"branchDetails":filter})
-
-        if(resp.status==200){
-          successAlert("Employee added succesfully")
-          setEdit(false)
-          setAddElement(false)
-          refetch();
-        }
+        updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":filter}})
       }
     }
 
@@ -114,6 +115,13 @@ export function BranchManagement() {
           sorter: (a:any, b:any) => a.branchAddress.length - b.branchAddress.length,
         },
         {
+          title: 'Branch Operator',
+          dataIndex: 'branchOperator',
+          key: 'branchOperator',
+          render: (text:any) => {return text.map((tag:any) => <Tag color="green" key={tag}>{getEmployee(tag)}</Tag>)}
+          // sorter: (a:any, b:any) => a.branchAddress.length - b.branchAddress.length,
+        },
+        {
           title: 'Action',
           dataIndex: 'branchAddress',
           key: 'branchAddress  ',
@@ -134,8 +142,14 @@ export function BranchManagement() {
           ),
       },
     ]
+
+    function getEmployee(number:any){
+
+      const found = diagnostic?.data?.managersDetail.find(manager => manager.managerContact === number);
+      return found ? found.managerName : null;
+    }
  
     return (
-      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diag?.data?.branchDetails} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={branchDetailsEditFormArray} />
+      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diagnostic?.data?.branchDetails} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={branchDetailsEditFormArray} />
     )
 }

@@ -4,27 +4,43 @@ import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { getDiagnosticUserApi } from '@utils';
 import { Input, Modal, Popover, Space, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import axios from 'axios';
 import React, { useState } from 'react'
-import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuthContext } from 'utils/context/auth.context';
 import { updateUserDetails } from 'utils/hook/userDetail';
 import { DataType, SET_TEST } from 'utils/store/types';
 import { DashboardTable } from '../dashboardItems/data-table'
 import { AddKeywords } from '../addTest/addKeywords';
+import { useQueryGetData, useUpdateDiagnostic } from 'utils/reactQuery';
+import { useQueryClient } from 'react-query';
 
-export const TestTable = ({}:any) => {
-  const { confirm } = Modal;
+export const TestTable = () => {
+
   const [editTest,setEdit] = useState(false);
   const [initialTestDetails,setInitalTest] = useState();
-  const {diagnosticDetails} = useAuthContext()
-  const {data:diagnostic,refetch} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
-  let tests = diagnostic?.data.tests
+  const {diagnosticDetails,activeBranch} = useAuthContext()
   const testDetails = useSelector((state:any)=>state.testReducer)
   const [sampleName,setSampleName] = useState();
   const [testName,setTestName] = useState();
+  const queryClient = useQueryClient();
+  
+  const dispatch = useDispatch()
+  const { confirm } = Modal;
 
+
+  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+
+  const updateDiagnostic = useUpdateDiagnostic({
+    onSuccess: (data) => {
+      successAlert("Tests updated succesfully")
+      queryClient.invalidateQueries('getDiagnostic');
+    },
+    onError: (error) => {
+      successAlert("Error adding tests")
+    },
+  });
+
+  let tests = diagnostic?.data?.tests.filter((test:any) => test?.branchId === activeBranch?._id)
 
   let pathList = tests?.forEach((man:any) => {
     return   { 
@@ -32,39 +48,6 @@ export const TestTable = ({}:any) => {
      value: man.tastName 
    };
   });
-
-  const dispatch = useDispatch()
-
-  const handleRemoveTest = async (record:any) => {
-          let test = tests.filter((test:any)=>test._id !== record._id)
-          // @ts-ignore
-          let resp = await updateUserDetails({"phoneNumber":diagnosticDetails?.phoneNumber},{"tests":test})
-          if(resp.data){
-            refetch()
-            successAlert("Test removed succesfully")
-          }
-  }
-
-  const handleEditTest = async (value:any) => {
-    dispatch({type:SET_TEST,payload:{}})
-    let initial = {
-      "testName": value?.sampleType?.testName,
-      "sampleName":value?.sampleName,
-      "keywords":value?.sampleType?.keywords,
-      "_id":value._id
-    }
-    let initial2 = {
-    
-      "sampleName":value?.sampleName,
-      "sampleType":{
-        "testName": value?.sampleType?.testName,
-        "keywords":value?.sampleType?.keywords,
-      }
-    }
-    dispatch({type:SET_TEST,payload:initial2})
-    setInitalTest(initial)
-    setEdit(!editTest)
-  }
 
   const columns: ColumnsType<DataType> = [
     {
@@ -124,6 +107,33 @@ export const TestTable = ({}:any) => {
       ),
     }
   ]
+
+  const handleRemoveTest = async (record:any) => {
+    let test = tests.filter((test:any)=>test._id !== record._id)
+    updateDiagnostic?.mutate({data:{"tests":test},phoneNumber:diagnosticDetails?.phoneNumber})
+  }
+
+  const handleEditTest = async (value:any) => {
+    dispatch({type:SET_TEST,payload:{}})
+    let initial = {
+      "testName": value?.sampleType?.testName,
+      "sampleName":value?.sampleName,
+      "keywords":value?.sampleType?.keywords,
+      "_id":value._id
+    }
+    let initial2 = {
+    
+      "sampleName":value?.sampleName,
+      "sampleType":{
+        "testName": value?.sampleType?.testName,
+        "keywords":value?.sampleType?.keywords,
+      }
+    }
+    dispatch({type:SET_TEST,payload:initial2})
+    setInitalTest(initial)
+    setEdit(!editTest)
+  }
+
   const handleUpdateKeyword = async ()=> {
   
     let testItem = {
@@ -138,13 +148,8 @@ export const TestTable = ({}:any) => {
     let updatedTest = diagnostic?.data.tests.filter((test)=>test._id !== initialTestDetails?._id)
     updatedTest.push(testItem)
 
-    let resp = await updateUserDetails({"phoneNumber":diagnostic?.data?.phoneNumber},{"tests": updatedTest})
-      if(resp){
-        successAlert("Test Added succesfully")
-        refetch()
-        setEdit(false)
-      }
- 
+    updateDiagnostic?.mutate({data:{"tests":updatedTest},phoneNumber:diagnosticDetails?.phoneNumber})
+    setEdit(!editTest)
   }
 
   return (
@@ -162,7 +167,7 @@ export const TestTable = ({}:any) => {
                 <Input value={testName} onChange={(e)=>{setTestName(e.target.value)}}  defaultValue={initialTestDetails?.testName} name="sampleName" placeholder={"sampleName"} className="border-gray-300 w-[75%] mt-2 mb-10 rounded-lg text-black font-light text-sm py-2" />
               </span>
               </section>
-              <AddKeywords edit={true} refetch={refetch} handleSucess={()=>{handleUpdateKeyword()}}  />
+              <AddKeywords edit={true} handleSucess={()=>{handleUpdateKeyword()}}  />
           </section>
         }
     </div>
