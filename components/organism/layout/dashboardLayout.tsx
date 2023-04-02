@@ -13,9 +13,9 @@ export default function DashboardLayout({children}: {children: ReactElement}) {
           <Sidebar/>
         </aside>
         {showSidebar && <>
-         <div className="relative z-50" id="sideContainer">
-           <section className="absolute top-0 left-0">
-           <Sidebar showSidebar={showSidebar} setSidebarOpen={setSidebarOpen}/>
+         <div className="relative h-[100vh] z-50" id="sideContainer">
+           <section className="fixed  h-[100vh] top-0 left-0">
+            <Sidebar showSidebar={showSidebar} setSidebarOpen={setSidebarOpen}/>
            </section>
          </div>
          </>

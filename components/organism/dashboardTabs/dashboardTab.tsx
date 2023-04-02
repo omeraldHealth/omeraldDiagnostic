@@ -16,9 +16,8 @@ export default function DashboardTab() {
     <div className="p-4 xl:px-8 pt-6 bg-signBanner">
       <DashBanner/>
       <DashCard/>
-      <section className="lg:grid  lg:grid-cols-2 gap-4 lg:justify-between h-[45vh] my-4">
+      <section className="grid lg:flex gap-4 justify-between h-[45vh] my-4">
           <ReportSharedVsTime2 />
-          <hr className='my-[1vh]' />
           <DashActivity/>
       </section>
     </div>

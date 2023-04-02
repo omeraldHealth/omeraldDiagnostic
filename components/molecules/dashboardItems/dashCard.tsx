@@ -62,7 +62,7 @@ const dashCard: DashCardTyes[] = [
 let owner = operator?.managerRole?.toLowerCase() === "owner"
 
 return (
-    <section className="my-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:flex justify-between" >
+    <section className="my-6 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:flex justify-between" >
         {
             dashCard?.map((dash,index) => {
                 return (

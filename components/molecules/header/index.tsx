@@ -15,8 +15,6 @@ import { Sidebar } from '../sidebar'
 import { useMediaQuery } from 'react-responsive'
 
 
-
-
 export function DashboardHeader({showSidebar,setSidebarOpen}:any) {
 
   
@@ -26,9 +24,10 @@ export function DashboardHeader({showSidebar,setSidebarOpen}:any) {
     const router = useRouter()
     const [selectedBranch,setSelectedBranch] = useState(null)
     const [branchList,setBrancList] = useState(null)
-    const laptop = useMediaQuery({ maxWidth: 1224 })
+    const monitor = useMediaQuery({ minWidth: 1224 })
+    const mobile = useMediaQuery({ maxWidth: 400 })
     let [loading,setLoading] = useState(false)
-    console.log(laptop)
+
     const updateDiagnostic = useUpdateDiagnostic({
         onSuccess: (data) => {
 
@@ -66,20 +65,19 @@ export function DashboardHeader({showSidebar,setSidebarOpen}:any) {
                 <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow">
                     <div className="flex flex-1 justify-between px-4">
                     <div className="flex flex-1">
-                       <p className='flex font-bold text-lg self-center'><Bars3Icon  onClick={() => laptop && setSidebarOpen(!showSidebar)} className='w-6 mx-4'/>{dashboardRoute?.name}</p>
-
+                       <p className='flex sm:font-bold text-md sm:text-lg self-center'><Bars3Icon  onClick={() => !monitor && setSidebarOpen(!showSidebar)} className='w-6 mr-1 sm:mx-4'/>{dashboardRoute?.name}</p>
                     </div>
                     <div className="ml-4 flex items-center lg:ml-6">
-                        <span className='flex gap-4'>
-                        <MenuDropDown/>
+                        <section className='flex gap-1'>
                         <Select
-                            placeholder="Select Branch"
-                            value={{ label: selectedBranch?.branchName, value: selectedBranch }}
-                            style={{ width: 180,marginLeft: 20 }}
-                            onChange={handleProvinceChange}
-                            options={branchList?.map((branch:any) => ({ label: branch?.branchName, value: branch?._id }))}
+                                placeholder="Select Branch"
+                                value={{ label: selectedBranch?.branchName, value: selectedBranch }}
+                                style={mobile ? { width: 130,marginLeft:0 }:{ width: 160,marginLeft:10 } }
+                                onChange={handleProvinceChange}
+                                options={branchList?.map((branch:any) => ({ label: branch?.branchName, value: branch?._id }))}
                         />
-                        </span>
+                        <MenuDropDown/>
+                        </section>
                     </div>
                     </div>
                 </div>
