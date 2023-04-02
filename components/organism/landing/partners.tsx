@@ -1,7 +1,5 @@
 import { TitleText } from '@components/atoms/font'
 import { partners } from '@utils'
-import { Animation } from 'utils/animation'
-import { m } from "framer-motion";
 
 export function Partners() {
 	return (
