@@ -64,7 +64,7 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
         let updateTest = diagnostic?.data?.tests
         
         updateTest?.push(testDetails)
-        console.log("test")
+
         //@ts-ignore
         updateDiagnostic?.mutate({phoneNumber:diagnostic?.data?.phoneNumber,data:{"tests":updateTest}})
         ActivityLogger("Added Test "+testDetails?.sampleName,diagnostic?.data,operator,activeBranch)
@@ -82,14 +82,14 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
   }
 
   return (
-         <div className="my-2 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
+         <div className="my-2 w-[100%] mx-0 sm:w-[70%] md:w-[100%] h-auto p-4">
              <AddKeyWordHeader testDetails={testDetails} addKeyword={addKeyword} setAddKeyword={setAddKeyword}/>
              {!addKeyword ?
              <AddKeyword selectedTest={testDetails?.sampleType} action={true}/>:
-             <section className='w-[60%] my-4'>
+             <section className='w-[100%] sm:w-[60%] my-4'>
                  <DynamicFormCreator button={true} buttonText="Add Keyword" handleSubmit={handleAddKeyword} formProps={testForm} />
              </section>}
-             <section className='flex'>
+             <section className='flex  my-10 sm:my-4'>
               <button onClick={handleBack} className='bg-gray-400 mx-3 text-white px-2 py-2 rounded-lg'>Back</button>
               <button onClick={!edit ? handleAddTest : handleSuccessTest} className='bg-green-700 text-white px-2 py-2 rounded-lg'>Submit</button>
              </section>
@@ -101,14 +101,14 @@ const AddKeyWordHeader= ({testDetails,addKeyword,setAddKeyword}:any)=>{
     return (
         <section className='flex w-[100%] mb-2 justify-between'>
         <section className='flex'>
-          <p className='text-sm font-bold'>Sample Name :
+          <p className='text-xs sm:text-sm sm:font-bold'>Sample Name :
             <span className='font-light mx-2'>{testDetails?.sampleName}</span>
           </p>
-          <p className='text-sm font-bold'>Test Name :
+          <p className='text-xs sm:text-sm sm:font-bold'>Test Name :
             <span className='font-light mx-2'>{testDetails?.sampleType ? testDetails?.sampleType?.testName : "testName"}</span>
           </p>
         </section>
-        <button onClick={()=>{setAddKeyword(!addKeyword)}} className='p-1 px-2 bg-gray-300 text-black rounded-lg'>
+        <button onClick={()=>{setAddKeyword(!addKeyword)}} className='p-1 text-xs sm:text-md sm:px-2 bg-gray-300 text-black rounded-lg'>
          {!addKeyword? "Add Parameter":"View Parameter"}
         </button>
     </section>

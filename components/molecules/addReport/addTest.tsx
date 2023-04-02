@@ -13,7 +13,7 @@ export const AddTestComponent = ({setTest}:any) => {
   }
 
   return (
-    <div>
+    <div >
         <div id="steps" className="rounded-md bg-slate-50 w-full p-4 sm:p-0 md:p-4 mb-4">
             <StepHeader stepList={addTestSteps} currentStep={currentStep}  />
         </div>
