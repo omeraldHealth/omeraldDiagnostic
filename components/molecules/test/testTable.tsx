@@ -144,13 +144,12 @@ export const TestTable = () => {
       "sampleType": {
         "testName": testName?.length>0 ?testName:initialTestDetails?.testName,
         "keywords":testDetails?.sampleType?.keywords
-      }
-
+      },
+      "branchId" : activeBranch?._id
     }
 
     let updatedTest = diagnostic?.data.tests.filter((test)=>test._id !== initialTestDetails?._id)
     updatedTest.push(testItem)
-
     updateDiagnostic?.mutate({data:{"tests":updatedTest},phoneNumber:diagnosticDetails?.phoneNumber})
     setEdit(!editTest)
   }
@@ -158,7 +157,7 @@ export const TestTable = () => {
   return (
     <div>
         {!editTest ? <DashboardTable pageSize={5} columns={columns} data={tests}/>:
-          <section className='p-8 w-[100%] max-h-[70vh] overflow-y-scroll'>
+          <section className='p-2 sm:p-8 w-[100%] h-auto sm:max-h-[70vh] sm:overflow-y-scroll'>
               <BodyStyled_2>Update Test Details</BodyStyled_2>
               <section className='flex'>
               <span className='w-[35%]'>

@@ -33,13 +33,10 @@ export default function SettingsTab({selectedTabId}:any) {
 
   return (
     <Fragment>
-          <div className="p-4 sm:p-6 xl:p-8 h-[112vh] sm:h-[92vh] bg-signBanner flex w-100 justify-center">
-          <div className='w-[70vw] bg-white shadow-lg mt-10 h-[70vh] rounded-lg] p-8'>
+          <div className="sm:p-6 xl:p-8 max-h-[30vh] bg-signBanner flex w-100 justify-center">
+          <div className='w-[96vw] lg:w-[80vw] xl:w-[70vw] bg-white shadow-lg mt-10 h-[80vh] lg:h-[70vh] rounded-lg] sm:p-8 p-4'>
             <Tabs
                 defaultActiveKey={selectedTabId}
-                style={{
-                  height: 220,
-                }}
                 items={settingsTab.map((_, i) => {
                   const id = String(i);
                   if(operator?.managerRole?.toLowerCase() == "admin" && [0,2,3].includes(i)) return null
@@ -87,7 +84,7 @@ const SettingsBadeCount = ({index}:any) => {
  return <p>
   {settingsTab[index]}
   {index!=0 &&<span className='mx-2'>
-    <Badge showZero count={count}></Badge>
+    {/* <Badge showZero count={count}></Badge> */}
   </span>}
   </p>
 }

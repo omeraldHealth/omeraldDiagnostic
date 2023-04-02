@@ -5,13 +5,14 @@ import { classNames, IndexObj, privateRoutes } from 'utils/static';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 import { useAuthContext } from 'utils/context/auth.context';
+import { useMediaQuery } from 'react-responsive';
 
 
-export const NavLinks = () => {
+export const NavLinks = ({setSidebarOpen}:any) => {
     const [currentNavigation, setCurrentNavigation] = useState<any>(privateRoutes[0]);
     const dispatch = useDispatch()
     const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
-
+    const monitor = useMediaQuery({ minWidth: 1224 })
     const {operator} = useAuthContext()
 
     useEffect(()=>{
@@ -20,6 +21,7 @@ export const NavLinks = () => {
     },[dashboardRoute])
 
     const handleNavigationChange = (nav: any) => {
+        !monitor && setSidebarOpen(false)
         setCurrentNavigation(nav);
         dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:nav.name,href:nav.href,loading:true} });
     };

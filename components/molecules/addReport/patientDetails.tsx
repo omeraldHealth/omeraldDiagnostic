@@ -69,7 +69,7 @@ export const PatientDetails = ({handleSteps}:patientType) => {
 
   return (
     <div className='flex'>
-        <DynamicFormCreator disableElement={true} reportsValidation={true} formStyle='grid grid-cols-2 gap-x-4 gap-y-4' handleDate={handleDate} buttonText="Continue" formProps={PatientDetailsForm} handleSubmit={handleForm}/>
+        <DynamicFormCreator disableElement={true} reportsValidation={true} formStyle='sm:grid sm:grid-cols-2 gap-x-4 gap-y-4' handleDate={handleDate} buttonText="Continue" formProps={PatientDetailsForm} handleSubmit={handleForm}/>
     </div>
   )
 }

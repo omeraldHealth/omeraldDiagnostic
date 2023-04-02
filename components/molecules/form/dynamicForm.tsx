@@ -117,7 +117,6 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
                             <Select
                                 placeholder={form.label} 
-                                style={{ width: 380 }}
                                 defaultValue={selectedValue}
                                 onChange={(e)=>{setSelectedValue(e)}}
                                 options={roles.map((role) => ({key:role, label: role, value: role }))}
@@ -168,7 +167,6 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             // value={value}
                             disabled={isDisabled}
                             style={{ width:340}}
-
                             className="w-[16vw]"
                             placeholder={"Select Pathologist"}
                             defaultActiveFirstOption={false}
@@ -183,7 +181,7 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             }
                             {form.type === "date" &&
                             <Form.Item      key={form.label+11} className='mb-6' name={form.name} labelCol={{ span: 0 }} >
-                                <DatePicker disabled={isDisabled} disabledDate={disabledDate} format='YYYY-MM-DD' className='w-[20vw] py-2 border-gray-400 rounded-lg' placeholder={form.label} onChange={handleImage} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}/>
+                                <DatePicker disabled={isDisabled} disabledDate={disabledDate} format='YYYY-MM-DD' className='w-auto sm:w-[20vw] py-2 border-gray-400 rounded-lg' placeholder={form.label} onChange={handleImage} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}/>
                             </Form.Item>
                             }
                             {form.type === "gender" &&

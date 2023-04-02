@@ -52,11 +52,11 @@ export const ContactForm = ({handleSubmit,refetch}:any) => {
 
   return (
     <div>
-        <section className='flex w-[100%] justify-center my-10 py-2'>
-            <section className='w-[40%]'>
-              <img src={mailImage} className="w-[65%] m-auto"/>
+        <section className='flex flex-col lg:flex-row w-[100%] justify-start lg:justify-center my-10 py-2'>
+            <section className='w-full md:w-[60%] my-4 lg:w-[40%] hidden md:flex'>
+              <img src={mailImage} className="w-[60%] lg:w-[65%] lg:m-auto"/>
             </section>
-            <section className='w-[40%] mr-20'>
+            <section className='w-full md:w-[60%] lg:w-[40%] mr-20'>
               <DynamicFormCreator buttonText="Send Query" style={""} formProps={contactForm} handleSubmit={handleForm}/>
             </section>    
         </section>    

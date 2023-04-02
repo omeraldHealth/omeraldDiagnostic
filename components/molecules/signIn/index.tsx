@@ -99,12 +99,12 @@ const SignInComponent = () => {
   };
 
   return (
-    <section className="lg:h-[70vh] my-[10vh] ">
-          <section className="w-[90vw] sm:w-[80vw] min-h-[350px] lg:w-[40vw] sm:h-[30vh] lg:h-[45vh] rounded-lg bg-white shadow-xl m-auto self-center p-1 py-10 sm:p-10 text-center"> 
+    <section className="h-auto my-[10vh]">
+          <section className="w-[90vw] sm:w-[80vw] md:w-[60vw] xl:w-[40vw] sm:h-[30vh] lg:h-[45vh] rounded-lg bg-white shadow-xl m-auto self-center p-1 py-10 sm:p-10 text-center"> 
               <BodyText_2 style="text-black">Welcome Back 👋</BodyText_2>
               <p className="text-black font-md text-xl mb-10">Sign In to your Account</p>
               <section>
-                    <section className="w-[60%] m-auto border-2 border-gray-200 rounded-md px-1 text-center ">
+                    <section className="sm:w-[60%] w-[80%] m-auto border-2 border-gray-200 rounded-md px-1 text-center ">
                       {!otpRequestSent? <PhoneInputCountry phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} isPhoneNumberDisabled={false} />:
                       <OtpInputComp otp={otp} setOtp={setOtp} />}
                     </section>

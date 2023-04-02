@@ -19,13 +19,13 @@ export function Navbar() {
     const {user,signOut} = useAuthContext()
 
 	return (
-        <div  className={`flex justify-between items-center px-[1%] sm:px-[4%] xl:px-[10%]`}>
+        <div  className={`flex justify-between items-center px-[4%] xl:px-[10%]`}>
             <Link href={"/"}><span className='flex'>
                 <Logo/>
                 <p className='font-sans hidden sm:block sm:text-lg sm:font-bold self-center'>OMERALD DIAGNOSTICS</p>
             </span>
             </Link>
-            <section className='hidden lg:flex'>
+            <section className='hidden xl:flex'>
                 {navLinks.map((nav,index) => <Link key={index} href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
             </section>
 

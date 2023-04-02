@@ -112,7 +112,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
   const { confirm } = Modal;
 
   return (
-    <div className='p-8 relative h-[50vh]'>
+    <div className='relative h-[50vh]'>
         <BodyText_3>Create report powered by Omerald ?</BodyText_3>
         <section className='my-4'>
             <Radio.Group options={manualOptions} onChange={(event)=>{if(event.target.value){setManual({value:true,label:"True"})}else{ setManual({value:false,label:"False"})}
@@ -158,8 +158,8 @@ export const UploadReport = ({handleSteps}:patientType) => {
                   // Handle the user's cancellation
                 },
               });
-           }} className="p-2 bg-gray-400 text-white w-[8vw] rounded-lg">Back</button>
-          <button onClick={handleSubmit} className="p-2 bg-secondary text-white w-[8vw] rounded-lg">Continue</button>
+           }} className="p-2 bg-gray-400 text-white w-auto lg:w-[8vw] rounded-lg">Back</button>
+          <button onClick={handleSubmit} className="p-2 bg-secondary text-white w-auto lg:w-[8vw] rounded-lg">Continue</button>
         </section>}
         {loading && <Spinner/>}
       

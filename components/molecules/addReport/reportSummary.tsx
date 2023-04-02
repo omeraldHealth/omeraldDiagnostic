@@ -92,9 +92,9 @@ export const ReportSummary =({handleSteps}:any) => {
 
   return (
     <div>
-         <section className="w-[100%] min-h-[50vh] max-h-[70vh] relative ">
+         <section className="w-[100%] h-auto md:min-h-[50vh] md:max-h-[70vh] relative ">
             <p>Report Summary</p>
-            <section className="grid grid-cols-2 my-1 gap-x-4 relative">
+            <section className="md:grid md:grid-cols-2 my-1 md:gap-x-4 relative">
                 {
                     Object.keys(reportForm).map((key)=>{
                         {
@@ -107,7 +107,7 @@ export const ReportSummary =({handleSteps}:any) => {
             </section>
             {reportForm.parsedData && reportForm?.isManualReport &&<section  >
                     <p className="my-2 font-light text-sm underline">Report Data</p>
-                    <section className="grid  grid-cols-12 my-1 gap-x-4 ">
+                    <section className="grid grid-cols-1 sm:grid-cols-8 xl:grid-cols-12 my-1 gap-x-4 ">
                     {
                         Object.keys(reportForm?.parsedData).map((key,index)=>{
                             {
@@ -132,7 +132,7 @@ export const ReportSummary =({handleSteps}:any) => {
                           // Handle the user's cancellation
                         },
                       })
-                }} className="p-2 bg-gray-400 text-white w-[4vw] mx-2 rounded-lg">Back</button>
+                }} className="p-2 bg-gray-400 text-white w-auto lg:w-[4vw] mx-2 rounded-lg">Back</button>
                 <button onClick={handleSubmit} className="px-2 py-2 bg-indigo-600 mx-4 text-white bottom-0 rounded-lg">Submit</button>
             </section>
             {loading && <Spinner/>}

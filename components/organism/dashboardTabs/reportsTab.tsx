@@ -138,13 +138,13 @@ export default function ReportsTab() {
 
   return (
     <Fragment>
-        <span className='flex justify-end mt-8 mb-4 mr-32'>
+        <span className='flex justify-end mt-8 mb-4 mr-4 sm:mr-8 md:mr-24 xl:mr-20'>
           {!addReports ? 
             <button onClick={()=>setAddReports(!addReports)} className='bg-blue-500 text-white text-bold font-light rounded-md p-2'>Add Reports</button>:
            <button onClick={()=>setAddReports(!addReports)} className='bg-green-800 text-white text-bold font-light rounded-md p-2'>View Reports</button>}
         </span> 
-         <div className="px-4 sm:px-6 xl:px-8 xl:py-3 bg-signBanner flex w-100 justify-center">
-            <div className='w-[70vw] bg-white shadow-lg h-[70vh] rounded-lg p-4'> 
+         <div className="md:px-4 sm:px-6 xl:px-8 xl:py-3 bg-signBanner flex w-100 justify-center">
+            <div className='w-[96vw] lg:w-[80vw] xl:w-[70vw] bg-white shadow-lg h-auto rounded-lg p-4'> 
             {!addReports ?  
             <>{<DashboardTable pageSize={7} columns={columns} data={reportsList}/> }</>:<AddReportComponent setAddReports={setAddReports}/>}
             </div>
