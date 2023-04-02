@@ -3,9 +3,9 @@ import styles from "./landing.module.css"
 
 export function HowItWorks() {
 	return (
-        <div className='pt-[5vh] lg:pt-[10vh]'>
-        <div className={`w-[100vw] h-auto px-[7%] lg:px-[10%] text-center lg:grid grid-rows-2 ${styles['howItWorks']}`}>
-            <section className='flex lg:grid grid-cols-3 justify-between lg:h-[70vh]'>
+        <div className='py-[3vh] lg:pt-[10vh]'>
+        <div className={`h-auto px-[7%] lg:px-[10%] text-center lg:grid grid-rows-2 ${styles['howItWorks']}`}>
+            <section className='flex lg:grid grid-cols-3 justify-between lg:h-[40vh]'>
                 <section className='text-left'>
                     <p className='text-[#5D5FEF] my-6 lg:my-0 uppercase font-bold text-sm'>How Omerald Helps You</p>
                     <p className='sm:text-[37px] text-[24px] my-6 lg:my-0 font-[600]'>Simplifying Diagnostic Center Operations</p>

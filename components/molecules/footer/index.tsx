@@ -21,9 +21,9 @@ const navFooterLinks2 = [
 export function Footer() {
     const [email,setEmail] = useState("")
 	return (
-        <div className='text-center xl:w-[100%] w-[85%] min-h-[50vh] py-10 px-[5%] ml-6'>
+        <div className='text-center w-[100%] lg:min-h-[50vh] py-10 px-[10%]'>
             {/*Footer Links  */}
-            <section className='min-h-[30vh] h-auto w-[100%] grid sm:grid-cols-2 lg:grid-cols-4 sm:text-left text-center gap-10'>
+            <section className='min-h-[20vh] lg:min-h-[30vh] h-auto w-[100%] grid sm:grid-cols-3 lg:grid-cols-4 text-left gap-10'>
                 <section>
                     <FooterHeaderFont>{"Omerald"}</FooterHeaderFont>
                     <p className='font-base text-md text-[#757095] my-6'>Diagnostic centre Application</p>
@@ -53,7 +53,7 @@ export function Footer() {
                 </section>
             </section>
             {/* Footer CopyRight */}
-            <section className='w-[100%] my-6 xl:ml-0 md:ml-12 ml-0'>
+            <section className='w-[100%] my-12 sm:my-6'>
                 <hr className='hidden xl:block w-[100%] bg-primary border-2 my-[40px]' />
                 <CopyRightFont>Copyright @ Omerald 2023. All Rights Reserved.</CopyRightFont>
             </section>

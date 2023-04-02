@@ -8,8 +8,8 @@ const fiveStar = ["","","","",""]
 export function Testimonial() {
 	return (
         <div className='text-center px-[10%] py-[2vh] h-auto'>
-            <TitleText_2 style='text-btnPrimary-600 mx-auto my-4'>TESTIMONIALS</TitleText_2>
-            <HeaderText_2 style='w-[80%] mx-auto my-4'>Check what our clients are saying</HeaderText_2>
+          <TitleText_2 style='text-btnPrimary-600 mx-auto my-4'>TESTIMONIALS</TitleText_2>
+          <HeaderText_2 style='w-[80%] mx-auto my-4'>Check what our clients are saying</HeaderText_2>
             <section className='grid xl:grid-cols-2 gap-10 py-20'>
                 <section className='flex'>
                     <FaArrowAltCircleLeft size={"30px"} className="text-purple-900 border-2 border-gray-500 rounded-full self-center"/>
@@ -25,7 +25,8 @@ export function Testimonial() {
                     <FaQuoteLeft className='text-orange-400 w-[15px] mr-2 mb-4 inline' />
                         Omerald is a valuable resource for individuals and healthcare providers who need accurate reports. They offer a wide range services and report sharing .  
                     <FaQuoteRight className='text-orange-400 w-[15px] mb-4 inline' />  </BodyText_1>
-                    <TitleText style='text-left text-black'>Raghu Dutta <br/><span className='text-sm font-light'>EM, Rakuten</span></TitleText>
+                    <p className="my-4 lg:my-2"><TitleText style='text-left text-black'>Raghu Dutta <br/><span className='text-sm font-light'>EM, Rakuten</span></TitleText>
+                    </p>
                 </section>
             </section>
         </div>

@@ -193,7 +193,7 @@ export const body: Record<Body, FontType> ={
     fontFamily: 'Manrope',
     fontStyle: 'normal',
     fontWeight: '400',
-    fontSize: '20px',
+    fontSize: '16px',
     lineHeight: '35px',
   },
   omerald_textStyle_Body2: {
