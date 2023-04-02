@@ -124,7 +124,7 @@ const ProfileView = ({profile,style}:any) => {
 
   return (
     <section>
-        <div className={`w-auto p-4 bg-white mt-14 relative rounded-lg h-auto text-left ${style}`}>
+        <div className={`w-auto p-4 bg-white sm:mt-14 relative rounded-lg h-auto shadow-xl text-left ${style}`}>
           
           { operator?.managerRole.toLowerCase() === "owner" && <>
           {!edit ? <a href='#' onClick={()=>{setEdit(!edit)}}><PencilIcon className='w-6 absolute right-20' /></a> :<a href='#' onClick={()=>{setEdit(!edit)}}><XMarkIcon className='w-6 absolute right-20' /></a>}
@@ -133,8 +133,8 @@ const ProfileView = ({profile,style}:any) => {
             !edit ? 
             <>
               <section>
-              <img src={profile?.brandDetails?.brandLogo} alt="logo" className='w-[7vw] h-[7vw] rounded-full border-2' />
-              <section className='grid sm:grid-cols-2 grid-cols-1 gap-[10vw] w-[100%]'> 
+              <img src={profile?.brandDetails?.brandLogo} alt="logo" className='w-[18vw] h-[18vw] sm:w-[7vw] sm:h-[7vw] rounded-full border-2' />
+              <section className='grid sm:grid-cols-2 grid-cols-1 gap-0 lg:gap-[10vw] w-[100%]'> 
                           <aside>
                             <p className='my-8 font-bold text-sm'>{"Diagnostic Center Name: "}<span className='text-black font-light'>{profile?.diagnosticName}</span></p>
                             <p className='my-8 font-bold text-sm'>{"Email: "}<span className='text-black font-light lowercase'>{profile?.email}</span></p>
@@ -153,7 +153,7 @@ const ProfileView = ({profile,style}:any) => {
               </section>
             </>:
             <>
-              <section className='my-2 w-[50vw] pr-[16vw]'>  
+              <section className='sm:my-2 w-[80vw] sm:w-[50vw] sm:pr-[16vw]'>  
                 <p className='mb-6 italic font-bold text-md'>Edit your profile</p>
                 {/* <img className="w-20 h-20 rounded-full" src={diagnosticDetails?.brandDetails?.brandLogo} alt="logo"/> */}
                 <DynamicFormCreator initial={initialValues} handleImage={handleImage} formStyle=' my-4 gap-x-4 gap-y-4'  buttonText="Continue" 
