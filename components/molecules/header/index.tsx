@@ -55,7 +55,6 @@ export function DashboardHeader() {
 
     useEffect(()=>{
         let branches = diagnostic?.data?.branchDetails.filter((branch:any)=> {return  branch?.branchContact === diagnosticDetails?.phoneNumber || branch?.branchOperator?.includes(operator?.managerContact)})
-        console.log(branches)
         setBrancList(branches)
     },[diagnostic   ])
 
