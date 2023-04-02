@@ -10,11 +10,16 @@ import { useAuthContext } from 'utils/context/auth.context';
 
 export const DashCard = () => {
     
-const {diagnosticDetails} = useAuthContext();
+const {diagnosticDetails,activeBranch} = useAuthContext();
 const dispatch = useDispatch()
 const {data:reports} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
 const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 const {operator} = useAuthContext()
+
+let testList = diagnostic?.data?.tests?.filter((test:any) => test?.branchId === activeBranch?._id)
+let reportList = reports?.data?.filter((report:any) => report?.branchId === activeBranch?._id)
+let employeeList = diagnostic?.data?.managersDetail?.filter((emp:any) => emp.branchId === activeBranch?._id || emp?.managerRole.toLowerCase() =="owner")
+
 const dashCard: DashCardTyes[] = [
     {
         href:"/test",
@@ -23,7 +28,7 @@ const dashCard: DashCardTyes[] = [
         tipInfo:"Shows the count of tests offered by your laboratory",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Tests Offered",
-        value: diagnostic?.data?.tests?.length
+        value: testList?.length
     },
     {
         href:"/reports",
@@ -32,7 +37,7 @@ const dashCard: DashCardTyes[] = [
         tipInfo:"Shows the count of tests offered by your laboratory",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Reports Uploaded",
-        value: reports?.data?.length
+        value: reportList?.length
     },
     {
         href:"/reports",
@@ -50,7 +55,7 @@ const dashCard: DashCardTyes[] = [
         tipInfo:"Shows the count of tests offered by your laboratory",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Total Users",
-        value: diagnosticDetails?.managersDetail?.length
+        value: employeeList?.length
     }
 ]
 

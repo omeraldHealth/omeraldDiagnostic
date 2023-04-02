@@ -20,9 +20,10 @@ import { saveAs } from 'file-saver';
 
 export default function ReportsTab() {
   const [addReports,setAddReports]=useState(false);
-  const {diagnosticDetails} = useAuthContext();
+  const {diagnosticDetails,activeBranch} = useAuthContext();
   const {data:reports} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
 
+  let reportsList = reports?.data?.filter((report:any) => report?.branchId === activeBranch?._id)
   const columns: ColumnsType<ReportTableType> = [
     {
       key:"reportId",
@@ -139,7 +140,7 @@ export default function ReportsTab() {
          <div className="px-4 sm:px-6 xl:px-8 xl:py-3 bg-signBanner flex w-100 justify-center">
             <div className='w-[70vw] bg-white shadow-lg h-[70vh] rounded-lg p-4'> 
             {!addReports ?  
-            <>{<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }</>:<AddReportComponent setAddReports={setAddReports}/>}
+            <>{<DashboardTable pageSize={7} columns={columns} data={reportsList}/> }</>:<AddReportComponent setAddReports={setAddReports}/>}
             </div>
         </div>
     </Fragment>   

@@ -17,9 +17,9 @@ export function EmployeeManagement() {
     const [initialData,setInitial] = useState({})
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
-    const {diagnosticDetails} = useAuthContext()
+    const {diagnosticDetails,activeBranch} = useAuthContext()
     const queryClient = useQueryClient();
-    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+    const {data:diagnostic}  = useQueryGetData("diagnosticDetails",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
     const [employeeId,setEmployeeId] = useState(null)
 
     const updateDiagnostic = useUpdateDiagnostic({
@@ -37,6 +37,7 @@ export function EmployeeManagement() {
   const addEmployee = useAddEmployee({
     onSuccess: (data) => {
       // warningAlert("Branch added succesfully")
+      queryClient.invalidateQueries("diagnosticDetails")
     },
     onError: (error) => {
 
@@ -46,6 +47,7 @@ export function EmployeeManagement() {
   const updateEmployee = useUpdateEmployee({
     onSuccess: (data) => {
       // warningAlert("Branch added succesfully")
+      queryClient.invalidateQueries("diagnosticDetails")
     },
     onError: (error) => {
 
@@ -55,6 +57,7 @@ export function EmployeeManagement() {
   const deleteEmployee = useDeleteEmployee({
     onSuccess: (data) => {
       // warningAlert("Branch deleted succesfully")
+      queryClient.invalidateQueries("diagnosticDetails")
     },
     onError: (error) => {
 
@@ -104,6 +107,7 @@ export function EmployeeManagement() {
         filter?.push(value)
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":filter}})
         value.mainBranchId =  diagnosticDetails?.phoneNumber;
+        value.branchId = activeBranch?._id
         addEmployee.mutate(value)
       }
     }
@@ -156,8 +160,9 @@ export function EmployeeManagement() {
           ),
       },
     ]
- 
+
+    let employeeList = diagnostic?.data?.managersDetail?.filter((emp:any) => emp.branchId === activeBranch?._id || emp?.managerRole.toLowerCase() == "owner")
     return (
-      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diagnostic?.data?.managersDetail} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={EmployeeDetails} />
+      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={employeeList} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={EmployeeDetails} />
     )
 }

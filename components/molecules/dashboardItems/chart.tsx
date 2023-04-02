@@ -5,9 +5,7 @@ import { Bar} from 'react-chartjs-2';
 import { DatePicker } from 'antd';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
 import { getDiagnosticReports } from '@utils';
-import { useQuery } from 'react-query';
 import 'chartjs-adapter-moment'
-import axios from 'axios';
 import moment from 'moment';
 import { useAuthContext } from 'utils/context/auth.context';
 import { useQueryGetData } from 'utils/reactQuery';
@@ -21,20 +19,23 @@ const ReportSharedVsTime2 = () =>{
     const [date,setDate] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reportCount,setReportCount] = useState([])
-    const {diagnosticDetails} = useAuthContext();
+    const {diagnosticDetails,activeBranch} = useAuthContext();
     const {data:reports,isLoading:loading} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
- 
+
+    const reportsList = reports?.data?.filter((report:any) => report?.branchId === activeBranch?._id )
+
     useEffect(()=>{
-      const sixMonthsAgo = moment().subtract(6, 'months').toDate();
-      const current = moment().toDate();
-      initialLoad(sixMonthsAgo,current)
-      setMaxVal(reports?.data?.length || 0)
-    },[reports])
+
+        const sixMonthsAgo = moment().subtract(6, 'months').toDate();
+        const current = moment().toDate();
+        initialLoad(sixMonthsAgo,current)
+        setMaxVal(reportsList?.length || 0)
+    },[activeBranch])
 
     const initialLoad = (start:any,end:any)=>{
       const startDate = new Date(start);
       const endDate = new Date(end);
-      const {monthYearArray,counts} = getMonthYearArray(startDate, endDate,reports?.data);
+      const {monthYearArray,counts} = getMonthYearArray(startDate, endDate,reportsList);
 
       setDate(monthYearArray);
       setReportCount(counts)
@@ -44,7 +45,7 @@ const ReportSharedVsTime2 = () =>{
     const generateDateRange =(data:any) =>{
       const startDate = new Date(data?.[0].$d);
       const endDate = new Date(data?.[1].$d);
-      const {monthYearArray,counts} = getMonthYearArray(startDate, endDate,reports?.data);
+      const {monthYearArray,counts} = getMonthYearArray(startDate, endDate,reportsList);
 
       setDate(monthYearArray);
       setReportCount(counts)

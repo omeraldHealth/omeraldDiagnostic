@@ -23,7 +23,8 @@ export function DashboardHeader() {
     const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
     const router = useRouter()
     const [selectedBranch,setSelectedBranch] = useState(null)
-    let branchList = diagnostic?.data?.branchDetails.filter((branch:any)=> {return  branch?.branchContact === diagnosticDetails?.phoneNumber || branch?.branchOperator?.includes(operator?.managerContact)})
+    const [branchList,setBrancList] = useState(null)
+
     let [loading,setLoading] = useState(false)
 
     const updateDiagnostic = useUpdateDiagnostic({
@@ -34,7 +35,6 @@ export function DashboardHeader() {
           successAlert("Error updating branch")
         },
     });
-
 
     useEffect(()=>{
         if(activeBranch){
@@ -50,17 +50,14 @@ export function DashboardHeader() {
         },1000)
         let branchListTmp = diagnostic?.data?.branchDetails.filter((branch:any) => branch?._id === e)
         setSelectedBranch(branchListTmp?.[0])
-
-        // <>update branch location to db</>
-        // let branches = diagnostic?.data?.branchDetails;
-        // const itemIndex = branches.findIndex(item => item._id === e);
-        // const itemToMove = branches.splice(itemIndex, 1)[0];
-        
-        // branches.unshift(itemToMove);
-        // updateDiagnostic?.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"branchDetails":branches}})
-        //@ts-ignore
         setActiveBranch(branchListTmp?.[0])
     }
+
+    useEffect(()=>{
+        let branches = diagnostic?.data?.branchDetails.filter((branch:any)=> {return  branch?.branchContact === diagnosticDetails?.phoneNumber || branch?.branchOperator?.includes(operator?.managerContact)})
+        console.log(branches)
+        setBrancList(branches)
+    },[diagnostic   ])
 
 	return (
         <div className={`flex justify-between items-center`}>

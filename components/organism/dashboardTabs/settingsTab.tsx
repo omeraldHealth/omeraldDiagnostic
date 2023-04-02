@@ -1,6 +1,6 @@
 import { getDiagnosticUserApi, getQueriesApi } from '@utils';
 import { Badge, Tabs } from 'antd';
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { useQuery } from 'react-query';
 // import { settingsTab } from 'utils/static';
 import axios from 'axios';
@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 import { Spinner } from '@components/atoms/loader';
 import { useAuthContext } from 'utils/context/auth.context';
 import { settingsTab } from 'utils/static';
+import { useQueryGetData } from 'utils/reactQuery';
 
 
 const Billing = dynamic(() => import('@components/organism/settingsTabs/billing').then(res=>res.Billing),{loading: () => <Spinner/>})
@@ -57,23 +58,31 @@ export default function SettingsTab({selectedTabId}:any) {
 }
 
 const SettingsBadeCount = ({index}:any) => {
-  const {diagnosticDetails} = useAuthContext()
-  const {data:diagnosticDetail} = useQuery("diagnosticDetails",()=>{return axios.get(getDiagnosticUserApi+diagnosticDetails?.phoneNumber)})
+  const {diagnosticDetails,activeBranch} = useAuthContext()
+  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
   const {data:queries} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
   let count = 0;
 
+  let activities = diagnostic?.data.activities?.filter((activity:any) => activity?.branchId === activeBranch?._id)
+  let employees = diagnostic?.data.managersDetail?.filter((emp:any) => emp?.branchId === activeBranch?._id || emp?.managerRole.toLowerCase() === "owner")
+  let query =  queries?.data?.filter((activity:any) => activity?.branchId === activeBranch?._id)
+  let pathList = diagnostic?.data?.pathologistDetail?.filter((activity:any) => activity?.branchId === activeBranch?._id)
 
   if(index ==1){
-    count = diagnosticDetails?.activities?.length;
+    count = activities?.length || 0;
   }else if(index == 2){
-    count = diagnosticDetail?.data?.managersDetail?.length;
+    count = employees?.length || 0;
   }else if(index == 3){
-    count = diagnosticDetail?.data?.branchDetails?.length;
+    count = diagnostic?.data?.branchDetails?.length;
   }else if(index == 4){
-    count = diagnosticDetail?.data?.pathologistDetail?.length;
+    count =  pathList?.length || 0;
   }else if(index == 5){
-    count = queries?.data?.length
+    count = query?.length
   }
+
+  useEffect(()=>{
+  
+  },[diagnostic])
 
  return <p>
   {settingsTab[index]}

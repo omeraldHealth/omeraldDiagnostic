@@ -13,7 +13,7 @@ import { AddKeyword } from './createdKeyword'
 export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
 
   const testDetails = useSelector((state:any)=>state.testReducer)
-  const {diagnosticDetails} = useAuthContext();
+  const {diagnosticDetails,activeBranch} = useAuthContext();
   const [addKeyword,setAddKeyword] = useState(false)
   const queryClient = useQueryClient();
   const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
@@ -57,6 +57,7 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
       errorAlert("please add keywords to proceed")
     }else{
       if(testDetails ){
+        testDetails.branchId = activeBranch?._id
         let updateTest = diagnostic?.data?.tests
         updateTest?.push(testDetails)
         //@ts-ignore

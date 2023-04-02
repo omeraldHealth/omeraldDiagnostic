@@ -7,11 +7,12 @@ import React, { useState } from 'react'
 import { addEmailQuery, sendWhatsAppQuery } from 'utils/hook/userDetail'
 
 export const ContactForm = ({handleSubmit,refetch}:any) => {
-  const {diagnosticDetails} = useAuthContext()
+  const {diagnosticDetails,activeBranch} = useAuthContext()
   const [loading,setLoading] = useState(false)
 
   const handleForm = async (value:any) => {
     setLoading(true)
+ 
     
     const queryEmail = {
       "phoneNumber":diagnosticDetails?.phoneNumber,
@@ -20,6 +21,7 @@ export const ContactForm = ({handleSubmit,refetch}:any) => {
       "email":diagnosticDetails?.email,
       "subject":value.subject,
       "message":value.message,    
+      "branchId":activeBranch?._id
     }
         
     const queryMessage =  {"text": `${diagnosticDetails?.managersDetail?.[0]?.managerName} from ${diagnosticDetails?.diagnosticName} - ${diagnosticDetails?.branchDetails?.[0].branchName} has an issue.\n${value?.subject} ${value?.message}, Kinly assist with the above query!!\nYou can connect on ${diagnosticDetails?.phoneNumber} for more details`  

@@ -18,7 +18,7 @@ export const TestTable = () => {
 
   const [editTest,setEdit] = useState(false);
   const [initialTestDetails,setInitalTest] = useState();
-  const {diagnosticDetails} = useAuthContext()
+  const {diagnosticDetails,activeBranch} = useAuthContext()
   const testDetails = useSelector((state:any)=>state.testReducer)
   const [sampleName,setSampleName] = useState();
   const [testName,setTestName] = useState();
@@ -40,7 +40,7 @@ export const TestTable = () => {
     },
   });
 
-  let tests = diagnostic?.data?.tests
+  let tests = diagnostic?.data?.tests.filter((test:any) => test?.branchId === activeBranch?._id)
 
   let pathList = tests?.forEach((man:any) => {
     return   { 

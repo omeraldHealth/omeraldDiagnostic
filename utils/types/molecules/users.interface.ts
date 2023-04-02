@@ -102,7 +102,8 @@ export type ReportDetails = {
 export type ActivityDetails = {
   activity: string;
   updatedTime?: Date;
-  user:IManagerDetails
+  user:IManagerDetails,
+  branchId: string
 };
 
 export interface AuthContextInterface {

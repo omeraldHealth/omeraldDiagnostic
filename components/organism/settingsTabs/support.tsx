@@ -8,10 +8,12 @@ import { QueryClient, useQuery } from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 
 export function Support() {
-    const {diagnosticDetails} = useAuthContext()
+    const {diagnosticDetails,activeBranch} = useAuthContext()
     const [query,setQuery] = useState(false);
     const {data:queries,refetch} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
    
+
+    let queriestList = queries?.data?.filter((query:any)=> query?.branchId === activeBranch?._id)
     const SupportForm =   [ 
         {
             title: 'Subject',
@@ -53,7 +55,7 @@ export function Support() {
                 {/* Query Table */}
                 <section className="min-h-[45vh]">
                     {!query ? <div className=""> 
-                    <DashboardTable columns={SupportForm} data={queries?.data} /></div>
+                    <DashboardTable columns={SupportForm} data={queriestList} /></div>
                     :<ContactForm refetch={refetch} handleSubmit={handleSubmit}/>}
                 </section>
                 {/* Toggle Button */}

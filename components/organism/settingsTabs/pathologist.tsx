@@ -19,7 +19,7 @@ export function PathologistManagement() {
     const [initialData,setInitial] = useState({})
     const [addElement,setAddElement] = useState(false)
     const [selectedValue,setSelectedValue] = useState("Select Role")
-    const {diagnosticDetails} = useAuthContext()
+    const {diagnosticDetails,activeBranch} = useAuthContext()
     const [image,setImage] = useState([]);
     const [loading,setLoading] = useState(false);
     const queryClient = useQueryClient();
@@ -91,7 +91,7 @@ export function PathologistManagement() {
             value["signature"] = location
           }
         } 
-
+        value.branchId = activeBranch?._id
         filter?.push(value)
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"pathologistDetail":filter}})
   
@@ -149,9 +149,12 @@ export function PathologistManagement() {
       setImage(value.banner)
     }
  
+
+    let pathologistList = diagnostic?.data?.pathologistDetail?.filter((path:any) => path.branchId == activeBranch?._id)
+   
     return (
       <>
-      <SettingsCommon selectedValue={selectedValue} handleImage={handleImage} setSelectedValue={setSelectedValue} columns={columns} data={diagnostic?.data?.pathologistDetail} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={pathologistFormArray} />
+      <SettingsCommon selectedValue={selectedValue} handleImage={handleImage} setSelectedValue={setSelectedValue} columns={columns} data={pathologistList} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={pathologistFormArray} />
       {loading && <Spinner/>}
       </>
   )

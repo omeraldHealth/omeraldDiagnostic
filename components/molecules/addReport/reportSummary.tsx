@@ -15,7 +15,7 @@ import PdfTesting from "../PdfTesting/PdfTesting"
 export const ReportSummary =({handleSteps}:any) => {
 
     const reportForm = useSelector((state:any)=>state.reportFormReducer)
-    const {diagnosticDetails} = useAuthContext();
+    const {diagnosticDetails,activeBranch} = useAuthContext();
     const [loading,setLoading] = useState(false)
     const queryClient = useQueryClient();
     const dispatch = useDispatch()
@@ -25,7 +25,6 @@ export const ReportSummary =({handleSteps}:any) => {
           <PdfTesting report={reportForm} diagnosticDetails={diagnosticDetails} />
         ),
     });
-
 
     const updateDiagnostic = useUpdateDiagnostic({
         onSuccess: (data) => {
@@ -57,6 +56,7 @@ export const ReportSummary =({handleSteps}:any) => {
         onSuccess: (data:any) => {
             reportForm["reportUrl"] = data?.data.location
             reportForm.userId = diagnosticDetails?.phoneNumber.split(" ").join("");
+            reportForm.branchId = activeBranch?._id
             addReports.mutate(reportForm)
         },
         onError: (error) => {
@@ -68,23 +68,16 @@ export const ReportSummary =({handleSteps}:any) => {
     const handleSubmit = async () => {
         setLoading(true)
         if(reportForm && reportForm.isManualReport){
-            // reportForm.userId = diagnosticDetails?.phoneNumber.split(" ").join("");
-            
-            // addReports.mutate(reportForm)
-               // Fetch blob data from URL
-               const formData = new FormData()
-                const response = await fetch(instance.url);
-                const blob = await response.blob();
-
-        // Convert blob to FormData
-
-        formData.append('file', new File([blob], 'filename.pdf'));
-        uploadReportFile.mutate(formData)
-        }else{
             const formData = new FormData()
-            formData.append("file",reportForm.reportUrl)
+            const response = await fetch(instance.url);
+            const blob = await response.blob();
+            formData.append('file', new File([blob], 'filename.pdf'));
             uploadReportFile.mutate(formData)
-        }
+            }else{
+                const formData = new FormData()
+                formData.append("file",reportForm.reportUrl)
+                uploadReportFile.mutate(formData)
+            }
     }
 
     const { confirm } = Modal;
