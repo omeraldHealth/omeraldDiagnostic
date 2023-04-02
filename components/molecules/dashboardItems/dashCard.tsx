@@ -62,11 +62,11 @@ const dashCard: DashCardTyes[] = [
 let owner = operator?.managerRole?.toLowerCase() === "owner"
 
 return (
-    <section className="my-6 grid grid-cols-2 gap-4 sm:flex justify-between" >
+    <section className="my-6 grid grid-cols-2 gap-4 lg:flex justify-between" >
         {
             dashCard?.map((dash,index) => {
                 return (
-                    <a key={index} href="#" onClick={()=>{(!owner && dash.title=="Total Users") ? null : dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:dash.title,href:dash.href,loading:false,selectedTabIndex:"2"} })}}>
+                    <a key={index} href="#" onClick={()=> dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:dash.title,href:dash.href,loading:false,selectedTabIndex:"2"} })}>
                     <section className={`sm:w-[23%] xl:w-[15vw] h-[12vh] sm:h-[14vh] p-2 flex justify-between rounded-md text-white ${dash.style}`}>
                         {dash.icon}
                         <span className="">
@@ -74,7 +74,7 @@ return (
                                 {dash.icon2}
                             </Tooltip>
                             <p className="font-bold text-2xl flex justify-center my-2 mt-4">{dash.value ?? 0 }</p>
-                            <p className="font-light text-xs xl:text-sm">{dash.title}</p>
+                            <p className="font-light text-xs xl:text-sm -mt-2">{dash.title}</p>
                         </span>
                     </section>
                     </a>
