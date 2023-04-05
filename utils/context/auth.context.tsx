@@ -20,14 +20,14 @@ function useFirebaseAuth() {
   const router = useRouter();
   let flag = true;
 
-  useEffect(() => {
-    if(flag){
-      const unsubscribe = onIdTokenChanged(auth, handleUser);
-      flag=false;
-      return () => unsubscribe();
-    }
-  }, []
-  );
+  // useEffect(() => {
+  //   if(flag){
+  //     const unsubscribe = onIdTokenChanged(auth, handleUser);
+  //     flag=false;
+  //     return () => unsubscribe();
+  //   }
+  // }, []
+  // );
 
   useEffect(()=>{
     if(diagnosticDetails){
@@ -67,9 +67,9 @@ function useFirebaseAuth() {
     }
   };
 
-  const signIn = async (user: User, redirect: string) => {
+  const signIn = async (phoneNumber: User, redirect: string) => {
     let flag=true
-    const phoneNumber = user.phoneNumber || "";
+    // const phoneNumber = user.phoneNumber || "";
     const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
     const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
 

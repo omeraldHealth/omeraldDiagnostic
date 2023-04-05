@@ -10,6 +10,7 @@ import store from 'utils/store/store'
 import Allowed from 'utils/permissions/permissions'
 import type { AppProps } from 'next/app'
 import '../styles/tailwind.css'
+import { ClerkProvider } from '@clerk/nextjs';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,7 +36,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthContextProvider>
             <GlobalStyle />
             <ToastContainer autoClose={1000}/>
-            <ThemeProvider theme={theme}>{isMounted && <Allowed><Component {...pageProps} /></Allowed> }</ThemeProvider>
+            <ThemeProvider theme={theme}>{isMounted && <Allowed>
+              <ClerkProvider publishableKey='pk_test_ZGFyaW5nLWNyYWItMS5jbGVyay5hY2NvdW50cy5kZXYk' {...pageProps} >
+            <Component {...pageProps} />
+          </ClerkProvider>
+          </Allowed> }</ThemeProvider>
         </AuthContextProvider>
     </QueryClientProvider>
     </Provider>
