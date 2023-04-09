@@ -71,8 +71,8 @@ const OnboardComponents = () => {
       //creating admin role
       setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
       let insertDiag = await setUserDetails(diagnosticProfile)
-
-      if (insertDiag.status == 200 && user) {
+      console.log(insertDiag)
+      if (insertDiag.status == 201 && user) {
         setLoading(false);
         successAlert("Profile Created Succesfully")
         signIn(ClerkUser?.phoneNumbers[0]?.phoneNumber, "/dashboard");

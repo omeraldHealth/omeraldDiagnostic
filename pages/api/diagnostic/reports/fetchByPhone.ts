@@ -6,7 +6,7 @@ import DiagnosticReportsTable from 'utils/mongoDb/model/diagnosticReport';
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse<void>) => {
     try {
       const {phoneNumber} = req.query;
-      let users = await DiagnosticReportsTable.find({"phoneNumber":'+'+phoneNumber?.toString()?.replace(" ","")});
+      let users = await DiagnosticReportsTable.find({"userId":'+'+phoneNumber?.toString()?.replace(" ","")});
       //@ts-ignore
       return res.status(200).json(users);
     } catch (error) {

@@ -15,7 +15,7 @@ export default async function handler(
   const post = await s3.createPresignedPost({
     Bucket: process.env.AWS_BUCKET_Diagnostic_Brand,
     Fields: {
-      key: req.query.file,
+      key: req.query.fileName,
       'Content-Type': req.query.fileType,
     },
     Expires: 60, // seconds

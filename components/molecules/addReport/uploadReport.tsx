@@ -1,6 +1,6 @@
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 import { BodyText_3 } from '@components/atoms/font';
-import { getReportTypeApi } from '@utils';
+import { getReportTypesApi } from '@utils';
 import { Modal, Radio, Select,UploadProps } from 'antd';
 import React, { useState } from 'react'
 import { FileUploader } from '@components/atoms/fileUploder/fileUpload';
@@ -17,7 +17,7 @@ interface patientType {handleSteps?: (value:any) => void}
 export const UploadReport = ({handleSteps}:patientType) => {
 
   
-  const {data:reportTypes,isLoading:loading}  = useQueryGetData("reportTypes",getReportTypeApi)
+ 
   const {diagnosticDetails} = useAuthContext();
   const [selectedReport,setSelectedReport] = useState()
   const reportDetails = useSelector((state:any)=> state.reportFormReducer)
@@ -25,11 +25,29 @@ export const UploadReport = ({handleSteps}:patientType) => {
   const [manual,setManual] = useState({value:false,label:"False"})
   const manualOptions = [ {value:true,label:"Yes"},{value:false,label:"No"},];
 
+  let {data:reportTypes,isLoading:loading}  = useQueryGetData("reportTypes",getReportTypesApi)
+  reportTypes = reportTypes?.data;
+
+  reportTypes = reportTypes?.map((report:any) => {
+      return {
+          "_id": report?._id,
+          "testName":report?.name,
+          "keywords": report?.parameters.map((param)=>{
+              return {
+                  "keyword": param.name,
+                  "unit": param.units[0]?.value,
+                  "minRange":param.bioRefRange.min,
+                  "maxRange":param.bioRefRange.max,
+                  "aliases": param.aliases
+              }
+          })
+      }
+  })
   
   const dispatch = useDispatch()
 
   const handleOnChange = (value:any) => {
-    setSelectedReport(reportTypes?.data.filter((rep:any) => rep._id == value)[0])
+    setSelectedReport(reportTypes.filter((rep:any) => rep._id == value)[0])
   }
 
   const handleSubmit = async () => {
@@ -125,7 +143,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
                     className="mt-4"
                     defaultValue={"Select Report type"}
                     onChange={handleOnChange}
-                    options={reportTypes?.data && reportTypes?.data?.map((reportType:any) => ({ label: reportType.testName, value: reportType._id }))}
+                    options={reportTypes && reportTypes?.map((reportType:any) => ({ label: reportType.testName, value: reportType._id }))}
                 />
         </section>
         {

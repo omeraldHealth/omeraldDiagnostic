@@ -1,6 +1,6 @@
 import { errorAlert } from "@components/atoms/alerts/alert";
 import { BodyText_3 } from "@components/atoms/font"
-import { getReportTypeApi } from "@utils";
+import { getReportTypesApi } from "@utils";
 import { Input, Radio, SelectProps } from "antd"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,13 +25,31 @@ export const TestDetail = ({handleSteps}:any) => {
         "testName":testName
     }
 
-    const {data:reportTypes}  = useQueryGetData("reportTypes",getReportTypeApi)
-    const [datas, setData] = useState<SelectProps['options']>(reportTypes?.data);
+    let {data:reportTypes}  = useQueryGetData("reportTypes",getReportTypesApi)
+   
     const dispatch = useDispatch()
+    reportTypes = reportTypes?.data;
+
+    reportTypes = reportTypes?.map((report:any) => {
+        return {
+            "_id": report?._id,
+            "testName":report?.name,
+            "keywords": report?.parameters.map((param)=>{
+                return {
+                    "keyword": param.name,
+                    "unit": param.units[0]?.value,
+                    "minRange":param.bioRefRange.min,
+                    "maxRange":param.bioRefRange.max,
+                    "aliases": param.aliases
+                }
+            })
+        }
+    })
+    const [datas, setData] = useState<SelectProps['options']>(reportTypes);   
 
     useEffect(()=>{
         if(selectedValue && selectedReportId){
-            let reports = reportTypes?.data?.filter((rep:any) => rep._id == selectedReportId);
+            let reports = reportTypes?.filter((rep:any) => rep._id == selectedReportId);
             setSelectedReport(reports[0]) 
             setShowTable(true)
         }else{
@@ -41,7 +59,7 @@ export const TestDetail = ({handleSteps}:any) => {
     },[selectedValue,selectedReportId])
 
     const handleSearch = (newValue: string) => {
-        let temp = reportTypes?.data.filter((report:any)=> report.testName.toLowerCase().includes(newValue))
+        let temp = reportTypes.filter((report:any)=> report.testName.toLowerCase().includes(newValue))
         setData(temp)
     };
     

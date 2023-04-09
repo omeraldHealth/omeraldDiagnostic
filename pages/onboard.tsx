@@ -14,7 +14,7 @@ function Onboard() {
 
   const router = useRouter()
   const {diagnosticDetails} = useAuthContext()
-  console.log(diagnosticDetails)
+
   useEffect(()=>{
     if(diagnosticDetails){
       router?.push("/dashboard")
