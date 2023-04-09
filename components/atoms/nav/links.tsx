@@ -46,7 +46,6 @@ export const NavLinks = ({setSidebarOpen}:any) => {
                 </a>
               }
             </>
-            
         ))}
     </nav>
 }

@@ -36,12 +36,13 @@ function useApplicationAuth() {
         let flag=true
         const phoneNumber = ClerkUser?.phoneNumbers[0]?.phoneNumber || "";
         const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
-        const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
-        if (status==200 && (data?.phoneNumber || employees[0]?._id)) {
+        const {data,status} = await getUserDetails({phoneNumber: employees?.[0]?.mainBranchId || phoneNumber})
+        if (status==200 && (data?.phoneNumber || employees?.[0]?._id)) {
           // @ts-ignore
+          console.log(data)
           setDiagnosticDetails(data);
           // @ts-ignore
-          employees.length>0 ? setOperator(employees[0]) : setOperator(data?.managersDetail[0])
+          employees?.length>0 ? setOperator(employees[0]) : setOperator(data?.managersDetail[0])
           flag=false
         }
         // @ts-ignore
@@ -56,7 +57,7 @@ function useApplicationAuth() {
   const signIn = async (phoneNumber: any, redirect: string) => {
     let flag=true
     const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
-    const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
+    const {data,status} = await getUserDetails({phoneNumber: employees?.[0]?.mainBranchId || phoneNumber})
 
     if (status==200 && (data?.phoneNumber || employees[0]?._id)) {
       // @ts-ignore
