@@ -4,7 +4,6 @@ import { useAuthContext } from "utils/context/auth.context";
 import React, { cloneElement, ReactElement } from "react";
 
 import { useUser } from '@clerk/nextjs';
-import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
 
 const allowedPaths = ["","/","/signIn","/signUp","/404"];
 
@@ -12,7 +11,6 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
   const {diagnosticDetails} = useAuthContext();
   const router = useRouter();
   const {user,isLoaded} = useUser();
-  let flag = true;
 
   if (allowedPaths.includes(router.pathname)) {
       return <>{children}</>;
@@ -28,13 +26,11 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
     }else{
         if (router.pathname === "/onboard" ) {
           return cloneElement(children);
-        }else {
-          router.push("/onboard")
         }
-      }
-    } else{
-        router?.push("/signIn")
-    } 
+    }
+  } else{
+    router?.push("/signIn")
+  } 
 };
 
 export default Allowed;

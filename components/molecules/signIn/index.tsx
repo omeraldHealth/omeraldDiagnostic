@@ -5,7 +5,7 @@ import {SignIn,useSession,useUser} from "@clerk/nextjs"
 
 const SignInComponent = () => {
   // const auth = getAuth();
-  const {signIn} = useAuthContext()
+  const {signIn,diagnosticDetails} = useAuthContext()
   const { session } = useSession();
   const { user } = useUser()
   
@@ -18,7 +18,7 @@ const SignInComponent = () => {
 
   return (
     <section className="h-auto my-[10vh] flex justify-center">
-        <SignIn redirectUrl="/dashboard" signUpUrl="/signUp" />
+        <SignIn redirectUrl={diagnosticDetails ? "/dashboard" : "/onboard"} signUpUrl="/signUp" />
     </section>
   );
 };

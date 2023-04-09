@@ -5,7 +5,7 @@ import {SignUp} from "@clerk/nextjs"
 const SignUpComponent = () => {
   return (
     <section className="h-auto my-[10vh] flex justify-center">
-        <SignUp redirectUrl="/signIn"/>
+        <SignUp redirectUrl="/signIn" signInUrl="/signIn"/>
     </section>
   );
 };
