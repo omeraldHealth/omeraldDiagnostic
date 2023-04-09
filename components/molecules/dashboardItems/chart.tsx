@@ -32,6 +32,14 @@ const ReportSharedVsTime2 = () =>{
         setMaxVal(reportsList?.length || 0)
     },[activeBranch,reports?.data])
 
+    useEffect(()=>{
+      const sixMonthsAgo = moment().subtract(6, 'months').toDate();
+      const current = moment().toDate();
+      initialLoad(sixMonthsAgo,current)
+      setMaxVal(reportsList?.length || 4)
+  },[])
+
+
     const initialLoad = (start:any,end:any)=>{
       const startDate = new Date(start);
       const endDate = new Date(end);

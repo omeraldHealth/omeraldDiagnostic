@@ -1,33 +1,23 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { getAuth, onIdTokenChanged, User,setPersistence,browserSessionPersistence } from "firebase/auth";
 import { AuthContextInterface, getEmployeeById, initialAuthContext, UserDetails } from 'utils'
 import { useRouter } from 'next/router';
 import { getUserDetails } from 'utils/hook/userDetail';
-import { warningAlert } from '@components/atoms/alerts/alert';
-import firebaseApp from 'utils/auth/firebase';
 import axios from 'axios';
+import { useUser,useClerk } from '@clerk/nextjs';
+
 
 const AuthContext = createContext<AuthContextInterface>(initialAuthContext)
 
 //context logic and function
-function useFirebaseAuth() {
-  const auth = getAuth(firebaseApp);
-  const [user, setUser] = useState<User | null>(null);
+function useApplicationAuth() {
+  const {user:ClerkUser} = useUser();
+  const {signOut:logOut} = useClerk()
+  const [user,setUser] = useState<any | null>(null);
   const [diagnosticDetails, setDiagnosticDetails] = useState<UserDetails | null>(null);
   const [operator, setOperator] = useState<UserDetails | null>(null);
   const [activeBranch, setActiveBranch] = useState< any | null>();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  let flag = true;
-
-  // useEffect(() => {
-  //   if(flag){
-  //     const unsubscribe = onIdTokenChanged(auth, handleUser);
-  //     flag=false;
-  //     return () => unsubscribe();
-  //   }
-  // }, []
-  // );
 
   useEffect(()=>{
     if(diagnosticDetails){
@@ -37,39 +27,34 @@ function useFirebaseAuth() {
    
 },[diagnosticDetails])
 
-  setPersistence(auth, browserSessionPersistence)
-  .then(() => {
-  })
-  .catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  });
+  useEffect(()=>{
+    handleUser()
+  },[ClerkUser])
 
-  const handleUser = async (rawUser: User | null) => {
-    if (rawUser) {
-      let flag=true
-      const phoneNumber = rawUser.phoneNumber || "";
-      const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
-      const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
-      if (status==200 && (data?.phoneNumber || employees[0]?._id)) {
+  const handleUser = async () => {
+    if (ClerkUser) {
+        let flag=true
+        const phoneNumber = ClerkUser?.phoneNumbers[0]?.phoneNumber || "";
+        const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
+        const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
+        if (status==200 && (data?.phoneNumber || employees[0]?._id)) {
+          // @ts-ignore
+          setDiagnosticDetails(data);
+          // @ts-ignore
+          employees.length>0 ? setOperator(employees[0]) : setOperator(data?.managersDetail[0])
+          flag=false
+        }
         // @ts-ignore
-        setDiagnosticDetails(data);
-        // @ts-ignore
-        employees.length>0 ? setOperator(employees[0]) : setOperator(data?.managersDetail[0])
-        flag=false
+        setUser({phoneNumber:ClerkUser?.phoneNumbers[0]?.phoneNumber || "",data:ClerkUser});
+        setLoading(false);
+      } else {
+        setUser(null);
+        setLoading(false);
       }
-      setUser(rawUser);
-      setLoading(false);
-    } else {
-      setUser(null);
-      setLoading(false);
-    }
-  };
+  }
 
-  const signIn = async (phoneNumber: User, redirect: string) => {
+  const signIn = async (phoneNumber: any, redirect: string) => {
     let flag=true
-    // const phoneNumber = user.phoneNumber || "";
     const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
     const {data,status} = await getUserDetails({phoneNumber: employees[0]?.mainBranchId || phoneNumber})
 
@@ -87,11 +72,11 @@ function useFirebaseAuth() {
   };
 
   const signOut = async () => {
-    await auth.signOut();
-    setUser(null);
-    setDiagnosticDetails(null);
-    warningAlert("User Logged Out")
-    router.push("/");
+    logOut();
+    setUser(null);  
+    setActiveBranch(null)
+    setOperator(null)
+    setDiagnosticDetails(null)
   };
 
   return {
@@ -102,13 +87,13 @@ function useFirebaseAuth() {
     activeBranch,
     setActiveBranch,
     signIn,
-    signOut,
+    signOut
   };
 }
 
 //exporting context data
 export function AuthContextProvider({ children }: { children: React.ReactNode }) {
-  const auth = useFirebaseAuth();
+  const auth = useApplicationAuth();
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 

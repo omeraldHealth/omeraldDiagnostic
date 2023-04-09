@@ -1,26 +1,19 @@
-import React, { useState } from 'react';
-import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
+import React from 'react';
+import { Button, Form, Input } from 'antd';
 import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
-import BannerUploader from '@components/atoms/fileUploder/bannerUpload';
 import { useSelector } from 'react-redux';
-import { useAuthContext } from 'utils/context/auth.context';
-import { getAuth } from 'firebase/auth';
-import firebaseApp from 'utils/auth/firebase';
 import { FormType } from 'utils/types/molecules/forms.interface';
+import { useUser } from '@clerk/clerk-react';
 
-
-
+//@ts-ignore
 export const ProfileForm = ({formProps,button,formStyle,handleSubmit,handleDate,handleImage,buttonText,style,selectedRole,setSelectedRole}:FormType) => {
   const diagnosticProfile = useSelector((state:any) => state.diagnosticReducer)
-  const auth = getAuth(firebaseApp);
-
-  const roles = ['Admin', 'Manager','Operator','Spoc'];
-  const plainOptions = ['Male', 'Female', 'Others'];
-  
+  const {user:ClerkUser} = useUser();
+ 
   return (
     <div >
         <Form className={formStyle} onFinish={handleSubmit} name="basic" 
-            initialValues={{ remember: true,phoneNumber:auth.currentUser?.phoneNumber,
+            initialValues={{ remember: true,phoneNumber: ClerkUser?.phoneNumbers[0]?.phoneNumber,
             diagnosticName: diagnosticProfile?.diagnosticName,
             email: diagnosticProfile?.email,
             facebookUrl: diagnosticProfile?.brandDetails[0].facebookUrl,

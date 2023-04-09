@@ -12,6 +12,7 @@ import { useAuthContext } from "utils/context/auth.context";
 import { BackwardIcon } from "@heroicons/react/20/solid";
 import { ForwardIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
+import { useUser } from "@clerk/clerk-react";
 
 const ProfileSummaryComponent = dynamic(() => import('../profile').then(res=>res.ProfileSummaryComponent),{loading: () => <Spinner/>})
 
@@ -23,9 +24,11 @@ const OnboardComponents = () => {
   const [diagnosticProfile,setDiagnosticProfile] = useState<UserDetails>({});
   const [logo,setLogo] = useState([]);
   const router = useRouter()
+  const {user:ClerkUser,isLoaded} = useUser();
+
 
   let initial = {
-    "phoneNumber":user?.phoneNumber,
+    "phoneNumber":ClerkUser?.phoneNumbers[0].phoneNumber,
     "diagnosticName":diagnosticProfile?.diagnosticName,
     "email":diagnosticProfile?.email,
     "facebookUrl": diagnosticProfile?.brandDetails?.facebookUrl,
@@ -55,6 +58,7 @@ const OnboardComponents = () => {
     setLogo(value.logo)
   }
 
+
   const handleSubmit = async () => {
     let brandLogoUrl;
     // //@ts-ignore
@@ -71,7 +75,7 @@ const OnboardComponents = () => {
       if (insertDiag.status == 200 && user) {
         setLoading(false);
         successAlert("Profile Created Succesfully")
-        signIn(user, "/dashboard");
+        signIn(ClerkUser?.phoneNumbers[0]?.phoneNumber, "/dashboard");
       }
 
       if (insertDiag.status === 409) {
@@ -138,8 +142,9 @@ const OnboardComponents = () => {
                   }
               </div>
             </section>
-            {loading && <Spinner/>}
+            {(!isLoaded || loading) && <Spinner/>}
     </section>
+   
   );
 };
 
