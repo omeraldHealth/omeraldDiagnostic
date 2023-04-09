@@ -52,15 +52,7 @@ export function Support() {
 
 	return (
         <section>
-                <section className="">
-                    {!query ? <div className=""> 
-                    <DashboardTable columns={SupportForm} data={queriestList} /></div>
-                    :<ContactForm refetch={refetch} handleSubmit={handleSubmit}/>}
-                </section>
-                {/* Toggle Button */}
-                <section className="w-[100%] flex justify-start my-4">
-                    <button onClick={()=>{setQuery(!query)}} className="bg-gray-200 p-2 rounded-md">{!query ?  "Add Query" : "View Queries"}</button>
-                </section>
+            <ContactForm refetch={refetch} handleSubmit={handleSubmit}/>
         </section>
     )
 }

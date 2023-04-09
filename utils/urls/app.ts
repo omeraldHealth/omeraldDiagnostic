@@ -1,24 +1,25 @@
-export const backendApiPath= "https://parser-api.onrender.com"
-// export const backendApiPath = "http://localhost:4000"
+// export const backendApiPath= "https://parser-api.onrender.com"
+export const backendApiPath = "http://localhost:3000"
 
+//Api paths for backend calls
+export const getDiagnosticUserApi = backendApiPath+`/api/diagnostic/users/fetchByPhone?phoneNumber=`
+export const insertDiagnosticUserApi = backendApiPath+`/api/diagnostic/users/insert`
+export const updateDiagnosticUserApi = backendApiPath+`/api/diagnostic/users/update?phoneNumber=`
 
-// Api paths for backend calls
-export const getDiagnosticUserApi = backendApiPath+`/api/diagnostic/getDiagnosticUser?userId=`
-export const insertDiagnosticUserApi = backendApiPath+`/api/diagnostic/saveDiagnosticUser`
-export const updateDiagnosticUserApi = backendApiPath+`/api/diagnostic/updateDiagnosticUser?userId=`
-export const uploadImageApi = backendApiPath+`/api/diagnostic/uploadBranding`
-export const getDiagnosticReports = backendApiPath+`/api/reports/getDiagnosticReports?userId=`
-export const getQueriesApi = backendApiPath+`/api/diagnostic/getQuery?userId=`
-export const addQueryApi = backendApiPath+`/api/diagnostic/createQuery`
-export const getReportTypeApi = backendApiPath+`/api/omerald/getReportTypes`
-export const uploadReportApi = backendApiPath+`/api/diagnostic/uploadReport`
-export const insertReportApi = backendApiPath+`/api/reports/insertDiagnosticReport`
-export const updateTestApi = backendApiPath+`/api/diagnostic/updateDiagnosticUser?userId=`
-export const sendWhatsAppApi = backendApiPath+`/api/diagnostic/sendWhatsAppText`
-export const sendWhatsAppQueryApi = backendApiPath+`/api/diagnostic/sendWhatsAppQuery`
+// export const uploadImageApi = backendApiPath+`/api/diagnostic/s3bucket/addBrandingImages`
+export const uploadImageApi = "https://parser-api.onrender.com/api/diagnostic/uploadBranding"
 
-export const getEmployees = backendApiPath+`/api/employee/getAllEmployees`
-export const getEmployeeById = backendApiPath+`/api/employee/getEmployee?userId=`
-export const insertEmployee = backendApiPath+`/api/employee/addEmployee`
-export const updateEmployee = backendApiPath+`/api/employee/updateEmployee?userId=`
-export const deleteEmployee = backendApiPath+`/api/employee/deleteEmployee?userId=`
+export const getDiagnosticReports = backendApiPath+`/api/diagnostic/reports/fetchByPhone?phoneNumber=`
+export const insertReportApi = backendApiPath+`/api/diagnostic/reports/insert`
+
+export const uploadReportApi = "https://parser-api.onrender.com/api/diagnostic/uploadReport"  
+
+export const getEmployees = backendApiPath+`/api/diagnostic/employees/fetchAll`
+export const getEmployeeById = backendApiPath+`/api/diagnostic/employees/fetchByPhone?phoneNumber=`
+export const insertEmployee = backendApiPath+`/api/diagnostic/employees/insert`
+export const updateEmployee = backendApiPath+`/api/diagnostic/employees/update?userId=`
+export const deleteEmployee = backendApiPath+`/api/diagnostic/employees/delete?phoneNumber=`
+
+// Omerald admin report types
+
+export const getReportTypesApi = "https://admin-omerald-dev.vercel.app/api/reports"

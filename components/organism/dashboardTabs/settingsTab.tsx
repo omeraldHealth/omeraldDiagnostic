@@ -60,8 +60,8 @@ const SettingsBadeCount = ({index}:any) => {
   const {data:queries} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
   let count = 0;
 
-  let activities = diagnostic?.data.activities?.filter((activity:any) => activity?.branchId === activeBranch?._id)
-  let employees = diagnostic?.data.managersDetail?.filter((emp:any) => emp?.branchId === activeBranch?._id || emp?.managerRole.toLowerCase() === "owner")
+  let activities = diagnostic?.data?.activities?.filter((activity:any) => activity?.branchId === activeBranch?._id)
+  let employees = diagnostic?.data?.managersDetail?.filter((emp:any) => emp?.branchId === activeBranch?._id || emp?.managerRole.toLowerCase() === "owner")
   let query =  queries?.data?.filter((activity:any) => activity?.branchId === activeBranch?._id)
   let pathList = diagnostic?.data?.pathologistDetail?.filter((activity:any) => activity?.branchId === activeBranch?._id)
 

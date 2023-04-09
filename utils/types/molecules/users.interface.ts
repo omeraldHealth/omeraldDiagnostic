@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb";
-import { User } from "firebase/auth";
 
 export interface DiagnosticUserSession {
     userId: string;
@@ -107,12 +106,12 @@ export type ActivityDetails = {
 };
 
 export interface AuthContextInterface {
-	  user: User | null
+	  user: any | null
     diagnosticDetails: UserDetails | null;
     operator: any | null;
     activeBranch: any;
     loading: boolean;
-    signIn: (user: User, redirect: string) => Promise<void>;
+    signIn: (user: any, redirect: string) => Promise<void>;
     signOut: () => Promise<void>;
     setActiveBranch: () => void
     // setDiagnosticDetails:() => Promise<void>;

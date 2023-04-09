@@ -3,7 +3,7 @@ import { MenuDropDown } from '@components/atoms/menu'
 import { Logo } from '@components/atoms/nav/logo'
 import NavFont from '@components/atoms/nav/navFont'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAuthContext } from 'utils/context/auth.context'
 
 const navLinks = [
@@ -17,7 +17,7 @@ export function Navbar() {
 
     const {diagnosticDetails} = useAuthContext()
     const {user,signOut} = useAuthContext()
-
+    
 	return (
         <div  className={`flex justify-between items-center px-[4%] xl:px-[10%]`}>
             <Link href={"/"}><span className='flex'>

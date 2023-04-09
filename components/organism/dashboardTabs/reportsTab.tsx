@@ -144,7 +144,7 @@ export default function ReportsTab() {
            <button onClick={()=>setAddReports(!addReports)} className='bg-green-800 text-white text-bold font-light rounded-md p-2'>View Reports</button>}
         </span> 
          <div className="md:px-4 sm:px-6 xl:px-8 xl:py-3 bg-signBanner flex w-100 justify-center">
-            <div className='w-[96vw] lg:w-[80vw] xl:w-[70vw] bg-white shadow-lg h-auto rounded-lg p-4'> 
+            <div className='w-[96vw] lg:w-[80vw] xl:w-[70vw] bg-white shadow-lg h-auto rounded-lg'> 
             {!addReports ?  
             <>{<DashboardTable pageSize={7} columns={columns} data={reportsList}/> }</>:<AddReportComponent setAddReports={setAddReports}/>}
             </div>

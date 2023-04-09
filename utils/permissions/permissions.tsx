@@ -3,25 +3,34 @@ import { useRouter } from "next/router";
 import { useAuthContext } from "utils/context/auth.context";
 import React, { cloneElement, ReactElement } from "react";
 
-const allowedPaths = ["","/","/signIn","/404"];
+import { useUser } from '@clerk/nextjs';
+
+const allowedPaths = ["","/","/signIn","/signUp","/404"];
 
 const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => {
-  const auth = useAuthContext();
+  const {diagnosticDetails} = useAuthContext();
   const router = useRouter();
-
+  const {user,isLoaded} = useUser();
 
   if (allowedPaths.includes(router.pathname)) {
-    return <>{children}</>;
-  } else if (auth?.loading) {
+      return <>{children}</>;
+  }else if (!isLoaded) {
     return <Spinner />;
-  }else if (auth?.user && auth?.diagnosticDetails?.phoneNumber) {
-    return cloneElement(children, { auth: auth });
-  } else if (auth?.user && !auth?.diagnosticDetails){
-    if(router.pathname==="/onboard"){
-      return cloneElement(children, { auth: auth });
+  } else if (user) {
+    if(diagnosticDetails){
+      if (router.pathname === "/dashboard") {
+          return cloneElement(children);
+      }else if(router.pathname === "/onboard"){
+        router.push("/dashboard")
+      }
+    }else{
+        if (router.pathname === "/onboard" ) {
+          return cloneElement(children);
+        }
     }
-    router.push("/onboard")
-  }
+  } else{
+    router?.push("/signIn")
+  } 
 };
 
 export default Allowed;
