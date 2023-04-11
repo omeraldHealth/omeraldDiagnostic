@@ -1,7 +1,7 @@
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import { ContactForm } from "@components/molecules/form/contact-form";
 import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
-import { getDiagnosticUserApi, getQueriesApi } from "@utils";
+import { getDiagnosticUserApi } from "@utils";
 import axios from "axios";
 import { useState } from "react";
 import { QueryClient, useQuery } from "react-query";
@@ -10,10 +10,10 @@ import { useAuthContext } from "utils/context/auth.context";
 export function Support() {
     const {diagnosticDetails,activeBranch} = useAuthContext()
     const [query,setQuery] = useState(false);
-    const {data:queries,refetch} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
+    // const {data:queries,refetch} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
    
 
-    let queriestList = queries?.data?.filter((query:any)=> query?.branchId === activeBranch?._id)
+    // let queriestList = queries?.data?.filter((query:any)=> query?.branchId === activeBranch?._id)
     const SupportForm =   [ 
         {
             title: 'Subject',
@@ -47,12 +47,12 @@ export function Support() {
 
     const handleSubmit = () =>{
         setQuery(!query)
-        refetch()
+        // refetch()
     }
 
 	return (
         <section>
-            <ContactForm refetch={refetch} handleSubmit={handleSubmit}/>
+            <ContactForm handleSubmit={handleSubmit}/>
         </section>
     )
 }

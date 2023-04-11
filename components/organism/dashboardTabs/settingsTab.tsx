@@ -1,4 +1,4 @@
-import { getDiagnosticUserApi, getQueriesApi } from '@utils';
+import { getDiagnosticUserApi } from '@utils';
 import { Badge, Tabs } from 'antd';
 import { Fragment, useEffect } from 'react'
 import { useQuery } from 'react-query';
@@ -57,12 +57,12 @@ export default function SettingsTab({selectedTabId}:any) {
 const SettingsBadeCount = ({index}:any) => {
   const {diagnosticDetails,activeBranch} = useAuthContext()
   const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
-  const {data:queries} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
+  // const {data:queries} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
   let count = 0;
 
   let activities = diagnostic?.data?.activities?.filter((activity:any) => activity?.branchId === activeBranch?._id)
   let employees = diagnostic?.data?.managersDetail?.filter((emp:any) => emp?.branchId === activeBranch?._id || emp?.managerRole.toLowerCase() === "owner")
-  let query =  queries?.data?.filter((activity:any) => activity?.branchId === activeBranch?._id)
+  // let query =  queries?.data?.filter((activity:any) => activity?.branchId === activeBranch?._id)
   let pathList = diagnostic?.data?.pathologistDetail?.filter((activity:any) => activity?.branchId === activeBranch?._id)
 
   if(index ==1){
@@ -74,7 +74,7 @@ const SettingsBadeCount = ({index}:any) => {
   }else if(index == 4){
     count =  pathList?.length || 0;
   }else if(index == 5){
-    count = query?.length
+    count = 0
   }
 
   useEffect(()=>{
