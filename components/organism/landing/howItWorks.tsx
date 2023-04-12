@@ -1,5 +1,6 @@
 import { SignInButton } from '@components/atoms/buttons/button'
 import styles from "./landing.module.css"
+import Link from 'next/link'
 
 export function HowItWorks() {
 	return (
@@ -10,7 +11,9 @@ export function HowItWorks() {
                     <p className='text-[#5D5FEF] my-6 lg:my-0 uppercase font-bold text-sm'>How Omerald Helps You</p>
                     <p className='sm:text-[37px] text-[24px] my-6 lg:my-0 font-[600]'>Simplifying Diagnostic Center Operations</p>
                     <p className='text-[#64607D] my-6 lg:my-0 font-light'>Omerald streamlines test selection, report generation, and branding updates for diagnostic centers</p>
-                    <SignInButton style="hidden my-6 lg:my-4 lg:block rounded-full shodow-md my-4 mx-0">{"Get Started"}</SignInButton>
+                   <Link href={"/signIn"}>
+                   <SignInButton style="hidden my-6 lg:my-4 lg:block rounded-full shodow-md my-4 mx-0">{"Get Started"}</SignInButton>
+                   </Link> 
                 </section>
                 <section></section>
                 <section className='hidden lg:block  text-left xl:pl-[20%] pr-[20%] pt-[20%]'>
@@ -32,7 +35,10 @@ export function HowItWorks() {
                     <p className='text-[#64607D] font-light'>From they fine john he give of rich he. They age and draw mrs like. Improving end distrusts may instantly.</p>
                 </section>
                 <section></section>
-                <SignInButton style="block lg:hidden rounded-full shodow-md my-4 mx-0">{"Get Started"}</SignInButton>
+                <Link href={"/signIn"}>
+                    {/* <SignInButton style="block lg:hidden rounded-full shodow-md my-4 mx-0">{"Get Started"}</SignInButton> */}
+                </Link>
+          
             </section>
 
         </div>

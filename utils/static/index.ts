@@ -87,25 +87,25 @@ export const plainOptions = ['Male', 'Female', 'Others'];
 
 export const navigation = {
   policies: [
-    { name: "Disclaimer", href: "/info/disclaimer" },
-    { name: "Privacy Policy", href: "/info/privacy" },
-    { name: "Terms of Service", href: "/info/terms" },
-    { name: "Platform Consent", href: "/info/consent" },
+    { name: "Disclaimer", href: "/info/DISCLAIMER" },
+    { name: "Privacy Policy", href: "/info/PRIVACY" },
+    { name: "Terms of Service", href: "/info/TERMS" },
+    { name: "Platform Consent", href: "/info/CONSENT" },
   ],
   support: [
-    { name: "FAQ", href: "/faq" },
-    { name: "Pricing", href: "/pricingTab" },
-    { name: "Support", href: "/info/support" },
-    { name: "Documentation", href: "/info/documentation" },
+    { name: "FAQ", href: "/info/FAQ" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "Support", href: "/contact" },
+    { name: "Documentation", href: "/documentation" },
   ],
   company: [
     { name: "Blog", href: "https:/blog.omerald.com/" },
-    { name: "Register", href: "/signin" },
+    { name: "Register", href: "/signUp" },
     { name: "About", href: "/about" },
     { name: "Partners", href: "/info/team" },
   ],
   legal: [
-    { name: "Terms", href: "/info/terms" },
+    { name: "Terms", href: "/info/TERMS" },
     // { name: "Claim", href: "/privacy" },
   ],
   social: [

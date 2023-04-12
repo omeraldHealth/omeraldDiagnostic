@@ -12,6 +12,7 @@ import { useQueryGetData, useUpdateDiagnostic, useUpdateReports, useUploadReport
 import { SET_REPORT_FORM } from "utils/store/types"
 import PdfTesting from "../PdfTesting/PdfTesting"
 import { ActivityLogger } from "../logger.tsx/activity"
+import axios from "axios"
 
 export const ReportSummary =({handleSteps}:any) => {
 
@@ -75,7 +76,7 @@ export const ReportSummary =({handleSteps}:any) => {
         setLoading(true)
         if(reportForm && reportForm.isManualReport){
             const formData = new FormData()
-            const response = await fetch(instance.url);
+            const response = await axios.get(instance.url);
             const blob = await response.blob();
             formData.append('file', new File([blob], 'filename.pdf'));
             ActivityLogger("Added Report for "+reportForm?.userName,diagnostic?.data,operator,activeBranch)

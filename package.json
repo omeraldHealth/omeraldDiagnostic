@@ -26,6 +26,7 @@
     "formidable": "^2.1.1",
     "framer-motion": "^10.8.5",
     "headlessui": "^0.0.0",
+    "html-react-parser": "^3.0.15",
     "lodash": "^4.17.21",
     "micro": "^10.0.1",
     "moment": "^2.29.4",

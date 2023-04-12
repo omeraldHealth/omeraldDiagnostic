@@ -177,7 +177,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
                 },
               });
            }} className="p-2 bg-gray-400 text-white w-auto lg:w-[8vw] rounded-lg">Back</button>
-          <button onClick={handleSubmit} className="p-2 bg-secondary text-white w-auto lg:w-[8vw] rounded-lg">Continue</button>
+          <button onClick={handleSubmit} className="p-2 bg-purple-800 text-white w-auto lg:w-[8vw] rounded-lg">Continue</button>
         </section>}
         {loading && <Spinner/>}
       
