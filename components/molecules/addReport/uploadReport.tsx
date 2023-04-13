@@ -12,12 +12,10 @@ import { DynamicFormCreator } from '../form/dynamicForm';
 import { useQueryGetData } from 'utils/reactQuery';
 import { useAuthContext } from 'utils/context/auth.context';
 
-interface patientType {handleSteps?: (value:any) => void}
+interface patientType {handleSteps?: (value:any) => void,reportType:any}
 
-export const UploadReport = ({handleSteps}:patientType) => {
+export const UploadReport = ({handleSteps,reportType}:patientType) => {
 
-  
- 
   const {diagnosticDetails} = useAuthContext();
   const [selectedReport,setSelectedReport] = useState()
   const reportDetails = useSelector((state:any)=> state.reportFormReducer)
@@ -25,10 +23,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
   const [manual,setManual] = useState({value:false,label:"False"})
   const manualOptions = [ {value:true,label:"Yes"},{value:false,label:"No"},];
 
-  let {data:reportTypes,isLoading:loading}  = useQueryGetData("reportTypes",getReportTypesApi)
-  reportTypes = reportTypes?.data;
-
-  reportTypes = reportTypes?.map((report:any) => {
+  let reportTypes = reportType?.map((report:any) => {
       return {
           "_id": report?._id,
           "testName":report?.name,
@@ -43,6 +38,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
           })
       }
   })
+
   
   const dispatch = useDispatch()
 
@@ -129,6 +125,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
   }
   const { confirm } = Modal;
 
+ 
   return (
     <div className='relative h-[50vh]'>
         <BodyText_3>Create report powered by Omerald ?</BodyText_3>
@@ -179,13 +176,12 @@ export const UploadReport = ({handleSteps}:patientType) => {
            }} className="p-2 bg-gray-400 text-white w-auto lg:w-[8vw] rounded-lg">Back</button>
           <button onClick={handleSubmit} className="p-2 bg-purple-800 text-white w-auto lg:w-[8vw] rounded-lg">Continue</button>
         </section>}
-        {loading && <Spinner/>}
-      
     </div>  
   )
 }
 
 function getFormType(keywords:any){
+
    let form = keywords && keywords.map((key:any) => ({ name: key.keyword,type:"text",label:`${key.keyword} (${key.normalRange},${key.unit})`,required:true,pattern:"^[0-9]*$"}))
    return form
 }

@@ -15,7 +15,7 @@ export const StepHeader = ({stepList,currentStep}:StepHeaderType) => {
                       currentStep.id === step.id && "bg-blue-700 text-white"
                     }
                     ${currentStep.id < step.id && "bg-white text-blue-700"}
-                    ${currentStep.id > step.id && "bg-green-400 text-white"}`}
+                    ${currentStep.id > step.id && "bg-green-900 text-white"}`}
                   >
                     {step.id}
                 </span>

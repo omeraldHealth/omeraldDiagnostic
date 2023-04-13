@@ -10,6 +10,7 @@ import { testForm } from 'utils/types/molecules/forms.interface'
 import { DynamicFormCreator } from '../form/dynamicForm'
 import { AddKeyword } from './createdKeyword'
 import { ActivityLogger } from '../logger.tsx/activity'
+import { Popconfirm } from 'antd'
 
 export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
 
@@ -90,7 +91,15 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
                  <DynamicFormCreator button={true} buttonText="Add Keyword" handleSubmit={handleAddKeyword} formProps={testForm} />
              </section>}
              <section className='flex  my-10 sm:my-4'>
-              <button onClick={handleBack} className='bg-gray-400 mx-3 text-white px-2 py-2 rounded-lg'>Back</button>
+             <Popconfirm
+              title="Go Back?"
+              description="Are you sure? the data will be lost"
+              onConfirm={handleBack}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button className='bg-gray-400 mx-3 text-white px-2 py-2 rounded-lg'>Back</button>
+               </Popconfirm>
               <button onClick={!edit ? handleAddTest : handleSuccessTest} className='bg-green-700 text-white px-2 py-2 rounded-lg'>Submit</button>
              </section>
         </div>
@@ -101,7 +110,7 @@ const AddKeyWordHeader= ({testDetails,addKeyword,setAddKeyword}:any)=>{
     return (
         <section className='flex w-[100%] mb-2 justify-between'>
         <section className='flex'>
-          <p className='text-xs sm:text-sm sm:font-bold'>Sample Name :
+          <p className='text-xs sm:text-sm sm:font-bold'>Custom Report Name :
             <span className='font-light mx-2'>{testDetails?.sampleName}</span>
           </p>
           <p className='text-xs sm:text-sm sm:font-bold'>Test Name :

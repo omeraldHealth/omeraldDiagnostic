@@ -40,7 +40,7 @@ export const ReportSummary =({handleSteps}:any) => {
             dispatch({type:SET_REPORT_FORM,payload:null})
         },
         onError: (error) => {
-          successAlert("Error adding reports")
+          errorAlert("Error adding reports")
         },
     });
 
@@ -55,7 +55,7 @@ export const ReportSummary =({handleSteps}:any) => {
             }
         },
         onError: (error) => {
-          successAlert("Error adding reports")
+          errorAlert("Error adding reports")
         },
     });
 
@@ -76,7 +76,7 @@ export const ReportSummary =({handleSteps}:any) => {
         setLoading(true)
         if(reportForm && reportForm.isManualReport){
             const formData = new FormData()
-            const response = await axios.get(instance.url);
+            const response = await fetch(instance.url);
             const blob = await response.blob();
             formData.append('file', new File([blob], 'filename.pdf'));
             ActivityLogger("Added Report for "+reportForm?.userName,diagnostic?.data,operator,activeBranch)

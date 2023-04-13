@@ -4326,7 +4326,7 @@ react-phone-input-2@^2.15.1:
 
 react-phone-number-input@^3.2.19:
   version "3.2.19"
-  resolved "https://registry.npmjs.org/react-phone-number-input/-/react-phone-number-input-3.2.19.tgz"
+  resolved "https://registry.yarnpkg.com/react-phone-number-input/-/react-phone-number-input-3.2.19.tgz#78e09f12235b5c3a46555324198abd2c36b69d3e"
   integrity sha512-3peWqyFgJ3+IvkB0GHvhAzQ6LEfJw1/obG8KPvCcac8OKp9Ir+pLdyySgxbD56EYkaAwZbBwOQJaGNqIX0yrtg==
   dependencies:
     classnames "^2.3.1"

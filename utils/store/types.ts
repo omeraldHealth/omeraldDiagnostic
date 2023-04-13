@@ -7,6 +7,9 @@ export const SET_DASHBOARD_ROUTE = 'SET_DASHBOARD_ROUTE';
 export const SET_REPORT = 'SET_REPORT'
 export const GET_REPORT = 'GET_REPORT'
 
+export const SET_REPORT_TYPE = 'SET_REPORT_TYPE'
+export const GET_REPORT_TYPE = 'GET_REPORT_TYPE'
+
 export const SET_REPORT_LIST = 'SET_REPORT_LIST'
 export const GET_REPORT_LIST = 'GET_REPORT_LIST'
 
@@ -35,6 +38,7 @@ export interface ReportTableType {
 export interface phoneNumberType  {
     isPhoneNumberDisabled: boolean | undefined,
     phoneNumber: string,
+    handleDisable: ()=>{},
     setPhoneNumber: (phone:string) => void
   }
   export interface otpInputType  {

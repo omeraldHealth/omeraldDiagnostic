@@ -12,10 +12,11 @@ import { useQueryGetData } from 'utils/reactQuery';
 import { getDiagnosticUserApi } from '@utils';
 import { useAuthContext } from 'utils/context/auth.context';
 import { Option } from 'antd/es/mentions';
+import { PhoneInputCountry } from '@components/atoms/phoneInput/phoneInput';
 
 
 export const DynamicFormCreator = ({formProps,button=true,showLabel,disableElement,initial,formStyle,reportsValidation,handleSubmit,handleImage,buttonText,selectedValue,setSelectedValue}:DynamicFormType) => {
-
+    console.log(initial)
     const {diagnosticDetails} = useAuthContext();
     const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
@@ -66,6 +67,11 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                                 setDisabled(false)
                                 }else{  setDisabled(true)}
                             }} placeholder={form.label} className="border-gray-400 rounded-lg  text-black font-light text-sm" />
+                        </Form.Item>
+                        }
+                         {form.type === "patientContact" && 
+                        <Form.Item    key={form.label+2} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  rules={[{ pattern: form?.pattern,message: `Please input ${form.label}`}]}>
+                            <PhoneInputCountry phoneNumber={selectedValue} handleDisable={setDisabled} setPhoneNumber={setSelectedValue}/>
                         </Form.Item>
                         }
                      {form.type === "contact"  && 
@@ -160,7 +166,7 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             </Form.Item>
                         }
                       {form.type === "pathologist" &&
-                        <Form.Item initialValue={{["value"]: "Select Pathologist"}} className='mb-6  col-span-1' name={form.name} labelCol={{ span: 0 }} rules={[{ pattern: form?.pattern, required: form.required,message: `Please input ${form.label}`}]}>
+                        <Form.Item initialValue={{["value"]: "Select Pathologist"}} className='mb-6  col-span-1' name={form.name} labelCol={{ span: 0 }} >
                          <Select
                             key={form.name} 
                                 showSearch

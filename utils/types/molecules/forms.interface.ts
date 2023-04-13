@@ -1,6 +1,6 @@
 import { ReportDetails, ReportTypes } from "./users.interface";
 
-export const textPattern = ""
+export const textPattern = /[^0-9]/
 export const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 export const phonePattern = /^(?:\+91|0)?[6789]\d{9}$/
 export const numberPattern = /^[1-50000]+$/
@@ -88,8 +88,8 @@ export const branchDetailsEditFormArray: FormType[] = [
 ]
 
 export const testForm:FormType = [
-    {"name":"keyword","type":"text","label":"Parameters","required":true},
-    {"name":"unit","type":"text","label":"unit","required":true},
+    {"name":"keyword","type":"text","label":"Parameters","required":true,pattern: textPattern},
+    {"name":"unit","type":"text","label":"unit","required":true,pattern:textPattern},
     {"name":"minRange","type":"text","label":"minRange","required":true,pattern:numberPattern},
     {"name":"maxRange","type":"text","label":"minRange","required":true,pattern:numberPattern},
     {"name":"aliases","type":"tags","label":"Aliases","required":true},
