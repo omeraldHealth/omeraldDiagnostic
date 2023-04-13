@@ -2,24 +2,30 @@ import { UserCircleIcon } from '@heroicons/react/20/solid'
 import { useDispatch, useSelector } from 'react-redux'
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 import moment from 'moment';
-import React from 'react'
+import React, { useContext } from 'react'
+import { useAuthContext } from 'utils/context/auth.context';
+import { useQueryGetData } from 'utils/reactQuery';
+import { getDiagnosticUserApi } from '@utils';
 
 export const DashActivity = () => {
 
-  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
+  const {activeBranch,diagnosticDetails} = useAuthContext()
+  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
   //@ts-ignore
-  let activities = diagnosticDetails?.activities.sort((a:any,b:any)=>new Date(b.updatedTime) - new Date(a.updatedTime)).slice(0,5)
-
+  let activities = diagnostic?.data?.activities.sort((a:any,b:any)=>new Date(b.updatedTime) - new Date(a.updatedTime)).slice(0,5)
+  activities = activities?.filter((activity:any)=>activity?.branchId == activeBranch?._id)
   return (
-  <section className="sm:w-[30%] h-[100%] bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0 max-h-[50vh] overflow-auto">
-        <p>Recent Activities</p>
-        <p className="text-xs text-gray-400 font-light">Summary of the latest updated activities</p>
-            <section>
-                {activities.length>0 ? 
+  <section className="w-[94vw] sm:w-[50vw] lg:w-[30vw] xl:w-[20vw] h-[100%] shadow-xl bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0 ">
+        <section className=''>
+            <p>Recent Activities</p>
+            <p className="text-xs text-gray-400 font-light">Summary of the latest updated activities</p>
+        </section>
+        <section className='max-h-[35vh] overflow-auto my-4 sm:my-2'>
+                {activities?.length>0 ? 
                 <ActivityItem activityList={activities} /> :
                 <p className="text-light text-sm text-gray-600 mt-8">No Activities....</p>}
-            </section> 
-    </section>
+        </section> 
+</section>
 )}
 
 const ActivityItem = ({activityList}:any) => {

@@ -1,17 +1,19 @@
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import { ContactForm } from "@components/molecules/form/contact-form";
 import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
-import { getDiagnosticUserApi, getQueriesApi } from "@utils";
+import { getDiagnosticUserApi } from "@utils";
 import axios from "axios";
 import { useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 
 export function Support() {
-    const {diagnosticDetails} = useAuthContext()
+    const {diagnosticDetails,activeBranch} = useAuthContext()
     const [query,setQuery] = useState(false);
-    const {data:queries,refetch} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
+    // const {data:queries,refetch} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
    
+
+    // let queriestList = queries?.data?.filter((query:any)=> query?.branchId === activeBranch?._id)
     const SupportForm =   [ 
         {
             title: 'Subject',
@@ -45,21 +47,12 @@ export function Support() {
 
     const handleSubmit = () =>{
         setQuery(!query)
-        refetch()
+        // refetch()
     }
 
 	return (
         <section>
-                {/* Query Table */}
-                <section className="min-h-[45vh]">
-                    {!query ? <div className=""> 
-                    <DashboardTable columns={SupportForm} data={queries?.data} /></div>
-                    :<ContactForm refetch={refetch} handleSubmit={handleSubmit}/>}
-                </section>
-                {/* Toggle Button */}
-                <section className="w-[100%] flex justify-start">
-                    <button onClick={()=>{setQuery(!query)}} className="bg-gray-200 p-2 rounded-md">{!query ?  "Add Query" : "View Queries"}</button>
-                </section>
+            <ContactForm handleSubmit={handleSubmit}/>
         </section>
     )
 }

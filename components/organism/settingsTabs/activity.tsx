@@ -1,9 +1,13 @@
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
+import { getDiagnosticUserApi } from "@utils";
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useAuthContext } from "utils/context/auth.context";
+import { useQueryGetData } from "utils/reactQuery";
 
 export function Activity() {
-    const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
+   
+    const {diagnosticDetails,activeBranch} = useAuthContext();
+    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
     const managersList = diagnosticDetails?.managersList?.map((manager:any)=> manager?.managerName )
     const ActivityForm  = [   
         {
@@ -33,9 +37,11 @@ export function Activity() {
           },
     ]
       
+    let activities = diagnostic?.data?.activities?.filter((activity:any)=>activity?.branchId == activeBranch?._id)
+    
 	return (
         <div className="min-h-[45vh]">
-            <DashboardTable columns={ActivityForm} data={diagnosticDetails?.activities} />
+            <DashboardTable columns={ActivityForm} data={activities} />
         </div>
     )
 }

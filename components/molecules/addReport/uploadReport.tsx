@@ -1,49 +1,51 @@
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
-import { SignInButton } from '@components/atoms/buttons/button';
 import { BodyText_3 } from '@components/atoms/font';
-import { BodyStyled_2 } from '@components/atoms/font/font.style';
-import { ArrowUpIcon, BookOpenIcon } from '@heroicons/react/20/solid';
-import { getReportTypeApi } from '@utils';
-import { Button, Input, Modal, Radio, Select, Space, Upload, UploadProps } from 'antd';
-import axios from 'axios';
+import { getReportTypesApi } from '@utils';
+import { Modal, Radio, Select,UploadProps } from 'antd';
 import React, { useState } from 'react'
-import { useQuery } from 'react-query';
-import { createReport, uploadImage, uploadReport } from 'utils/hook/userDetail';
-import LogoUploader from "@components/atoms/fileUploder/logoUploaders"
 import { FileUploader } from '@components/atoms/fileUploder/fileUpload';
 import { Spinner } from '@components/atoms/loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_REPORT_FORM } from 'utils/store/types';
-import useSelection from 'antd/es/table/hooks/useSelection';
-import { DynamicFormCreator } from '../form/dynamicForm';
-import { Confirm } from "components/atoms/alerts/confirm"
-const crypto = require("crypto");
 
-const PatientDetailsForm = [
-    {"name":"userName","type":"text","label":"Patient Name","required":true},
-    {"name":"email","type":"text","label":"Email","required":true},
-    {"name":"phoneNumber","type":"contact","label":"Phone Number","required":true},
-    {"name":"dob","type":"date","label":"Date of birth","required":true},
-    {"name":"reportDate","type":"date","label":"Report creation date","required":true},
-    {"name":"gender","type":"gender","label":"Gender","required":true},
-    {"name":"doctorName","type":"pathologist","label":"Pathologist Name","required":true},
-    {"name":"message","type":"textArea","label":"Message","required":true},
-]
+import { DynamicFormCreator } from '../form/dynamicForm';
+import { useQueryGetData } from 'utils/reactQuery';
+import { useAuthContext } from 'utils/context/auth.context';
 
 interface patientType {handleSteps?: (value:any) => void}
 
 export const UploadReport = ({handleSteps}:patientType) => {
-  const {isLoading,data} = useQuery(["reportTypes"],()=>{return axios.get(getReportTypeApi)})
-  let reportTypes = data && data.data
+
+  
+ 
+  const {diagnosticDetails} = useAuthContext();
   const [selectedReport,setSelectedReport] = useState()
   const reportDetails = useSelector((state:any)=> state.reportFormReducer)
-  const diagnosticDetails = useSelector((state:any)=> state.diagnosticReducer)
   const [reportFile,setUploadedReport] = useState(null)
   const [manual,setManual] = useState({value:false,label:"False"})
   const manualOptions = [ {value:true,label:"Yes"},{value:false,label:"No"},];
-  const dispatch = useDispatch()
-  const [loading,setLoading] = useState(false)
+
+  let {data:reportTypes,isLoading:loading}  = useQueryGetData("reportTypes",getReportTypesApi)
+  reportTypes = reportTypes?.data;
+
+  reportTypes = reportTypes?.map((report:any) => {
+      return {
+          "_id": report?._id,
+          "testName":report?.name,
+          "keywords": report?.parameters.map((param)=>{
+              return {
+                  "keyword": param.name,
+                  "unit": param.units[0]?.value,
+                  "minRange":param.bioRefRange.min,
+                  "maxRange":param.bioRefRange.max,
+                  "aliases": param.aliases
+              }
+          })
+      }
+  })
   
+  const dispatch = useDispatch()
+
   const handleOnChange = (value:any) => {
     setSelectedReport(reportTypes.filter((rep:any) => rep._id == value)[0])
   }
@@ -91,14 +93,6 @@ export const UploadReport = ({handleSteps}:patientType) => {
         }
         })  
         handleSteps && handleSteps(2)
-        // const resp2 = await createReport(
-        //   diagnosticDetails?.phoneNumber as string,
-        //   reportDetails
-        // );
-        // if(resp2.status==200){
-        //   handleSteps && handleSteps(2)
-        //   setLoading(false)
-        // }
     }else{
       errorAlert("please select report type")
     }
@@ -136,7 +130,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
   const { confirm } = Modal;
 
   return (
-    <div className='p-8 relative h-[50vh]'>
+    <div className='relative h-[50vh]'>
         <BodyText_3>Create report powered by Omerald ?</BodyText_3>
         <section className='my-4'>
             <Radio.Group options={manualOptions} onChange={(event)=>{if(event.target.value){setManual({value:true,label:"True"})}else{ setManual({value:false,label:"False"})}
@@ -149,7 +143,7 @@ export const UploadReport = ({handleSteps}:patientType) => {
                     className="mt-4"
                     defaultValue={"Select Report type"}
                     onChange={handleOnChange}
-                    options={reportTypes && reportTypes.map((reportType:any) => ({ label: reportType.testName, value: reportType._id }))}
+                    options={reportTypes && reportTypes?.map((reportType:any) => ({ label: reportType.testName, value: reportType._id }))}
                 />
         </section>
         {
@@ -182,8 +176,8 @@ export const UploadReport = ({handleSteps}:patientType) => {
                   // Handle the user's cancellation
                 },
               });
-           }} className="p-2 bg-gray-400 text-white w-[8vw] rounded-lg">Back</button>
-          <button onClick={handleSubmit} className="p-2 bg-secondary text-white w-[8vw] rounded-lg">Continue</button>
+           }} className="p-2 bg-gray-400 text-white w-auto lg:w-[8vw] rounded-lg">Back</button>
+          <button onClick={handleSubmit} className="p-2 bg-secondary text-white w-auto lg:w-[8vw] rounded-lg">Continue</button>
         </section>}
         {loading && <Spinner/>}
       

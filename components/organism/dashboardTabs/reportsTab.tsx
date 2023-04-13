@@ -5,24 +5,29 @@ import { ReportDetails, UserDetails } from '@utils';
 import { usePDF } from "@react-pdf/renderer";
 import dayjs from 'dayjs';
 import { EyeIcon} from '@heroicons/react/20/solid';
-import PdfTesting from '@components/molecules/PdfTesting/PdfTesting';
 import { ReportTableType } from 'utils/store/types';
-import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { Spinner } from '@components/atoms/loader';
-import {getDiagnosticReports} from "utils/urls/app"
+import {getDiagnosticReports, getDiagnosticUserApi} from "utils/urls/app"
 import { AddReportComponent } from '@components/molecules/addReport/addReport';
 import { FaWhatsapp } from 'react-icons/fa';
 import { sendWhatsAppText } from 'utils/hook/userDetail';
-import { successAlert } from '@components/atoms/alerts/alert';
+import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { useQueryGetData } from 'utils/reactQuery';
+import PdfTesting from '@components/molecules/PdfTesting/PdfTesting';
+import { useAuthContext } from 'utils/context/auth.context';
+import { saveAs } from 'file-saver';
+import { ActivityLogger } from '@components/molecules/logger.tsx/activity';
+import { useQueryClient } from 'react-query';
+
 
 export default function ReportsTab() {
-  const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
   const [addReports,setAddReports]=useState(false);
-  const fetchReports = async () => {return await axios.get(getDiagnosticReports +diagnosticDetails?.phoneNumber)}
-  const {data:reports,isLoading:loading,refetch} = useQuery(["reports"],fetchReports)
+  const {diagnosticDetails,activeBranch,operator} = useAuthContext();
+  const {data:reports} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
+  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+  const queryClient = useQueryClient();
 
+  let reportsList = reports?.data?.filter((report:any) => report?.branchId === activeBranch?._id)
   const columns: ColumnsType<ReportTableType> = [
     {
       key:"reportId",
@@ -30,7 +35,6 @@ export default function ReportsTab() {
       dataIndex: 'reportId',
       sorter: (a, b) => a.reportId.length - b.reportId.length,
       // sortDirections: ['descend'],
-  
     },
     {
       key:"name",
@@ -99,15 +103,7 @@ export default function ReportsTab() {
       render: ((userName:string,record) => <>
       <div className='flex justifty-between align-middle items-center h-[1vh]'>
           <section className='mr-4 '>
-          { 
-            !record?.isManualReport ? (
-            <a href={record.reportUrl} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
-          ) : (
-            <ViewPdf
-              report={record}
-              diagnosticDetails={diagnosticDetails as UserDetails}
-            />
-          )}
+            <a href={record.reportUrl} type="application/pdf" download={false} rel="noopener noreferrer" target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
           </section>
           <section className='self-center'>
             <a onClick={()=>{handleWhatsapp(record)}}>
@@ -120,8 +116,10 @@ export default function ReportsTab() {
     },
   ];
 
-  const handleWhatsapp = async (record) => {
+  const pdfBlob = new Blob(["blob:http://localhost:3000/fc9ff33c-a8c0-414b-b688-4b8db8c762d9"], { type: 'application/pdf' });
 
+
+  const handleWhatsapp = async (record) => {
     let message = {
       "to":record?.userId,
       "text":`👋 Hi there!,  We hope this message finds you well.${diagnosticDetails?.diagnosticName} has shared your a report with you. 📁Please find the pdf attached, for any questions or concerns, please don't hesitate to reach out to us. 💬\n\n😊Thank you for trusting us with your healthcare needs. \n\nOmerald HealthCare🙌`,
@@ -131,21 +129,24 @@ export default function ReportsTab() {
     let resp = await sendWhatsAppText(message);
     if(resp.status===200){
       successAlert("Report Shared on Whatsapp");
+      ActivityLogger("Shared Report with "+record?.userName,diagnostic?.data,operator,activeBranch)
+      queryClient.invalidateQueries("getDiagnostic")
+    }else{
+      errorAlert("Error Sharing report")
     }
   }
 
   return (
     <Fragment>
-        <span className='flex justify-end mt-8 mb-4 mr-32'>
+        <span className='flex justify-end mt-8 mb-4 mr-4 sm:mr-8 md:mr-24 xl:mr-20'>
           {!addReports ? 
             <button onClick={()=>setAddReports(!addReports)} className='bg-blue-500 text-white text-bold font-light rounded-md p-2'>Add Reports</button>:
            <button onClick={()=>setAddReports(!addReports)} className='bg-green-800 text-white text-bold font-light rounded-md p-2'>View Reports</button>}
         </span> 
-         <div className="px-4 sm:px-6 xl:px-8 xl:py-3 bg-signBanner flex w-100 justify-center">
-            <div className='w-[70vw] bg-white shadow-lg h-[70vh] rounded-lg p-4'> 
+         <div className="md:px-4 sm:px-6 xl:px-8 xl:py-3 bg-signBanner flex w-100 justify-center">
+            <div className='w-[96vw] lg:w-[80vw] xl:w-[70vw] bg-white shadow-lg h-auto rounded-lg'> 
             {!addReports ?  
-            <>{loading ? <Spinner/> :<DashboardTable pageSize={7} columns={columns} data={reports?.data}/> }</>:
-            <AddReportComponent refetch={refetch} setAddReports={setAddReports}/>}
+            <>{<DashboardTable pageSize={7} columns={columns} data={reportsList}/> }</>:<AddReportComponent setAddReports={setAddReports}/>}
             </div>
         </div>
     </Fragment>   

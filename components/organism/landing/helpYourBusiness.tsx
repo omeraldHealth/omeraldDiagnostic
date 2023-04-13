@@ -26,20 +26,14 @@ const helpBusiness = [
 
 export function HelpYourBusiness() {
 	return (
-        <div className={`w-[100vw] h-auto px-[4%] sm:px-[10%] py-40 sm:py-10 text-center ${styles['helpBusiness']}`}>
-{/* 
-            <section className={`text-btnPrimary-600 w-[100%] lg:w-[60%] rounded-2xl py-16 px-2 sm:px-10 m-auto sm:my-[14vh] ${styles['officeHandShake']}`}>
-                <HeaderText_2>Push your Diagnostic Centre to next level.</HeaderText_2>
-                <TitleText_2 style='my-8 xl:w-[70%] m-auto'>End-to-end payments and financial management in a single solution. Meet the right platform to help realize.</TitleText_2>
-                <SignInButton style={"rounded-full"}>Get Started</SignInButton>
-            </section> */}
-        
-            <HeaderText_2 style='mt-10 sm:mt-0'>We help your business grow faster.</HeaderText_2>
-            <BodyText_1 style='lg:w-[40%] m-auto my-6'>Omerald's efficient software solution accelerates business growth for diagnostic centre's.</BodyText_1>
-            <section className="lg:flex gap-[2%] my-[7%] w-[100%] justify-around  ">
+        <div className={`h-auto px-[4%] sm:px-[10%] py-10 sm:py-10 text-center ${styles['helpBusiness']}`}>
+            <p className='sm:mt-10 sm:py-4 lg:py-8'><HeaderText_2 style='mt-10 sm:mt-0'>We help your business grow faster.</HeaderText_2></p>
+            <p className='py-4 lg:py-8'><BodyText_1 style='lg:w-[40%] m-auto my-6'>Omerald's efficient software solution accelerates business growth for diagnostic centre's.</BodyText_1>
+            </p>
+            <section className="lg:flex gap-[4%] sm:gap-[2%] my-[7%] w-[100%] justify-around  ">
                 {
                     helpBusiness.map((help,index) => {
-                        return <section key={index} className="text-left bg-white my-10 lg:my-0 lg:w-[33%] h-auto p-10 rounded-lg shadow-md">
+                        return <section key={index} className="text-left bg-white my-10 lg:my-0 lg:w-[33%] h-auto p-10 rounded-lg shadow-xl sm:shadow-md">
                         {help?.icon}
                         <TitleText_2 style='my-4'> {help?.title}</TitleText_2>
                         <BodyText_2 style='text-gray-400 my-4' > {help?.description}</BodyText_2>

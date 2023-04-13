@@ -3,17 +3,17 @@ import styles from "./landing.module.css"
 
 export function HowItWorks() {
 	return (
-        <div className='pt-[5vh] lg:pt-[10vh]'>
-        <div className={`w-[100vw] h-auto px-[7%] lg:px-[10%] text-center lg:grid grid-rows-2 ${styles['howItWorks']}`}>
+        <div className='py-[3vh] lg:pt-[10vh]'>
+        <div className={`h-auto px-[7%] lg:px-[10%] text-center lg:grid grid-rows-2 ${styles['howItWorks']}`}>
             <section className='flex lg:grid grid-cols-3 justify-between lg:h-[40vh]'>
                 <section className='text-left'>
                     <p className='text-[#5D5FEF] my-6 lg:my-0 uppercase font-bold text-sm'>How Omerald Helps You</p>
-                    <p className='text-[37px] my-6 lg:my-0 font-[600]'>Simplifying Diagnostic Center Operations</p>
+                    <p className='sm:text-[37px] text-[24px] my-6 lg:my-0 font-[600]'>Simplifying Diagnostic Center Operations</p>
                     <p className='text-[#64607D] my-6 lg:my-0 font-light'>Omerald streamlines test selection, report generation, and branding updates for diagnostic centers</p>
                     <SignInButton style="hidden my-6 lg:my-4 lg:block rounded-full shodow-md my-4 mx-0">{"Get Started"}</SignInButton>
                 </section>
                 <section></section>
-                <section className='hidden lg:block  text-left pl-[20%] pr-[20%] pt-[20%]'>
+                <section className='hidden lg:block  text-left xl:pl-[20%] pr-[20%] pt-[20%]'>
                     <p className='text-[16px] font-[600] my-2'>View Exciting Analytics</p>
                     <p className='text-[#64607D] font-light'>From they fine john he give of rich he. They age and draw mrs like. Improving end distrusts may instantly.</p>
                 </section>

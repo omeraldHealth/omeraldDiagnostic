@@ -1,7 +1,9 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Spinner } from '@components/atoms/loader'
 import { PageTemplate } from '@components/templates/pageTemplate'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import { useAuthContext } from 'utils/context/auth.context'
 
 const OnboardComponents = dynamic(() => import('@components/molecules/onboard'),{loading: () => <Spinner/>})
 const Head = dynamic(() => import('@components/atoms/head/head'))
@@ -9,6 +11,16 @@ const Navbar = dynamic(() => import('@components/molecules/navbar').then(res=>re
 const Footer = dynamic(() => import('@components/molecules/footer').then(res=>res.Footer))
 
 function Onboard() {
+
+  const router = useRouter()
+  const {diagnosticDetails} = useAuthContext()
+
+  useEffect(()=>{
+    if(diagnosticDetails){
+      router?.push("/dashboard")
+    }
+  },[diagnosticDetails])
+
   return (
     <Fragment>
 	    <Head title={'Omerald Diagnostic | Onboard'} />

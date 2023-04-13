@@ -1,47 +1,36 @@
-import { successAlert } from "@components/atoms/alerts/alert";
 import { Spinner } from "@components/atoms/loader";
 import { useRouter } from "next/router";
-import React, { cloneElement, ReactElement } from "react";
 import { useAuthContext } from "utils/context/auth.context";
+import React, { cloneElement, ReactElement } from "react";
 
+import { useUser } from '@clerk/nextjs';
 
-const allowedPaths = ["","/","/signIn","/404"];
-let flag = true;
+const allowedPaths = ["","/","/signIn","/signUp","/404"];
 
 const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => {
-  const auth = useAuthContext();
+  const {diagnosticDetails} = useAuthContext();
   const router = useRouter();
+  const {user,isLoaded} = useUser();
 
-  if (allowedPaths.includes(router.pathname) && !auth?.user) {
-    return <>{children}</>;
-  } else if (auth?.loading) {
+  if (allowedPaths.includes(router.pathname)) {
+      return <>{children}</>;
+  }else if (!isLoaded) {
     return <Spinner />;
-  } else if (auth?.user && auth?.diagnosticDetails) {
-    if (router.pathname === "/onboard") {
-      if(flag){
-        successAlert("User logged in")
-        flag = false;
+  } else if (user) {
+    if(diagnosticDetails){
+      if (router.pathname === "/dashboard") {
+          return cloneElement(children);
+      }else if(router.pathname === "/onboard"){
+        router.push("/dashboard")
       }
-      router.push("/dashboard");
-      return null;
-    }else if(router.pathname === "/signIn"){
-      if(flag){
-        successAlert("User logged in")
-        flag = false;
-      }
-      router.push("/dashboard");
-      return null;
+    }else{
+        if (router.pathname === "/onboard" ) {
+          return cloneElement(children);
+        }
     }
-    return cloneElement(children, { auth: auth });
-  } else if (auth?.user) {
-    if (router.pathname === "/onboard" || router.pathname === "/") {
-      return cloneElement(children);
-    }
-    router.push("/onboard");
-    return null;
-  } else {
-    return null;
-  }
+  } else{
+    router?.push("/signIn")
+  } 
 };
 
 export default Allowed;

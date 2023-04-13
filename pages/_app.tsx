@@ -10,8 +10,20 @@ import store from 'utils/store/store'
 import Allowed from 'utils/permissions/permissions'
 import type { AppProps } from 'next/app'
 import '../styles/tailwind.css'
+import { ClerkProvider } from '@clerk/nextjs';
 
-const queryClient = new QueryClient({})
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: false,
+      staleTime: 10 * (60 * 1000), // 10 mins 
+    },
+  },
+})
+const clerkFrontendApi = process.env.NEXT_PUBLIC_CLERK_FRONTEND_API;
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isMounted, setIsMounted] = useState(false)
@@ -21,13 +33,17 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-        <AuthContextProvider>
-            <GlobalStyle />
-            <ToastContainer autoClose={1000}/>
-            <ThemeProvider theme={theme}>{isMounted && <Allowed><Component {...pageProps} /></Allowed> }</ThemeProvider>
-        </AuthContextProvider>
-    </QueryClientProvider>
+       <ClerkProvider publishableKey={clerkFrontendApi} {...pageProps} >
+        <QueryClientProvider client={queryClient}>
+            <AuthContextProvider>
+                <GlobalStyle />
+                <ToastContainer autoClose={1000}/>
+                <ThemeProvider theme={theme}>{isMounted && <Allowed>
+                <Component {...pageProps} />
+              </Allowed> }</ThemeProvider>
+            </AuthContextProvider>
+        </QueryClientProvider>
+      </ClerkProvider>
     </Provider>
   )
 }

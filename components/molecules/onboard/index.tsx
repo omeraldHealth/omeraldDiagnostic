@@ -12,6 +12,7 @@ import { useAuthContext } from "utils/context/auth.context";
 import { BackwardIcon } from "@heroicons/react/20/solid";
 import { ForwardIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
+import { useUser } from "@clerk/clerk-react";
 
 const ProfileSummaryComponent = dynamic(() => import('../profile').then(res=>res.ProfileSummaryComponent),{loading: () => <Spinner/>})
 
@@ -23,9 +24,11 @@ const OnboardComponents = () => {
   const [diagnosticProfile,setDiagnosticProfile] = useState<UserDetails>({});
   const [logo,setLogo] = useState([]);
   const router = useRouter()
+  const {user:ClerkUser,isLoaded} = useUser();
+
 
   let initial = {
-    "phoneNumber":user?.phoneNumber,
+    "phoneNumber":ClerkUser?.phoneNumbers[0].phoneNumber,
     "diagnosticName":diagnosticProfile?.diagnosticName,
     "email":diagnosticProfile?.email,
     "facebookUrl": diagnosticProfile?.brandDetails?.facebookUrl,
@@ -33,6 +36,7 @@ const OnboardComponents = () => {
     "branchName": diagnosticProfile?.branchDetails?.[0]?.branchName,
     "branchEmail": diagnosticProfile?.branchDetails?.[0]?.branchEmail,
     "branchContact": user?.phoneNumber,
+    "managerName":diagnosticProfile?.managerName,
     "branchAddress": diagnosticProfile?.branchDetails?.[0]?.branchAddress,
   }
 
@@ -45,8 +49,7 @@ const OnboardComponents = () => {
     }else if(Object?.keys(values).includes("branchName")){
       values["branchContact"] = diagnosticProfile?.phoneNumber
       val = {"branchDetails":[values]}
-    }
-   
+    }   
     setDiagnosticProfile(Object.assign(diagnosticProfile, val))
     setCurrentStep(onboardSteps[currentStep.id])
   }
@@ -55,32 +58,34 @@ const OnboardComponents = () => {
     setLogo(value.logo)
   }
 
+
   const handleSubmit = async () => {
-    setLoading(true)
-
     let brandLogoUrl;
-
     // //@ts-ignore
     if(logo?.length>0){
+      setLoading(true)
       brandLogoUrl = await uploadImage(logo?.[0]?.originFileObj);
-    }
+      //save brandDetails with location
+      brandLogoUrl && setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":brandLogoUrl})}))
+      
+      //creating admin role
+      setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
+      let insertDiag = await setUserDetails(diagnosticProfile)
+      console.log(insertDiag)
+      if (insertDiag.status == 201 && user) {
+        setLoading(false);
+        successAlert("Profile Created Succesfully")
+        signIn(ClerkUser?.phoneNumbers[0]?.phoneNumber, "/dashboard");
+      }
 
-    //save brandDetails with location
-    brandLogoUrl && setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":brandLogoUrl})}))
-     //creating admin role
-    setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
-    let insertDiag = await setUserDetails(diagnosticProfile)
-
-    if (insertDiag.status == 200 && user) {
-      setLoading(false);
-      successAlert("Profile Created Succesfully")
-      signIn(user, "/dashboard");
-    }
-
-    if (insertDiag.status === 409) {
-      setLoading(false);
-      errorAlert("Error creating profile")
-      router.push("/404");
+      if (insertDiag.status === 409) {
+        setLoading(false);
+        errorAlert("Error creating profile")
+        router.push("/404");
+      }
+    }else{
+      errorAlert("Please add logo image");
+      return
     }
   }
 
@@ -137,8 +142,9 @@ const OnboardComponents = () => {
                   }
               </div>
             </section>
-            {loading && <Spinner/>}
+            {(!isLoaded || loading) && <Spinner/>}
     </section>
+   
   );
 };
 
