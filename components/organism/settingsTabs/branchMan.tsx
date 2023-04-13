@@ -3,7 +3,7 @@ import { errorAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { getDiagnosticUserApi } from "@utils";
 import { Modal, Space, Tag } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 import { branchDetailsEditFormArray} from "utils/types/molecules/forms.interface";
@@ -63,6 +63,7 @@ export function BranchManagement() {
 
     const handleSubmit = async (value:any) => {
       value.branchOperator = value.branchOperator ? value.branchOperator.map(oper => oper.key):null;
+      value["branchContact"] = phoneNumber
       let duplicate = diagnostic?.data?.branchDetails.some((branch:any) => (branch._id !== initialData._id && 
         (branch?.branchName.trim() === value?.branchName.trim() || branch.branchContact === value.branchContact)));
         
@@ -153,7 +154,11 @@ export function BranchManagement() {
       return found ? found.managerName : null;
     }
  
+    const [phoneNumber,setPhoneNumber] = useState();
+   
+    useEffect(()=>{console.log(phoneNumber)},[phoneNumber])
+
     return (
-      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diagnostic?.data?.branchDetails} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={branchDetailsEditFormArray} />
+      <SettingsCommon handleImage={setPhoneNumber} tabName="Branch" selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diagnostic?.data?.branchDetails} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={branchDetailsEditFormArray} />
     )
 }

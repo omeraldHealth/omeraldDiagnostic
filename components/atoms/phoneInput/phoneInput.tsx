@@ -9,17 +9,19 @@ export const PhoneInputCountry = (phoneData:phoneNumberType) => {
     return (
         <PhoneInput
             placeholder="Enter 10 digit phone number"
-            className='text-light font-light border-2 px-2 rounded-lg'
+            className='text-light font-light border-2 px-2 rounded-lg '
             value={phoneData?.phoneNumber}
+            defaultCountry="IN"
             onChange={(e)=>{
-                if(e && e?.length>7 && e?.length<14)
+                if(phoneData?.handleDisable){
+                    if(e && e?.length>7 && e?.length<14)
                     {phoneData?.handleDisable(false)
-                }else{ 
-                    phoneData?.handleDisable(true)
+                    }else{ 
+                        phoneData?.handleDisable(true)
+                    }
                 }
                 phoneData?.setPhoneNumber(e)
             }}
-            defaultCountry="IN"
             countries={getCountries()}
       />
     )

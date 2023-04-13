@@ -48,30 +48,30 @@ export const PatientDetails = ({handleSteps}:patientType) => {
   const diagnosticProfile = useSelector((state:any)=>state.diagnosticReducer)
   const dispatch = useDispatch()
 
-  useEffect(()=>{
-    async function getReport(){
-      if(phoneNumber){
-        let resp = await axios.get(getDiagnosticReports+phoneNumber)
-        let report = resp?.data[0];
-        if(report){
-          let initialValues={
-            phoneNumber:phoneNumber,
-            userName: report?.userName,
-            email:report?.email,
-            gender: report?.gender,
-            doctorName: report?.doctorName
-          }
-          setInitialValue(initialValues)
-          setFound(true)
-          setformKey(formKey+1)
-        }else{
-          setInitialValue(null)
-        }
+  // useEffect(()=>{
+  //   async function getReport(){
+  //     if(phoneNumber){
+  //       let resp = await axios.get(getDiagnosticReports+phoneNumber)
+  //       let report = resp?.data[0];
+  //       if(report){
+  //         let initialValues={
+  //           phoneNumber:phoneNumber,
+  //           userName: report?.userName,
+  //           email:report?.email,
+  //           gender: report?.gender,
+  //           doctorName: report?.doctorName
+  //         }
+  //         setInitialValue(initialValues)
+  //         setFound(true)
+  //         setformKey(formKey+1)
+  //       }else{
+  //         setInitialValue(null)
+  //       }
        
-      }
-    }
-    getReport()
-  },[phoneNumber])
+  //     }
+  //   }
+  //   getReport()
+  // },[phoneNumber])
 
   const handleForm =(value:any)=> {
 
@@ -118,14 +118,14 @@ export const PatientDetails = ({handleSteps}:patientType) => {
 
   return (
     <div className='flex'>
-        {!found ? <DynamicFormCreator key={0} selectedValue={phoneNumber} setSelectedValue={setPhoneNumber} disableElement={true} phoneNumber={phoneNumber} reportsValidation={true} formStyle='sm:grid sm:grid-cols-2 gap-x-4 gap-y-4' handleDate={handleDate} buttonText="Continue" formProps={PatientDetailsForm} handleSubmit={handleForm}/>
-        :
-        <DynamicFormCreator key={formKey} initial={initialValue} handleImage={()=>{}}
+        <DynamicFormCreator key={0} selectedValue={phoneNumber} setSelectedValue={setPhoneNumber} disableElement={true} phoneNumber={phoneNumber} reportsValidation={true} formStyle='sm:grid sm:grid-cols-2 gap-x-4 gap-y-4' handleDate={handleDate} buttonText="Continue" formProps={PatientDetailsForm} handleSubmit={handleForm}/>
+        
+        {/* <DynamicFormCreator key={formKey} initial={initialValue} handleImage={()=>{}}
          selectedValue={phoneNumber} setSelectedValue={setPhoneNumber} 
          disableElement={true} phoneNumber={phoneNumber} 
          reportsValidation={true} formStyle='sm:grid sm:grid-cols-2 gap-x-4 gap-y-4' handleDate={handleDate} 
-         buttonText="Continue" formProps={PatientDetailsForm} handleSubmit={handleForm}/>
-        }
+         buttonText="Continue" formProps={PatientDetailsForm} handleSubmit={handleForm}/> */}
+
     </div>
   )
 }

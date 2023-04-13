@@ -38,7 +38,7 @@ export interface ReportTableType {
 export interface phoneNumberType  {
     isPhoneNumberDisabled: boolean | undefined,
     phoneNumber: string,
-    handleDisable: ()=>{},
+    handleDisable?: ()=>{},
     setPhoneNumber: (phone:string) => void
   }
   export interface otpInputType  {

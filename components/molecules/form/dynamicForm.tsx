@@ -16,7 +16,7 @@ import { PhoneInputCountry } from '@components/atoms/phoneInput/phoneInput';
 
 
 export const DynamicFormCreator = ({formProps,button=true,showLabel,disableElement,initial,formStyle,reportsValidation,handleSubmit,handleImage,buttonText,selectedValue,setSelectedValue}:DynamicFormType) => {
-    console.log(initial)
+
     const {diagnosticDetails} = useAuthContext();
     const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
@@ -74,6 +74,12 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             <PhoneInputCountry phoneNumber={selectedValue} handleDisable={setDisabled} setPhoneNumber={setSelectedValue}/>
                         </Form.Item>
                         }
+                          {form.type === "settingContact" && 
+                        <Form.Item    key={form.label+3} className='mb-6 font-bold text-lg' name={form.name} labelCol={{ span: 10 }}  >
+                            <PhoneInputCountry phoneNumber={selectedValue} setPhoneNumber={handleImage}/>
+                        </Form.Item>
+                        }
+                        
                      {form.type === "contact"  && 
                         <Form.Item  
                         key={form.label+3}
@@ -101,7 +107,7 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
                             key={index} className='mb-6 font-bold text-lg' 
                             name={form.name} labelCol={{ span: 10 }}  
                             rules={[{ pattern: form?.pattern, required: false,message: `Please input ${form.label}`}]}>
-                            <LogoUploader handleImage={handleImage} />
+                            <LogoUploader  handleImage={handleImage} />
                         </Form.Item>
                     }
                     {form.type === "image" && form.name ==="signature" && 

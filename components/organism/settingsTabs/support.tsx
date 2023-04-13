@@ -1,10 +1,5 @@
-import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import { ContactForm } from "@components/molecules/form/contact-form";
-import { ActivityLogger } from "@components/molecules/logger.tsx/activity";
-import { getDiagnosticUserApi } from "@utils";
-import axios from "axios";
 import { useState } from "react";
-import { QueryClient, useQuery } from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 
 export function Support() {
