@@ -12,6 +12,7 @@ import { useQueryGetData, useUpdateDiagnostic, useUpdateReports, useUploadReport
 import { SET_REPORT_FORM } from "utils/store/types"
 import PdfTesting from "../PdfTesting/PdfTesting"
 import { ActivityLogger } from "../logger.tsx/activity"
+import axios from "axios"
 
 export const ReportSummary =({handleSteps}:any) => {
 
@@ -39,7 +40,7 @@ export const ReportSummary =({handleSteps}:any) => {
             dispatch({type:SET_REPORT_FORM,payload:null})
         },
         onError: (error) => {
-          successAlert("Error adding reports")
+          errorAlert("Error adding reports")
         },
     });
 
@@ -54,7 +55,7 @@ export const ReportSummary =({handleSteps}:any) => {
             }
         },
         onError: (error) => {
-          successAlert("Error adding reports")
+          errorAlert("Error adding reports")
         },
     });
 

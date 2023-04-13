@@ -1,13 +1,13 @@
 import { DashboardTable } from '@components/molecules/dashboardItems/data-table'
-import { Fragment, useState} from 'react'
+import { Fragment, useEffect, useState} from 'react'
 import { ColumnsType } from 'antd/es/table';
 import { ReportDetails, UserDetails } from '@utils';
 import { usePDF } from "@react-pdf/renderer";
 import dayjs from 'dayjs';
 import { EyeIcon} from '@heroicons/react/20/solid';
-import { ReportTableType } from 'utils/store/types';
-import { useSelector } from 'react-redux';
-import {getDiagnosticReports, getDiagnosticUserApi} from "utils/urls/app"
+import { ReportTableType, SET_REPORT, SET_REPORT_TYPE } from 'utils/store/types';
+import { useDispatch, useSelector } from 'react-redux';
+import {getDiagnosticReports, getDiagnosticUserApi, getReportTypesApi} from "utils/urls/app"
 import { AddReportComponent } from '@components/molecules/addReport/addReport';
 import { FaWhatsapp } from 'react-icons/fa';
 import { sendWhatsAppText } from 'utils/hook/userDetail';
@@ -26,6 +26,7 @@ export default function ReportsTab() {
   const {data:reports} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
   const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
   const queryClient = useQueryClient();
+
 
   let reportsList = reports?.data?.filter((report:any) => report?.branchId === activeBranch?._id)
   const columns: ColumnsType<ReportTableType> = [
@@ -138,7 +139,7 @@ export default function ReportsTab() {
 
   return (
     <Fragment>
-        <span className='flex justify-end mt-8 mb-4 mr-4 sm:mr-8 md:mr-24 xl:mr-20'>
+        <span className='flex justify-end mt-8 mb-4 mr-1 md:mr-4 lg:mr-24 xl:mr-20 2xl:mr-32'>
           {!addReports ? 
             <button onClick={()=>setAddReports(!addReports)} className='bg-blue-500 text-white text-bold font-light rounded-md p-2'>Add Reports</button>:
            <button onClick={()=>setAddReports(!addReports)} className='bg-green-800 text-white text-bold font-light rounded-md p-2'>View Reports</button>}

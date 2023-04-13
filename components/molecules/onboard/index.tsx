@@ -43,6 +43,10 @@ const OnboardComponents = () => {
   const handleContinueForm = (values:BasicDetailsForm | BrandDetailsForm | BranchDetails) => {
     let val:any = values;
 
+    if(currentStep?.id ==2 && logo?.length<1){
+      errorAlert("Please add logo to continue")
+    }else{
+
     if(Object?.keys(values).includes("brandLogo")){
       Object.assign(values,{"brandLogo":logo})
       val = {"brandDetails":values}
@@ -52,6 +56,7 @@ const OnboardComponents = () => {
     }   
     setDiagnosticProfile(Object.assign(diagnosticProfile, val))
     setCurrentStep(onboardSteps[currentStep.id])
+  }
   }
 
   const handleImage = (value:any) => {

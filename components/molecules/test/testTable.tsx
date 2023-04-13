@@ -96,7 +96,7 @@ export const TestTable = () => {
         <Space size="middle">
          {<a > <TrashIcon className='w-4 text-red-500' onClick={()=>{
            confirm({
-            title: 'Do you want to delete this pathologist?',
+            title: 'Do you want to delete this test?',
             content: 'The action cannot be undone.',
             onOk() {
                 handleRemoveTest(record)}
@@ -161,7 +161,7 @@ export const TestTable = () => {
               <BodyStyled_2>Update Test Details</BodyStyled_2>
               <section className='flex'>
               <span className='w-[35%]'>
-                <p className='mt-10'>Sample Name</p>
+                <p className='mt-10'>Custom Report Name</p>
                 <Input value={sampleName} onChange={(e)=>{setSampleName(e.target.value)}} defaultValue={initialTestDetails?.sampleName} name="sampleName" placeholder={"sampleName"} className="border-gray-300 w-[75%] mt-2 mb-10 rounded-lg text-black font-light text-sm py-2" />
               </span>
               <span className='w-[35%]'>

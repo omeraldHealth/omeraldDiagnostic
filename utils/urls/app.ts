@@ -18,8 +18,9 @@ export const getEmployees = backendApiPath+`/api/diagnostic/employees/fetchAll`
 export const getEmployeeById = backendApiPath+`/api/diagnostic/employees/fetchByPhone?phoneNumber=`
 export const insertEmployee = backendApiPath+`/api/diagnostic/employees/insert`
 export const updateEmployee = backendApiPath+`/api/diagnostic/employees/update?userId=`
-export const deleteEmployee = backendApiPath+`/api/diagnostic/employees/delete?phoneNumber=`
+export const deleteEmployee = backendApiPath+`/api/diagnostic/employees/delete?id=`
 
 // Omerald admin report types
 
 export const getReportTypesApi = "https://admin-omerald-dev.vercel.app/api/reports"
+export const getDiagnosticSetting = "https://admin-omerald-dev.vercel.app/api/settings/diagnostic/"

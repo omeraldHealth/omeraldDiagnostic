@@ -42,7 +42,7 @@ export const FileUploader = ({handleImage}:any) => {
     
     return (      
         <section>
-        <Upload  maxCount={1}  {...props}  fileList={fileList} onChange={handleChange}>
+        <Upload accept="application/pdf,image/*"  maxCount={1}  {...props}  fileList={fileList} onChange={handleChange}>
 
             <section className='flex'>
             <Button className='flex' icon={<ArrowUpCircleIcon className="w-6 text-blue-500" />}>Click to Upload</Button>

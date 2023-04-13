@@ -3,7 +3,7 @@ import { errorAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { getDiagnosticUserApi, getEmployeeById } from "@utils";
 import { Modal, Space } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient} from "react-query";
 import { useAuthContext } from "utils/context/auth.context";
 import { EmployeeDetails } from "utils/types/molecules/forms.interface";
@@ -69,7 +69,7 @@ export function EmployeeManagement() {
     const handleRemove = async (value:any) => {
       let updatedManager = diagnostic?.data?.managersDetail?.filter((manager:any) => manager?._id !== value._id)
       updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"managersDetail":updatedManager}})
-      deleteEmployee.mutate({userId:value?.managerContact})
+      deleteEmployee.mutate({userId:value?._id})
       ActivityLogger("Deleted "+value?.managerName+"as "+value?.managerRole,diagnostic?.data,operator,activeBranch)
     }
 
@@ -82,7 +82,7 @@ export function EmployeeManagement() {
       }
       let resp = await axios.get(getEmployeeById+value?.managerContact)
       if(resp?.status==200){
-        setEmployeeId(resp?.data[0]?._id)
+        setEmployeeId(resp?.data?._id)
       }
       setInitial(initial)
       setEdit(!edit)
@@ -91,10 +91,11 @@ export function EmployeeManagement() {
 
     const handleSubmit = async (value:any) => {
       let duplicate = diagnostic?.data?.managersDetail.some((manager:any) => (manager._id !== initialData._id && (manager.managerName === value.managerName || manager.managerContact === value.managerContact)));
-
+      value["managerContact"] = phoneNumber
       if( duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
+        console.log(employeeId)
         let updated = {...initialData,...value}
         let updatedManager = diagnostic?.data?.managersDetail?.map((manager:any) => {
           if( manager._id == initialData?._id){
@@ -166,8 +167,12 @@ export function EmployeeManagement() {
       },
     ]
 
+    const [phoneNumber,setPhoneNumber] = useState();
+   
+    useEffect(()=>{console.log(phoneNumber)},[phoneNumber])
+
     let employeeList = diagnostic?.data?.managersDetail?.filter((emp:any) => emp.branchId === activeBranch?._id || emp?.managerRole.toLowerCase() == "owner")
     return (
-      <SettingsCommon selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={employeeList} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={EmployeeDetails} />
+      <SettingsCommon handleImage={setPhoneNumber} tabName={"Employee"} selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={employeeList} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={EmployeeDetails} />
     )
 }

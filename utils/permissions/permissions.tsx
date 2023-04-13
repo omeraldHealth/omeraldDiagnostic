@@ -27,6 +27,9 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
         if (router.pathname === "/onboard" ) {
           return cloneElement(children);
         }
+        else if(router.pathname === "/dashboard"){
+          router.push("/onboard")
+        }
     }
   } else{
     router?.push("/signIn")

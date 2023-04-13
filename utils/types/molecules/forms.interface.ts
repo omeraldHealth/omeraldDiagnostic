@@ -1,6 +1,7 @@
 import { ReportDetails, ReportTypes } from "./users.interface";
 
-export const textPattern = ""
+export const textPattern = /[^0-9]/
+
 export const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
 export const phonePattern = /^(?:\+91|0)?[6789]\d{9}$/
 export const numberPattern = /^[1-50000]+$/
@@ -81,24 +82,24 @@ export const branchDetailsFormArray: FormType[] = [
 
 export const branchDetailsEditFormArray: FormType[] = [
     {"name":"branchName","type":"text","label":"Branch Name","required":true},
-    {"name":"branchContact","type":"contact","label":"Branch Contact","required":true,pattern:phonePattern},
+    {"name":"branchContact","type":"settingContact","label":"Branch Contact","required":true,pattern:phonePattern},
     {"name":"branchEmail","type":"email","label":"Branch Email","required":true},
     {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
     {"name":"branchOperator","type":"multiSelect","label":"Branch Operator","required":true},
 ]
 
 export const testForm:FormType = [
-    {"name":"keyword","type":"text","label":"Parameters","required":true},
-    {"name":"unit","type":"text","label":"unit","required":true},
+    {"name":"keyword","type":"text","label":"Parameters","required":true,pattern: textPattern},
+    {"name":"unit","type":"text","label":"unit","required":true,pattern:textPattern},
     {"name":"minRange","type":"text","label":"minRange","required":true,pattern:numberPattern},
     {"name":"maxRange","type":"text","label":"minRange","required":true,pattern:numberPattern},
     {"name":"aliases","type":"tags","label":"Aliases","required":true},
   ]
 
 export const pathologistFormArray = [
-    {"name":"signature","type":"image","label":"Pathologist Signature","required":true},
-    {"name":"name","type":"text","label":"Pathologist Name","required":true},
-    {"name":"designation","type":"text","label":"Pathologist Designation","required":true},
+    {"name":"signature","type":"image","label":"Pathologist Signature","required":true,pattern: textPattern},
+    {"name":"name","type":"text","label":"Pathologist Name","required":true,pattern: textPattern},
+    {"name":"designation","type":"text","label":"Pathologist Designation","required":true,pattern: textPattern},
 ]
 
 export const initialTestState : ReportTypes = {
@@ -181,6 +182,7 @@ export interface DynamicFormType  {
 
 export const EmployeeDetails:FormType[] = [
     {"name":"managerName","type":"text","label":"Operator Name","required":true},
-    {"name":"managerContact","type":"text","label":"Operator Contact","required":true,pattern:phonePattern},
-    {"name":"managerRole","type":"select","label":"Operator Role","required":true}
+
+    {"name":"managerRole","type":"select","label":"Operator Role","required":true},
+    {"name":"managerContact","type":"settingContact","label":"Operator Contact","required":true,pattern:phonePattern},
   ]
