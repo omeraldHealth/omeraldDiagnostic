@@ -4,6 +4,10 @@ import connectDB from 'utils/mongoDb/middleware';
 import DiagnosticReportsTable from 'utils/mongoDb/model/diagnosticReport';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse<void>) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.setHeader('Content-Security-Policy', 'unsafe-url');
     try {
       const {phoneNumber} = req.query;
       let users = await DiagnosticReportsTable.find({"userId":'+'+phoneNumber?.toString()?.replace(" ","")});

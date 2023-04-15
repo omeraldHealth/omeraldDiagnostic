@@ -13,6 +13,7 @@ export default async function handler(
   })
 
   const post = await s3.createPresignedPost({
+    
     Bucket: process.env.AWS_BUCKET_Admin,
     Fields: {
       key: req.query.file,
@@ -23,6 +24,9 @@ export default async function handler(
       ['content-length-range', 0, 1048576], // up to 1 MB
     ],
   })
-
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.setHeader('Content-Security-Policy', 'unsafe-url');
   res.status(200).json(post)
 }

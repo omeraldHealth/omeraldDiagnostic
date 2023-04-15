@@ -3,6 +3,10 @@ import connectDB from 'utils/mongoDb/middleware';
 import DiagnosticProfileTable from 'utils/mongoDb/model/diagnosticProfile';
 
 const handler = async (req:NextApiRequest, res: NextApiResponse<any>) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "*");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader('Content-Security-Policy', 'unsafe-url');
     const diagnosticUserObject = req.body;
     const {phoneNumber} = req.query
       try{
