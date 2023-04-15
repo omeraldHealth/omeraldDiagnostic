@@ -6,8 +6,6 @@ import { navigation } from "utils/static";
 
 
 export function Footer() {
-
-  let x = axios.get("https://diagnostic-omerald-dev.vercel.app/api/health")
   return (
     <footer className="bg-gray-100" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">

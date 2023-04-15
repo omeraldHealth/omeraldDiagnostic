@@ -19,7 +19,7 @@ export function InfoPage({detail}:any) {
                 <Navbar/>
                     <section className="max-w-[80%] m-auto h-auto my-40 sm:my-20 2xl:my-0 xl:min-h-[60vh]">
                         <p className="underline font-bold text-md my-10 uppercase">{detail}</p>
-                        { parsedHtml ? parsedHtml:<p className="text-red-400">Data Not Found!</p>}
+                        { parsedHtml ? parsedHtml:<p className="text-red-400">No Data</p>}
                     </section>
                     {isLoading && <Spinner/>}
                 <Footer />

@@ -8,6 +8,7 @@ const Head = dynamic(() => import('@components/atoms/head/head'))
 export default function Info() {
   const router = useRouter();
   const { detail } = router.query;
+
   return (
     <Fragment>
 	  <Head title={'Omerald Diagnostic | '+detail} />

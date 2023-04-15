@@ -78,7 +78,7 @@ const ProfileView = ({profile,style}:any) => {
   
   const {diagnosticDetails,activeBranch} = useAuthContext();
   const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
-
+  console.log(diagnostic)
   const handleSubmit = async (value:any) => {
     confirm({
       title: 'Do you want to update this?',
@@ -155,7 +155,6 @@ const ProfileView = ({profile,style}:any) => {
             <>
               <section className='sm:my-2 w-[80vw] sm:w-[50vw] sm:pr-[16vw]'>  
                 <p className='mb-6 italic font-bold text-md'>Edit your profile</p>
-                {/* <img className="w-20 h-20 rounded-full" src={diagnosticDetails?.brandDetails?.brandLogo} alt="logo"/> */}
                 <DynamicFormCreator initial={initialValues} handleImage={handleImage} formStyle=' my-4 gap-x-4 gap-y-4'  buttonText="Continue" 
                 formProps={profileForm} handleSubmit={handleSubmit}/>
               </section>
