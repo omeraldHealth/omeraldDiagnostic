@@ -1,6 +1,6 @@
 // export const backendApiPath= "https://parser-api.onrender.com"
-// export const backendApiPath = "http://localhost:3000"
-export const backendApiPath = ""
+export const backendApiPath = "http://localhost:3000"
+
 //Api paths for backend calls
 export const getDiagnosticUserApi = backendApiPath+`/api/diagnostic/users/fetchByPhone?phoneNumber=`
 export const insertDiagnosticUserApi = backendApiPath+`/api/diagnostic/users/insert`
@@ -18,9 +18,8 @@ export const getEmployees = backendApiPath+`/api/diagnostic/employees/fetchAll`
 export const getEmployeeById = backendApiPath+`/api/diagnostic/employees/fetchByPhone?phoneNumber=`
 export const insertEmployee = backendApiPath+`/api/diagnostic/employees/insert`
 export const updateEmployee = backendApiPath+`/api/diagnostic/employees/update?userId=`
-export const deleteEmployee = backendApiPath+`/api/diagnostic/employees/delete?id=`
+export const deleteEmployee = backendApiPath+`/api/diagnostic/employees/delete?phoneNumber=`
 
 // Omerald admin report types
 
 export const getReportTypesApi = "https://admin-omerald-dev.vercel.app/api/reports"
-export const getDiagnosticSetting = "https://admin-omerald-dev.vercel.app/api/settings/diagnostic/"
