@@ -3,6 +3,10 @@ import connectDB from 'utils/mongoDb/middleware';
 import DiagnosticEmployeesTable from 'utils/mongoDb/model/diagnosticEmployee';
 
 const handler = async (req:NextApiRequest, res: NextApiResponse<any>) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.setHeader('Content-Security-Policy', 'unsafe-url');
     const {id} = req.query
       try{
         //@ts-ignore
