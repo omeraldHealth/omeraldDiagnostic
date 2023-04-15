@@ -4,15 +4,12 @@ import React from 'react'
 
 export function BottomBanner() {
 	return (
-        <div className='w-[100%] h-auto bg-darkBlue px-[4%] sm:px-[10%] py-10 lg:grid grid-cols-2'>
+        <div className='w-[100%] h-auto bg-indigo-900 px-[4%] sm:px-[10%] py-10 lg:grid grid-cols-2'>
             <section className=''>
             <p className="my-4 lg:my-2"><BodyText_1 style='uppercase my-4'>Why Choose Us</BodyText_1></p>
             <p className="my-2">  <HeaderText_3 style='text-white uppercase my-4 mr-10'>Efficient, streamlined diagnostic centre operations</HeaderText_3>
                </p>
              <BodyText_2 style='uppercase my-4'>Digital solutions for diagnostic centre</BodyText_2>
-            </section>
-            <section className='flex my-8 sm:my-4 '>
-               <SignInButton style="w-[500px] uppercase h-[20%] self-center">Login</SignInButton>
             </section>
         </div>
         )

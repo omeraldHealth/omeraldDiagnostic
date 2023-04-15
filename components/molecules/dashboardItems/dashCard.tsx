@@ -25,7 +25,7 @@ const dashCard: DashCardTyes[] = [
         href:"/test",
         style:" bg-blue-900",
         icon:  <BeakerIcon className="w-10" />,
-        tipInfo:"Shows the count of tests offered by your laboratory",
+        tipInfo:"The number of tests your laboratory offers.",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Tests Offered",
         value: testList?.length
@@ -34,7 +34,7 @@ const dashCard: DashCardTyes[] = [
         href:"/reports",
         style:" bg-indigo-900",
         icon:  <ChartBarIcon className="w-10" />,
-        tipInfo:"Shows the count of tests offered by your laboratory",
+        tipInfo:"The number of tests your laboratory offers",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Reports Uploaded",
         value: reportList?.length
@@ -43,7 +43,7 @@ const dashCard: DashCardTyes[] = [
         href:"/reports",
         style:"bg-gray-500 ",
         icon:    <ShareIcon className="w-10" />,
-        tipInfo:"Shows the count of tests offered by your laboratory",
+        tipInfo:"The number of tests shared by your laboratory",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Reports Shared",
         value: 0
@@ -52,7 +52,7 @@ const dashCard: DashCardTyes[] = [
         href:"/settings",
         style:"bg-green-900",
         icon:   <BeakerIcon className="w-10" />,
-        tipInfo:"Shows the count of tests offered by your laboratory",
+        tipInfo:"The number of users in your diagnostic center",
         icon2: <InformationCircleIcon className="w-4 float-right" />,
         title: "Total Users",
         value: employeeList?.length

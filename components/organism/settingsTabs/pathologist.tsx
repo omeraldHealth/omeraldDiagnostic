@@ -62,18 +62,22 @@ export function PathologistManagement() {
     const handleSubmit = async (value:any) => {
      
       let duplicate = diagnostic?.data?.pathologistDetail.some((path:any) => (path._id !== initialData._id && path.name.trim() === value.name.trim()))
-   
+      console.log(image)
       let flag = true;
       setLoading(true)
       if(duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
         if(flag){
-          if(image){
+         
+          if(image !== null){
             let location = await uploadImage(image)
             if(location){
               value["signature"] = location
             }
+            
+          }else{
+            value["signature"] = "https://omerald-diag-branding.s3.amazonaws.com/1681376896220-download.png"
           }
           let updated = {...initialData,...value}
           let updatedPath = diagnostic?.data?.pathologistDetail?.map((path:any) => {
@@ -87,12 +91,15 @@ export function PathologistManagement() {
         }
       }else{
         let filter = diagnostic?.data?.pathologistDetail
-        if(image){
+        if(image !== null){
           let location = await uploadImage(image)
           if(location){
             value["signature"] = location
           }
-        } 
+         
+        }  else{
+          value["signature"] = "https://omerald-diag-branding.s3.amazonaws.com/1681376896220-download.png"
+        }
         value.branchId = activeBranch?._id
         filter?.push(value)
         updateDiagnostic.mutate({phoneNumber:diagnosticDetails?.phoneNumber,data:{"pathologistDetail":filter}})
@@ -132,7 +139,7 @@ export function PathologistManagement() {
           key: 'name  ',
           render: (text:any,record:any,index:number) => (
             <Space size="middle">
-             {index !==0 && <a > <TrashIcon className='w-4 text-red-500' onClick={()=>{
+              <a > <TrashIcon className='w-4 text-red-500' onClick={()=>{
                confirm({
                 title: 'Do you want to delete this pathologist?',
                 content: 'The action cannot be undone.',
@@ -140,7 +147,7 @@ export function PathologistManagement() {
                   handleRemove(record)}
                 }
                )
-             }}/></a> }
+             }}/></a> 
               <a ><PencilIcon onClick={()=>{handleEdit(record)}} className='w-4 text-gray-900' /></a> 
             </Space>
           ),
@@ -156,7 +163,7 @@ export function PathologistManagement() {
    
     return (
       <>
-      <SettingsCommon selectedValue={selectedValue} handleImage={handleImage} setSelectedValue={setSelectedValue} columns={columns} data={pathologistList} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={pathologistFormArray} />
+      <SettingsCommon  tabName={"Pathologist"} selectedValue={selectedValue} handleImage={handleImage} setSelectedValue={setSelectedValue} columns={columns} data={pathologistList} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={pathologistFormArray} />
       {loading && <Spinner/>}
       </>
   )

@@ -18,7 +18,7 @@ const SignInComponent = () => {
 
   return (
     <section className="h-auto my-[10vh] flex justify-center">
-        <SignIn redirectUrl={diagnosticDetails ? "/dashboard" : "/onboard"} signUpUrl="/signUp" />
+        <SignIn redirectUrl={"/dashboard"} signUpUrl="/signUp" />
     </section>
   );
 };

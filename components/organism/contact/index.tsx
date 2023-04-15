@@ -4,17 +4,16 @@ import { PageTemplate } from "@components/templates/pageTemplate";
 import { notFound } from "@utils";
 import Link from "next/link";
 import styles from "@styles/signIn.module.css"
+import { Support } from "../settingsTabs/support";
 
-export function Error() {
+export function ContactPage() {
 	return (
         <PageTemplate>
             <div className={`pt-[1vh] ${styles["signInContainer"]}`}>
                 <Navbar/>
-                    <section className="max-w-[100%] h-auto my-32 sm:my-20 my-8 2xl:my-4 xl:min-h-[60vh] text-center">
-                        <img src={notFound} className="w-[80vw] sm:w-[60vw] md:w-[30vw] mb-20 mt-20 m-auto" alt="" />
-                        <Link href={"/"}>
-                            <button className="my-[2vh] md:w-[10vw] bg-orange-300 px-2 py-2 text-gray-900 font-bold rounded-md">Visit Home</button>
-                        </Link>
+                    <section className="max-w-[60%] m-auto h-auto my-40 sm:my-20 2xl:my-0 xl:h-[60vh] text-center">
+                        <p className="underline font-bold text-md my-10">Contact Us With Your Query</p>
+                        <Support/>
                     </section>
                 <Footer />
             </div>

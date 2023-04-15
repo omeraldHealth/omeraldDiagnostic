@@ -8,7 +8,7 @@ export function Sidebar({setSidebarOpen}:any) {
 	return (
         <div className={`w-64 `}>
           <div className="md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-            <div className="flex-1 flex flex-col h-[100vh] bg-orangeBg">
+            <div className="flex-1 flex flex-col h-[100vh] bg-orange-400">
               <DashboardLogo/>
               <NavLinks setSidebarOpen={setSidebarOpen}/>
               <p className='text-sm text-center px-2 text-green-900 font-semi-bold absolute bottom-10'>Copyright  

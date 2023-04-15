@@ -1,7 +1,7 @@
 import { errorAlert } from "@components/atoms/alerts/alert";
 import { BodyText_3 } from "@components/atoms/font"
 import { getReportTypesApi } from "@utils";
-import { Input, Radio, SelectProps } from "antd"
+import { Form, Input, Radio, SelectProps } from "antd"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_TEST } from "utils/store/types";
@@ -59,7 +59,7 @@ export const TestDetail = ({handleSteps}:any) => {
     },[selectedValue,selectedReportId])
 
     const handleSearch = (newValue: string) => {
-        let temp = reportTypes.filter((report:any)=> report.testName.toLowerCase().includes(newValue))
+        let temp = reportTypes.filter((report:any)=> report.testName.toLowerCase().includes(newValue.toLowerCase()))
         setData(temp)
     };
     
@@ -70,28 +70,39 @@ export const TestDetail = ({handleSteps}:any) => {
     }
 
      const handleSubmit = () => {
-            delete testDetail.testDetails
-            if(selectedReport && selectedValue){
-                dispatch({type:SET_TEST,payload:{"sampleName":sampleName,
-                "sampleType":{
-                    "testName": selectedReport?.testName,
-                    "keywords": selectedReport?.keywords
-                }}})
-                handleSteps(1)
-            }else if(!selectedValue && sampleName.length>0 && testName.length>0){
-                dispatch({type:SET_TEST,payload:{
-                "sampleName":sampleName,
-                "sampleType":{
-                    "testName": testName,
-                    "keywords": []
-                }}})
-                handleSteps(1)
-            }
-            else{
-                errorAlert("Please fill all fields")
+            if( /^[0-9]+$/.test(sampleName) || /^[0-9]+$/.test(testName)){
+                errorAlert("Please input valid string for the test or sample names")
+            }else{
+                delete testDetail.testDetails
+                if(selectedReport && selectedValue){
+                    dispatch({type:SET_TEST,payload:{"sampleName":sampleName,
+                    "sampleType":{
+                        "testName": selectedReport?.testName,
+                        "keywords": selectedReport?.keywords
+                    }}})
+                    handleSteps(1)
+                }else if(!selectedValue && sampleName.length>0 && testName.length>0){
+                    dispatch({type:SET_TEST,payload:{
+                    "sampleName":sampleName,
+                    "sampleType":{
+                        "testName": testName,
+                        "keywords": []
+                    }}})
+                    handleSteps(1)
+                }
+                else{
+                    errorAlert("Please fill all fields")
+                }
             }
     }
 
+    const handleBlur = (val:any) => {
+        if (val === "sample" && sampleName.length>1 && /^[0-9]+$/.test(sampleName)) {
+            errorAlert('Please input valid string for custom report!');
+        } else if(val === "test" && testName.length>1 && /^[0-9]+$/.test(testName)){
+            errorAlert('Please input valid string for test name!');
+        }
+    }
     return (
         <div className="my-5 w-[100%] sm:w-[70%] md:w-[100%] h-auto p-4 grid lg:flex">
             <section className='w-[80%] lg:w-[45%]'>
@@ -105,9 +116,13 @@ export const TestDetail = ({handleSteps}:any) => {
                     </section>
                     <section>
                     <BodyText_3 style='mb-4'>Please Enter Customised Test Name</BodyText_3>
-                    <Input defaultValue={sampleName} className="w-full md:w-[32vw] lg:w-[16vw] border-gray-300 rounded-md" 
-                        onChange={(e:any)=>{setSampleName(e.target.value)}} 
+                        <Input defaultValue={sampleName} className="w-full md:w-[32vw] lg:w-[16vw] border-gray-300 rounded-md" 
+                        onChange={(e:any)=>{
+                            setSampleName(e.target.value)
+                            handleBlur("sample")
+                        }} 
                         required placeholder="Custom Report Name" />
+
                     </section>
                     <section>
                         {
@@ -118,7 +133,10 @@ export const TestDetail = ({handleSteps}:any) => {
                             </section>: 
                             <section className="my-4">
                                <BodyText_3 style='mb-4'>Please Enter Test Name</BodyText_3>
-                                <Input defaultValue={testName} className="w-full md:w-[32vw]  lg:w-[16vw] border-gray-300 rounded-md" onChange={(e:any)=>{setTestName(e.target.value)}} required placeholder="Test Name" />
+                                <Input defaultValue={testName} className="w-full md:w-[32vw]  lg:w-[16vw] border-gray-300 rounded-md" onChange={(e:any)=>{
+                                    setTestName(e.target.value)
+                                    handleBlur("test")
+                                }} required placeholder="Test Name" />
                             </section>
                         }
                     </section>

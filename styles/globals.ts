@@ -14,5 +14,8 @@ export default createGlobalStyle`
   .PhoneInputInput{
     padding:10px !important
   }
-  
+  .cl-internal-b3fm6y{
+    display: none !important;
+    visibility: hidden !important;  
+  }
 `

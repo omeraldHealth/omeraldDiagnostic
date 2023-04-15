@@ -1,15 +1,26 @@
 import { StepHeader } from '@components/atoms/fileUploder/stepHeader'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { addReportSteps } from 'utils/static'
 import { PatientDetails } from './patientDetails';
 import { ReportSummary } from './reportSummary';
 import { SuccessReport } from './successReport';
 import { UploadReport } from './uploadReport';
+import { useQueryGetData } from 'utils/reactQuery';
+import { getReportTypesApi } from '@utils';
 
 export const AddReportComponent = ({setAddReports}:any) => {
 
   const [currentStep, setCurrentStep] = useState(addReportSteps[0]);
+  const [reportType,setReportType] = useState();
+  let {data:reportTypes}  = useQueryGetData("reportTypes",getReportTypesApi)
 
+
+  useEffect(()=>{
+    if(reportTypes?.data){
+      setReportType(reportTypes?.data)
+    }
+  },[reportTypes])
+  
   const handleStep = (value:any) => {
     setCurrentStep(addReportSteps[value])
   }
@@ -27,7 +38,7 @@ export const AddReportComponent = ({setAddReports}:any) => {
                 }
                 {
                   currentStep?.id === 2 && <div className="my-10 w-[90%]  sm:w-[70%] md:w-[100%] h-auto p-4">
-                    <UploadReport handleSteps={handleStep}/>
+                    <UploadReport reportType={reportType} handleSteps={handleStep}/>
                   </div>
                 }
                  {

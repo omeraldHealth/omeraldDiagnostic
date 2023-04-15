@@ -12,6 +12,7 @@ import { useQueryGetData, useUpdateDiagnostic, useUpdateReports, useUploadReport
 import { SET_REPORT_FORM } from "utils/store/types"
 import PdfTesting from "../PdfTesting/PdfTesting"
 import { ActivityLogger } from "../logger.tsx/activity"
+import axios from "axios"
 
 export const ReportSummary =({handleSteps}:any) => {
 
@@ -20,13 +21,17 @@ export const ReportSummary =({handleSteps}:any) => {
     const [loading,setLoading] = useState(false)
     const queryClient = useQueryClient();
     const dispatch = useDispatch()
+
+    if (typeof reportForm["doctorName"] === "object") {
+        reportForm["doctorName"] = ""
+    }
+
     const [instance, updateInstance] = usePDF({
         document: (
           //@ts-ignore
           <PdfTesting report={reportForm} diagnosticDetails={diagnosticDetails} />
         ),
     });
-    
 
     const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
@@ -39,7 +44,7 @@ export const ReportSummary =({handleSteps}:any) => {
             dispatch({type:SET_REPORT_FORM,payload:null})
         },
         onError: (error) => {
-          successAlert("Error adding reports")
+          errorAlert("Error adding reports")
         },
     });
 
@@ -54,7 +59,7 @@ export const ReportSummary =({handleSteps}:any) => {
             }
         },
         onError: (error) => {
-          successAlert("Error adding reports")
+          errorAlert("Error adding reports")
         },
     });
 

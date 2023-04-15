@@ -5,12 +5,15 @@ import React, { cloneElement, ReactElement } from "react";
 
 import { useUser } from '@clerk/nextjs';
 
-const allowedPaths = ["","/","/signIn","/signUp","/404"];
+const allowedPaths = ["","/","/signIn","/signUp","/404","/info/[detail]"];
 
 const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => {
+  
   const {diagnosticDetails} = useAuthContext();
   const router = useRouter();
   const {user,isLoaded} = useUser();
+  
+  console.log(router.pathname)
 
   if (allowedPaths.includes(router.pathname)) {
       return <>{children}</>;
@@ -26,6 +29,9 @@ const Allowed = ({children,}: {children: ReactElement;}): JSX.Element | null => 
     }else{
         if (router.pathname === "/onboard" ) {
           return cloneElement(children);
+        }
+        else if(router.pathname === "/dashboard"){
+          router.push("/onboard")
         }
     }
   } else{

@@ -1,18 +1,28 @@
-import PhoneInput from 'react-phone-input-2'
-import { phoneNumberType } from 'utils/store/types'
-import PhoneInputWithCountrySelect from 'react-phone-number-input'
-import 'react-phone-input-2/lib/style.css'
+import 'react-phone-number-input/style.css';
+import PhoneInput from 'react-phone-number-input';
+import { phoneNumberType } from 'utils/store/types';
+import { getCountries } from 'react-phone-number-input/input';
+import { useState } from 'react';
 
 export const PhoneInputCountry = (phoneData:phoneNumberType) => {
+
     return (
-        <PhoneInputWithCountrySelect
-            name="phoneNumberInput"
+        <PhoneInput
+            placeholder="Enter 10 digit phone number"
+            className='text-light font-light border-2 px-2 rounded-lg '
+            value={phoneData?.phoneNumber}
             defaultCountry="IN"
-            placeholder="Enter mobile number"
-            value = {phoneData?.phoneNumber}
-            onChange={(value:any)=>{phoneData?.setPhoneNumber(value)}}
-        />
+            onChange={(e)=>{
+                if(phoneData?.handleDisable){
+                    if(e && e?.length>7 && e?.length<14)
+                    {phoneData?.handleDisable(false)
+                    }else{ 
+                        phoneData?.handleDisable(true)
+                    }
+                }
+                phoneData?.setPhoneNumber(e)
+            }}
+            countries={getCountries()}
+      />
     )
 }
-
-export default PhoneInput
