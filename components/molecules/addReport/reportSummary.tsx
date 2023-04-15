@@ -21,13 +21,17 @@ export const ReportSummary =({handleSteps}:any) => {
     const [loading,setLoading] = useState(false)
     const queryClient = useQueryClient();
     const dispatch = useDispatch()
+
+    if (typeof reportForm["doctorName"] === "object") {
+        reportForm["doctorName"] = ""
+    }
+
     const [instance, updateInstance] = usePDF({
         document: (
           //@ts-ignore
           <PdfTesting report={reportForm} diagnosticDetails={diagnosticDetails} />
         ),
     });
-    
 
     const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
