@@ -1,6 +1,5 @@
 // export const backendApiPath= "https://parser-api.onrender.com"
-// export const backendApiPath = "http://localhost:3000"
-export const backendApiPath = ""
+export const backendApiPath = "http://localhost:3000"
 
 //Api paths for backend calls
 export const getDiagnosticUserApi = backendApiPath+`/api/diagnostic/users/fetchByPhone?phoneNumber=`
