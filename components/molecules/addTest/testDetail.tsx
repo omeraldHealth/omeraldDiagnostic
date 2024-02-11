@@ -10,6 +10,7 @@ import { DynamicFormCreator } from "../form/dynamicForm";
 import { selectForm } from "utils/types/molecules/forms.interface";
 import { ShowTable } from "./showTable";
 import { useQueryGetData } from "utils/reactQuery";
+import axios from "axios";
 
 export const TestDetail = ({handleSteps}:any) => {
     const [selectedValue,setSelectedValue] = useState(false)
@@ -26,9 +27,12 @@ export const TestDetail = ({handleSteps}:any) => {
     }
 
     let {data:reportTypes}  = useQueryGetData("reportTypes",getReportTypesApi)
+    // let reportTypes = axios.get(getReportTypesApi)
+    console.log(reportTypes)
    
     const dispatch = useDispatch()
     reportTypes = reportTypes?.data;
+    console.log(reportTypes)
 
     reportTypes = reportTypes?.map((report:any) => {
         return {
@@ -36,16 +40,17 @@ export const TestDetail = ({handleSteps}:any) => {
             "testName":report?.name,
             "keywords": report?.parameters.map((param)=>{
                 return {
-                    "keyword": param.name,
-                    "unit": param.units[0]?.value,
-                    "minRange":param.bioRefRange.min,
-                    "maxRange":param.bioRefRange.max,
-                    "aliases": param.aliases
+                    "keyword": param?.name,
+                    "unit": param?.units?.[0]?.value,
+                    "minRange":param?.bioRefRange?.[0]?.min,
+                    "maxRange":param?.bioRefRange?.[0]?.max,
+                    "aliases": param?.aliases
                 }
             })
         }
     })
     const [datas, setData] = useState<SelectProps['options']>(reportTypes);   
+    console.log(datas)
 
     useEffect(()=>{
         if(selectedValue && selectedReportId){
@@ -59,6 +64,7 @@ export const TestDetail = ({handleSteps}:any) => {
     },[selectedValue,selectedReportId])
 
     const handleSearch = (newValue: string) => {
+        console.log(reportTypes)
         let temp = reportTypes.filter((report:any)=> report.testName.toLowerCase().includes(newValue.toLowerCase()))
         setData(temp)
     };
@@ -122,24 +128,23 @@ export const TestDetail = ({handleSteps}:any) => {
                             handleBlur("sample")
                         }} 
                         required placeholder="Custom Report Name" />
-
                     </section>
-                    <section>
-                        {
-                            selectedValue ?
-                            <section className="my-4">
-                                <BodyText_3 style='mb-4'>Please select the type of report</BodyText_3>
-                                <DynamicFormCreator initial={initialTestDetails} disableElement={sampleName=="" || sampleName ==" "} formProps={selectForm} handleImage={debouncedSearch} handleSubmit={handleReportChange} selectedValue={datas} button={false} />
-                            </section>: 
-                            <section className="my-4">
-                               <BodyText_3 style='mb-4'>Please Enter Test Name</BodyText_3>
-                                <Input defaultValue={testName} className="w-full md:w-[32vw]  lg:w-[16vw] border-gray-300 rounded-md" onChange={(e:any)=>{
-                                    setTestName(e.target.value)
-                                    handleBlur("test")
-                                }} required placeholder="Test Name" />
-                            </section>
-                        }
-                    </section>
+                        <section>
+                            {
+                                selectedValue ?
+                                <section className="my-4">
+                                    <BodyText_3 style='mb-4'>Please select the type of report</BodyText_3>
+                                    <DynamicFormCreator initial={initialTestDetails} disableElement={sampleName=="" || sampleName ==" "} formProps={selectForm} handleImage={debouncedSearch} handleSubmit={handleReportChange} selectedValue={datas} button={false} />
+                                </section>: 
+                                <section className="my-4">
+                                <BodyText_3 style='mb-4'>Please Enter Test Name</BodyText_3>
+                                    <Input defaultValue={testName} className="w-full md:w-[32vw]  lg:w-[16vw] border-gray-300 rounded-md" onChange={(e:any)=>{
+                                        setTestName(e.target.value)
+                                        handleBlur("test")
+                                    }} required placeholder="Test Name" />
+                                </section>
+                            }
+                        </section>
                 </section >
                 <button onClick={handleSubmit} className="p-2 px-4 my-10 rounded-lg bg-indigo-500 text-white">Continue</button> 
             </section>

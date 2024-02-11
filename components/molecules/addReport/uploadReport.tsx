@@ -29,11 +29,11 @@ export const UploadReport = ({handleSteps,reportType}:patientType) => {
           "testName":report?.name,
           "keywords": report?.parameters.map((param)=>{
               return {
-                  "keyword": param.name,
-                  "unit": param.units[0]?.value,
-                  "minRange":param.bioRefRange.min,
-                  "maxRange":param.bioRefRange.max,
-                  "aliases": param.aliases
+                  "keyword": param?.name,
+                  "unit": param?.units?.[0]?.value,
+                  "minRange":param?.bioRefRange.min,
+                  "maxRange":param?.bioRefRange.max,
+                  "aliases": param?.aliases
               }
           })
       }

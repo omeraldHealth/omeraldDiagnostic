@@ -6,8 +6,8 @@ export const getDiagnosticUserApi = backendApiPath+`/api/diagnostic/users/fetchB
 export const insertDiagnosticUserApi = backendApiPath+`/api/diagnostic/users/insert`
 export const updateDiagnosticUserApi = backendApiPath+`/api/diagnostic/users/update?phoneNumber=`
 
-// export const uploadImageApi = backendApiPath+`/api/diagnostic/s3bucket/addBrandingImages`
-export const uploadImageApi = "https://parser-api.onrender.com/api/diagnostic/uploadBranding"
+export const uploadImageApi = backendApiPath+`/api/diagnostic/s3bucket/addBrandingImages`
+// export const uploadImageApi = "https://parser-api.onrender.com/api/diagnostic/uploadBrandparam.unitsing"
 
 export const getDiagnosticReports = backendApiPath+`/api/diagnostic/reports/fetchByPhone?phoneNumber=`
 export const insertReportApi = backendApiPath+`/api/diagnostic/reports/insert`
@@ -22,8 +22,11 @@ export const deleteEmployee = backendApiPath+`/api/diagnostic/employees/delete?i
 
 // Omerald admin report types
 
-export const getReportTypesApi = "https://admin-omerald-dev.vercel.app/api/reports"
-export const getDiagnosticSetting = "https://admin-omerald-dev.vercel.app/api/settings/diagnostic/"
+// export const getReportTypesApi = "https://backend.omerald.com/adminStage/reports/getAllReports"
+// export const getDiagnosticSetting = "https://backend.omerald.com/adminStage/diagnostic/getDiagnosticSetting"
+
+export const getReportTypesApi = "http://localhost:3001/reports/getAllReports"
+export const getDiagnosticSetting = "http://localhost:3001/diagnostic/getDiagnosticSetting"
 
 
 // // export const backendApiPath= "https://parser-api.onrender.com"

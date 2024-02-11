@@ -23,7 +23,7 @@ const queryClient = new QueryClient({
     },
   },
 })
-const clerkFrontendApi = process.env.NEXT_PUBLIC_CLERK_FRONTEND_API;
+const clerkFrontendApi = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isMounted, setIsMounted] = useState(false)
