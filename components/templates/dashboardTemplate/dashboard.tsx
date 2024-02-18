@@ -4,35 +4,32 @@ import { useSelector } from "react-redux";
 import dynamic from "next/dynamic";
 import "./dashboard.module.css"
 import { Spinner } from "@components/atoms/loader";
+import { UserLayout } from "../pageTemplate";
+import { useRecoilValue } from "recoil";
+import {dashTabs} from "components/common/recoil/dashboard/index"
 
-const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'),{loading: () => <Spinner/>})
-const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab'),{loading: () => <Spinner/>})
-const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'),{loading: () => <Spinner/>})
-const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'),{loading: () => <Spinner/>})
-const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab'),{loading: () => <Spinner/>})
+const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'),{ssr:false})
+const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab'),{ssr:false})
+const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'),{ssr:false})
+const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'),{ssr:false})
+const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab'),{ssr:false})
+
+const Dashboard_Tabs = {
+  Dashboard: <DashboardTab />,
+  Tests: <TestTab />,
+  Reports: <ReportsTab />,
+  Settings: <ProfileTab />,
+  Vaccines: <SettingsTab />,
+};
+
 
 const DashboardTemplate = () => {
-  const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
-  const dashboardTabs = {
-    "/dashboard":<DashboardTab/>,
-    "/reports":<ReportsTab/>,
-    "/test":<TestTab/>,
-    "/profile":<ProfileTab/>,
-    "/settings":<SettingsTab selectedTabId={dashboardRoute.selectedTabIndex} />
-  }
-  let [component,setComponent] = useState(dashboardTabs["/dashboard"]);
-    
-  useEffect(()=>{
-    //@ts-ignore
-    setComponent(dashboardTabs[dashboardRoute.href])
-  },[dashboardRoute])
+  const dashboard = useRecoilValue(dashTabs)
 
   return (
-    <div className="w-{100vw} h-[100vh] flex justify-start ">
-      <DashboardLayout>
-        {component}
-      </DashboardLayout>
-    </div>
+    <UserLayout tabName={`Admin Omerald | ${dashboard}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">
+      <DashboardLayout>{Dashboard_Tabs[dashboard]}</DashboardLayout>
+    </UserLayout>
   )
 };
 

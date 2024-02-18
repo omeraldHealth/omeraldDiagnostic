@@ -5,11 +5,16 @@ import { useRouter } from 'next/router'
 import axios from 'axios';
 import { getDiagProfileByPhoneApi } from '../utils';
 import { errorAlert, successAlert } from '../components/atoms/alerts/alert';
+import { useSetRecoilState } from 'recoil';
+import { profileState } from '../components/common/recoil/profile';
+import { branchState } from '../components/common/recoil/blogs/branch';
 
 export default function VerifyUser() {
   const {session,isLoaded} = useSession();
   const {user} = useUser(); 
   const router = useRouter(); 
+  const setProfile = useSetRecoilState(profileState)
+  const setCurrentBranch = useSetRecoilState(branchState)
 
   useEffect(()=>{
     if (isLoaded && session?.status !==  'active') {
@@ -25,6 +30,8 @@ export default function VerifyUser() {
       const {data,status} = await axios.get(getDiagProfileByPhoneApi+user?.phoneNumbers[0]?.phoneNumber)
       if(status === 200) {
         if(data){
+          setProfile(data)
+          setCurrentBranch(data?.branchDetails?.[0])
           successAlert("Profile fetched succesfully")
           router.push("/dashboard")
         }

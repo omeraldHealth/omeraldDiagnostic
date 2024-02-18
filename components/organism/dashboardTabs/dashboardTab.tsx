@@ -13,14 +13,14 @@ const DashBanner = dynamic(() => import('@components/molecules/dashboardItems/ba
 export default function DashboardTab() {
   return (
     <Fragment>
-    <div className="p-4 xl:px-8 pt-6 bg-signBanner">
+    {/* <div className="p-4 xl:px-8 pt-6 bg-signBanner">
       <DashBanner/>
       <DashCard/>
       <section className="grid lg:flex gap-4 justify-between h-[45vh] my-4">
           <ReportSharedVsTime2 />
           <DashActivity/>
       </section>
-    </div>
+    </div> */}
     </Fragment>
   )
 }
