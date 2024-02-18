@@ -9,16 +9,17 @@ import { useSelector } from 'react-redux';
 import { debounce, isElement } from 'lodash';
 import moment from 'moment';
 import { useQueryGetData } from 'utils/reactQuery';
-import { getDiagnosticUserApi } from '@utils';
 import { useAuthContext } from 'utils/context/auth.context';
 import { Option } from 'antd/es/mentions';
 import { PhoneInputCountry } from '@components/atoms/phoneInput/phoneInput';
+
+import { getDiagProfileByPhoneApi } from '../../../utils';
 
 
 export const DynamicFormCreator = ({formProps,button=true,showLabel,disableElement,initial,formStyle,reportsValidation,handleSubmit,handleImage,buttonText,selectedValue,setSelectedValue}:DynamicFormType) => {
 
     const {diagnosticDetails} = useAuthContext();
-    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+    const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagProfileByPhoneApi+diagnosticDetails?.phoneNumber)
 
     const [isDisabled,setDisabled] = useState(false);
     const disabledDate = (current:any) => {
@@ -31,7 +32,7 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
       }
     },[])
   
-    const employees = diagnostic?.data?.managersDetail.map((person:any) => {return {"value":person.managerName,"key":person.managerContact}});
+    const employees = diagnostic?.data?.managersDetail?.map((person:any) => {return {"value":person.managerName,"key":person.managerContact}});
 
     const [datas, setData] = useState<SelectProps['options']>(diagnostic?.data?.pathologistDetail);
     const handleSearch = (newValue: string) => {
@@ -228,5 +229,4 @@ export const DynamicFormCreator = ({formProps,button=true,showLabel,disableEleme
         </div>
     )
 }
-
 

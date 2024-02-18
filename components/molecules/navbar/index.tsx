@@ -31,7 +31,7 @@ export function Navbar() {
 
             <div>
                 {session?.status !== 'active' ? (
-                  <Link href={'/signin'}>
+                  <Link href={'/signIn'}>
                     <button className="bg-orange-400 px-4 py-2 text-white rounded-md">
                       Sign In
                     </button>

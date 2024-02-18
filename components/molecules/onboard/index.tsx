@@ -35,7 +35,7 @@ const OnboardComponents = () => {
     "instaUrl": diagnosticProfile?.brandDetails?.instaUrl,
     "branchName": diagnosticProfile?.branchDetails?.[0]?.branchName,
     "branchEmail": diagnosticProfile?.branchDetails?.[0]?.branchEmail,
-    "branchContact": user?.phoneNumber,
+    "branchContact": ClerkUser?.phoneNumbers[0].phoneNumber,
     "managerName":diagnosticProfile?.managerName,
     "branchAddress": diagnosticProfile?.branchDetails?.[0]?.branchAddress,
   }
@@ -43,20 +43,16 @@ const OnboardComponents = () => {
   const handleContinueForm = (values:BasicDetailsForm | BrandDetailsForm | BranchDetails) => {
     let val:any = values;
 
-    if(currentStep?.id ==2 && logo?.length<1){
-      errorAlert("Please add logo to continue")
-    }else{
-
     if(Object?.keys(values).includes("brandLogo")){
-      Object.assign(values,{"brandLogo":logo})
+      Object.assign(values,{"brandLogo":"https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"})
       val = {"brandDetails":values}
     }else if(Object?.keys(values).includes("branchName")){
-      values["branchContact"] = diagnosticProfile?.phoneNumber
+      values["branchContact"] = ClerkUser?.phoneNumbers[0].phoneNumber,
       val = {"branchDetails":[values]}
     }   
     setDiagnosticProfile(Object.assign(diagnosticProfile, val))
     setCurrentStep(onboardSteps[currentStep.id])
-  }
+
   }
 
   const handleImage = (value:any) => {
@@ -65,33 +61,52 @@ const OnboardComponents = () => {
 
 
   const handleSubmit = async () => {
-    let brandLogoUrl;
+    // let brandLogoUrl;
     // //@ts-ignore
-    if(logo?.length>0){
-      setLoading(true)
-      brandLogoUrl = await uploadImage(logo?.[0]?.originFileObj);
-      //save brandDetails with location
-      brandLogoUrl && setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":brandLogoUrl})}))
+    // if(logo?.length>0){
+    //   setLoading(true)
+    //   brandLogoUrl = await uploadImage(logo?.[0]?.originFileObj);
+    //   //save brandDetails with location
+    //   brandLogoUrl && setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":brandLogoUrl})}))
       
+    //   //creating admin role
+    //   setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
+    //   let insertDiag = await setUserDetails(diagnosticProfile)
+
+    //   if (insertDiag.status == 201 && user) {
+    //     setLoading(false);
+    //     successAlert("Profile Created Succesfully")
+    //     signIn(ClerkUser?.phoneNumbers[0]?.phoneNumber, "/dashboard");
+    //   }
+
+    //   if (insertDiag.status === 409) {
+    //     setLoading(false);
+    //     errorAlert("Error creating profile")
+    //     router.push("/404");
+    //   }
+    // }else{
       //creating admin role
+      setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":"https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"})}))
+      
       setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
-      let insertDiag = await setUserDetails(diagnosticProfile)
-
-      if (insertDiag.status == 201 && user) {
+      
+      try{
+        let insertDiag = await setUserDetails(diagnosticProfile)
+        console.log(insertDiag)
+        if (insertDiag.status == 201) {
+          setLoading(false);
+          successAlert("Profile Created Succesfully")
+          router.push("/verifyUser")
+        }else if(insertDiag?.status?.response?.status){
+          setLoading(false);
+          errorAlert("Error creating profile"+ insertDiag?.status?.response?.data?.error )
+          router.push("/404");
+        }
+      }catch (err){
         setLoading(false);
-        successAlert("Profile Created Succesfully")
-        signIn(ClerkUser?.phoneNumbers[0]?.phoneNumber, "/dashboard");
-      }
-
-      if (insertDiag.status === 409) {
-        setLoading(false);
-        errorAlert("Error creating profile")
+        errorAlert("Error creating profile"+ err )
         router.push("/404");
       }
-    }else{
-      errorAlert("Please add logo image");
-      return
-    }
   }
 
   const handleFormBack = () => {

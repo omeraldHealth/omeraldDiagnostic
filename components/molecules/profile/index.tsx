@@ -18,7 +18,7 @@ export const ProfileSummaryComponent = ({style,props,summary}:any) => {
   const {diagnosticDetails} = useAuthContext();
   const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
   const profile = summary ? props: diagnostic?.data
-
+  console.log(props)
   return (
     <div className='h-auto '>
         {summary && <>{profile && profile.diagnosticName && <ProfileSummary profile={profile} style={style} />}</>}

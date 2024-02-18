@@ -1,4 +1,4 @@
-import { getDiagnosticReports, getDiagnosticUserApi, insertDiagnosticUserApi, insertReportApi, updateDiagnosticUserApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
+import { getDiagnosticReports, getDiagnosticUserApi, createDiagProfileApi, insertReportApi, updateDiagnosticUserApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
 import { getUserDetailType } from "utils/types/atoms/hooks";
 import { ReportDetails, UserDetails } from "utils/types/molecules/users.interface";
 import axios from "axios";
@@ -19,7 +19,7 @@ export async function fetchUserDetails(phoneNumber: getUserDetailType) {
 //insert diagnostic profile
 export async function setUserDetails(userDetails: UserDetails) {
   try {
-    const resp = await axios.post(insertDiagnosticUserApi, userDetails, {})
+    const resp = await axios.post(createDiagProfileApi, userDetails, {})
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error };

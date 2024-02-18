@@ -1,13 +1,10 @@
-import { Fragment, useEffect } from 'react'
-import { Spinner } from '@components/atoms/loader'
-import dynamic from 'next/dynamic'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useAuthContext } from 'utils/context/auth.context'
+import { UserLayout } from '../components/templates/pageTemplate'
+import dynamic from 'next/dynamic'
 
-const OnboardComponents = dynamic(() => import('@components/molecules/onboard'),{loading: () => <Spinner/>})
-const Head = dynamic(() => import('@components/atoms/head/head'))
-const Navbar = dynamic(() => import('@components/molecules/navbar').then(res=>res.Navbar),{loading:()=><Spinner/>})
-const Footer = dynamic(() => import('@components/molecules/footer').then(res=>res.Footer))
+const OnboardComponents = dynamic(() => import('@components/molecules/onboard'),{ssr:false})
 
 function Onboard() {
 
@@ -21,17 +18,11 @@ function Onboard() {
   },[diagnosticDetails])
 
   return (
-    // <Fragment>
-	  //   <Head title={'Omerald Diagnostic | Onboard'} />
-    //         <div>
-    //             <Navbar/>
-    //                 <section className='min-h-[80vh]'>
-    //                   <OnboardComponents/>
-    //                 </section>
-    //             <Footer />
-    //         </div>
-	  // </Fragment>
-    <p>Onboarding</p>
+    <UserLayout tabName="Admin Omerald | Verify User">
+    <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
+        <OnboardComponents/>
+    </div>
+  </UserLayout>
   )
 }
 
