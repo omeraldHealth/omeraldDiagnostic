@@ -1,9 +1,19 @@
-import { SignUp } from '@clerk/nextjs';
+import { SignUp, useUser } from '@clerk/nextjs';
 import { ClerkLoading } from "@clerk/nextjs";
 import { UserLayout } from '@components/templates/pageTemplate'
-import React from 'react';
+import React, { useEffect } from 'react';
+import { warningAlert } from '../components/atoms/alerts/alert';
 
 const SignUpComp = () => {
+
+  const {user} = useUser();
+  
+  useEffect(()=>{
+    if(user){
+      warningAlert("User already logged in")
+    }
+  },[user])
+
   return (
     <div>
       <UserLayout tabName="Admin Omerald | Sign Up">

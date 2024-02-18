@@ -1,18 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async headers() {
-    return [
-      {
-        // Apply the middleware to all API routes
-        source: '/api/:path*',
-        headers: [
-          { key: 'Access-Control-Allow-Origin', value: '*' },
-          { key: 'Access-Control-Allow-Methods', value: 'GET, POST, OPTIONS, *' },
-          { key: 'Access-Control-Allow-Headers', value: 'Content-Type, *' },
-        ],
-      },
-    ];
-  },
   reactStrictMode: true,
   swcMinify: true,
   images:{
@@ -37,7 +24,25 @@ const nextConfig = {
         ]
       }
     ]
-  }
+  },
+  async rewrites() {
+    return [
+      // Rewrite everything to `pages/index`
+      {
+        source: "/:any*",
+        destination: "/",
+      },
+    ];
+  },
+  serverRuntimeConfig: {
+    // Will only be available on the server side
+    SSR: false,
+  },
+
+  publicRuntimeConfig: {
+    // Will be available on both server and client
+    SSR: false,
+  },
 };
 
 module.exports = nextConfig;

@@ -1,9 +1,8 @@
-import { SignInButton } from '@components/atoms/buttons/button'
-import { MenuDropDown } from '@components/atoms/menu'
+import { UserButton, useSession, useUser } from '@clerk/clerk-react'
 import { Logo } from '@components/atoms/nav/logo'
 import NavFont from '@components/atoms/nav/navFont'
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React  from 'react'
 import { useAuthContext } from 'utils/context/auth.context'
 
 const navLinks = [
@@ -16,7 +15,8 @@ const navLinks = [
 export function Navbar() {
 
     const {diagnosticDetails} = useAuthContext()
-    const {user,signOut} = useAuthContext()
+    const { session } = useSession();
+    const {user} = useUser();
     
 	return (
         <div  className={`flex justify-between items-center px-[4%] xl:px-[10%]`}>
@@ -29,16 +29,24 @@ export function Navbar() {
                 {navLinks.map((nav,index) => <Link key={index} href={nav.navLink}><NavFont>{nav.navText}</NavFont></Link> )}
             </section>
 
-            {!diagnosticDetails?.phoneNumber ? 
-            <section className='lg:flex items-center'>
-               {!user ?
-                <span className='lg:flex'><Link href={"/signIn"}><NavFont>{"Sign In"}</NavFont></Link></span>:
-                <a onClick={signOut} href="#" className='lg:flex'><NavFont>{"Sign Out"}</NavFont></a>
-               }
-               <span className='hidden lg:flex'><Link href={"/signIn"}><SignInButton style="mx-8">{"Start Free"}</SignInButton></Link></span>
-            </section>:
-            <MenuDropDown/>
-            }
+            <div>
+                {session?.status !== 'active' ? (
+                  <Link href={'/signin'}>
+                    <button className="bg-orange-400 px-4 py-2 text-white rounded-md">
+                      Sign In
+                    </button>
+                  </Link>
+                ) : (
+                  <section className="flex gap-4 items-center">
+                    <UserButton afterSignOutUrl="/"/>
+                    <Link href={'/verifyUser'} className="mx-2">
+                      <button className="bg-violet-900 px-4 py-2 text-white rounded-md">
+                        Dashboard
+                      </button>
+                    </Link>
+                  </section>
+                )}
+              </div>
         </div>
 	)
 }
