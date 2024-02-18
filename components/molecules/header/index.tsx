@@ -60,9 +60,7 @@ export function DashboardHeader({showSidebar,setSidebarOpen}:any) {
     }
 
     useEffect(()=>{
-        console.log(profile.branchDetails)
         let branches = profile?.branchDetails?.filter((branch:any)=> {return  branch?.branchContact === user?.phoneNumbers[0].phoneNumber || branch?.branchOperator?.includes(profile?.managersDetail?.[0].branchContact)})
-        console.log(branches)
         setBranchList(branches)
     },[profile ])
 

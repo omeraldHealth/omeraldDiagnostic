@@ -8,12 +8,13 @@ import { errorAlert, successAlert } from '../components/atoms/alerts/alert';
 import { useSetRecoilState } from 'recoil';
 import { profileState } from '../components/common/recoil/profile';
 import { branchState } from '../components/common/recoil/blogs/branch';
-
+import { operatorState } from "../components/common/recoil/operator/index"
 export default function VerifyUser() {
   const {session,isLoaded} = useSession();
   const {user} = useUser(); 
   const router = useRouter(); 
   const setProfile = useSetRecoilState(profileState)
+  const setOperator = useSetRecoilState(operatorState)
   const setCurrentBranch = useSetRecoilState(branchState)
 
   useEffect(()=>{
@@ -32,6 +33,7 @@ export default function VerifyUser() {
         if(data){
           setProfile(data)
           setCurrentBranch(data?.branchDetails?.[0])
+          setOperator(data?.managersDetail[0])
           successAlert("Profile fetched succesfully")
           router.push("/dashboard")
         }

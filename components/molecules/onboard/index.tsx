@@ -92,7 +92,6 @@ const OnboardComponents = () => {
       
       try{
         let insertDiag = await setUserDetails(diagnosticProfile)
-        console.log(insertDiag)
         if (insertDiag.status == 201) {
           setLoading(false);
           successAlert("Profile Created Succesfully")

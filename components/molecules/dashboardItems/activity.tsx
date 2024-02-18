@@ -1,19 +1,21 @@
 import { UserCircleIcon } from '@heroicons/react/20/solid'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 import moment from 'moment';
-import React, { useContext } from 'react'
-import { useAuthContext } from 'utils/context/auth.context';
-import { useQueryGetData } from 'utils/reactQuery';
-import { getDiagnosticUserApi } from '@utils';
+import React from 'react'
+import { useRecoilValue } from 'recoil';
+import { profileState } from '../../common/recoil/profile';
+import { branchState } from '../../common/recoil/blogs/branch';
 
 export const DashActivity = () => {
 
-  const {activeBranch,diagnosticDetails} = useAuthContext()
-  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+  const profile = useRecoilValue(profileState);
+  const currentBranch = useRecoilValue(branchState)
+  
   //@ts-ignore
-  let activities = diagnostic?.data?.activities.sort((a:any,b:any)=>new Date(b.updatedTime) - new Date(a.updatedTime)).slice(0,5)
-  activities = activities?.filter((activity:any)=>activity?.branchId == activeBranch?._id)
+  let activities = profile?.activities?.sort((a:any,b:any)=>new Date(b.updatedTime) - new Date(a.updatedTime)).slice(0,5)
+  activities = activities?.filter((activity:any)=>activity?.branchId == currentBranch?._id)
+  
   return (
   <section className="w-[94vw] sm:w-[50vw] lg:w-[30vw] xl:w-[20vw] h-[100%] shadow-xl bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0 ">
         <section className=''>

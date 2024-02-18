@@ -4,40 +4,42 @@ import { useEffect, useState } from 'react';
 import { Bar} from 'react-chartjs-2';
 import { DatePicker } from 'antd';
 import { PencilSquareIcon } from '@heroicons/react/20/solid';
-import { getDiagnosticReports } from '@utils';
 import 'chartjs-adapter-moment'
 import moment from 'moment';
 import { useAuthContext } from 'utils/context/auth.context';
 import { useQueryGetData } from 'utils/reactQuery';
 import { Spinner } from '@components/atoms/loader';
+import { profileState } from '../../common/recoil/profile';
+import { useRecoilValue } from 'recoil';
+import { branchState } from '../../common/recoil/blogs/branch';
 
 const { RangePicker } = DatePicker;
 
 const ReportSharedVsTime2 = () =>{
 
+    const profile = useRecoilValue(profileState);
+    const currentBranch = useRecoilValue(branchState)
     const [maxVal,setMaxVal] = useState(20)
     const [dateRange,setDateRange] = useState()
     const [date,setDate] = useState([])
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reportCount,setReportCount] = useState([])
-    const {diagnosticDetails,activeBranch} = useAuthContext();
-    const {data:reports,isLoading:loading} = useQueryGetData("getReports",getDiagnosticReports+diagnosticDetails?.phoneNumber)
 
-    let reportsList = reports?.data?.filter((report:any) => report?.branchId === activeBranch?._id)
+    let reportsList = profile?.reports?.filter((report:any) => report?.branchId === activeBranch?._id)
     
     useEffect(()=>{
         const sixMonthsAgo = moment().subtract(6, 'months').toDate();
         const current = moment().toDate();
         initialLoad(sixMonthsAgo,current)
-        setMaxVal(reportsList?.length || 0)
-    },[activeBranch,reports?.data])
+        setMaxVal(profile?.reports?.length || 0)
+    },[currentBranch,profile])
 
     useEffect(()=>{
       const sixMonthsAgo = moment().subtract(6, 'months').toDate();
       const current = moment().toDate();
       initialLoad(sixMonthsAgo,current)
-      setMaxVal(reportsList?.length || 4)
-  },[])
+      setMaxVal(profile?.reports?.length || 4)
+    },[])
 
 
     const initialLoad = (start:any,end:any)=>{
@@ -135,7 +137,7 @@ const ReportSharedVsTime2 = () =>{
       const sixMonthsAgo = moment().subtract(6, 'months').toDate();
       const current = moment().toDate();
       initialLoad(sixMonthsAgo,current)
-      setMaxVal(reports?.length || 2)
+      setMaxVal(profile?.reports?.length || 2)
       setIsModalOpen(false)
     } 
 
@@ -158,7 +160,7 @@ const ReportSharedVsTime2 = () =>{
       </Modal>
     
       
-      {loading ?<Spinner/>:<Bar 
+      {!profile ?<Spinner/>:<Bar 
         data={data}
         options={option}
         className="w-[100vw]"

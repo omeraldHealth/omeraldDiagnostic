@@ -11,16 +11,17 @@ const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/prof
 const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab'),{ssr:false})
 
 const Dashboard_Tabs = {
-  Dashboard: <DashboardTab />,
-  Tests: <TestTab />,
-  Reports: <ReportsTab />,
-  Settings: <ProfileTab />,
-  Vaccines: <SettingsTab />,
+  "Dashboard": <DashboardTab />,
+  "Tests Offered": <TestTab />,
+  "View Reports": <ReportsTab />,
+  "Profile": <ProfileTab />,
+  "Settings": <SettingsTab />,
 };
 
 export default function Dashboard() {
 
   const dashboard = useRecoilValue(dashTabs)
+  console.log(dashboard)
 
   return (
     <UserLayout tabName={`Admin Omerald | ${dashboard}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">

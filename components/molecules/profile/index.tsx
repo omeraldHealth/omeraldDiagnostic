@@ -8,7 +8,6 @@ import { profileForm } from 'utils/types/molecules/forms.interface'
 import { DynamicFormCreator } from '../form/dynamicForm'
 import { useAuthContext } from 'utils/context/auth.context'
 import { useQueryGetData, useUpdateDiagnostic } from 'utils/reactQuery'
-import { getDiagnosticUserApi } from '@utils'
 import React, { useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { ActivityLogger } from '../logger.tsx/activity'
@@ -18,7 +17,6 @@ export const ProfileSummaryComponent = ({style,props,summary}:any) => {
   const {diagnosticDetails} = useAuthContext();
   const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
   const profile = summary ? props: diagnostic?.data
-  console.log(props)
   return (
     <div className='h-auto '>
         {summary && <>{profile && profile.diagnosticName && <ProfileSummary profile={profile} style={style} />}</>}

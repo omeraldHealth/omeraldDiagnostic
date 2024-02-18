@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -39,7 +39,7 @@ export default function Sidebar() {
       </div>
       <div className="mb-8">
         {privateRoutes.map((item) => (
-            <>{
+            <Fragment key={item.name}>{
                 !item?.allowedRoles?.includes(profile?.managersDetail?.[0]?.managerRole.toLowerCase()) ? null :
                 <a key={item.name} href='#'   onClick={()=>{handleClick(item)}}
                     className={classNames(
@@ -55,7 +55,7 @@ export default function Sidebar() {
                     {item.name}
                 </a>
               }
-            </>
+            </Fragment>
         ))}
       </div>
       <p className='text-sm text-center text-green-900 font-semi-bold absolute bottom-10'>Copyright  
