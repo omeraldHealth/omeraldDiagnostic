@@ -10,20 +10,20 @@ import { useMediaQuery } from 'react-responsive';
 
 export const NavLinks = ({setSidebarOpen}:any) => {
     const [currentNavigation, setCurrentNavigation] = useState<any>(privateRoutes[0]);
-    const dispatch = useDispatch()
-    const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
+    // const dispatch = useDispatch()
+    // const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
     const monitor = useMediaQuery({ minWidth: 1224 })
     const {operator} = useAuthContext()
 
-    useEffect(()=>{
-        //@ts-ignore
-        setCurrentNavigation(privateRoutes[IndexObj[dashboardRoute.href]])
-    },[dashboardRoute])
+    // useEffect(()=>{
+    //     //@ts-ignore
+    //     setCurrentNavigation(privateRoutes[IndexObj[dashboardRoute.href]])
+    // },[dashboardRoute])
 
     const handleNavigationChange = (nav: any) => {
-        !monitor && setSidebarOpen(false)
-        setCurrentNavigation(nav);
-        dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:nav.name,href:nav.href,loading:true} });
+        // !monitor && setSidebarOpen(false)
+        // setCurrentNavigation(nav);
+        // dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:nav.name,href:nav.href,loading:true} });
     };
 
     return <nav className="">

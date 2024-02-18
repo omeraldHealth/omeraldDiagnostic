@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useRecoilValue } from 'recoil';
 import { profileState } from "components/common/recoil/profile/index"
 import { DashboardHeader } from '../../molecules/header';
+import { DashboardSideBar } from "@components/molecules/sidebar/index"
 
 export function DashboardLayout({ children }:any) {
   const { session } = useSession();
@@ -31,7 +32,7 @@ export function DashboardLayout({ children }:any) {
     <>
       {session?.status === 'active' && (
         <div className="bg-gray-100 w-full min-h-[100vh] h-auto ">
-          {/* <DashboardSideBar />   */}
+          <DashboardSideBar />  
           <div className="xl:pl-64 flex flex-col flex-1">
           {(profile && profile?._id) && <DashboardHeader />}
             <main>
