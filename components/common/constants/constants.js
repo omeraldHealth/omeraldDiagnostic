@@ -4,5 +4,6 @@ export const ROUTES_WITHOUT_SIDEBAR = [
     '/contact',
     '/verifyUser',
     '/signIn',
-    '/signUp'
+    '/signUp',
+    '/onboard'
   ];

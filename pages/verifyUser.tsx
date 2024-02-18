@@ -22,7 +22,7 @@ export default function VerifyUser() {
 
   const fetchProfile = async (user:any) => {
     try {
-      const {data,status} = await axios.get(getDiagProfileByPhoneApi+user?.phoneNumbers[0]?.phoneNumber)
+      const {data,status} = await axios.get(getDiagProfileByPhoneApi+user?.phoneNumbers[0]?.phoneNumber+1)
       if(status === 200) {
         if(data){
           successAlert("Profile fetched succesfully")
