@@ -12,9 +12,6 @@ export default function Dashboard() {
 
 
   return (
-    <Fragment>
-			<Head title={'Omerald Diagnostic | Dashboard'} />
-      <DashboardTemplate/>
-    </Fragment>
+    <p>Dashboard</p>
   )
 }

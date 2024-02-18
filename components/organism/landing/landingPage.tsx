@@ -15,19 +15,16 @@ const Footer = dynamic(() => import('@components/molecules/footer').then(res => 
 
 const LandingPage = () =>{
 	return (
-        <PageLayout>
             <div>
                 <LandingBanner/>
-                <Partners/>
+                {/* <Partners/>
                 <HowItWorks/>
                 <HelpYourBusiness/>
                 <Advertisement/>    
                 <Testimonial/>
                 <ContactContainer/>
-                <BottomBanner/>
-                <Footer />
+                <BottomBanner/> */}
             </div>
-        </PageLayout>
     )
 }
 

@@ -7,7 +7,6 @@ export function Support() {
     const [query,setQuery] = useState(false);
     // const {data:queries,refetch} = useQuery("queries",()=>{return axios.get(getQueriesApi+diagnosticDetails?.phoneNumber)})
    
-
     // let queriestList = queries?.data?.filter((query:any)=> query?.branchId === activeBranch?._id)
     const SupportForm =   [ 
         {

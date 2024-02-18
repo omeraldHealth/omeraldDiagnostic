@@ -1,16 +1,16 @@
-import { Fragment } from 'react'
-import { Spinner } from '@components/atoms/loader'
-import dynamic from 'next/dynamic'
+import { UserLayout } from '../components/templates/pageTemplate'
+import Link from 'next/link'
+import { notFound } from '../utils'
 
-
-const Head = dynamic(() => import('@components/atoms/head/head'))
-const Error = dynamic(() => import('@components/organism/error/index').then(res=>res.Error),{loading: () => <Spinner/>})
-
-export default function Home() {
+export default function ErrorComp() {
   return (
-    <Fragment>
-			<Head title={'Omerald Diagnostic | 404'} />
-        <Error/>
-    </Fragment>
+    <UserLayout tabName="Admin Omerald | 404">
+      <section className="max-w-[100%] h-auto my-32 sm:my-20 my-8 2xl:my-4 xl:min-h-[60vh] text-center">
+          <img src={notFound} className="w-[80vw] sm:w-[60vw] md:w-[30vw] mb-20 mt-20 m-auto" alt="" />
+              <Link href={"/"}>
+                  <button className="my-[2vh] md:w-[10vw] bg-orange-300 px-2 py-2 text-gray-900 font-bold rounded-md">Visit Home</button>
+              </Link>
+      </section>
+    </UserLayout>
   )
 }

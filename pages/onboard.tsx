@@ -1,6 +1,5 @@
 import { Fragment, useEffect } from 'react'
 import { Spinner } from '@components/atoms/loader'
-import { PageTemplate } from '@components/templates/pageTemplate'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useAuthContext } from 'utils/context/auth.context'
@@ -22,18 +21,17 @@ function Onboard() {
   },[diagnosticDetails])
 
   return (
-    <Fragment>
-	    <Head title={'Omerald Diagnostic | Onboard'} />
-      <PageTemplate>
-            <div>
-                <Navbar/>
-                    <section className='min-h-[80vh]'>
-                      <OnboardComponents/>
-                    </section>
-                <Footer />
-            </div>
-        </PageTemplate>
-	  </Fragment>
+    // <Fragment>
+	  //   <Head title={'Omerald Diagnostic | Onboard'} />
+    //         <div>
+    //             <Navbar/>
+    //                 <section className='min-h-[80vh]'>
+    //                   <OnboardComponents/>
+    //                 </section>
+    //             <Footer />
+    //         </div>
+	  // </Fragment>
+    <p>Onboarding</p>
   )
 }
 

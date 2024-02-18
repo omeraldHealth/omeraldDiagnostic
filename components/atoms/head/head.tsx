@@ -1,24 +1,26 @@
-import React, { FC } from 'react'
-import NextHead from 'next/head'
-import { HeadProps } from 'utils/types/atoms/atoms'
-import { logoUrl } from 'utils/urls/files'
+import Head from 'next/head';
+import React from 'react';
 
-const Head: FC<HeadProps> = ({ title = 'Omerald Diagnostic', description = 'Helping diagnostic centers manage and share reports', url = '', ogImage = logoUrl }) => (
-	<NextHead>
-		<meta charSet='UTF-8' />
-		<title>{title}</title>
-		<meta name='description' content={description} />
-		<meta name='viewport' content='width=device-width, initial-scale=1' />
-		<link rel='icon' href={ogImage} />
-		<meta property='og:url' content={url} />
-		<meta property='og:title' content={title} />
-		<meta property='og:description' content={description} />
-		<meta name='twitter:site' content={url} />
-		<meta name='twitter:image' content={ogImage} />
-		<meta property='og:image' content={ogImage} />
-		<meta property='og:image:width' content='1200' />
-		<meta property='og:image:height' content='630' />
-	</NextHead>
-)
+const PageHead = ({ title, description, icon } : any) => {
+  return (
+    <Head>
+      <title>{title ? title : 'Omerald'}</title>
+      <meta name="description" content={description} />
+      <meta
+        httpEquiv="Content-Security-Policy"
+        content="upgrade-insecure-requests"
+      />
+      <meta name="theme-color" content="#fff" />
+      <link
+        rel="icon"
+        href={
+          'https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png'
+        }
+      />
+      {/* <link rel="manifest" href="/manifest.json" /> */}
+      <link rel="apple-touch-icon" href="/favicon.ico" />
+    </Head>
+  );
+};
 
-export default Head
+export default PageHead;

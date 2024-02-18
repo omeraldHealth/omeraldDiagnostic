@@ -1,16 +1,13 @@
-import { Fragment } from 'react'
-import { Spinner } from '@components/atoms/loader'
 import dynamic from 'next/dynamic'
-
-const Head = dynamic(() => import('@components/atoms/head/head'))
-const LandingPage = dynamic(() => import('@components/organism/landing/landingPage'),{loading: () => <Spinner/>})
+import { UserLayout } from '../components/templates/pageTemplate'
+ 
+const LandingPage = dynamic(() => import('@components/organism/landing/landingPage'),{ ssr: false })
 
 export default function Home() {
 
   return (
-    <Fragment>
-			<Head title={'Omerald Diagnostic'} />
-      <LandingPage/>
-		</Fragment>
+    <UserLayout tabName="Admin Omerald | Home">
+      <LandingPage />
+    </UserLayout>
   )
 }

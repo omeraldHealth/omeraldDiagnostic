@@ -11,6 +11,8 @@ import Allowed from 'utils/permissions/permissions'
 import type { AppProps } from 'next/app'
 import '../styles/tailwind.css'
 import { ClerkProvider } from '@clerk/nextjs';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { RecoilRoot } from 'recoil';
 
 
 const queryClient = new QueryClient({
@@ -32,18 +34,13 @@ export default function App({ Component, pageProps }: AppProps) {
 	}, [])
 
   return (
-    <Provider store={store}>
-       <ClerkProvider publishableKey={clerkFrontendApi} {...pageProps} >
-        <QueryClientProvider client={queryClient}>
-            <AuthContextProvider>
-                <GlobalStyle />
-                <ToastContainer autoClose={1000}/>
-                <ThemeProvider theme={theme}>{isMounted && <Allowed>
-                <Component {...pageProps} />
-              </Allowed> }</ThemeProvider>
-            </AuthContextProvider>
-        </QueryClientProvider>
-      </ClerkProvider>
-    </Provider>
-  )
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} {...pageProps}>
+          <Component {...pageProps} />
+        </ClerkProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </RecoilRoot>
+    </QueryClientProvider>
+  );
 }
