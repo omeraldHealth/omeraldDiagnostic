@@ -39,7 +39,6 @@ function useApplicationAuth() {
         const {data,status} = await getUserDetails({phoneNumber: employees?.[0]?.mainBranchId || phoneNumber})
         if (status==200 && (data?.phoneNumber || employees?.[0]?._id)) {
           // @ts-ignore
-          console.log(data)
           setDiagnosticDetails(data);
           // @ts-ignore
           employees?.length>0 ? setOperator(employees[0]) : setOperator(data?.managersDetail[0])

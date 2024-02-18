@@ -12,7 +12,7 @@ export function InfoPage({detail}:any) {
 
     const {data:Info,isLoading} = useQueryGetData(["info",detail],getDiagnosticSetting+detail)
     const parsedHtml =Info?.data?.value && parse(Info?.data?.value);
-    console.log(Info)
+
 	return (
         <PageTemplate>
             <div className={`pt-[1vh] ${styles["signInContainer"]}`}>

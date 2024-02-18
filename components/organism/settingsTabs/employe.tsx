@@ -95,7 +95,6 @@ export function EmployeeManagement() {
       if( duplicate){
         errorAlert("Duplicate Record found with name or contact")
       }else if(edit){
-        console.log(employeeId)
         let updated = {...initialData,...value}
         let updatedManager = diagnostic?.data?.managersDetail?.map((manager:any) => {
           if( manager._id == initialData?._id){
@@ -169,7 +168,7 @@ export function EmployeeManagement() {
 
     const [phoneNumber,setPhoneNumber] = useState();
    
-    useEffect(()=>{console.log(phoneNumber)},[phoneNumber])
+    // useEffect(()=>{console.log(phoneNumber)},[phoneNumber])
 
     let employeeList = diagnostic?.data?.managersDetail?.filter((emp:any) => emp.branchId === activeBranch?._id || emp?.managerRole.toLowerCase() == "owner")
     return (

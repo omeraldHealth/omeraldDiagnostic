@@ -16,7 +16,6 @@ import { useMediaQuery } from 'react-responsive'
 
 
 export function DashboardHeader({showSidebar,setSidebarOpen}:any) {
-
   
     const dashboardRoute = useSelector((state:any)=>state.dashboardReducer)
     const {diagnosticDetails,operator,activeBranch,setActiveBranch} = useAuthContext();

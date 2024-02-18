@@ -156,7 +156,7 @@ export function BranchManagement() {
  
     const [phoneNumber,setPhoneNumber] = useState();
    
-    useEffect(()=>{console.log(phoneNumber)},[phoneNumber])
+    // useEffect(()=>{console.log(phoneNumber)},[phoneNumber])
 
     return (
       <SettingsCommon handleImage={setPhoneNumber} tabName="Branch" selectedValue={selectedValue} setSelectedValue={setSelectedValue} columns={columns} data={diagnostic?.data?.branchDetails} setAddElement={setAddElement} addElement={addElement} tabIndex={2} setEdit={setEdit} edit={edit} initialData={initialData} handleSubmit={handleSubmit} settingsForm={branchDetailsEditFormArray} />

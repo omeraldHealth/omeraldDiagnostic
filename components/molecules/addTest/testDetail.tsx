@@ -28,11 +28,9 @@ export const TestDetail = ({handleSteps}:any) => {
 
     let {data:reportTypes}  = useQueryGetData("reportTypes",getReportTypesApi)
     // let reportTypes = axios.get(getReportTypesApi)
-    console.log(reportTypes)
    
     const dispatch = useDispatch()
     reportTypes = reportTypes?.data;
-    console.log(reportTypes)
 
     reportTypes = reportTypes?.map((report:any) => {
         return {
@@ -50,7 +48,6 @@ export const TestDetail = ({handleSteps}:any) => {
         }
     })
     const [datas, setData] = useState<SelectProps['options']>(reportTypes);   
-    console.log(datas)
 
     useEffect(()=>{
         if(selectedValue && selectedReportId){
@@ -64,7 +61,6 @@ export const TestDetail = ({handleSteps}:any) => {
     },[selectedValue,selectedReportId])
 
     const handleSearch = (newValue: string) => {
-        console.log(reportTypes)
         let temp = reportTypes.filter((report:any)=> report.testName.toLowerCase().includes(newValue.toLowerCase()))
         setData(temp)
     };

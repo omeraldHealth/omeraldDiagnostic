@@ -78,7 +78,7 @@ const ProfileView = ({profile,style}:any) => {
   
   const {diagnosticDetails,activeBranch} = useAuthContext();
   const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
-  console.log(diagnostic)
+
   const handleSubmit = async (value:any) => {
     confirm({
       title: 'Do you want to update this?',

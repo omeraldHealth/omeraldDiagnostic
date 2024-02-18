@@ -62,7 +62,6 @@ export function PathologistManagement() {
     const handleSubmit = async (value:any) => {
      
       let duplicate = diagnostic?.data?.pathologistDetail.some((path:any) => (path._id !== initialData._id && path.name.trim() === value.name.trim()))
-      console.log(image)
       let flag = true;
       setLoading(true)
       if(duplicate){
