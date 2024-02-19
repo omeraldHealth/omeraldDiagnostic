@@ -102,6 +102,17 @@ export const pathologistFormArray = [
     {"name":"designation","type":"text","label":"Pathologist Designation","required":true,pattern: textPattern},
 ]
 
+export const customTestForm:FormType[] = [
+    {"name":"sampleName","type":"text","label":"Enter Custom Sample Name","required":true},
+    {"name":"testName","type":"text","label":"Enter Test Name","required":true},
+]
+
+export const templateTestForm:FormType[] = [
+    {"name":"sampleName","type":"text","label":"Enter Custom Sample Name","required":true},
+    // {"name":"testName","type":"text","label":"Enter Test Name","required":true},
+]
+
+
 export const initialTestState : ReportTypes = {
 	sampleName:"",
 	//@ts-ignore
