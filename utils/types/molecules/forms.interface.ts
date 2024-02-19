@@ -88,13 +88,13 @@ export const branchDetailsEditFormArray: FormType[] = [
     {"name":"branchOperator","type":"multiSelect","label":"Branch Operator","required":true},
 ]
 
-export const testForm:FormType = [
-    {"name":"keyword","type":"text","label":"Parameters","required":true,pattern: textPattern},
-    {"name":"unit","type":"text","label":"unit","required":true,pattern:textPattern},
-    {"name":"minRange","type":"text","label":"minRange","required":true,pattern:numberPattern},
-    {"name":"maxRange","type":"text","label":"minRange","required":true,pattern:numberPattern},
-    {"name":"aliases","type":"tags","label":"Aliases","required":true},
-  ]
+export const testForm: FormType[] = [
+    {"name": "keyword", "type": "text", "label": "Parameters", "required": true, pattern: textPattern},
+    {"name": "unit", "type": "text", "label": "unit", "required": true, pattern: textPattern},
+    {"name": "minRange", "type": "text", "label": "minRange", "required": true, pattern: numberPattern},
+    {"name": "maxRange", "type": "text", "label": "maxRange", "required": true, pattern: numberPattern},
+    {"name": "aliases", "type": "tags", "label": "Aliases", "required": true},
+];
 
 export const pathologistFormArray = [
     {"name":"signature","type":"image","label":"Pathologist Signature","required":true,pattern: textPattern},

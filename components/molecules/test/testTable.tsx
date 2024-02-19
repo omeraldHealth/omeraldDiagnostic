@@ -33,7 +33,7 @@ const TestTableColumns: ColumnsType<DataType> = [
     key: 'testName',
     title: 'Test Name',
     dataIndex: 'sampleType',
-    render: (text) => <a>{text.testName}</a>,
+    render: (text) => <a>{text?.sampleType?.testName}</a>,
     sorter: (a, b) => a.sampleType.testName.length - b.sampleType.testName.length,
   },
   {
@@ -43,7 +43,7 @@ const TestTableColumns: ColumnsType<DataType> = [
     sorter: (a, b) => a.sampleType.keywords.length - b.sampleType.keywords.length,
     render: (sampleType, record) => (
       <>
-        {sampleType.keywords?.map((param, index) => (
+        {sampleType?.keywords?.map((param, index) => (
           <a key={index} href='#'>
             <Popover content={param.aliases} title={`${record?.sampleType?.testName} (${param.keyword} aliases)`}>
               <Tag className="my-1" color="green" key={param}>

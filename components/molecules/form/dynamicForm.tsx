@@ -80,6 +80,16 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText
             </Radio.Group>
           </Form.Item>
         );
+      case 'tags':
+        return (
+          <Form.Item key={formItem.label+1} className='mb-6' name={formItem.name} labelCol={{ span: 0 }} >
+            <Select
+              mode="tags"
+              style={{ width: '100%' }}
+              placeholder="Aliases"
+            />
+          </Form.Item>
+        );
       default:
         return null;
     }

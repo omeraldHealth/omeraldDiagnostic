@@ -19,7 +19,12 @@ export const TestDetail = ({handleSteps}:any) => {
     
     const handleFormSubmit = (value: any) => {
         if(!selectedValue){
-            setTestDetail(value)
+            let testType = {
+                sampleName: value.testName,
+                sampleType: {testName: value.sampleName,}
+            }
+            // @ts-ignore
+            setTestDetail(testType)
             handleSteps() 
         }
     };
