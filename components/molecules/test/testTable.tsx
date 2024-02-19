@@ -18,19 +18,20 @@ import { useRecoilValue } from 'recoil';
 import { operatorState } from '../../common/recoil/operator';
 import { branchState } from '../../common/recoil/blogs/branch';
 import { useUser } from '@clerk/clerk-react';
+import { useCurrentBranchValue, useManagerValue, useProfileValue } from '@components/common/constants/constants';
 
 export const TestTable = () => {
 
   const {user } = useUser()
-  const profile = useRecoilValue(profileState);
-  const operator = useRecoilValue(operatorState);
-  const currentBranch = useRecoilValue(branchState);
 
   const [editTest,setEdit] = useState(false);
   const [initialTestDetails,setInitalTest] = useState();
   const [sampleName,setSampleName] = useState();
   const [testName,setTestName] = useState();
   const queryClient = useQueryClient();
+  const profile = useProfileValue();
+  const currentBranch = useCurrentBranchValue();
+  const operator = useManagerValue();
   
   const dispatch = useDispatch()
   const { confirm } = Modal;
@@ -45,6 +46,7 @@ export const TestTable = () => {
     },
   });
 
+  //@ts-ignore
   let tests = profile?.tests.filter((test:any) => test?.branchId === currentBranch?._id)
 
   let pathList = tests?.forEach((man:any) => {

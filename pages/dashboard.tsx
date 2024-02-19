@@ -21,8 +21,7 @@ const Dashboard_Tabs = {
 export default function Dashboard() {
 
   const dashboard = useRecoilValue(dashTabs)
-  console.log(dashboard)
-
+  
   return (
     <UserLayout tabName={`Admin Omerald | ${dashboard}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">
       <DashboardLayout>{Dashboard_Tabs[dashboard]}</DashboardLayout>

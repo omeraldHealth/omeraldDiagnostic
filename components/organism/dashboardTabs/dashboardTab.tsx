@@ -1,4 +1,3 @@
-import { Fragment} from 'react'
 import {CategoryScale} from 'chart.js';
 import { Spinner } from '@components/atoms/loader';
 import dynamic from 'next/dynamic';

@@ -1,6 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { profileState } from "../recoil/profile";
-import { useUser } from "@clerk/clerk-react";
+import { operatorState } from "../recoil/operator";
+import { branchState } from "../recoil/blogs/branch";
 
 export const ROUTES_WITHOUT_SIDEBAR = [
     '/',
@@ -13,3 +14,9 @@ export const ROUTES_WITHOUT_SIDEBAR = [
   ];
 
 export const useProfileValue = () => useRecoilValue(profileState);
+export const useManagerValue = () => useRecoilValue(operatorState);
+export const useCurrentBranchValue = () => useRecoilValue(branchState);
+
+export const setProfileValue = () => useRecoilState(profileState);
+export const setManagerValue = () => useSetRecoilState(operatorState);
+export const setCurrentBranchValue = () => useRecoilState(branchState);

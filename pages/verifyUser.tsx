@@ -2,20 +2,23 @@ import { useEffect } from 'react'
 import { UserLayout } from '@components/templates/pageTemplate'
 import { useSession, useUser } from '@clerk/clerk-react'
 import { useRouter } from 'next/router'
-import axios from 'axios';
 import { getDiagProfileByPhoneApi } from '../utils';
 import { errorAlert, successAlert } from '../components/atoms/alerts/alert';
 import { useSetRecoilState } from 'recoil';
 import { profileState } from '../components/common/recoil/profile';
 import { branchState } from '../components/common/recoil/blogs/branch';
-import { operatorState } from "../components/common/recoil/operator/index"
+import { operatorState } from "../components/common/recoil/operator/index";
+import axios from 'axios';
+
 export default function VerifyUser() {
   const {session,isLoaded} = useSession();
   const {user} = useUser(); 
   const router = useRouter(); 
   const setProfile = useSetRecoilState(profileState)
+  const setManagerValue = useSetRecoilState(operatorState);
   const setOperator = useSetRecoilState(operatorState)
   const setCurrentBranch = useSetRecoilState(branchState)
+  const phoneNumber = user && user?.phoneNumbers[0]?.phoneNumber
 
   useEffect(()=>{
     if (isLoaded && session?.status !==  'active') {
@@ -27,11 +30,13 @@ export default function VerifyUser() {
   },[user, session])
 
   const fetchProfile = async (user:any) => {
+
     try {
       const {data,status} = await axios.get(getDiagProfileByPhoneApi+user?.phoneNumbers[0]?.phoneNumber)
       if(status === 200) {
         if(data){
           setProfile(data)
+          setManagerValue(assignManager(data?.managersDetail , phoneNumber || ""))
           setCurrentBranch(data?.branchDetails?.[0])
           setOperator(data?.managersDetail[0])
           successAlert("Profile fetched succesfully")
@@ -55,4 +60,8 @@ export default function VerifyUser() {
      </div>
    </UserLayout>
   )
+}
+
+const assignManager = async (managerList:any, phoneNumber : string) => {
+    return (managerList.filter((manager: any) => manager?.managerContact === phoneNumber)[0])
 }
