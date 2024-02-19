@@ -4,7 +4,7 @@ import { TestToggle } from '@components/molecules/test/testToggle';
 import React, { useState } from 'react'
 import { AddTestComponent } from '@components/molecules/addReport/addTest';
 
-export default function TestTab() {
+export function TestTab() {
   const [showTest,setShowTest] = useState(false)
 
   return (
