@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import React, { useState } from 'react';
 
 export const DashboardTable = ({ columns, data, pageSize }: any) => {
-  
+
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: pageSize || 6, // Set a default pageSize if not provided
@@ -18,7 +18,7 @@ export const DashboardTable = ({ columns, data, pageSize }: any) => {
   return (
     <div style={{ width: '100%', overflowX: 'auto' }}>
       <Table
-        dataSource={[data]}
+        dataSource={data}
         columns={columns}
         pagination={pagination}
         onChange={handleTableChange}
