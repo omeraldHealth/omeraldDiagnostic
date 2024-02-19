@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery, UseQueryOptions } from 'react-query';
 
-import { updateDiagnosticUserApi,insertReportApi, uploadReportApi, uploadImageApi, insertBranches,updateBranches,deleteBranches, insertEmployee, updateEmployee, deleteEmployee } from 'utils/urls/app';
+import { updateDiagProfileApi,insertReportApi, uploadReportApi, uploadImageApi, insertBranches,updateBranches,deleteBranches, insertEmployee, updateEmployee, deleteEmployee } from 'utils/urls/app';
 
 //useQuery hook to get data
 export function useQueryGetData<T>(
@@ -24,7 +24,7 @@ export function useUpdateDiagnostic<TData, TVariables>({
   onError,
 }: UseMutationProps<TData, TVariables>) {
   return useMutation(
-    (data:any) => axios.post(updateDiagnosticUserApi+data?.phoneNumber, data?.data), 
+    (data:any) => axios.put(updateDiagProfileApi, data?.data), 
     {
       onSuccess: onSuccess,
       onError: onError,

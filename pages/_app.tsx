@@ -9,7 +9,8 @@ import '../styles/tailwind.css'
 import { ClerkProvider } from '@clerk/nextjs';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { RecoilRoot } from 'recoil';
-
+import { Provider } from 'react-redux';
+import store from 'utils/store/store'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
 	}, [])
 
   return (
+    <Provider store={store}>
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} {...pageProps}>
@@ -39,5 +41,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <ReactQueryDevtools initialIsOpen={false} />
       </RecoilRoot>
     </QueryClientProvider>
+    </Provider>
   );
 }

@@ -1,7 +1,6 @@
 import { successAlert } from '@components/atoms/alerts/alert';
 import { BodyStyled_2 } from '@components/atoms/font/font.style';
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
-import { getDiagnosticUserApi } from '@utils';
 import { Input, Modal, Popover, Space, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React, { useState } from 'react'
@@ -14,22 +13,27 @@ import { AddKeywords } from '../addTest/addKeywords';
 import { useQueryGetData, useUpdateDiagnostic } from 'utils/reactQuery';
 import { useQueryClient } from 'react-query';
 import { ActivityLogger } from '../logger.tsx/activity';
+import { profileState } from '../../common/recoil/profile';
+import { useRecoilValue } from 'recoil';
+import { operatorState } from '../../common/recoil/operator';
+import { branchState } from '../../common/recoil/blogs/branch';
+import { useUser } from '@clerk/clerk-react';
 
 export const TestTable = () => {
 
+  const {user } = useUser()
+  const profile = useRecoilValue(profileState);
+  const operator = useRecoilValue(operatorState);
+  const currentBranch = useRecoilValue(branchState);
+
   const [editTest,setEdit] = useState(false);
   const [initialTestDetails,setInitalTest] = useState();
-  const {diagnosticDetails,activeBranch,operator} = useAuthContext()
-  const testDetails = useSelector((state:any)=>state.testReducer)
   const [sampleName,setSampleName] = useState();
   const [testName,setTestName] = useState();
   const queryClient = useQueryClient();
   
   const dispatch = useDispatch()
   const { confirm } = Modal;
-
-
-  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
@@ -41,7 +45,7 @@ export const TestTable = () => {
     },
   });
 
-  let tests = diagnostic?.data?.tests.filter((test:any) => test?.branchId === activeBranch?._id)
+  let tests = profile?.tests.filter((test:any) => test?.branchId === currentBranch?._id)
 
   let pathList = tests?.forEach((man:any) => {
     return   { 
@@ -110,10 +114,10 @@ export const TestTable = () => {
   ]
 
   const handleRemoveTest = async (record:any) => {
-    let test = tests.filter((test:any)=>test._id !== record._id)
-    updateDiagnostic?.mutate({data:{"tests":test},phoneNumber:diagnosticDetails?.phoneNumber})
+    let test = tests?.filter((test:any)=>test._id !== record._id)
+    updateDiagnostic?.mutate({data:{"tests":test},phoneNumber:user?.phoneNumbers[0]?.phoneNumber})
     
-    ActivityLogger("Removed Test "+record?.sampleName,diagnostic?.data,operator,activeBranch)
+    // ActivityLogger("Removed Test "+record?.sampleName)
   }
 
   const handleEditTest = async (value:any) => {
@@ -148,9 +152,9 @@ export const TestTable = () => {
       "branchId" : activeBranch?._id
     }
 
-    let updatedTest = diagnostic?.data.tests.filter((test)=>test._id !== initialTestDetails?._id)
+    let updatedTest = profile?.tests.filter((test)=>test._id !== initialTestDetails?._id)
     updatedTest.push(testItem)
-    updateDiagnostic?.mutate({data:{"tests":updatedTest},phoneNumber:diagnosticDetails?.phoneNumber})
+    updateDiagnostic?.mutate({data:{"tests":updatedTest},phoneNumber:user?.phoneNumbers[0]?.phoneNumber})
     setEdit(!editTest)
   }
 

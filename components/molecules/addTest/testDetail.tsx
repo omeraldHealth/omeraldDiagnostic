@@ -1,6 +1,6 @@
 import { errorAlert } from "@components/atoms/alerts/alert";
 import { BodyText_3 } from "@components/atoms/font"
-import { getReportTypesApi } from "@utils";
+import { getAdminReportTypesApi, getReportTypesApi } from "@utils";
 import { Form, Input, Radio, SelectProps } from "antd"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +26,7 @@ export const TestDetail = ({handleSteps}:any) => {
         "testName":testName
     }
 
-    let {data:reportTypes}  = useQueryGetData("reportTypes",getReportTypesApi)
+    let {data:reportTypes}  = useQueryGetData("reportTypes",getAdminReportTypesApi)
     // let reportTypes = axios.get(getReportTypesApi)
    
     const dispatch = useDispatch()
@@ -61,7 +61,7 @@ export const TestDetail = ({handleSteps}:any) => {
     },[selectedValue,selectedReportId])
 
     const handleSearch = (newValue: string) => {
-        let temp = reportTypes.filter((report:any)=> report.testName.toLowerCase().includes(newValue.toLowerCase()))
+        let temp = reportTypes?.filter((report:any)=> report.testName.toLowerCase().includes(newValue.toLowerCase()))
         setData(temp)
     };
     

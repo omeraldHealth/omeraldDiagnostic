@@ -1,4 +1,4 @@
-import { getDiagnosticReports, getDiagnosticUserApi, createDiagProfileApi, insertReportApi, updateDiagnosticUserApi, uploadImageApi, uploadReportApi } from "utils/urls/app";
+import {createDiagProfileApi, getDiagProfileByPhoneApi, updateDiagProfileApi } from "utils/urls/app";
 import { getUserDetailType } from "utils/types/atoms/hooks";
 import { ReportDetails, UserDetails } from "utils/types/molecules/users.interface";
 import axios from "axios";
@@ -6,16 +6,13 @@ import axios from "axios";
 //fetch diagnostic profile
 export async function getUserDetails(phoneNumber: getUserDetailType) {
   try {
-  const resp = await axios.get(getDiagnosticUserApi+phoneNumber.phoneNumber,{});
+  const resp = await axios.get(getDiagProfileByPhoneApi+phoneNumber.phoneNumber,{});
   return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error?.response?.status || error?.request?.code, data: null };
   }
 }
 
-export async function fetchUserDetails(phoneNumber: getUserDetailType) {
-  () => {return axios.get(getDiagnosticUserApi+phoneNumber?.phoneNumber)}
-}
 //insert diagnostic profile
 export async function setUserDetails(userDetails: UserDetails) {
   try {
@@ -26,9 +23,9 @@ export async function setUserDetails(userDetails: UserDetails) {
   }
 }
 //update diagnostic profile
-export async function updateUserDetails(userId: getUserDetailType,data:any) {
+export async function updateUserDetails(data:any) {
   try {
-    const resp = await axios.post(updateDiagnosticUserApi+userId.phoneNumber, data, {})
+    const resp = await axios.post(updateDiagProfileApi, {data:data, id: data?._id})
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error };

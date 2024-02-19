@@ -11,19 +11,30 @@ import { DynamicFormCreator } from '../form/dynamicForm'
 import { AddKeyword } from './createdKeyword'
 import { ActivityLogger } from '../logger.tsx/activity'
 import { Popconfirm } from 'antd'
+import { useUser } from '@clerk/clerk-react'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { profile } from 'console'
+import { profileState } from '../../common/recoil/profile'
+import { operatorState } from '../../common/recoil/operator'
+import { branchState } from '../../common/recoil/blogs/branch'
 
 export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
 
   const testDetails = useSelector((state:any)=>state.testReducer)
-  const {diagnosticDetails,activeBranch,operator} = useAuthContext();
+  // const {diagnosticDetails,activeBranch,operator} = useAuthContext();
   const [addKeyword,setAddKeyword] = useState(false)
   const queryClient = useQueryClient();
-  const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
-  const dispatcher = useDispatch()
+  // const {data:diagnostic}  = useQueryGetData("getDiagnostic",getDiagnosticUserApi+diagnosticDetails?.phoneNumber)
+  // const dispatcher = useDispatch()
+  const {user} = useUser()
+  const operator = useRecoilValue(operatorState)
+  const currentBranch = useRecoilValue(branchState)
+  const [profile, setProfile] = useRecoilState(profileState)
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert("Tests Added succesfully")
+      setProfile(data?.data)
       queryClient.invalidateQueries('getDiagnostic');
   
       handleSucess()
@@ -61,14 +72,12 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
       errorAlert("please add keywords to proceed")
     }else{
       if(testDetails ){
-        testDetails.branchId = activeBranch?._id
-        let updateTest = diagnostic?.data?.tests
-        
-        updateTest?.push(testDetails)
+        testDetails.branchId = currentBranch?._id
+        let updateTest = [...(profile?.tests || []), testDetails];
 
         //@ts-ignore
-        updateDiagnostic?.mutate({phoneNumber:diagnostic?.data?.phoneNumber,data:{"tests":updateTest}})
-        ActivityLogger("Added Test "+testDetails?.sampleName,diagnostic?.data,operator,activeBranch)
+        updateDiagnostic?.mutate({data:{"tests":updateTest,"id":profile?._id}})
+        // ActivityLogger("Added Test "+testDetails?.sampleName,profile,operator,currentBranch)
       }else{
         // errorAlert("Test with name already exists")
       }
