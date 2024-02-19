@@ -35,6 +35,18 @@ export interface ReportTableType {
     status: string;
 }
 
+export interface profileComponentType{
+  profile: any,
+  summary: boolean,
+  style: string
+}
+
+export interface profileSummaryCard {
+  title: string,
+  value: string,
+  link?: string
+}
+
 export interface phoneNumberType  {
     isPhoneNumberDisabled: boolean | undefined,
     phoneNumber: string,

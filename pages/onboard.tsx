@@ -1,29 +1,32 @@
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { useAuthContext } from 'utils/context/auth.context'
-import { UserLayout } from '../components/templates/pageTemplate'
-import dynamic from 'next/dynamic'
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { UserLayout } from '../components/templates/pageTemplate';
+import { useProfileValue } from '@components/common/constants/constants';
+import { useUser } from '@clerk/clerk-react';
+import dynamic from 'next/dynamic';
 
-const OnboardComponents = dynamic(() => import('@components/molecules/onboard'),{ssr:false})
+const OnboardComponents = dynamic(() => import('@components/molecules/onboard'), { ssr: false });
 
 function Onboard() {
+  const { user } = useUser();
+  const router = useRouter();
+  const profileValue = useProfileValue();
 
-  const router = useRouter()
-  const {diagnosticDetails} = useAuthContext()
-
-  useEffect(()=>{
-    if(diagnosticDetails){
-      router?.push("/dashboard")
+  useEffect(() => {
+    // @ts-ignore
+    const shouldRedirect = user && profileValue?._id;
+    if (shouldRedirect) {
+      router?.push('/dashboard');
     }
-  },[diagnosticDetails])
+  }, [profileValue, user]);
 
   return (
     <UserLayout tabName="Admin Omerald | Verify User">
-    <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
-        <OnboardComponents/>
-    </div>
-  </UserLayout>
-  )
+      <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
+        <OnboardComponents />
+      </div>
+    </UserLayout>
+  );
 }
 
 export default Onboard;

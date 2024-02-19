@@ -5,8 +5,8 @@ import { FormType } from 'utils/types/molecules/forms.interface';
 
 export const onboardSteps: OnboardStepsType[] = [
     { id: 1, name: "Basic Details" },
-    { id: 2, name: "Brand Details" },
-    { id: 3, name: "Branch Details" },
+    { id: 2, name: "Branch Details" },
+    { id: 3, name: "Brand Details" },
     { id: 4, name: "Summary" },
 ];
 export const addReportSteps: OnboardStepsType[] = [
@@ -112,3 +112,4 @@ export const navigation = {
    
   ],
 };
+

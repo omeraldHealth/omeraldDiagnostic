@@ -166,7 +166,7 @@ export interface FormProps  {
 
 export interface DynamicFormType  {
   formProps: FormProps[],
-  buttonText: string,
+  buttonText: string | undefined,
   selectedValue?:any,
   formStyle?:string,
   button?:boolean,

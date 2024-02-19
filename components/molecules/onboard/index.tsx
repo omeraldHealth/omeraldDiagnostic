@@ -1,170 +1,143 @@
-import { StepHeader } from "@components/atoms/fileUploder/stepHeader";
-import React, {  useState } from "react";
-import { onboardSteps } from "utils/static";
-import {DynamicFormCreator} from "components/molecules/form/dynamicForm"
-import { BasicDetailsForm, basicFormArray, BranchDetails, branchDetailsFormArray, brandDetailsFormArray } from "utils/types/molecules/forms.interface";
-import { BrandDetailsForm, UserDetails } from "@utils";
-import { setUserDetails, uploadImage } from "utils/hook/userDetail";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Spinner } from "@components/atoms/loader";
-import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
-import { useAuthContext } from "utils/context/auth.context";
-import { BackwardIcon } from "@heroicons/react/20/solid";
-import { ForwardIcon } from "@heroicons/react/24/outline";
-import dynamic from "next/dynamic";
 import { useUser } from "@clerk/clerk-react";
+import { Spinner } from "@components/atoms/loader";
+import { BackwardIcon, ForwardIcon } from "@heroicons/react/24/outline";
+import { onboardSteps } from "utils/static";
+import { StepHeader } from "@components/atoms/fileUploder/stepHeader";
+import { UserDetails, BrandDetailsForm, OnboardStepsType } from "@utils";
+import { BasicDetailsForm, BranchDetails, basicFormArray, branchDetailsFormArray, brandDetailsFormArray } from "utils/types/molecules/forms.interface";
+import { createDiagProfile } from "utils/hook/userDetail";
+import { successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import dynamic from "next/dynamic";
+import DynamicFormGenerator from "../form/dynamicForm";
+
+const formArrays = {
+  basicForm: basicFormArray,
+  branchForm: branchDetailsFormArray,
+  brandForm: brandDetailsFormArray,
+};
 
 const ProfileSummaryComponent = dynamic(() => import('../profile').then(res=>res.ProfileSummaryComponent),{loading: () => <Spinner/>})
 
 const OnboardComponents = () => {
-  const [loading, setLoading] = useState(false);
-  const [selectedRole,setSelectedRole] = useState("Select Role")
-  const [currentStep, setCurrentStep] = useState(onboardSteps[0]);
-  const {user,signIn} = useAuthContext() 
-  const [diagnosticProfile,setDiagnosticProfile] = useState<UserDetails>({});
-  const [logo,setLogo] = useState([]);
-  const router = useRouter()
-  const {user:ClerkUser,isLoaded} = useUser();
 
+  const { user } = useUser();
+  const router = useRouter();
+  const managerName = user && user?.fullName;
+  const phoneNumber = user && user?.phoneNumbers?.[0]?.phoneNumber;
+  const [currentStep, setCurrentStep] = useState<OnboardStepsType>(onboardSteps[0]);
+  const [formData, setFormData] = useState<BasicDetailsForm | BranchDetails | BrandDetailsForm | UserDetails | null>(null);
 
-  let initial = {
-    "phoneNumber":ClerkUser?.phoneNumbers[0].phoneNumber,
-    "diagnosticName":diagnosticProfile?.diagnosticName,
-    "email":diagnosticProfile?.email,
-    "facebookUrl": diagnosticProfile?.brandDetails?.facebookUrl,
-    "instaUrl": diagnosticProfile?.brandDetails?.instaUrl,
-    "branchName": diagnosticProfile?.branchDetails?.[0]?.branchName,
-    "branchEmail": diagnosticProfile?.branchDetails?.[0]?.branchEmail,
-    "branchContact": ClerkUser?.phoneNumbers[0].phoneNumber,
-    "managerName":diagnosticProfile?.managerName,
-    "branchAddress": diagnosticProfile?.branchDetails?.[0]?.branchAddress,
-  }
+  
+  const onNext = async () => {
+    // Add logic for handling next step
+    if(currentStep.id <= 3) setCurrentStep(onboardSteps[currentStep.id])
+  };
 
-  const handleContinueForm = (values:BasicDetailsForm | BrandDetailsForm | BranchDetails) => {
-    let val:any = values;
+  const onBack = () => {
+      // Add logic for handling previous step
+      const stepId = currentStep.id;
+      const targetStep = onboardSteps.find((step) => step.id === Math.max(0, stepId - 1)) || onboardSteps[0];
+      setCurrentStep(targetStep);
+  };
 
-    if(Object?.keys(values).includes("brandLogo")){
-      Object.assign(values,{"brandLogo":"https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"})
-      val = {"brandDetails":values}
-    }else if(Object?.keys(values).includes("branchName")){
-      values["branchContact"] = ClerkUser?.phoneNumbers[0].phoneNumber,
-      val = {"branchDetails":[values]}
-    }   
-    setDiagnosticProfile(Object.assign(diagnosticProfile, val))
-    setCurrentStep(onboardSteps[currentStep.id])
-
-  }
-
-  const handleImage = (value:any) => {
-    setLogo(value.logo)
-  }
-
-
-  const handleSubmit = async () => {
-    // let brandLogoUrl;
-    // //@ts-ignore
-    // if(logo?.length>0){
-    //   setLoading(true)
-    //   brandLogoUrl = await uploadImage(logo?.[0]?.originFileObj);
-    //   //save brandDetails with location
-    //   brandLogoUrl && setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":brandLogoUrl})}))
-      
-    //   //creating admin role
-    //   setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
-    //   let insertDiag = await setUserDetails(diagnosticProfile)
-
-    //   if (insertDiag.status == 201 && user) {
-    //     setLoading(false);
-    //     successAlert("Profile Created Succesfully")
-    //     signIn(ClerkUser?.phoneNumbers[0]?.phoneNumber, "/dashboard");
-    //   }
-
-    //   if (insertDiag.status === 409) {
-    //     setLoading(false);
-    //     errorAlert("Error creating profile")
-    //     router.push("/404");
-    //   }
-    // }else{
-      //creating admin role
-      setDiagnosticProfile(Object.assign(diagnosticProfile,{"brandDetails":Object.assign(diagnosticProfile.brandDetails,{"brandLogo":"https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"})}))
-      
-      setDiagnosticProfile(Object.assign(diagnosticProfile,{"managersDetail":Object.assign({"managerName":diagnosticProfile?.managerName,"managerContact":diagnosticProfile?.phoneNumber,"managerRole":"Owner"})}))
-      
-      try{
-        let insertDiag = await setUserDetails(diagnosticProfile)
-        if (insertDiag.status == 201) {
-          setLoading(false);
-          successAlert("Profile Created Succesfully")
-          router.push("/verifyUser")
-        }else if(insertDiag?.status?.response?.status){
-          setLoading(false);
-          errorAlert("Error creating profile"+ insertDiag?.status?.response?.data?.error )
-          router.push("/404");
-        }
-      }catch (err){
-        setLoading(false);
-        errorAlert("Error creating profile"+ err )
-        router.push("/404");
+  const onFormSubmit = async () => {
+    // Add logic for submitting form data 
+    let managerInfo = {managerName: managerName, managerContact: phoneNumber, managerRole : "owner"}
+    setFormData((prevData: any) => ({ ...prevData, managersDetail: managerInfo }));
+    try {
+      let insertDiag = await createDiagProfile(formData)
+      if(insertDiag.status === 201){
+        successAlert("Profile created sucessfully")
+        router.push("verifyUser")
       }
+    } catch (error) {
+        warningAlert("Error creating profile "+error)
+    }
+  };
+
+  const uploadImage = async (file: File) => {
+    // Add logic for uploading image
   }
 
-  const handleFormBack = () => {
-    if(currentStep.id===3){
-      setCurrentStep(onboardSteps[1])
-    }else if(currentStep.id===2){
-      setCurrentStep(onboardSteps[0])
-    }else{
-      setCurrentStep(onboardSteps[0])
+  const getFormProps = () => {
+    // return form props for each step
+    switch (currentStep?.id) {
+      case 1:
+        return { formProps: formArrays?.basicForm, disableElement: true, buttonText: "Continue", disabledFields: ["phoneNumber","managerName"], defaultValues: {phoneNumber: phoneNumber, managerName: managerName }  };
+      case 2:
+        return { formProps: formArrays?.branchForm, disableElement: false, buttonText: "Continue", handleImage: uploadImage, disabledFields: ["branchContact"], defaultValues: {branchContact: phoneNumber }  };
+      case 3:
+        return { formProps: formArrays?.brandForm, disableElement: true, buttonText: "Continue",};
+      case 4:
+        return { summary: true, props: formData, buttonText: "Submit" };
     }
-  }
+  };
 
-  const handleFormForward = () => {
-    if(currentStep.id<3){
-      setCurrentStep(onboardSteps[currentStep.id])
+  const handleFormSubmit = (value: any) => {
+    // Handle form submission based on the current step
+    switch (currentStep?.id) {
+      case 1:
+        setFormData((prevData) => ({ ...prevData, ...value }));
+        onNext();
+        break;
+      case 2:
+        setFormData((prevData:any) => ({
+          ...prevData,
+          branchDetails: [
+            ...(prevData?.branchDetails || []),
+            { ...value },
+         ],}));
+        onNext();
+        break;
+      case 3:
+        setFormData((prevData: any) => ({
+          ...prevData,
+          brandDetails: { ...(prevData?.brandDetails || {}), ...value },
+        }));
+        onNext();
+        break;
+      case 4:
+        onFormSubmit()
+        break;
+      default:
+        // console.log(formData);
     }
-  }
+  };
+  
+  const formDetails = getFormProps();
 
   return (
     <section className="lg:h-[70vh] mt-[7vh] mb-[12vh] min-h-[60vh]">
-            <section className="w-[90vw] sm:h-auto sm:w-[90vw] lg:w-[48vw] md:h-[30vh] lg:h-auto max-h-[80vh] rounded-lg bg-white shadow-xl m-auto self-center pb-5 text-center relative"> 
-              <div id="steps" className="rounded-md bg-slate-50 w-full p-4 sm:p-0 md:p-4 mb-4">
-                  <StepHeader stepList={onboardSteps} currentStep={currentStep}  />
+      <section className="w-[90vw] sm:h-auto sm:w-[90vw] lg:w-[48vw] md:h-[30vh] lg:h-auto max-h-[80vh] rounded-lg bg-white shadow-xl m-auto self-center pb-5 text-center relative">
+        <div id="steps" className="rounded-md bg-slate-50 w-full p-4 sm:p-0 md:p-4 mb-4">
+          <StepHeader stepList={onboardSteps} currentStep={currentStep} />
+        </div>
+        <div className="h-auto">
+          <span className="flex justify-between px-4">
+            <a href="#" onClick={onBack} className=""><BackwardIcon className="w-7  text-gray-400" /></a>
+            <a href="#" onClick={onNext} className=""><ForwardIcon className="w-7  text-gray-400" /></a>
+          </span>
+
+          <div className={`w-[${currentStep?.id === 4 ? '100%' : currentStep?.id === 3 ? '60%' : currentStep?.id === 2 ? '50%' : '90%'}] h-auto p-4`}>
+            {currentStep?.id !== 4 && <DynamicFormGenerator formProps={formDetails?.formProps || basicFormArray} buttonText={formDetails?.buttonText || ""} handleSubmit={handleFormSubmit} 
+            disabledFields={formDetails?.disabledFields} defaultValues={formDetails?.defaultValues}  />}
+            {currentStep?.id === 4 && (
+              <div>
+                <ProfileSummaryComponent summary profile={formDetails?.props} style="" />
+                <section className="mx-10 mb-4 flex justify-end">
+                  <button onClick={handleFormSubmit} className="bg-green-900 absolute text-white text-sm font-light px-4 py-2 rounded-md">
+                    {formDetails?.buttonText}
+                  </button>
+                </section>
               </div>
-              <div className="h-auto">
-                  <span className="flex justify-between px-4">
-                    <a href="#" onClick={handleFormBack} className=""><BackwardIcon className="w-7  text-gray-400"/></a>
-                    <a href="#" onClick={handleFormForward} className=""><ForwardIcon className="w-7  text-gray-400"/></a>
-                  </span>
-                 
-                  {
-                    currentStep?.id === 1 && <div className="my-4 w-[90%] sm:w-[70%] md:w-[70%] h-auto p-4">
-                      <DynamicFormCreator disableElement={true} initial={initial} buttonText="Continue" formProps={basicFormArray} handleSubmit={handleContinueForm}/>
-                    </div>
-                  }
-                  {
-                    currentStep?.id === 2 && <div className=" w-[50%] h-auto p-4">
-                      <DynamicFormCreator buttonText="Continue"  initial={initial} formProps={brandDetailsFormArray} handleImage={handleImage} handleSubmit={handleContinueForm}/>
-                    </div>
-                  }
-                  {
-                    currentStep?.id === 3 && <div className="w-[60%]  h-auto p-4">
-                    <DynamicFormCreator disableElement={true}  buttonText="Continue" initial={initial} selectedValue={selectedRole} setSelectedValue={setSelectedRole} formStyle="" formProps={branchDetailsFormArray} handleSubmit={handleContinueForm}/>
-                    </div>
-                  }
-                  {
-                    currentStep?.id === 4 && <div className="w-[100%] h-auto p-4">
-                      <ProfileSummaryComponent summary={true} props={diagnosticProfile} />
-                      <section className="mx-10 mb-4 flex justify-end">
-                        <button onClick={handleSubmit} className="bg-green-900 absolute text-white text-sm font-light px-4 py-2 rounded-md">Submit</button>
-                      </section>
-                    </div>
-                  }
-              </div>
-            </section>
-            {(!isLoaded || loading) && <Spinner/>}
+            )}
+          </div>
+        </div>
+      </section>
     </section>
-   
-  );
+  )
 };
 
 export default OnboardComponents;

@@ -14,7 +14,7 @@ export async function getUserDetails(phoneNumber: getUserDetailType) {
 }
 
 //insert diagnostic profile
-export async function setUserDetails(userDetails: UserDetails) {
+export async function createDiagProfile(userDetails: any) {
   try {
     const resp = await axios.post(createDiagProfileApi, userDetails, {})
     return { status: resp.status, data: resp.data };
