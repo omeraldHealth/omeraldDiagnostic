@@ -9,7 +9,7 @@ const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/da
 const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab').then(res=>res.TestTab),{loading:()=><Spinner/>})
 const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'),{ssr:false})
 const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'),{ssr:false})
-const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab'),{ssr:false})
+const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab').then(res=>res.SettingsTab),{loading:()=><Spinner/>})
 
 const Dashboard_Tabs = {
   "Dashboard": <DashboardTab />,

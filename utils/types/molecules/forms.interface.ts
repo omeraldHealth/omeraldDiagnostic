@@ -190,10 +190,3 @@ export interface DynamicFormType  {
   handleImage?: (value:any) =>void
   handleDate?: (value:any) => void
 }
-
-export const EmployeeDetails:FormType[] = [
-    {"name":"managerName","type":"text","label":"Operator Name","required":true},
-
-    {"name":"managerRole","type":"select","label":"Operator Role","required":true},
-    {"name":"managerContact","type":"settingContact","label":"Operator Contact","required":true,pattern:phonePattern},
-  ]

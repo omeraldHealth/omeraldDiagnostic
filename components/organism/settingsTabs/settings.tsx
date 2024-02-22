@@ -1,11 +1,13 @@
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
-import { DynamicFormCreator } from "@components/molecules/form/dynamicForm";
 
 
-export function SettingsCommon({tabName,tabIndex,data,columns,edit,initialData,handleImage,handleSubmit,settingsForm,setEdit,setAddElement,addElement,selectedValue,setSelectedValue}:any) {
+export function SettingsCommon({columns,data}:any) {
     return (
           <section >
-              <section className="min-h-[45vh]">
+              <div className="min-h-[45vh]">
+                <DashboardTable columns={columns} data={data ?? []} />
+              </div>
+              {/* <section className="min-h-[45vh]">
                   {!addElement ? <div className=""> 
                     <DashboardTable columns={columns} data={data} /></div>:
                     <section className="w-[100%] md:w-[50%] my-10 relative">
@@ -18,7 +20,7 @@ export function SettingsCommon({tabName,tabIndex,data,columns,edit,initialData,h
                   setEdit(false)}} className="bg-gray-200 p-2 rounded-md">
                     {!addElement ?  "Add "+tabName : "View "+tabName}
                   </button>
-              </section>
+              </section> */}
           </section>
     )
 }
