@@ -25,7 +25,7 @@ export async function createDiagProfile(userDetails: any) {
 //update diagnostic profile
 export async function updateUserDetails(data:any) {
   try {
-    const resp = await axios.post(updateDiagProfileApi, {data:data, id: data?._id})
+    const resp = await axios.put(updateDiagProfileApi, data)
     return { status: resp.status, data: resp.data };
   } catch (error: any) {
     return { status: error };

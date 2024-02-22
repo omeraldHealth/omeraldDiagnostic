@@ -1,21 +1,11 @@
-import { warningAlert } from "@components/atoms/alerts/alert";
-import { branchState } from "@components/common/recoil/blogs/branch";
-import { operatorState } from "@components/common/recoil/operator";
-import { profileState } from "@components/common/recoil/profile";
-import { profile } from "console";
-import { useRecoilValue } from "recoil";
-import { updateUserDetails } from "utils/hook/userDetail";
+import { warningAlert } from "@components/atoms/alerts/alert"
+import { updateUserDetails } from "utils/hook/userDetail"
 
 
-export async function  ActivityLogger(activity:string){
+export async function ActivityLogger(profile:any,activity:string,currentBranch:object,currentManage:any) {
 
-    const profile = useRecoilValue(profileState);
-    const operator = useRecoilValue(operatorState);
-    const currentBranch = useRecoilValue(branchState);
-
-    // let act = [...(diagnosticDetails?.activities || []), { user: operator, activity, branchId: activeBranch?._id }];
-    // let data = {...diagnosticDetails, "activities":act}
-    let resp = await updateUserDetails(profile)
+    let data = {"id":profile._id, "activities": [...(profile?.activities || []), { user: currentManage, activity: activity, branchId: currentBranch?._id }]}
+    let resp = await updateUserDetails(data)
     if(resp.status==200){
         warningAlert("Activity logged")
     }

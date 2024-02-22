@@ -1,6 +1,4 @@
 import { UserCircleIcon } from '@heroicons/react/20/solid'
-import { useDispatch } from 'react-redux'
-import { SET_DASHBOARD_ROUTE } from 'utils/store/types';
 import moment from 'moment';
 import React from 'react'
 import { useRecoilValue } from 'recoil';
@@ -10,11 +8,7 @@ import { branchState } from '../../common/recoil/blogs/branch';
 export const DashActivity = () => {
 
   const profile = useRecoilValue(profileState);
-  const currentBranch = useRecoilValue(branchState)
-  
-  //@ts-ignore
-  let activities = profile?.activities?.sort((a:any,b:any)=>new Date(b.updatedTime) - new Date(a.updatedTime)).slice(0,5)
-  activities = activities?.filter((activity:any)=>activity?.branchId == currentBranch?._id)
+  const activities = profile?.activities?.length>0 && profile?.activities
   
   return (
   <section className="w-[94vw] sm:w-[50vw] lg:w-[30vw] xl:w-[20vw] h-[100%] shadow-xl bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0 ">
@@ -31,7 +25,6 @@ export const DashActivity = () => {
 )}
 
 const ActivityItem = ({activityList}:any) => {
-    const dispatch = useDispatch()
     const date = Date.now()
     return <section>
        {activityList.map((activity:any,index:any)=>{
@@ -50,7 +43,7 @@ const ActivityItem = ({activityList}:any) => {
             </section>
         )
         })}
-    <a href="#" onClick={()=>{dispatch({type:SET_DASHBOARD_ROUTE,payload:{name:"Settings",href:"/settings",selectedTabIndex:"1"}})}} className='font-light text-xs text-blue-700'>Read More....</a>
+    <a href="#" className='font-light text-xs text-blue-700'>Read More....</a>
     </section>
 }
 
