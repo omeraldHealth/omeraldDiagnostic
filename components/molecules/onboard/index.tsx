@@ -5,7 +5,7 @@ import { Spinner } from "@components/atoms/loader";
 import { BackwardIcon, ForwardIcon } from "@heroicons/react/24/outline";
 import { onboardSteps } from "utils/static";
 import { StepHeader } from "@components/atoms/fileUploder/stepHeader";
-import { UserDetails, BrandDetailsForm, OnboardStepsType } from "@utils";
+import { UserDetails, BrandDetailsForm, OnboardStepsType, IManagerDetails } from "@utils";
 import { BasicDetailsForm, BranchDetails, basicFormArray, branchDetailsFormArray, brandDetailsFormArray } from "utils/types/molecules/forms.interface";
 import { createDiagProfile } from "utils/hook/userDetail";
 import { successAlert, warningAlert } from "@components/atoms/alerts/alert";
@@ -27,7 +27,7 @@ const OnboardComponents = () => {
   const managerName = user && user?.fullName;
   const phoneNumber = user && user?.phoneNumbers?.[0]?.phoneNumber;
   const [currentStep, setCurrentStep] = useState<OnboardStepsType>(onboardSteps[0]);
-  const [formData, setFormData] = useState<BasicDetailsForm | BranchDetails | BrandDetailsForm | UserDetails | null>(null);
+  const [formData, setFormData] = useState<BasicDetailsForm | BranchDetails | BrandDetailsForm | UserDetails | IManagerDetails |  null>(null);
 
   
   const onNext = async () => {
@@ -44,16 +44,18 @@ const OnboardComponents = () => {
 
   const onFormSubmit = async () => {
     // Add logic for submitting form data 
-    let managerInfo = {managerName: managerName, managerContact: phoneNumber, managerRole : "owner"}
-    setFormData((prevData: any) => ({ ...prevData, managersDetail: managerInfo }));
-    try {
-      let insertDiag = await createDiagProfile(formData)
-      if(insertDiag.status === 201){
-        successAlert("Profile created sucessfully")
-        router.push("verifyUser")
+
+    setFormData((prevData: any) => ({ ...prevData, "managersDetail": [{managerName: managerName, managerContact: phoneNumber, managerRole : "owner"}] }));
+    if(formData?.managersDetail?.[0]?.managerName){
+      try {
+        let insertDiag = await createDiagProfile(formData)
+        if(insertDiag.status === 201){
+          successAlert("Profile created sucessfully")
+          router.push("verifyUser")
+        }
+      } catch (error) {
+          warningAlert("Error creating profile "+error)
       }
-    } catch (error) {
-        warningAlert("Error creating profile "+error)
     }
   };
 

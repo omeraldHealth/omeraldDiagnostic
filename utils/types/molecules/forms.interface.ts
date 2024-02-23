@@ -29,9 +29,6 @@ export type BranchDetails = {
     branchAddress: string,
     branchContact: string,
     branchManager: string,
-    managerName: string;
-    managerRole: string;
-    managerContact: string;
 };
 
 export type IManagerDetails = {
