@@ -20,10 +20,6 @@ export const omeraldUsersState = atom({
   default: {},
 });
 
-export const reportsState = atom({
-  key: 'reportsState',
-  default: {},
-})
 
 export const adminUsersState = atom({
   key: 'adminUsersState',

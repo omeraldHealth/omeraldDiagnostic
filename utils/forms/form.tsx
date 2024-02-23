@@ -338,3 +338,91 @@ export const ParameterColumns =
       },
     },
 ]
+
+export const ReportTableColumns = [
+      {
+        key:"reportId",
+        title: 'Report Id',
+        dataIndex: 'reportId',
+        sorter: (a, b) => a.reportId.length - b.reportId.length,
+        // sortDirections: ['descend'],
+      },
+      {
+        key:"name",
+        title: 'Name',
+        dataIndex: 'userName',
+        sorter: (a, b) => a.userName.length - b.userName.length,
+        // sortDirections: ['descend'],
+      },
+      {
+        key:"email",
+        title: 'Email',
+        dataIndex: 'email',
+        // defaultSortOrder: 'descend',
+        sorter: (a, b) => a.email - b.email,
+      },
+      {
+        key:"userId",
+        title: 'Contact',
+        dataIndex: 'userId',
+        // defaultSortOrder: 'descend',
+        sorter: (a, b) => a.userId - b.userId,
+      },
+      {
+        key:"testName",
+        title: 'Sample Type',
+        dataIndex: 'testName',
+        sorter: (a, b) => a.testName.length - b.testName.length,
+      },
+      {
+        key:"reportDate",
+        title: 'Report Date',
+        dataIndex: 'reportDate',
+        // render: ((date:string) => dayjs(date).format("MMM D, YYYY, HH:mm:ss") ),
+        // sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime(),
+        defaultSortOrder: ['ascend']
+      },
+      // {
+      //   key:"updatedAt",
+      //   title: 'Uploaded Date',
+      //   dataIndex: 'updatedAt',
+      //   render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
+      //   sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() 
+      // },
+      // {
+      //   key:"click",
+      //   title: 'Click to view',
+      //   dataIndex: "isManualReport",
+      //   render: ((stat:string,person: any) => 
+      //   <>
+      //   { 
+      //     !stat ? (
+      //     <a href={person.reportUrl} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
+      //   ) : (
+      //     <ViewPdf
+      //       report={person}
+      //       diagnosticDetails={diagnosticDetails as UserDetails}
+      //     />
+      //   )}
+      //   </>
+      //   ),
+      // },
+    //   {
+    //     key:"share",
+    //     title: 'Click to Share',
+    //     dataIndex: 'userName',
+    //     render: ((userName:string,record) => <>
+    //     <div className='flex justifty-between align-middle items-center h-[1vh]'>
+    //         <section className='mr-4 '>
+    //           <a href={record.reportUrl} type="application/pdf" download={false} rel="noopener noreferrer" target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
+    //         </section>
+    //         <section className='self-center'>
+    //           <a onClick={()=>{handleWhatsapp(record)}}>
+    //             <FaWhatsapp className='w-6 text-green-700'/>
+    //           </a>
+    //         </section>
+  
+    //     </div>
+    //  </>),
+    //   },
+];

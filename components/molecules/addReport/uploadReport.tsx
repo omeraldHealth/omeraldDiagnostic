@@ -1,187 +1,72 @@
-import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
-import { BodyText_3 } from '@components/atoms/font';
-import { getReportTypesApi } from '@utils';
-import { Modal, Radio, Select,UploadProps } from 'antd';
-import React, { useState } from 'react'
-import { FileUploader } from '@components/atoms/fileUploder/fileUpload';
-import { Spinner } from '@components/atoms/loader';
-import { useDispatch, useSelector } from 'react-redux';
-import { SET_REPORT_FORM } from 'utils/store/types';
+import { useProfileValue } from "@components/common/constants/constants";
+import DynamicFormGenerator from "../form/dynamicForm";
+import { useState } from "react";
+import { Select } from "antd";
+import { manualReportForm, patientDetailsForm, reportUploadFormArray } from "utils/types/molecules/forms.interface";
+import { FileUploader } from "@components/atoms/fileUploder/fileUpload";
+import { useRecoilState } from "recoil";
+import { reportState } from "@components/common/recoil/report";
 
-import { DynamicFormCreator } from '../form/dynamicForm';
-import { useQueryGetData } from 'utils/reactQuery';
-import { useAuthContext } from 'utils/context/auth.context';
-
-interface patientType {handleSteps?: (value:any) => void,reportType:any}
-
-export const UploadReport = ({handleSteps,reportType}:patientType) => {
-
-  const {diagnosticDetails} = useAuthContext();
-  const [selectedReport,setSelectedReport] = useState()
-  const reportDetails = useSelector((state:any)=> state.reportFormReducer)
-  const [reportFile,setUploadedReport] = useState(null)
-  const [manual,setManual] = useState({value:false,label:"False"})
-  const manualOptions = [ {value:true,label:"Yes"},{value:false,label:"No"},];
-
-  let reportTypes = reportType?.map((report:any) => {
-      return {
-          "_id": report?._id,
-          "testName":report?.name,
-          "keywords": report?.parameters.map((param)=>{
-              return {
-                  "keyword": param?.name,
-                  "unit": param?.units?.[0]?.value,
-                  "minRange":param?.bioRefRange.min,
-                  "maxRange":param?.bioRefRange.max,
-                  "aliases": param?.aliases
-              }
-          })
-      }
-  })
-
+export const UploadReport = ({handleSteps}: any) => {
   
-  const dispatch = useDispatch()
-
-  const handleOnChange = (value:any) => {
-    setSelectedReport(reportTypes.filter((rep:any) => rep._id == value)[0])
-  }
-
-  const handleSubmit = async () => {
-
-    if(selectedReport && reportFile && selectedReport.testName.length>1){
-
-        dispatch({type:SET_REPORT_FORM,payload:{
-          ...reportDetails,
-          reportUrl:reportFile,
-          isManualReport:!manual,
-          testName:selectedReport?.testName,
-          reportId: generateReportId(),
-          status:"parsing",
-          userId:diagnosticDetails?.phoneNumber,
-          reportDate: Date.now()
-        }
-        })
-        handleSteps && handleSteps(2)
-    }else{
-      errorAlert("please select report type and upload file")
-    }
-
+  const profileValue = useProfileValue();
+  const [manualReport, setManualReport] = useState(null);
+  const [reportValue,setReportState] = useRecoilState(reportState)
   
+  const handleSubmit = (value:any):any => {
+    setReportState({...reportValue,...value})
+    handleSteps()
   }
 
-  const handleImage = (value:any) => {
-    setUploadedReport(value.logo)
-  }
+  const handleSelect = (value: any) => {
+    setManualReport(value);
+  };  
 
-  const handleForm =async (value:any)=>{
-   
-    if(selectedReport && selectedReport.testName.length>1){
-   
-        dispatch({type:SET_REPORT_FORM,payload:{
-          ...reportDetails,
-          testName:selectedReport?.testName,
-          userId:diagnosticDetails?.phoneNumber,
-          status:"parsed",
-          parsedData: value,
-          reportId:generateReportId(),
-          isManualReport: true,
-          reportDate: Date.now()
-        }
-        })  
-        handleSteps && handleSteps(2)
-    }else{
-      errorAlert("please select report type")
-    }
-  }
+  const handleUpload = (value: any) => {
+    console.log(value);
+  };  
 
-  const props: UploadProps = {
-    name: 'file',
-    multiple: false,
-    action: '',
-    headers: {
-      authorization: 'authorization-text',
-    },
-    onChange(info) {
-      if (info.file.status !== 'uploading') {
-        if(info.file.originFileObj ){
-          setUploadedReport(info.fileList[0].originFileObj)
-        }
-      }
-      if(info.fileList.length!==1){
-        setUploadedReport(null)
-      }
-      if (info.file.status === 'done') {
-        successAlert(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        errorAlert(`${info.file.name} file upload failed.`);
-      }
-    },
-  };
+  const handleDate = (value: any) => {console.log(value)}
 
-  function generateReportId() {
-    const randomNum = Math.floor(Math.random() * 1000000);
-    const reportId = String(randomNum).padStart(6, '0');
-    return reportId;
-  }
-  const { confirm } = Modal;
 
- 
+  const formProps = manualReport ? manualReportForm(profileValue) : reportUploadFormArray(handleDate, handleUpload);
+
   return (
-    <div className='relative h-[50vh]'>
-        <BodyText_3>Create report powered by Omerald ?</BodyText_3>
-        <section className='my-4'>
-            <Radio.Group options={manualOptions} onChange={(event)=>{if(event.target.value){setManual({value:true,label:"True"})}else{ setManual({value:false,label:"False"})}
-            }} value={manual.value} />
-        </section>
-        <section>
-        <BodyText_3 style='mb-4'>Please select the type of report</BodyText_3>
-                <Select
-                    style={{ width: 280 }}
-                    className="mt-4"
-                    defaultValue={"Select Report type"}
-                    onChange={handleOnChange}
-                    options={reportTypes && reportTypes?.map((reportType:any) => ({ label: reportType.testName, value: reportType._id }))}
-                />
-        </section>
-        {
-            !manual.value ?
-            <section className='w-[15vw]'>
-                <section className='my-6'>
-                  <FileUploader handleImage={handleImage}/>
-                </section>
-            </section>
-            :
-            <div >
-            {selectedReport && (
-                <DynamicFormCreator label={true} formStyle='grid grid-cols-3 my-4 gap-x-4 gap-y-4'  buttonText="Continue" formProps={getFormType(selectedReport?.keywords)} handleSubmit={handleForm}/>
-            )}
-          </div>
-       
-        }
-        {!manual.value && 
-        <section className='my-4 flex justify-between'>
-        
-          <button onClick={()=>{
-              confirm({
-                title: 'Do you want to go back?',
-                content: 'This action cannot be undone.',
-                onOk() {
-                  // Handle the user's confirmation
-                  handleSteps && handleSteps(0)
-                },
-                onCancel() {
-                  // Handle the user's cancellation
-                },
-              });
-           }} className="p-2 bg-gray-400 text-white w-auto lg:w-[8vw] rounded-lg">Back</button>
-          <button onClick={handleSubmit} className="p-2 bg-purple-800 text-white w-auto lg:w-[8vw] rounded-lg">Continue</button>
-        </section>}
-    </div>  
-  )
-}
+    <div className="px-8 py-2">
+      <section className="w-[70vh] h-auto xl:h-[40vh] xl:mt-4">
+        <ReportHeader handleSelect={handleSelect} />
+          {manualReport!=null && <DynamicFormGenerator
+            key="manualReportForm"
+            formProps={formProps}
+            buttonText="Continue"
+            handleSubmit={handleSubmit}
+          />}
+      </section>
+    </div>
+  );
+};
 
-function getFormType(keywords:any){
+const ReportHeader: React.FC<any> = ({ handleSelect }) => {
+  const uploadReportType = [
+    { value: true, label: 'Create Report with omerald' },
+    { value: false, label: 'Upload Existing Report' },
+  ]
+  return (
+    <section>
+      <section className="my-6">
+          <Select
+                placeholder={"Select Report Creation Type"}
+                onChange={handleSelect}
+              >
+                {uploadReportType && uploadReportType.map((option) => (
+                  <Select.Option key={option?.value} value={option?.value}>
+                    {option.label}
+                  </Select.Option>
+                ))}
+              </Select>
+      </section>
+    </section>
+  );
+};
 
-   let form = keywords && keywords.map((key:any) => ({ name: key.keyword,type:"text",label:`${key.keyword} (${key.normalRange},${key.unit})`,required:true,pattern:"^[0-9]*$"}))
-   return form
-}
+

@@ -1,4 +1,6 @@
+import { useProfileValue } from "@components/common/constants/constants";
 import { ReportDetails, ReportTypes } from "./users.interface";
+import path from "path";
 
 export const textPattern = /[^0-9]/
 
@@ -43,6 +45,11 @@ export type FormType = {
     label:string,
     required:boolean
     pattern?:RegExp,
+    options?: Object,
+    handleUpload?: Function,
+    handleDate?: Function,
+    fileList?: any,
+    handlePreview?: Function,
 };
 
 export const profileForm: FormType[] = [
@@ -127,6 +134,45 @@ export const templateTestForm:FormType[] = [
     {"name":"sampleName","type":"text","label":"Enter Custom Sample Name","required":true},
     {"name":"testName","type":"search","label":"Enter Test Name","required":true},
 ]
+
+
+const genderOptions = [
+      { value: 'male', label: 'Male' },
+      { value: 'female', label: 'Female' },
+]
+
+export const patientDetailsForm = (profileValues:any): FormType[] => {
+
+    const pathologistList = profileValues?.pathologistDetail?.map((path:any) => { return {"value":path.name}});
+
+    return [
+        {"name":"userName","type":"text","label":"Enter Patient Name","required":true},
+        {"name":"userId","type":"contact","label":"Enter Patient Contact","required":true},
+        {"name":"email","type":"email","label":"Patient Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
+        {"name":"dob","type":"date","label":"Date of Birth","required":false},
+        {"name":"gender","type":"select","label":"Select Gender","required":true, options: genderOptions},
+        {"name":"doctorName","type":"select","label":"Pathologist","required":false, options: pathologistList},
+    ]
+}
+
+
+
+export const manualReportForm = (profileValues:any): FormType[] => {
+    return [
+        {"name":"userName","type":"text","label":"Enter Patient Name","required":true},
+        {"name":"userId","type":"contact","label":"Enter Patient Contact","required":true},
+        {"name":"email","type":"email","label":"Patient Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
+        {"name":"dob","type":"date","label":"Date of Birth","required":false},
+        {"name":"gender","type":"select","label":"Select Gender","required":true, options: genderOptions},
+    ]
+}
+
+export const reportUploadFormArray = (handleDate:any, handleUpload:any): FormType[] => {
+    return [
+        {"name":"reportId","type":"upload","label":"Upload Report","required":true, handleUpload: handleUpload},
+        {"name":"reportDate","type":"date","label":"Report Created Date","required":true, handleDate: handleDate},
+    ]
+}
 
 
 export const initialTestState : ReportTypes = {
