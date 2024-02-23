@@ -125,7 +125,7 @@ export const customTestForm:FormType[] = [
 
 export const templateTestForm:FormType[] = [
     {"name":"sampleName","type":"text","label":"Enter Custom Sample Name","required":true},
-    // {"name":"testName","type":"text","label":"Enter Test Name","required":true},
+    {"name":"testName","type":"search","label":"Enter Test Name","required":true},
 ]
 
 

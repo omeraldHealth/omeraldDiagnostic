@@ -1,16 +1,18 @@
-import React from 'react';
-import { Button, DatePicker, Form, Input, Radio, Select } from 'antd';
+import React, { useState } from 'react';
+import { Button, DatePicker, Form, Input, Radio, Select, Spin } from 'antd';
 import { FormType } from 'utils/types/molecules/forms.interface';
 
 interface DynamicFormType {
   formProps: Array<FormType>;
   buttonText: string;
   handleSubmit: (values: any) => void;
+  handleSearch?: (values: any) => void;
+  selectedValue?: any;
   disabledFields?: string[]; // Array of field names to be disabled
   defaultValues?: { [key: string]: any };
 }
 
-const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText, handleSubmit, disabledFields = [], defaultValues = {} }) => {
+const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText, handleSubmit, disabledFields = [], defaultValues = {}, handleSearch, selectedValue  }) => {
   const [form] = Form.useForm();
 
   const handleFormSubmit = (values: any) => {
@@ -22,6 +24,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText
   const renderFormItem = (formItem: FormType) => {
     const disableField = isFieldDisabled(formItem.name);
     const defaultValue = defaultValues[formItem.name];
+    const [fetching, setFetching] = useState(false);
 
     switch (formItem.type) {
       case 'text':
@@ -90,7 +93,28 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText
             />
           </Form.Item>
         );
-      default:
+      case 'search':
+        return (
+          <Form.Item key={formItem.label+1} className='mb-6' name={formItem.name} labelCol={{ span: 0 }} >
+           <Select
+              showSearch
+              style={{ width: 380 }}
+              placeholder={"Test Name"}
+              defaultActiveFirstOption={false}
+              showArrow={false}
+              filterOption={false}
+              onChange={handleSubmit}
+              onSearch={handleSearch}
+              notFoundContent={null}
+              options={(selectedValue || []).map((d:any) => ({
+                key: d._id,
+                value: d._id,
+                label: d.name,
+              }))}
+          />
+          </Form.Item>
+        );
+        default:
         return null;
     }
   };

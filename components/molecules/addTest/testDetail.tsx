@@ -6,6 +6,9 @@ import { ShowTable } from "./showTable";
 import { useRecoilState } from "recoil";
 import { testDetailsState } from "components/common/recoil/testDetails/index";
 import DynamicFormGenerator from "../form/dynamicForm";
+import _ from "lodash";
+import { useQueryGetData } from "utils/reactQuery";
+import { getAdminReportTypesApi } from "@utils";
 
 const formArrays = {
     customForm: customTestForm,
@@ -16,12 +19,51 @@ export const TestDetail = ({handleSteps}:any) => {
     const [selectedValue,setSelectedValue] = useState(false)
     const [showTable,setShowTable] = useState(false)
     const [testDetailState,setTestDetail] = useRecoilState(testDetailsState)
+    const reportType = useQueryGetData("reportTypes",getAdminReportTypesApi);
+    const [reportList,setReportList] = useState(reportType.data?.data || [])
+    const [selectedReport,setSelectedReport] = useState([])
     
+    
+    function transformData(inputArray: any) {
+        return inputArray?.length>0 && inputArray?.map((item:any) => {
+          const { _id, name, aliases, bioRefRange } = item;
+      
+          const keyword = {
+            keyword: name,
+            aliases: aliases,
+            minRange: '',
+            maxRange: '',
+            unit: '',
+            _id: _id,
+          };
+      
+          if (bioRefRange && bioRefRange.length > 0) {
+            const { min, max } = bioRefRange[0];
+      
+            keyword.minRange = min !== undefined ? min.toString() : '';
+            keyword.maxRange = max !== undefined ? max.toString() : '';
+          }
+      
+          return keyword;
+        });
+    }
+      
+
     const handleFormSubmit = (value: any) => {
         if(!selectedValue){
             let testType = {
-                sampleName: value.testName,
-                sampleType: {testName: value.sampleName,}
+                sampleName: value.sampleName,
+                sampleType: {testName: value.testName,}
+            }
+            // @ts-ignore
+            setTestDetail(testType)
+            handleSteps() 
+        }else{
+            console.log(value)
+            let filteredReport = reportList.filter((item: any) => item._id === value?.testName)[0]
+            let testType = {
+                sampleName: value.sampleName,
+                sampleType: {testName: filteredReport?.name || "",keywords: transformData(filteredReport    ?.parameters)}
             }
             // @ts-ignore
             setTestDetail(testType)
@@ -29,12 +71,25 @@ export const TestDetail = ({handleSteps}:any) => {
         }
     };
 
+    const handleSearch = _.debounce((value: any) => {
+        let filtered = reportList.filter((item: any) => item.name.toLowerCase().includes(value.toLowerCase()))
+        setSelectedReport(filtered)
+        // Add your search logic here
+      }, 300);
+
+    const handleSubmit = (values: any) => {
+        console.log(values)
+    }
+
     return (
         <div className="my-5 w-[100%] sm:w-[70%] md:w-[100%] h-auto p-4 grid lg:flex">
             <section className='w-[80%] lg:w-[45%]'>
                 <TestDetailHeader selectedValue={selectedValue} setSelectedValue={setSelectedValue} />
                 <section className='my-4 w-[100%]'>
-                    {selectedValue ? <DynamicFormGenerator formProps={formArrays?.templatedForm || selectForm} buttonText={"Continue" || ""} handleSubmit={handleFormSubmit} />:
+                    {selectedValue ? <DynamicFormGenerator formProps={formArrays?.templatedForm || selectForm} 
+                        buttonText={"Continue" || ""} handleSubmit={handleFormSubmit}
+                        handleSearch={handleSearch} selectedValue={selectedReport} 
+                        />:
                     <DynamicFormGenerator formProps={formArrays?.customForm || selectForm} buttonText={"Continue" || ""} handleSubmit={handleFormSubmit} />}
                 </section >
             </section>
