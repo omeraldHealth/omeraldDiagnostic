@@ -18,7 +18,7 @@ export default function Sidebar() {
     setDashTab(item.name);
     handleSidebarToggle();
   };
-
+  
   return (
     <aside
     className={`side-bar lg:block min-h-screen w-[70%] sm:w-[40%] md:w-[40%] xl:w-[100%] bg-orange-400 relative p-4 sm:pl-8 pr-0 shrink-0 ${
