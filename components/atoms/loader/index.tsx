@@ -28,8 +28,6 @@ export const Spinner = () => {
                 alignSelf:"center"                
             }}/>
             }
-           
-
         </section>
     </section>
 }

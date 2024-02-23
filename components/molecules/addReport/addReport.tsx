@@ -5,6 +5,7 @@ import { PatientDetails } from './patientDetails';
 import { UploadReport } from './uploadReport';
 import { ReportSummary } from './reportSummary';
 import { useProfileValue, useReportValue, useTestDataValue } from '@components/common/constants/constants';
+import { SuccessReport } from './successReport';
 
 export const AddReportComponent = ({setAddReports}:any) => {
   const [currentStep, setCurrentStep] = useState(addReportSteps[0]);
@@ -21,9 +22,9 @@ export const AddReportComponent = ({setAddReports}:any) => {
       case 2:
         return <UploadReport handleBack={() => setCurrentStep(addReportSteps[0])} handleSteps={() => setCurrentStep(addReportSteps[2])} />
       case 3:
-        return <ReportSummary handleSuccess={handleSuccess} report={reportValue}/>
+        return <ReportSummary handleSuccess={() => setCurrentStep(addReportSteps[3])} report={reportValue}/>
       default:
-        return null;
+        return <SuccessReport setAddReports={handleSuccess} />;
     }
   };
 

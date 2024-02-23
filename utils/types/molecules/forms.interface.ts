@@ -1,6 +1,7 @@
 import { useProfileValue } from "@components/common/constants/constants";
 import { ReportDetails, ReportTypes } from "./users.interface";
 import path from "path";
+import { uploadDiagnosticReportApi } from "utils/urls/app";
 
 export const textPattern = /[^0-9]/
 
@@ -50,6 +51,7 @@ export type FormType = {
     handleDate?: Function,
     fileList?: any,
     handlePreview?: Function,
+    uploadUrl?: string
 };
 
 export const profileForm: FormType[] = [
@@ -170,7 +172,7 @@ export const manualReportForm = (profileValues:any): FormType[] => {
 export const reportUploadFormArray = (handleDate:any, handleUpload:any): FormType[] => {
     return [
         {"name":"reportId","type":"upload","label":"Upload Report","required":true, handleUpload: handleUpload},
-        {"name":"reportDate","type":"date","label":"Report Created Date","required":true, handleDate: handleDate},
+        {"name":"reportDate","type":"date","label":"Report Created Date","required":true, handleDate: handleDate, uploadUrl:uploadDiagnosticReportApi},
     ]
 }
 

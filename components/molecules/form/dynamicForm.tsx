@@ -12,6 +12,7 @@ interface DynamicFormType {
   selectedValue?: any;
   disabledFields?: string[]; // Array of field names to be disabled
   defaultValues?: { [key: string]: any };
+  uploadUrl?: string;
 }
 
 const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText, handleSubmit, disabledFields = [], defaultValues = {}, handleSearch, selectedValue}) => {
@@ -119,7 +120,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText
       case 'upload':
           return (
             <Form.Item key={formItem.label+1} className='mb-6' name={formItem.name} labelCol={{ span: 0 }} >
-                 <Upload onChange={formItem?.handleUpload}>
+                 <Upload action={formItem?.uploadUrl}  onChange={formItem?.handleUpload}>
                     <Button icon={<UploadOutlined />}>Upload File</Button>
                 </Upload>
             </Form.Item>

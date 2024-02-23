@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery, UseQueryOptions } from 'react-query';
 
-import { updateDiagProfileApi,insertReportApi, uploadReportApi, uploadImageApi, insertBranches,updateBranches,deleteBranches, insertEmployee, updateEmployee, deleteEmployee } from 'utils/urls/app';
+import { updateDiagProfileApi,insertReportApi, uploadReportApi, uploadImageApi, insertBranches,updateBranches,deleteBranches, insertEmployee, updateEmployee, deleteEmployee, uploadDiagnosticReportApi, createDiagReportsApi } from 'utils/urls/app';
 
 //useQuery hook to get data
 export function useQueryGetData<T>(
@@ -79,11 +79,11 @@ export function useUploadBranding<TData, TVariables>({
   );
 }
 
-export function useAddEmployee<TData, TVariables>({
+export function useCreateReport<TData, TVariables>({
   onSuccess,
   onError,
 }: UseMutationProps<TData, TVariables>) {
-  return useMutation((data:any) => axios.post(insertEmployee,data),
+  return useMutation((data:any) => axios.post(createDiagReportsApi,data),
     {
       onSuccess: onSuccess,
       onError: onError,
