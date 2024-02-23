@@ -3,6 +3,7 @@ import { Tag } from 'antd'
 import { DashboardTable } from '../dashboardItems/data-table'
 
 export const AddKeyword = ({selectedTest}:any) => {
+  console.log(selectedTest?.sampleType?.keywords)
 
   const columns = [
     {
@@ -71,7 +72,7 @@ export const AddKeyword = ({selectedTest}:any) => {
 
   return (
     <div>
-      <DashboardTable columns={columns} data={selectedTest ? selectedTest.keyword : [] } />
+      <DashboardTable columns={columns} data={selectedTest ? selectedTest?.sampleType?.keywords : [] } />
     </div>
   )
 }

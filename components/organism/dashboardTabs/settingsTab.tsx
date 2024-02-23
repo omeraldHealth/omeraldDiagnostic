@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import { Spinner } from '@components/atoms/loader';
 import { ActivityColumns, BranchColumns, EmployeeColumns, PathologistColumns } from 'utils/forms/form';
-import dynamic from 'next/dynamic';
 import { useUpdateDiagnostic } from 'utils/reactQuery';
 import { errorAlert, successAlert, warningAlert } from '@components/atoms/alerts/alert';
 import { useRecoilState } from 'recoil';
 import { profileState } from '@components/common/recoil/profile';
 import { branchDetailsFormArray, managerFormArray, pathologistFormArray } from 'utils/types/molecules/forms.interface';
-import { set } from 'lodash';
+import dynamic from 'next/dynamic';
 
 const Billing = dynamic(() => import('@components/organism/settingsTabs/billing').then(res=>res.Billing),{loading: () => <Spinner/>})
 const SettingsCommon = dynamic(() => import('@components/organism/settingsTabs/settings').then(res=>res.SettingsCommon),{loading: () => <Spinner/>})
@@ -123,7 +122,7 @@ export function SettingsTab() {
 
   const tabComponents = {
     "Billing": <Billing/>,
-    "Activity": <SettingsCommon columns={ActivityColumns} data={profile ? profile?.activities : []} />,
+    "Activity": <SettingsCommon tabName="Activity" columns={ActivityColumns} data={profile ? profile?.activities : []} hideButton={true} />,
     
     "Employee Management":  <SettingsCommon columns={EmployeeColumns(handleEdit,handleRemove, profile)} data={profile ? profile?.managersDetail : []} 
       tabName="Employee" form={managerFormArray}  {...settingProp} />,

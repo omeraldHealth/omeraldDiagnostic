@@ -1,5 +1,5 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { Modal, Space, Tag } from "antd";
+import { Modal, Popover, Space, Tag } from "antd";
 import moment from "moment";
 
 const { confirm } = Modal;
@@ -153,7 +153,6 @@ export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any) 
   },
 ];
 
-
 export const EmployeeColumns = (handleEdit:any, handleRemove: any, profile: any) => [
   {
     title: 'Operator Name',
@@ -211,3 +210,131 @@ export const EmployeeColumns = (handleEdit:any, handleRemove: any, profile: any)
     ),
   },
 ];
+
+interface TestTableColumn {
+  key: string;
+  title: string;
+  dataIndex: string;
+  render?: (text: any, record: any) => React.ReactNode;
+  sorter?: (a: any, b: any) => number;
+}
+
+export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any) => TestTableColumn[] = (
+  handleEdit,
+  handleRemove,
+) => [
+  {
+    key: 'sampleName',
+    title: 'Input sample',
+    dataIndex: 'sampleName',
+    render: (text: any) => <a>{text}</a>,
+    sorter: (a: any, b: any) => a.sampleName.length - b.sampleName.length,
+  },
+  {
+    key: 'testName',
+    title: 'Test Name',
+    dataIndex: 'sampleType',
+    render: (text: any) => <a>{text?.testName}</a>,
+    sorter: (a: any, b: any) => a.sampleType.testName.length - b.sampleType.testName.length,
+  },
+  {
+    key: 'keywords',
+    title: 'Keywords (Hover to see aliases)',
+    dataIndex: 'sampleType',
+    sorter: (a: any, b: any) => a.sampleType.keywords.length - b.sampleType.keywords.length,
+    render: (sampleType: any, record: any) => (
+      <>
+        {sampleType?.keywords?.map((param: any, index: any) => (
+          <a key={index} href='#'>
+            <Popover content={param.aliases} title={`${record?.sampleType?.testName} (${param.aliases} aliases)`}>
+              <Tag className='my-1' color='green' key={param}>
+                {param?.keyword}
+              </Tag>
+            </Popover>
+          </a>
+        ))}
+      </>
+    ),
+  },
+  {
+    key: 'action',
+    title: 'Action',
+    dataIndex: 'action',
+    render: (text: any, record: any) => (
+      <Space size='middle'>
+        <a>
+          <TrashIcon className='w-4 text-red-500' onClick={() => handleRemove(record)} />
+        </a>
+        <a>
+          <PencilIcon onClick={() => handleEdit(record)} className='w-4 text-gray-900' />
+        </a>
+      </Space>
+    ),
+  },
+];
+
+export const ParameterColumns =  
+  [
+    {
+      key: "keyword",
+      title: "Parameter",
+      dataIndex: "keyword",
+      render: (text:any) => <a className="text-blue-800 font-medium">{text}</a>,
+      sorter: (a:any, b:any) => a.keyword.length - b.keyword.length,
+    },
+    {
+      key: "minRange",
+      title: "Min Range",
+      dataIndex: "minRange",
+      render: (text:any)  => <a>{text}</a>,
+      sorter: (a:any, b:any) => a.minRange.length - b.minRange.length,
+    },
+    {
+      key: "maxRange",
+      title: "Max Range",
+      dataIndex: "maxRange",
+      render: (text:any)  => <a>{text}</a>,
+      sorter: (a:any, b:any) => a.maxRange.length - b.maxRange.length,
+    },
+    {
+      key: "unit",
+      title: "Unit",
+      dataIndex: "unit",
+      sorter: (a:any, b:any) => a.unit.length - b.unit.length,
+      render: (text:any)  => <a>{text}</a>,
+    },
+    {
+      key: 'aliases',
+      title: 'Aliases',
+      dataIndex: 'aliases',
+      sorter: (a:any, b:any) => a.aliases.length - b.aliases.length,
+      render: (tags: any) => {
+        if (!tags || tags?.length < 1) {
+          return null; // Return null instead of an empty <p></p>
+        }
+  
+        const displayTags = tags.slice(0, 6);
+        const remainingTags = tags.slice(6);
+  
+        return (
+          <>
+            {displayTags.length > 0 && (
+              <>
+                {displayTags.map((tag) => (
+                  <Tag color={'green'} key={tag}>
+                    {tag}
+                  </Tag>
+                ))}
+                {remainingTags.length > 0 && (
+                  <>
+                    <Tag color={'green'}>...</Tag>
+                    <Tag color={'green'}>{remainingTags.length} more</Tag>
+                  </>
+                )}
+              </>
+            )}
+          </>
+        );
+      },
+    },
+]

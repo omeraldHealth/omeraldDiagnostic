@@ -1,89 +1,60 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Modal, Input, Space, Tag, Popover } from 'antd';
+import { Modal, Space, Tag, Popover } from 'antd';
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { ColumnsType } from 'antd/es/table';
-import { useUser } from '@clerk/clerk-react';
-import { useUpdateDiagnostic } from 'utils/reactQuery';
-import { useQueryClient } from 'react-query';
-import { DataType, SET_TEST } from 'utils/store/types';
-import { useCurrentBranchValue, useManagerValue, useProfileValue } from '@components/common/constants/constants';
-import { successAlert } from '@components/atoms/alerts/alert';
-import { BodyStyled_2 } from '@components/atoms/font/font.style';
+import { DataType } from 'utils/store/types';
+import { useCurrentBranchValue, useProfileValue } from '@components/common/constants/constants';
 import { DashboardTable } from '../dashboardItems/data-table';
-import { AddKeywords } from '../addTest/addKeywords';
+import { TestTableColumns } from 'utils/forms/form';
+import DynamicFormGenerator from '../form/dynamicForm';
+import { testForm } from 'utils/types/molecules/forms.interface';
+import { useUpdateDiagnostic } from 'utils/reactQuery';
+import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { useRecoilState } from 'recoil';
+import { profileState } from '@components/common/recoil/profile';
 
-const handleRemoveTest = async (record:any) => {
-  //Remove Test
-}
-
-const handleEditTest = async (record:any) => { 
-  //Edit Test
-}
-
-const TestTableColumns: ColumnsType<DataType> = [
-  {
-    key: 'sampleName',
-    title: 'Input sample',
-    dataIndex: 'sampleName',
-    render: (text) => <a>{text}</a>,
-    sorter: (a, b) => a.sampleName.length - b.sampleName.length,
-  },
-  {
-    key: 'testName',
-    title: 'Test Name',
-    dataIndex: 'sampleType',
-    render: (text) => <a>{text?.sampleType?.testName}</a>,
-    sorter: (a, b) => a.sampleType.testName.length - b.sampleType.testName.length,
-  },
-  {
-    key: 'keywords',
-    title: 'Keywords (Hover to see aliases)',
-    dataIndex: 'sampleType',
-    sorter: (a, b) => a.sampleType.keywords.length - b.sampleType.keywords.length,
-    render: (sampleType, record) => (
-      <>
-        {sampleType?.keywords?.map((param, index) => (
-          <a key={index} href='#'>
-            <Popover content={param.aliases} title={`${record?.sampleType?.testName} (${param.keyword} aliases)`}>
-              <Tag className="my-1" color="green" key={param}>
-                {param.keyword.toUpperCase()}
-              </Tag>
-            </Popover>
-          </a>
-        ))}
-      </>
-    ),
-  },
-  {
-    key: 'action',
-    title: 'Action',
-    dataIndex: 'action',
-    render: (text, record) => (
-      <Space size="middle">
-        <a>
-          <TrashIcon className='w-4 text-red-500' onClick={() => handleRemoveTest(record)} />
-        </a>
-        <a>
-          <PencilIcon onClick={() => handleEditTest(record)} className='w-4 text-gray-900' />
-        </a>
-      </Space>
-    ),
-  },
-];
 
 export const TestTable = () => {
   const [editTest,setEdit] = useState(false);
-  const profile = useProfileValue();
+  const [profile,setProfile] = useRecoilState(profileState);
   const currentBranch = useCurrentBranchValue();
+  const [defaultValues, setDefaultValue] = useState({});
+  const [testEdited, setTestEdited] = useState({});
   const { confirm } = Modal;
 
   //@ts-ignore
   let tests = profile?.tests.filter((test:any) => test?.branchId === currentBranch?._id)
 
+  const updateDiagnostic = useUpdateDiagnostic({
+    onSuccess: (data) => {
+      successAlert("Profile updated sucessfully")
+      setProfile(data?.data);
+    },
+    onError: (error) => {
+      errorAlert("Error updating profile")
+    },
+  });
+
+  const handleRemove = ( record: any) => {
+    let updateData = profile?.tests.filter((item: any) => item._id !== record._id);
+    updateDiagnostic.mutate({ data: { id: profile?._id, tests: updateData } })
+  };
+  
+  const handleEdit = async (record:any) => { 
+    console.log(record)
+    setTestEdited(record)
+    setDefaultValue({...record,...record?.sampleType});
+    setEdit(true);
+  }
+
+  const handleSubmit = async (values:any) => {
+    console.log(values)
+  }
+  
   return (
       <div>
-          {!editTest ? <ViewTest columns={TestTableColumns} tests={tests}/> : <EditTests/>}
+          {!editTest ? <ViewTest columns={TestTableColumns(handleEdit,handleRemove,profile)} tests={tests}/> : 
+          <EditTests form={testForm} editElement={editTest} handleSubmit={handleSubmit} defaultValues={defaultValues} />}
       </div>
   )
 }
@@ -92,182 +63,8 @@ const ViewTest = ({columns, tests}:any) => {
   return <DashboardTable pageSize={5} columns={columns} data={tests}/>
 }
 
-const EditTests = () => {
+const EditTests = ({form, editElement, handleSubmit,defaultValues}:any) => {
   return <section className='p-2 sm:p-8 w-[100%] h-auto sm:max-h-[70vh] sm:overflow-y-scroll'>
-    {/* <BodyStyled_2>Update Test Details</BodyStyled_2>
-    <section className='flex'>
-    <span className='w-[35%]'>
-      <p className='mt-10'>Custom Report Name</p>
-      <Input value={sampleName} onChange={(e)=>{setSampleName(e.target.value)}} defaultValue={initialTestDetails?.sampleName} name="sampleName" placeholder={"sampleName"} className="border-gray-300 w-[75%] mt-2 mb-10 rounded-lg text-black font-light text-sm py-2" />
-    </span>
-    <span className='w-[35%]'>
-      <p className='mt-10'>Test Name</p>
-      <Input value={testName} onChange={(e)=>{setTestName(e.target.value)}}  defaultValue={initialTestDetails?.testName} name="sampleName" placeholder={"sampleName"} className="border-gray-300 w-[75%] mt-2 mb-10 rounded-lg text-black font-light text-sm py-2" />
-    </span>
-    </section>
-    <AddKeywords edit={true} handleSucess={()=>{handleUpdateKeyword()}}  /> */}
-</section>
+    <DynamicFormGenerator formProps={form} buttonText={editElement ? "update":"submit"} handleSubmit={handleSubmit} defaultValues={defaultValues} />
+  </section>
 }
-
-// export const TestTable = () => {
-
-//   const {user } = useUser()
-
-//   const [editTest,setEdit] = useState(false);
-//   const [initialTestDetails,setInitalTest] = useState();
-//   const [sampleName,setSampleName] = useState();
-//   const [testName,setTestName] = useState();
-//   const queryClient = useQueryClient();
-//   const profile = useProfileValue();
-//   const currentBranch = useCurrentBranchValue();
-//   const operator = useManagerValue();
-  
-//   const dispatch = useDispatch()
-//   const { confirm } = Modal;
-
-//   const updateDiagnostic = useUpdateDiagnostic({
-//     onSuccess: (data) => {
-//       successAlert("Tests updated succesfully")
-//       queryClient.invalidateQueries('getDiagnostic');
-//     },
-//     onError: (error) => {
-//       successAlert("Error adding tests")
-//     },
-//   });
-
-//   //@ts-ignore
-//   let tests = profile?.tests.filter((test:any) => test?.branchId === currentBranch?._id)
-
-//   let pathList = tests?.forEach((man:any) => {
-//     return   { 
-//      text: man.tastName, 
-//      value: man.tastName 
-//    };
-//   });
-
-//   const columns: ColumnsType<DataType> = [
-//     {
-//       key: 'sampleName',
-//       title: 'Input sample',
-//       dataIndex: 'sampleName',
-//       render: (text) => <a>{text}</a>,
-//       sorter: (a:any, b:any) => a.sampleName.length - b.sampleName.length,
-//     },
-//     {
-//       key: 'testName',
-//       title: 'Test Name',
-//       dataIndex: 'sampleType',
-//       render: (text) => <a>{text.testName}</a>,
-//       sorter: (a:any, b:any) => a.testName.length - b.testName.length,
-//       filters: pathList,
-//       onFilter: (value: string, record) => record.testName.indexOf(value) === 0,
-//     },
-//     {
-//       key: 'keywords',
-//       title: 'Keywords (Hover to see aliases)',
-//       dataIndex: 'sampleType',
-//       sorter: (a:any, b:any) => a.keywords.length - b.keywords.length,
-//       render: (sampleType,record) => (
-//         <>
-//           {sampleType.keywords && sampleType?.keywords.map((param,index) => {
-//             return (
-//                 <a key={index} href='#'>
-//                   <Popover content={(param.aliases)} title={record?.sampleType?.testName+" ("+param.keyword+" aliases)"}>
-//                     <Tag className="my-1" color={"green"} key={param}>
-//                       {param.keyword.toUpperCase()}
-//                     </Tag>
-//                   </Popover>
-//                 </a>
-//             );
-//           })}
-//         </>
-//       ),
-//     },
-//     {
-//       key: 'action',
-//       title: 'Action',
-//       dataIndex: 'action',
-//       render: (text:any,record:any,index:number) => (
-//         <Space size="middle">
-//          {<a > <TrashIcon className='w-4 text-red-500' onClick={()=>{
-//            confirm({
-//             title: 'Do you want to delete this test?',
-//             content: 'The action cannot be undone.',
-//             onOk() {
-//                 handleRemoveTest(record)}
-//             }
-//            )
-//          }}/></a> }
-//           <a ><PencilIcon onClick={()=>{handleEditTest(record)}} className='w-4 text-gray-900' /></a> 
-//         </Space>
-//       ),
-//     }
-//   ]
-
-//   const handleRemoveTest = async (record:any) => {
-//     let test = tests?.filter((test:any)=>test._id !== record._id)
-//     updateDiagnostic?.mutate({data:{"tests":test},phoneNumber:user?.phoneNumbers[0]?.phoneNumber})
-    
-//     // ActivityLogger("Removed Test "+record?.sampleName)
-//   }
-
-//   const handleEditTest = async (value:any) => {
-//     dispatch({type:SET_TEST,payload:{}})
-//     let initial = {
-//       "testName": value?.sampleType?.testName,
-//       "sampleName":value?.sampleName,
-//       "keywords":value?.sampleType?.keywords,
-//       "_id":value._id
-//     }
-//     let initial2 = {
-    
-//       "sampleName":value?.sampleName,
-//       "sampleType":{
-//         "testName": value?.sampleType?.testName,
-//         "keywords":value?.sampleType?.keywords,
-//       }
-//     }
-//     dispatch({type:SET_TEST,payload:initial2})
-//     setInitalTest(initial)
-//     setEdit(!editTest)
-//   }
-
-//   const handleUpdateKeyword = async ()=> {
-  
-//     let testItem = {
-//       "sampleName": sampleName?.length>0? sampleName:initialTestDetails?.sampleName,
-//       "sampleType": {
-//         "testName": testName?.length>0 ?testName:initialTestDetails?.testName,
-//         "keywords":testDetails?.sampleType?.keywords
-//       },
-//       "branchId" : activeBranch?._id
-//     }
-
-//     let updatedTest = profile?.tests.filter((test)=>test._id !== initialTestDetails?._id)
-//     updatedTest.push(testItem)
-//     updateDiagnostic?.mutate({data:{"tests":updatedTest},phoneNumber:user?.phoneNumbers[0]?.phoneNumber})
-//     setEdit(!editTest)
-//   }
-
-//   return (
-//     <div>
-//         {!editTest ? <DashboardTable pageSize={5} columns={columns} data={tests}/>:
-//           <section className='p-2 sm:p-8 w-[100%] h-auto sm:max-h-[70vh] sm:overflow-y-scroll'>
-//               <BodyStyled_2>Update Test Details</BodyStyled_2>
-//               <section className='flex'>
-//               <span className='w-[35%]'>
-//                 <p className='mt-10'>Custom Report Name</p>
-//                 <Input value={sampleName} onChange={(e)=>{setSampleName(e.target.value)}} defaultValue={initialTestDetails?.sampleName} name="sampleName" placeholder={"sampleName"} className="border-gray-300 w-[75%] mt-2 mb-10 rounded-lg text-black font-light text-sm py-2" />
-//               </span>
-//               <span className='w-[35%]'>
-//                 <p className='mt-10'>Test Name</p>
-//                 <Input value={testName} onChange={(e)=>{setTestName(e.target.value)}}  defaultValue={initialTestDetails?.testName} name="sampleName" placeholder={"sampleName"} className="border-gray-300 w-[75%] mt-2 mb-10 rounded-lg text-black font-light text-sm py-2" />
-//               </span>
-//               </section>
-//               <AddKeywords edit={true} handleSucess={()=>{handleUpdateKeyword()}}  />
-//           </section>
-//         }
-//     </div>
-//   )
-
-// }

@@ -2,151 +2,64 @@ import { errorAlert, successAlert } from '@components/atoms/alerts/alert'
 import React, { useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { SET_TEST } from 'utils/store/types'
-import { testForm } from 'utils/types/molecules/forms.interface'
-import { AddKeyword } from './createdKeyword'
-import { Popconfirm } from 'antd'
+import { parameterForm, testForm } from 'utils/types/molecules/forms.interface'
+import { Button, Popconfirm } from 'antd'
 import { useUser } from '@clerk/clerk-react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { profileState } from '../../common/recoil/profile'
-import { operatorState } from '../../common/recoil/operator'
-import { branchState } from '../../common/recoil/blogs/branch'
+
 import { testDetailsState } from '../../common/recoil/testDetails'
 import DynamicFormGenerator from '../form/dynamicForm'
+import { DashboardTable } from '../dashboardItems/data-table'
+import { ParameterColumns } from 'utils/forms/form'
+import { useUpdateDiagnostic } from 'utils/reactQuery'
+import { useCurrentBranchValue } from '@components/common/constants/constants'
 
 export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
   const [addKeyword,setAddKeyword] = useState(false)
   const [testDetailState,setTestDetail] = useRecoilState(testDetailsState)
+  const [profile,setProfile] = useRecoilState(profileState)
+  const currentBranch = useCurrentBranchValue()
 
   const handleAddKeyword = (value: any) => {
-    // Assuming `testDetailState` has initial properties like sampleName and sampleType
-    const updatedSampleType = {
-      ...testDetailState?.sampleType,
-      keywords: [...(testDetailState?.sampleType?.keywords || []), value],
-    };
-  
-    setTestDetail({
-      ...testDetailState,
-      sampleType: updatedSampleType,
-    });
-  
-    setAddKeyword(false);
-    console.log(testDetailState);
+      if(addKeyword){
+        setTestDetail({
+          ...testDetailState,
+          sampleType: {
+            ...(testDetailState.sampleType || {}), // Ensure sampleType exists
+            keywords: Array.isArray(testDetailState.sampleType?.keywords)
+              ? [
+                  ...(testDetailState.sampleType?.keywords || []),
+                  value,
+                ]
+              : [value],
+          },
+        });
+        
+        setAddKeyword(!addKeyword)
+      }
   };
-  
+
+  const updateDiagnostic = useUpdateDiagnostic({
+    onSuccess: (data) => {
+      successAlert("Profile updated sucessfully")
+      setProfile(data?.data);
+      handleSucess() 
+    },
+    onError: (error) => {
+      errorAlert("Error updating profile")
+    },
+  });
+
+  const handleSubmit = (data: any) => {
+    updateDiagnostic.mutate({ data: { id: profile?._id, tests: [...profile?.tests,{...testDetailState,branchId: currentBranch?._id}] } });
+  }
 
   return <section className="my-2 w-[100%] mx-0 sm:w-[70%] md:w-[100%] h-auto p-4">
     <AddKeyWordHeader addKeyword={addKeyword} setAddKeyword={setAddKeyword} />
-    {addKeyword ? <AddParameter handleAddKeyword={handleAddKeyword} /> : <ViewParameter testDetailState={testDetailState}/>}
+    {addKeyword ? <AddParameter handleAddKeyword={handleAddKeyword} /> : <ViewParameter testDetailState={testDetailState} handleSubmit={handleSubmit} />}
   </section>
 }
-
-export const AddParameter = ({handleAddKeyword}:any) => {
-  return <section>
-    <section className='w-[100%] sm:w-[60%] my-4'>
-      <DynamicFormGenerator formProps={testForm} buttonText="Add Keyword" handleSubmit={handleAddKeyword} />
-    </section>
-  </section>
-}
-
-export const ViewParameter = ({testDetailState}:any) => {
-  return <section>
-    <AddKeyword selectedTest={testDetailState?.sampleType} action={true}/>
-  </section>
-}
-
-// export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
-
-//   const [addKeyword,setAddKeyword] = useState(false)
-//   const queryClient = useQueryClient();
-
-//   const {user} = useUser()
-//   const operator = useRecoilValue(operatorState)
-//   const currentBranch = useRecoilValue(branchState)
-//   const [profile, setProfile] = useRecoilState(profileState)
-
-//   const updateDiagnostic = useUpdateDiagnostic({
-//     onSuccess: (data) => {
-//       successAlert("Tests Added succesfully")
-//       setProfile(data?.data)
-//       queryClient.invalidateQueries('getDiagnostic');
-  
-//       handleSucess()
-//     },
-//     onError: (error) => {
-//       successAlert("Error adding tests")
-//     },
-//   });
-
-//   const handleAddKeyword = (value:any) => {
-//         let count = 0
-//         testDetails?.sampleType?.keywords.forEach((keyword:any) =>{ 
-//           if(keyword.keyword == value.keyword){
-//               ++count;
-//           }
-//         } )
-//         if(count>1){
-//             errorAlert("Keyword by name already exists")
-//         }else{
-//             let keywords = testDetails?.sampleType.keywords;
-//             keywords?.push(value)
-//             let sampleType = {
-//                 testName:testDetails?.sampleType?.testName,
-//                 keywords:keywords
-//             }
-//             dispatcher({type:SET_TEST,payload:{testDetails,"sampleType":sampleType}})
-//             successAlert("Keyword Added succesfully")
-//             setAddKeyword(false)
-//         }
-//   }
-
-//   const handleAddTest =async() => {
-  
-//     if(testDetails?.sampleType?.keywords.length==0){
-//       errorAlert("please add keywords to proceed")
-//     }else{
-//       if(testDetails ){
-//         testDetails.branchId = currentBranch?._id
-//         let updateTest = [...(profile?.tests || []), testDetails];
-
-//         //@ts-ignore
-//         updateDiagnostic?.mutate({data:{"tests":updateTest,"id":profile?._id}})
-//         // ActivityLogger("Added Test "+testDetails?.sampleName,profile,operator,currentBranch)
-//       }else{
-//         // errorAlert("Test with name already exists")
-//       }
-//     }
-//   }
-
-//   const handleSuccessTest =async() => {
-//       if(testDetails?.sampleType?.keywords.length==0){
-//         errorAlert("please add keywords to proceed")
-//       }
-//       handleSucess()
-//   }
-
-//   return (
-//          <div className="my-2 w-[100%] mx-0 sm:w-[70%] md:w-[100%] h-auto p-4">
-//              <AddKeyWordHeader testDetails={testDetails} addKeyword={addKeyword} setAddKeyword={setAddKeyword}/>
-//              {!addKeyword ?
-//              <AddKeyword selectedTest={testDetails?.sampleType} action={true}/>:
-//              <section className='w-[100%] sm:w-[60%] my-4'>
-//                  <DynamicFormCreator button={true} buttonText="Add Keyword" handleSubmit={handleAddKeyword} formProps={testForm} />
-//              </section>}
-//              <section className='flex  my-10 sm:my-4'>
-//              <Popconfirm
-//               title="Go Back?"
-//               description="Are you sure? the data will be lost"
-//               onConfirm={handleBack}
-//               okText="Yes"
-//               cancelText="No"
-//             >
-//               <button className='bg-gray-400 mx-3 text-white px-2 py-2 rounded-lg'>Back</button>
-//                </Popconfirm>
-//               <button onClick={!edit ? handleAddTest : handleSuccessTest} className='bg-green-700 text-white px-2 py-2 rounded-lg'>Submit</button>
-//              </section>
-//         </div>
-//   )
-// }
 
 const AddKeyWordHeader = ({ addKeyword, setAddKeyword }: any) => {
 
@@ -173,3 +86,19 @@ const AddKeyWordHeader = ({ addKeyword, setAddKeyword }: any) => {
     </section>
   );
 };
+
+export const AddParameter = ({handleAddKeyword}:any) => {
+  return <section>
+    <section className='w-[100%] sm:w-[60%] my-4'>
+      <DynamicFormGenerator formProps={parameterForm} buttonText="Add Keyword" handleSubmit={handleAddKeyword} />
+    </section>
+  </section>
+}
+
+export const ViewParameter = ({testDetailState,handleSubmit}:any) => { 
+  return <section>
+       <DashboardTable columns={ParameterColumns} data={testDetailState?.sampleType?.keywords || []} />
+       <Button onClick={handleSubmit}>Submit</Button>
+  </section>
+}
+

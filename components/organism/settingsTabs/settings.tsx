@@ -1,7 +1,7 @@
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import DynamicFormGenerator from "@components/molecules/form/dynamicForm";
 
-export function SettingsCommon({columns, data, tabName, form, handleSubmit, addElement, setAddElement, editElement, setEditElement, defaultValues}:any) {
+export function SettingsCommon({columns, data, tabName, form, handleSubmit, addElement, setAddElement, editElement, setEditElement, defaultValues, hideButton}:any) {
     return (
           <section >
               <section className="min-h-[45vh]">
@@ -13,12 +13,13 @@ export function SettingsCommon({columns, data, tabName, form, handleSubmit, addE
                   }
                   
               </section>
-            <section className="sm:w-[100%] w-screen flex justify-start ">
-                  <button onClick={()=>{setAddElement(!addElement) 
-                  setEditElement(false)}} className="bg-gray-200 p-2 rounded-md">
+            {!hideButton && <section className="sm:w-[100%] w-screen flex justify-start ">
+                  <button onClick={()=>{
+                      setAddElement(!addElement) 
+                      setEditElement(!editElement)}} className="bg-gray-200 p-2 rounded-md">
                     {!addElement ?  "Add "+tabName : "View "+tabName}
                   </button>
-              </section>
+            </section>}
           </section>
     )
 }
