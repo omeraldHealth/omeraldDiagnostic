@@ -5,7 +5,7 @@ import { SuccessTest } from '../addTest/successTest';
 import { TestDetail } from '../addTest/testDetail';
 import { AddKeywords } from '../addTest/addKeywords';
 
-export const AddTestComponent = ({ setTest }: any) => {
+export const AddTestComponent = ({ setTest, edit }: any) => {
   const [currentStep, setCurrentStep] = useState(addTestSteps[0]);
 
   const handleSuccess = () => {

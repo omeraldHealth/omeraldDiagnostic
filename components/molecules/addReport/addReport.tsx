@@ -6,13 +6,13 @@ import { ReportSummary } from './reportSummary';
 import { SuccessReport } from './successReport';
 import { UploadReport } from './uploadReport';
 import { useQueryGetData } from 'utils/reactQuery';
-import { getReportTypesApi } from '@utils';
+import { getAdminReportTypesApi } from '@utils';
 
 export const AddReportComponent = ({setAddReports}:any) => {
 
   const [currentStep, setCurrentStep] = useState(addReportSteps[0]);
   const [reportType,setReportType] = useState();
-  let {data:reportTypes}  = useQueryGetData("reportTypes",getReportTypesApi)
+  let {data:reportTypes}  = useQueryGetData("reportTypes",getAdminReportTypesApi)
 
 
   useEffect(()=>{

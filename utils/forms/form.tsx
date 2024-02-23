@@ -265,9 +265,9 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
         <a>
           <TrashIcon className='w-4 text-red-500' onClick={() => handleRemove(record)} />
         </a>
-        <a>
+        {/* <a>
           <PencilIcon onClick={() => handleEdit(record)} className='w-4 text-gray-900' />
-        </a>
+        </a> */}
       </Space>
     ),
   },

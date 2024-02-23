@@ -3,6 +3,7 @@ import { profileState } from "../recoil/profile";
 import { operatorState } from "../recoil/operator";
 import { branchState } from "../recoil/blogs/branch";
 import { dashTabs } from "../recoil/dashboard";
+import { booleanState } from "../recoil/booleanAtom";
 
 export const ROUTES_WITHOUT_SIDEBAR = [
     '/',
@@ -15,6 +16,7 @@ export const ROUTES_WITHOUT_SIDEBAR = [
   ];
 
 export const useProfileValue = () => useRecoilValue(profileState);
+export const useBooleanValue = () => useRecoilValue(booleanState);
 export const useManagerValue = () => useRecoilValue(operatorState);
 export const useCurrentBranchValue = () => useRecoilValue(branchState);
 export const useDashboardTabs = () => useRecoilValue(dashTabs);

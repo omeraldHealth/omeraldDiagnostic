@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Radio } from "antd";
 import { BodyText_3 } from "@components/atoms/font";
 import { customTestForm, selectForm, templateTestForm } from "utils/types/molecules/forms.interface";
@@ -9,6 +9,7 @@ import DynamicFormGenerator from "../form/dynamicForm";
 import _ from "lodash";
 import { useQueryGetData } from "utils/reactQuery";
 import { getAdminReportTypesApi } from "@utils";
+import { useBooleanValue } from "@components/common/constants/constants";
 
 const formArrays = {
     customForm: customTestForm,
@@ -22,8 +23,9 @@ export const TestDetail = ({handleSteps}:any) => {
     const reportType = useQueryGetData("reportTypes",getAdminReportTypesApi);
     const [reportList,setReportList] = useState(reportType.data?.data || [])
     const [selectedReport,setSelectedReport] = useState([])
-    
-    
+    const [defaultValue,setDefaultValue] = useState({})
+    const booleanValue = useBooleanValue()
+
     function transformData(inputArray: any) {
         return inputArray?.length>0 && inputArray?.map((item:any) => {
           const { _id, name, aliases, bioRefRange } = item;
@@ -48,7 +50,6 @@ export const TestDetail = ({handleSteps}:any) => {
         });
     }
       
-
     const handleFormSubmit = (value: any) => {
         if(!selectedValue){
             let testType = {
@@ -75,22 +76,33 @@ export const TestDetail = ({handleSteps}:any) => {
         let filtered = reportList.filter((item: any) => item.name.toLowerCase().includes(value.toLowerCase()))
         setSelectedReport(filtered)
         // Add your search logic here
-      }, 300);
+    }, 300);
 
-    const handleSubmit = (values: any) => {
-        console.log(values)
-    }
+    useEffect(()=>{
+      if(booleanValue && testDetailState){
+          setDefaultValue({"sampleName":testDetailState.sampleName, "testName":testDetailState.sampleType.testName})
+          console.log(defaultValue)
+        }
+    },[booleanValue])
 
     return (
         <div className="my-5 w-[100%] sm:w-[70%] md:w-[100%] h-auto p-4 grid lg:flex">
             <section className='w-[80%] lg:w-[45%]'>
-                <TestDetailHeader selectedValue={selectedValue} setSelectedValue={setSelectedValue} />
+                {!booleanValue && <TestDetailHeader selectedValue={selectedValue} setSelectedValue={setSelectedValue} />}
                 <section className='my-4 w-[100%]'>
                     {selectedValue ? <DynamicFormGenerator formProps={formArrays?.templatedForm || selectForm} 
-                        buttonText={"Continue" || ""} handleSubmit={handleFormSubmit}
+                        buttonText={"Continue" || ""} handleSubmit={handleFormSubmit} defaultValues={defaultValue}
                         handleSearch={handleSearch} selectedValue={selectedReport} 
                         />:
-                    <DynamicFormGenerator formProps={formArrays?.customForm || selectForm} buttonText={"Continue" || ""} handleSubmit={handleFormSubmit} />}
+                    <>
+                        {
+                          booleanValue ? <>
+                             {defaultValue && <DynamicFormGenerator defaultValues={defaultValue} formProps={formArrays?.customForm || selectForm} buttonText={"Continue" || ""} handleSubmit={handleFormSubmit} />}
+                             </>
+                          : 
+                          <DynamicFormGenerator formProps={formArrays?.customForm || selectForm} buttonText={"Continue" || ""} handleSubmit={handleFormSubmit} />
+                        }
+                    </>}
                 </section >
             </section>
             {showTable && <section className='w-[100%]'><ShowTable selectedTest={""}/></section>}

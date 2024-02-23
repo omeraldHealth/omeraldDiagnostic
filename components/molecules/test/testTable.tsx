@@ -12,11 +12,16 @@ import { useUpdateDiagnostic } from 'utils/reactQuery';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 import { useRecoilState } from 'recoil';
 import { profileState } from '@components/common/recoil/profile';
+import { AddTestComponent } from '../addReport/addTest';
+import { testDetailsState } from '@components/common/recoil/testDetails';
+import { booleanState } from "@components/common/recoil/booleanAtom"
 
 
 export const TestTable = () => {
   const [editTest,setEdit] = useState(false);
   const [profile,setProfile] = useRecoilState(profileState);
+  const [testDetail,setTestDetail] = useRecoilState(testDetailsState);
+  const [booleanAtom,setBooleanAtom] = useRecoilState(booleanState);
   const currentBranch = useCurrentBranchValue();
   const [defaultValues, setDefaultValue] = useState({});
   const [testEdited, setTestEdited] = useState({});
@@ -41,9 +46,8 @@ export const TestTable = () => {
   };
   
   const handleEdit = async (record:any) => { 
-    console.log(record)
-    setTestEdited(record)
-    setDefaultValue({...record,...record?.sampleType});
+    setTestDetail(record)
+    setBooleanAtom(true)
     setEdit(true);
   }
 
@@ -64,7 +68,8 @@ const ViewTest = ({columns, tests}:any) => {
 }
 
 const EditTests = ({form, editElement, handleSubmit,defaultValues}:any) => {
+
   return <section className='p-2 sm:p-8 w-[100%] h-auto sm:max-h-[70vh] sm:overflow-y-scroll'>
-    <DynamicFormGenerator formProps={form} buttonText={editElement ? "update":"submit"} handleSubmit={handleSubmit} defaultValues={defaultValues} />
+      <AddTestComponent />
   </section>
 }
