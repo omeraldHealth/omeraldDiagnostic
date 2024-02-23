@@ -77,7 +77,7 @@ export const branchDetailsFormArray: FormType[] = [
     {"name":"branchContact","type":"text","label":"Branch Contact","required":true,pattern:phonePattern},
     {"name":"branchEmail","type":"email","label":"Branch Email","required":true},
     {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
-   
+
 ]
 
 export const branchDetailsEditFormArray: FormType[] = [
@@ -100,6 +100,12 @@ export const pathologistFormArray = [
     {"name":"signature","type":"image","label":"Pathologist Signature","required":true,pattern: textPattern},
     {"name":"name","type":"text","label":"Pathologist Name","required":true,pattern: textPattern},
     {"name":"designation","type":"text","label":"Pathologist Designation","required":true,pattern: textPattern},
+]
+
+export const managerFormArray = [
+    {"name":"managerName","type":"text","label":"Operator Name","required":true,pattern: textPattern},
+    {"name":"managerRole","type":"text","label":"Operator Role","required":true,pattern: textPattern},
+    {"name":"managerContact","type":"text","label":"Operator Contact","required":true,pattern: textPattern},
 ]
 
 export const customTestForm:FormType[] = [
