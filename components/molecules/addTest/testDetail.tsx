@@ -59,7 +59,7 @@ export const TestDetail = ({handleSteps}:any) => {
             setTestDetail(testType)
             handleSteps() 
         }else{
-            console.log(value)
+          
             let filteredReport = reportList.filter((item: any) => item._id === value?.testName)[0]
             let testType = {
                 sampleName: value.sampleName,
