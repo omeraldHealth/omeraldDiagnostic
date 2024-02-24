@@ -1,20 +1,8 @@
 import { DashboardLayout } from '../components/organism/layout/dashboardLayout';
 import { UserLayout } from '../components/templates/pageTemplate';
 import { dashTabs } from '../components/common/recoil/dashboard';
-import { Spinner } from '@components/atoms/loader';
 import { useRecoilValue } from 'recoil';
-import Loadable from 'react-loadable';
-
-// Function to create a loading component with Spinner
-const LoadingComponent = () => <Spinner />;
-
-// Function to create a loadable component with dynamic import
-const LoadableComponent = (importFunc: () => Promise<any>) =>
-  Loadable({
-    loader: importFunc,
-    loading: LoadingComponent,
-    delay: 200, // Optional delay before rendering loading component (milliseconds)
-});
+import { LoadableComponent } from 'utils/common/loadbale';
 
 // Loadable components with the improved loading approach
 const ReportsTab = LoadableComponent(() => import('@components/organism/dashboardTabs/reportsTab'));
