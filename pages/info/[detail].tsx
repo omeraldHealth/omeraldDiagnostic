@@ -1,18 +1,36 @@
-import { Fragment } from 'react'
-import dynamic from 'next/dynamic'
-import { InfoPage } from '@components/organism/info'
+import { Fragment } from 'react';
+import { InfoPage } from '@components/organism/info';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
+import { Spinner } from '@components/atoms/loader';
 
-const Head = dynamic(() => import('@components/atoms/head/head'))
+// Dynamic import for Head component
+const DynamicHead = dynamic(() => import('@components/atoms/head/head'));
 
-export default function Info() {
+// Define the InfoProps interface for type checking
+interface InfoProps {
+  detail: string | string[] | undefined;
+}
+
+const Info: React.FC<InfoProps> = ({ detail }) => {
   const router = useRouter();
-  const { detail } = router.query;
 
+  // Check if 'detail' is not available
+  if (!detail) {
+    // Handle the case when 'detail' is not available (Loading, error, or redirect)
+    return <Spinner/>;
+  }
+
+  // Render the Info component with the provided 'detail'
   return (
     <Fragment>
-	  <Head title={'Omerald Diagnostic | '+detail} />
-      <InfoPage detail={detail}/>
+      {/* Use dynamic Head component with the title */}
+      <DynamicHead title={`Omerald Diagnostic | ${detail}`} />
+      
+      {/* Render the InfoPage component with the 'detail' prop */}
+      <InfoPage detail={detail} />
     </Fragment>
-  )
-}
+  );
+};
+
+export default Info;
