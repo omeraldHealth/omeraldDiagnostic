@@ -4,10 +4,10 @@ import dynamic from 'next/dynamic';
 import Chart from 'chart.js/auto';
 
 Chart.register(CategoryScale);
-const DashActivity = dynamic(() => import('@components/molecules/dashboardItems/activity').then(res=>res.DashActivity),{loading:()=><Spinner/>})
+const DashActivity = dynamic(() => import('@components/molecules/dashboardItems/activity').then(res=>res.default),{loading:()=><Spinner/>})
 const ReportSharedVsTime2 = dynamic(() => import('@components/molecules/dashboardItems/chart'))
 const DashCard = dynamic(() => import('@components/molecules/dashboardItems/dashCard').then(res=>res.DashCard),{loading:()=><Spinner/>})
-const DashBanner = dynamic(() => import('@components/molecules/dashboardItems/banner').then(res=>res.DashBanner),{loading:()=><Spinner/>})
+const DashBanner = dynamic(() => import('@components/molecules/dashboardItems/banner').then(res=>res.default),{loading:()=><Spinner/>})
 
 export default function DashboardTab() {
   return (

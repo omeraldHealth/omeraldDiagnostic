@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs } from 'antd';
+import { Tabs, TabsProps } from 'antd';
 import { Spinner } from '@components/atoms/loader';
 import { ActivityColumns, BranchColumns, EmployeeColumns, PathologistColumns } from 'utils/forms/form';
 import { useUpdateDiagnostic } from 'utils/reactQuery';
@@ -8,6 +8,7 @@ import { useRecoilState } from 'recoil';
 import { profileState } from '@components/common/recoil/profile';
 import { branchDetailsFormArray, managerFormArray, pathologistFormArray } from 'utils/types/molecules/forms.interface';
 import dynamic from 'next/dynamic';
+import TabPane from 'antd/es/tabs/TabPane';
 
 const Billing = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/billing').then(res=>res.Billing),{loading: () => <Spinner/>})
 const SettingsCommon = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/settings').then(res=>res.SettingsCommon),{loading: () => <Spinner/>})
@@ -118,34 +119,48 @@ export default function SettingsTab() {
     defaultValues: defaultValues,
   };
 
-  const tabComponents = {
-    "Billing": <Billing/>,
-    "Activity": <SettingsCommon tabName="Activity" columns={ActivityColumns} data={profile ? profile?.activities : []} hideButton={true} />,
-    
-    "Employee Management":  <SettingsCommon columns={EmployeeColumns(handleEdit,handleRemove, profile)} data={profile ? profile?.managersDetail : []} 
+  const tabComponents: TabsProps['items'] = [
+    {
+      key: '1',
+      label: 'Billing',
+      children: <Billing/>,
+    },
+    {
+      key: '2',
+      label: 'Activity',
+      children:<SettingsCommon tabName="Activity" columns={ActivityColumns} data={profile ? profile?.activities : []} hideButton={true} />,
+    },
+    {
+      key: '3',
+      label: 'Employee Management',
+      children: <SettingsCommon columns={EmployeeColumns(handleEdit,handleRemove, profile)} data={profile ? profile?.managersDetail : []} 
       tabName="Employee" form={managerFormArray}  {...settingProp} />,
-
-    "Branch Management":  <SettingsCommon columns={BranchColumns(handleEdit, handleRemove,profile)} data={profile ? profile?.branchDetails : []} 
-    tabName="Branch" form={branchDetailsFormArray}  {...settingProp}
-    />,
-
-    "Pathologist Management": <SettingsCommon columns={PathologistColumns(handleEdit, handleRemove)} data={profile ? profile?.pathologistDetail : []} 
-    tabName="Pathologist" form={pathologistFormArray} {...settingProp}
-    />,
-
-    "Support": <Support/> 
-  };
+    },
+    {
+      key: '4',
+      label:  "Branch Management",
+      children:  <SettingsCommon columns={BranchColumns(handleEdit, handleRemove,profile)} data={profile ? profile?.branchDetails : []} 
+      tabName="Branch" form={branchDetailsFormArray}  {...settingProp}
+      />,
+    },
+    {
+      key: '5',
+      label:  "Pathologist Management",
+      children:   <SettingsCommon columns={PathologistColumns(handleEdit, handleRemove)} data={profile ? profile?.pathologistDetail : []} 
+      tabName="Pathologist" form={pathologistFormArray} {...settingProp}
+      />,
+    },
+    {
+      key: '6',
+      label: 'Support',
+      children:  <Support/> 
+    },
+  ];
 
   return (
     <div className="sm:p-6 xl:p-8 max-h-[30vh] bg-signBanner flex w-100 justify-center">
       <div className='w-[96vw] lg:w-[80vw] xl:w-[70vw] bg-white shadow-lg mt-10 h-[80vh] lg:h-[70vh] rounded-lg] sm:p-8 p-4'>
-      <Tabs activeKey={activeKey} onChange={handleTabChange}>
-        {Object.keys(tabComponents).map((tabKey) => (
-          <Tabs.TabPane tab={tabKey} key={tabKey}>
-            {tabComponents[tabKey]}
-          </Tabs.TabPane>
-        ))}
-      </Tabs>
+        <Tabs defaultActiveKey="1" items={tabComponents} onChange={handleTabChange} />;
       </div>
     </div>
   );
