@@ -2,6 +2,7 @@ import { useProfileValue } from "@components/common/constants/constants";
 import { ReportDetails, ReportTypes } from "./users.interface";
 import path from "path";
 import { uploadDiagnosticReportApi } from "utils/urls/app";
+import { UploadFile } from "antd";
 
 export const textPattern = /[^0-9]/
 
@@ -44,8 +45,8 @@ export type FormType = {
     required:boolean
     pattern?:RegExp,
     options?: Object,
-    handleUpload?: Function,
-    handleDate?: Function,
+    handleImage?: (images: { logo: UploadFile[] }) => void;
+    handleDate?: () => {},
     fileList?: any,
     handlePreview?: Function,
     uploadUrl?: string
@@ -71,12 +72,15 @@ export const basicFormArray:FormType[] = [
     {"name":"managerName","type":"text","label":"Manager Name","required":true}
 ]
   
-export const brandDetailsFormArray:FormType[] = [
-    {"name":"brandLogo","type":"image","label":"Brand Logo","required":false},
-    // {"name":"brandBanner","type":"image","label":"Brand Banner","required":false,pattern:""},
-    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true,pattern:/.*facebook\.com.*/},
-    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true,pattern:/.*instagram\.com.*/},
-]
+export const brandDetailsFormArray = (handleImage: (images: { logo: UploadFile[] }) => void): FormType[] => {
+    return [
+        {"name":"brandLogo","type":"logo","label":"Brand Logo","required":true, handleImage:handleImage},
+        {"name":"brandBanner","type":"image","label":"Brand Banner","required":false},
+        {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true,pattern:/.*facebook\.com.*/},
+        {"name":"instaUrl","type":"text","label":"Instagram Url","required":true,pattern:/.*instagram\.com.*/},
+    ]
+}
+   
   
 export const branchDetailsFormArray: FormType[] = [
     {"name":"branchName","type":"text","label":"Branch Name","required":true},

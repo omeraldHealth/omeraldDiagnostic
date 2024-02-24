@@ -1,7 +1,6 @@
 
 import { GlobalStyle, theme } from '@styles/index'
 import { useEffect, useState } from 'react'
-import { ThemeProvider } from 'styled-components'
 import { ToastContainer } from "react-toastify";
 import { QueryClient, QueryClientProvider } from 'react-query'
 import type { AppProps } from 'next/app'
@@ -36,6 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <RecoilRoot>
         <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} {...pageProps}>
           <ToastContainer/>
+          <GlobalStyle />
           <Component {...pageProps} />
         </ClerkProvider>
         <ReactQueryDevtools initialIsOpen={false} />

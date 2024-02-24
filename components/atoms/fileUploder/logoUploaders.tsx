@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { Modal, Upload } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
+
 import './logo.module.css';
-import { PlusIcon } from '@heroicons/react/20/solid';
+import { useRecoilValue } from 'recoil';
+import { logoStateData } from '@components/common/recoil/logo';
+import { useLogoValue } from '@components/common/constants/constants';
+
+interface LogoUploaderProps {
+  handleImage: (images: { logo: UploadFile[] }) => void;
+}
+
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -12,50 +21,52 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-const LogoUploader = ({handleImage}:any)  => {
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState('');
-  const [previewTitle, setPreviewTitle] = useState('');
-  const [fileList, setFileList] = useState<UploadFile[]>([
-  ]);
-
-  const handleCancel = () => setPreviewOpen(false);
+const LogoUploader: React.FC<LogoUploaderProps> = ({ handleImage }) => {
+  const [preview, setPreview] = useState<{ open: boolean; image: string; title: string }>({
+    open: false,
+    image: '',
+    title: '',
+  });
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const logoState = useLogoValue()
+  // const [logoData, setLogoState] = useRecoilValue(logoStateData)
 
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj as RcFile);
+      file.preview = (await getBase64(file.originFileObj as RcFile)) || '';
     }
 
-    setPreviewImage(file.url || (file.preview as string));
-    setPreviewOpen(true);
-    setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
+    setPreview({
+      open: true,
+      image: file.url || (file.preview as string),
+      title: file.name || (file.url?.substring(file.url.lastIndexOf('/') + 1) || ''),
+    });
   };
 
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
-    setFileList(newFileList) 
-    handleImage({"logo":newFileList})
+    setFileList(newFileList);
+    handleImage({ logo: newFileList });
   };
 
-  const uploadButton = (
-    <div>
-      <PlusIcon className='w-8 text-gray-400  m-auto' />
-      <div style={{ marginTop: 8 }}>Brand Logo</div>
-    </div>
-  );
   return (
     <>
       <Upload
-        action=""
-        className="my-upload"
-        listType="picture-circle"
+        action=''
+        className='my-upload'
+        listType='picture-circle'
         fileList={fileList}
         onPreview={handlePreview}
         onChange={handleChange}
       >
-        {fileList.length >= 1 ? null : uploadButton}
+        {fileList.length >= 1 ? null : (
+          <div>
+            <PlusOutlined className='w-8 text-gray-400 m-auto' />
+            <div style={{ marginTop: 8 }}>Brand Logo</div>
+          </div>
+        )}
       </Upload>
-      <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+      <Modal visible={preview.open} title={preview.title} footer={null} onCancel={() => setPreview({ ...preview, open: false })}>
+        <img alt='example' style={{ width: '100%' }} src={preview.image} />
       </Modal>
     </>
   );

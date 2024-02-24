@@ -1,4 +1,4 @@
-import { useCurrentBranchValue, useManagerValue, useProfileValue } from "@components/common/constants/constants";
+import { useCurrentBranchValue, useLogoValue, useManagerValue, useProfileValue } from "@components/common/constants/constants";
 import { PencilIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { profileComponentType, profileSummaryCard } from "utils/store/types";
@@ -8,6 +8,8 @@ import { useUpdateDiagnostic } from "utils/reactQuery";
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
 import { useRecoilState } from "recoil";
 import { profileState } from "@components/common/recoil/profile";
+import LogoUploader from "@components/atoms/fileUploder/logoUploaders";
+import { logoStateData } from "@components/common/recoil/logo";
 
 export const ProfileSummaryComponent = ({ profile, style, summary }: profileComponentType) => {
   return (
@@ -35,12 +37,14 @@ const ProfileSummaryCard = ({ title, value, link }: profileSummaryCard) => {
 };
 
 const ProfileSummary = ({ profile, style }: any) => {
-  console.log(profile)
+  const logo = useLogoValue(logoStateData)
+  let profileLogo = URL.createObjectURL(new Blob([logo], { type: logo.type }));
+
   return (
     <section>
       <div className={`w-[70vw] p-4 bg-white relative rounded-lg h-auto text-left ${style}`}>
         <section>
-          {/* <img src={profile?.brandDetails?.brandLogo?.[0]?.thumbUrl } alt="logo" className='w-[5vw] rounded-full border-2' /> */}
+        {profileLogo && <img src={profileLogo} alt="logo" className='w-[5vw] h-[5vw] rounded-full border-2' style={{ borderRadius: '50%' }} />}
           <section className="grid grid-cols-2 w-[70%]">
             <aside>
               <ProfileSummaryCard title="Diagnostic Center Name" value={profile?.diagnosticName} />

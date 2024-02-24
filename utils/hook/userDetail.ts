@@ -1,4 +1,4 @@
-import {createDiagProfileApi, getDiagProfileByPhoneApi, updateDiagProfileApi } from "utils/urls/app";
+import {createDiagProfileApi, getDiagProfileByPhoneApi, updateDiagProfileApi, uploadDiagnosticLogoApi } from "utils/urls/app";
 import { getUserDetailType } from "utils/types/atoms/hooks";
 import { ReportDetails, UserDetails } from "utils/types/molecules/users.interface";
 import axios from "axios";
@@ -31,18 +31,18 @@ export async function updateUserDetails(data:any) {
     return { status: error };
   }
 }
-//upload image to s3
-export async function uploadImage(file: File) {
-  const formData = new FormData();
-  formData.append('file',file);
-    try {
-    const resp = await axios.post(uploadImageApi, formData)
-    const {location} = resp.data
-    return location;
-  } catch (error: any) {
-    return null;
-  }
-}
+// //upload image to s3
+// export async function useUploadLogo(file: File) {
+//   const formData = new FormData();
+//   formData.append('file',file);
+//     try {
+//     const resp = await axios.post(uploadDiagnosticLogoApi, formData)
+//     const {location} = resp.data
+//     return location;
+//   } catch (error: any) {
+//     return null;
+//   }
+// }
 //upload report to s3
 export async function uploadReport(
   file: File,

@@ -5,18 +5,17 @@ import { Spinner } from "@components/atoms/loader";
 import { BackwardIcon, ForwardIcon } from "@heroicons/react/24/outline";
 import { onboardSteps } from "utils/static";
 import { StepHeader } from "@components/atoms/fileUploder/stepHeader";
-import { UserDetails, BrandDetailsForm, OnboardStepsType, IManagerDetails } from "@utils";
+import { UserDetails, BrandDetailsForm, OnboardStepsType, IManagerDetails, uploadDiagnosticLogoApi } from "@utils";
 import { BasicDetailsForm, BranchDetails, basicFormArray, branchDetailsFormArray, brandDetailsFormArray } from "utils/types/molecules/forms.interface";
 import { createDiagProfile } from "utils/hook/userDetail";
-import { successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
 import dynamic from "next/dynamic";
 import DynamicFormGenerator from "../form/dynamicForm";
-
-const formArrays = {
-  basicForm: basicFormArray,
-  branchForm: branchDetailsFormArray,
-  brandForm: brandDetailsFormArray,
-};
+import { useRecoilState } from "recoil";
+import { logoStateData } from "@components/common/recoil/logo";
+import { useUploadBranding } from "utils/reactQuery";
+import axios from "axios";
+import { delay } from "lodash";
 
 const ProfileSummaryComponent = dynamic(() => import('../profile').then(res=>res.ProfileSummaryComponent),{loading: () => <Spinner/>})
 
@@ -28,8 +27,19 @@ const OnboardComponents = () => {
   const phoneNumber = user && user?.phoneNumbers?.[0]?.phoneNumber;
   const [currentStep, setCurrentStep] = useState<OnboardStepsType>(onboardSteps[0]);
   const [formData, setFormData] = useState<BasicDetailsForm | BranchDetails | BrandDetailsForm | UserDetails | IManagerDetails |  null>(null);
+  const [logoState, setLogoState] = useRecoilState(logoStateData) 
+  const [loading,setLoading] = useState(false)
 
-  
+  const addLogo = useUploadBranding({
+    onSuccess: (data) => {
+      setFormData({...formData,"brandLogo":data?.data})
+      successAlert("Profile updated sucessfully")
+    },
+    onError: (error) => {
+      errorAlert("Error updating profile")
+    },
+  })
+
   const onNext = async () => {
     // Add logic for handling next step
     if(currentStep.id <= 3) setCurrentStep(onboardSteps[currentStep.id])
@@ -45,33 +55,59 @@ const OnboardComponents = () => {
   const onFormSubmit = async () => {
     // Add logic for submitting form data 
 
-    setFormData((prevData: any) => ({ ...prevData, "managersDetail": [{managerName: managerName, managerContact: phoneNumber, managerRole : "owner"}] }));
-    if(formData?.managersDetail?.[0]?.managerName){
-      try {
-        let insertDiag = await createDiagProfile(formData)
-        if(insertDiag.status === 201){
-          successAlert("Profile created sucessfully")
-          router.push("verifyUser")
-        }
-      } catch (error) {
-          warningAlert("Error creating profile "+error)
-      }
+    // addLogo?.mutate(formDataImage)
+    const formDataImage = new FormData();
+    formDataImage.append('file', logoState);
+    setLoading(true)
+    let logoResp = await  axios.post(uploadDiagnosticLogoApi, formDataImage, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    if(logoResp?.status === 200){
+      setLoading(false)
+      const updatedFormData = {
+        ...formData,
+        brandDetails: { ...formData?.brandDetails,brandLogo: logoResp?.data?.url}
+      };
+      setFormData(updatedFormData)
+      successAlert("Logo uploaded succesfully")
     }
+
+    delay(async()=>{
+        setFormData((prevData: any) => ({ ...prevData, "managersDetail": [{managerName: managerName, managerContact: phoneNumber, managerRole : "owner"}] }));
+        console.log(formData)
+        if(formData?.managersDetail?.[0]?.managerName){
+          try {
+            let insertDiag = await createDiagProfile(formData)
+            if(insertDiag.status === 201){
+              successAlert("Profile created sucessfully")
+              router.push("verifyUser")
+              setLoading(false)
+            }
+          } catch (error) {
+              warningAlert("Error creating profile "+error)
+              setLoading(false)
+          }
+        }
+    },300)
+
   };
 
-  const uploadImage = async (file: File) => {
-    // Add logic for uploading image
+  const uploadImage = async (val: any) => {
+    let imageObject = Object.preventExtensions(val?.logo[0]?.originFileObj);
+    setLogoState(imageObject)
   }
 
   const getFormProps = () => {
     // return form props for each step
     switch (currentStep?.id) {
       case 1:
-        return { formProps: formArrays?.basicForm, disableElement: true, buttonText: "Continue", disabledFields: ["phoneNumber","managerName"], defaultValues: {phoneNumber: phoneNumber, managerName: managerName }  };
+        return { formProps: formArrays?.basicForm, disableElement: true, buttonText: "Continue", disabledFields: ["phoneNumber","managerName"], defaultValues: {phoneNumber: phoneNumber, managerName: managerName, ...formData }  };
       case 2:
-        return { formProps: formArrays?.branchForm, disableElement: false, buttonText: "Continue", handleImage: uploadImage, disabledFields: ["branchContact"], defaultValues: {branchContact: phoneNumber }  };
+        return { formProps: formArrays?.branchForm, disableElement: false, buttonText: "Continue", handleImage: uploadImage, disabledFields: ["branchContact"], defaultValues: {branchContact: phoneNumber, ...formData?.branchDetails?.[0]  }  };
       case 3:
-        return { formProps: formArrays?.brandForm, disableElement: true, buttonText: "Continue",};
+        return { formProps: formArrays?.brandForm, disableElement: true, buttonText: "Continue", defaultValues: {...formData?.brandDetails }};
       case 4:
         return { summary: true, props: formData, buttonText: "Submit" };
     }
@@ -107,6 +143,12 @@ const OnboardComponents = () => {
         // console.log(formData);
     }
   };
+
+  const formArrays = {
+    basicForm: basicFormArray,
+    branchForm: branchDetailsFormArray,
+    brandForm: brandDetailsFormArray(uploadImage),
+  };
   
   const formDetails = getFormProps();
 
@@ -138,6 +180,7 @@ const OnboardComponents = () => {
           </div>
         </div>
       </section>
+      {loading && <Spinner />}
     </section>
   )
 };

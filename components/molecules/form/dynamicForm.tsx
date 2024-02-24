@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Col, DatePicker, Form, Input, Radio, Row, Select, Space, Spin, Upload } from 'antd';
 import { FormType } from 'utils/types/molecules/forms.interface';
 import { UploadOutlined } from '@ant-design/icons';
+import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
 
 
 interface DynamicFormType {
@@ -125,6 +126,12 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText
                 </Upload>
             </Form.Item>
           );
+      case 'logo':
+        return (
+          <Form.Item key={formItem.label+1} className='mb-6' name={formItem.name} labelCol={{ span: 0 }} >
+             <LogoUploader handleImage={formItem?.handleImage ?? (() => {})} />
+          </Form.Item>
+        )
       case 'search':
         return (
           <Form.Item key={formItem.label+1} className='mb-6' name={formItem.name} labelCol={{ span: 0 }} >
