@@ -1,10 +1,8 @@
 import { Menu, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router'
 import React, { Fragment } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useAuthContext } from 'utils/context/auth.context'
 import { classNames } from 'utils/static'
-import { SET_DASHBOARD_ROUTE } from 'utils/store/types'
 
 const userNavigation = [
     { name: 'Dashboard', href: '#' },
@@ -17,7 +15,6 @@ export const MenuDropDown = () => {
     const {signOut} = useAuthContext()
     // const diagnosticDetails = useSelector((state:any)=>state.diagnosticReducer)
     const {diagnosticDetails} = useAuthContext()
-    const dispatch = useDispatch()
     const router = useRouter()
     let logo = diagnosticDetails?.brandDetails?.brandLogo || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
     const handleLogout=()=>{
@@ -54,22 +51,16 @@ export const MenuDropDown = () => {
                                     <a
                                     onClick={()=>{ 
                                         if(diagnosticDetails!=null && item.name == "Sign out"){
-                                          dispatch({type:"SET_LOADING",payload:true})
                                           handleLogout()
                                         }
                                         else if(diagnosticDetails!=null && item.name =="Dashboard"){
-                                            dispatch({type:"SET_LOADING",payload:true})
-                                            dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:item.name,href:"/dashboard",loading:false} })
                                             router.push("/dashboard")
                                         }
                                         else if(diagnosticDetails!=null && item.name =="Settings"){
-                                            dispatch({type:"SET_LOADING",payload:true})
-                                            dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:item.name,href:"/settings",loading:false} })
+
                                             router.push("/dashboard")
                                         }
                                         else if(diagnosticDetails!=null && item.name =="Your Profile"){
-                                            dispatch({type:"SET_LOADING",payload:true})
-                                            dispatch({ type: SET_DASHBOARD_ROUTE,payload: {name:item.name,href:"/profile",loading:false} })
                                             router.push("/dashboard")
                                         }
                                     }}

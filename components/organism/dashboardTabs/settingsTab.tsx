@@ -13,7 +13,7 @@ const Billing = dynamic(() => import('@components/organism/settingsTabs/billing'
 const SettingsCommon = dynamic(() => import('@components/organism/settingsTabs/settings').then(res=>res.SettingsCommon),{loading: () => <Spinner/>})
 const Support = dynamic(() => import('@components/organism/settingsTabs/support').then(res=>res.Support),{loading: () => <Spinner/>})
 
-export function SettingsTab() {
+export default function SettingsTab() {
   const [activeKey, setActiveKey] = useState('Billing');
   const [profile,setProfile] = useRecoilState(profileState);
   const [addElement,setAddElement] = useState(false);

@@ -3,7 +3,7 @@ import { TestTable } from '@components/molecules/test/testTable';
 import { TestToggle } from '@components/molecules/test/testToggle';
 import { AddTestComponent } from '@components/molecules/addReport/addTest';
 
-export function TestTab() {
+export default function TestTab() {
   const [showTest, setShowTest] = useState(false);
 
   return (

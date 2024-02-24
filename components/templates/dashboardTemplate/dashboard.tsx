@@ -1,18 +1,18 @@
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import "./dashboard.module.css"
-import { Spinner } from "@components/atoms/loader";
-import { UserLayout } from "../pageTemplate";
+import { DashboardLayout } from "@components/organism/layout/dashboardLayout";
+import { dashTabs } from "components/common/recoil/dashboard/index";
 import { useRecoilValue } from "recoil";
-import {dashTabs} from "components/common/recoil/dashboard/index"
+import UserLayout from "../pageTemplate";
+import dynamic from "next/dynamic";
 
-const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'),{ssr:false})
-const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab'),{ssr:false})
-const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'),{ssr:false})
-const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'),{ssr:false})
-const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab'),{ssr:false})
+// Dynamic imports with loading spinner
+const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'), { ssr: false });
+const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'), { ssr: false });
+const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'), { ssr: false });
+const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab'), { ssr: false });
+const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab'), { ssr: false });
 
-const Dashboard_Tabs = {
+// Mapping of dashboard tabs to their respective components
+const DashboardTabs: Record<string, JSX.Element> = {
   Dashboard: <DashboardTab />,
   Tests: <TestTab />,
   Reports: <ReportsTab />,
@@ -20,15 +20,18 @@ const Dashboard_Tabs = {
   Vaccines: <SettingsTab />,
 };
 
-
+/**
+ * DashboardTemplate component renders the appropriate dashboard tab based on the selected tab from Recoil state.
+ */
 const DashboardTemplate = () => {
-  const dashboard = useRecoilValue(dashTabs)
+  const selectedDashboardTab = useRecoilValue(dashTabs);
 
   return (
-    <UserLayout tabName={`Admin Omerald | ${dashboard}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">
-      <DashboardLayout>{Dashboard_Tabs[dashboard]}</DashboardLayout>
+    <UserLayout tabName={`Admin Omerald | ${selectedDashboardTab}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">
+      {/* Dashboard layout with selected tab content */}
+      <DashboardLayout>{DashboardTabs[selectedDashboardTab]}</DashboardLayout>
     </UserLayout>
-  )
+  );
 };
 
-export default DashboardTemplate
+export default DashboardTemplate;
