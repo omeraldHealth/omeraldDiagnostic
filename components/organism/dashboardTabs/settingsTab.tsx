@@ -8,15 +8,15 @@ import { useRecoilState } from 'recoil';
 import { profileState } from '@components/common/recoil/profile';
 import { branchDetailsFormArray, managerFormArray, pathologistFormArray } from 'utils/types/molecules/forms.interface';
 import dynamic from 'next/dynamic';
-import TabPane from 'antd/es/tabs/TabPane';
+import { settingTabState } from 'components/common/recoil/settings/index'
 
 const Billing = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/billing').then(res=>res.Billing),{loading: () => <Spinner/>})
 const SettingsCommon = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/settings').then(res=>res.SettingsCommon),{loading: () => <Spinner/>})
 const Support = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/support').then(res=>res.Support),{loading: () => <Spinner/>})
 
 export default function SettingsTab() {
-  const [activeKey, setActiveKey] = useState('Billing');
   const [profile,setProfile] = useRecoilState(profileState);
+  const [activeKey,setActiveKey] = useRecoilState(settingTabState);
   const [addElement,setAddElement] = useState(false);
   const [editElement,setEditElement] = useState(false);
   const [defaultValues,setDefaultValue] = useState({});
@@ -42,48 +42,52 @@ export default function SettingsTab() {
   }
 
   const handleEditValue = (record:any) => {
-    let recordType = fetchRecordType(activeKey);
-    if (!profile?.[recordType].some((item) => item.name === record.name )) {
-      const editedValue = profile?.[recordType].map((item) => item.name === defaultValues.name ? record : defaultValues);
-      updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: editedValue } });
-      setEditElement(false);
-    }
-    else if (!profile?.[recordType].some((item) => item.managerName === record.managerName )) {
-      const editedValue = profile?.[recordType].map((item) => item.managerName === defaultValues.managerName ? record : defaultValues);
-      updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: editedValue } });
-      setEditElement(false);
-    }
-    else if (!profile?.[recordType].some((item) => item.branchName === record.branchName )) {
-      const editedValue = profile?.[recordType].map((item) => item.branchName === defaultValues.branchName ? record : defaultValues);
-      updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: editedValue } });
-      setEditElement(false);
-    }
-    else {
-      // Handle case where record.name is already present
-      warningAlert("Record with name already exists");
-      setAddElement(false);
-      // You can show a message or take appropriate action here
-    }
-  
+    //Disabled edit
+    // console.log(record)
+    // let recordType = fetchRecordType(activeKey);
+    // if (!profile?.[recordType].some((item) => item.name === record.name )) {
+    //   const editedValue = profile?.[recordType].map((item) => item.name === defaultValues.name ? record : defaultValues);
+    //   updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: editedValue } });
+    //   setEditElement(false);
+    // }
+    // else if (!profile?.[recordType].some((item) => item.managerName === record.managerName )) {
+    //   const editedValue = profile?.[recordType].map((item) => item.managerName === defaultValues.managerName ? record : defaultValues);
+    //   updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: editedValue } });
+    //   setEditElement(false);
+    // }
+    // else if (!profile?.[recordType].some((item) => item.branchName === record.branchName )) {
+    //   const editedValue = profile?.[recordType].map((item) => item.branchContact === defaultValues.branchContact ? record : defaultValues);
+    //   updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: editedValue } });
+    //   setEditElement(false);
+    // }
+    // else {
+    //   // Handle case where record.name is already present
+    //   warningAlert("Record with name already exists");
+    //   setAddElement(false);
+    //   // You can show a message or take appropriate action here
+    // }
   }
 
   const handleAdd = (record:any) => {
     let recordType = fetchRecordType(activeKey);
-  
+
     // Check if record.name is not already present
     if (!profile?.[recordType].some((item) => item.name === record.name )) {
       let updateData = [...profile?.[recordType], record];
       updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
       setAddElement(false);
+      successAlert("Added pathalogist")
     } else if (!profile?.[recordType].some((item) => item.managerName === record.managerName )) {
       let updateData = [...profile?.[recordType], record];
       updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
       setAddElement(false);
+      successAlert("Added manager")
     }
     else if (!profile?.[recordType].some((item) => item.branchName === record.branchName )) {
       let updateData = [...profile?.[recordType], record];
       updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
       setAddElement(false);
+      successAlert("Added branch")
     }
     
     else {
@@ -96,11 +100,11 @@ export default function SettingsTab() {
 
   const fetchRecordType = (key: any) => {
     switch (key) {
-      case "Employee Management":
+      case "3":
         return "managersDetail";
-      case "Branch Management":
-        return "managerDetails";
-      case "Pathologist Management":
+      case "4":
+        return "branchDetails";
+      case "5":
         return "pathologistDetail";
     }
   }
@@ -108,7 +112,12 @@ export default function SettingsTab() {
   const handleRemove = (recordType: any, record: any) => {
     let updateData = profile?.[recordType].filter((item: any) => item._id !== record._id);
     updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } })
+    warningAlert(`Deleted  succesfully`)
   };
+
+  const handleImage = (file: any) => {
+    console.log(File)
+  }
 
   const settingProp = {
     handleSubmit: addElement ? handleAdd : handleEditValue,
@@ -146,8 +155,8 @@ export default function SettingsTab() {
     {
       key: '5',
       label:  "Pathologist Management",
-      children:   <SettingsCommon columns={PathologistColumns(handleEdit, handleRemove)} data={profile ? profile?.pathologistDetail : []} 
-      tabName="Pathologist" form={pathologistFormArray} {...settingProp}
+      children:   <SettingsCommon columns={PathologistColumns(handleAdd, handleRemove)} data={profile ? profile?.pathologistDetail : []} 
+      tabName="Pathologist" form={pathologistFormArray(handleImage)} {...settingProp}
       />,
     },
     {
@@ -160,7 +169,7 @@ export default function SettingsTab() {
   return (
     <div className="sm:p-6 xl:p-8 max-h-[30vh] bg-signBanner flex w-100 justify-center">
       <div className='w-[96vw] lg:w-[80vw] xl:w-[70vw] bg-white shadow-lg mt-10 h-[80vh] lg:h-[70vh] rounded-lg] sm:p-8 p-4'>
-        <Tabs defaultActiveKey="1" items={tabComponents} onChange={handleTabChange} />;
+        <Tabs defaultActiveKey={activeKey} items={tabComponents} onChange={handleTabChange} />;
       </div>
     </div>
   );

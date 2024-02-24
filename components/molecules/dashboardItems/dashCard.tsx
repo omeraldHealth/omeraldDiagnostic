@@ -1,11 +1,11 @@
 import React from 'react';
-import { BeakerIcon, ChartBarIcon, InformationCircleIcon, ShareIcon } from '@heroicons/react/20/solid';
+import { BeakerIcon, ChartBarIcon, ShareIcon } from '@heroicons/react/20/solid';
 import { Tooltip } from 'antd';
-import { DashCardTypes } from 'utils/types/atoms/atoms';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { profileState } from '../../common/recoil/profile';
 import { branchState } from '../../common/recoil/branch/branch';
 import { dashTabs } from '../../common/recoil/dashboard';
+import { settingTabState } from '../../common/recoil/settings';
 
 interface TooltipProps {
   tipInfo: string;
@@ -24,6 +24,7 @@ export const DashCard = () => {
   const profile = useRecoilValue(profileState);
   const currentBranch = useRecoilValue(branchState);
   const setDashTab = useSetRecoilState(dashTabs);
+  const [activeKey,setActiveKey] = useRecoilState(settingTabState);
 
   let testList = profile?.tests?.filter((test: any) => test?.branchId === currentBranch?._id);
   let reportList = profile?.reports?.data?.filter((report: any) => report?.branchId === currentBranch?._id);
@@ -31,7 +32,7 @@ export const DashCard = () => {
     (emp: any) => emp.branchId === currentBranch?._id || emp?.managerRole.toLowerCase() === 'owner'
   );
 
-  const dashCard: DashCardTypes[] = [
+  const dashCard: any[] = [
     {
       href: '/test',
       style: 'bg-blue-900',
@@ -69,7 +70,7 @@ export const DashCard = () => {
   return (
     <section className="my-6 grid grid-cols-2 lg:grid-cols-4 gap-4 lg:flex justify-between">
       {dashCard?.map((dash, index) => (
-        <a key={index} href="#" onClick={() => setDashTab(dash.title)}>
+        <a key={index} href="#" onClick={() => setDashTab(navigateDashboard(dash?.title || "",setActiveKey))}>
           <section
             className={`md:w-[47vw] lg:w-[20vw] xl:w-[15vw] h-[12vh] sm:h-[14vh] p-2 flex justify-between rounded-md text-white ${dash.style}`}
           >
@@ -85,3 +86,18 @@ export const DashCard = () => {
     </section>
   );
 };
+
+const navigateDashboard = (tilte:string,setActiveKey:()=>{}) => {
+
+  switch(tilte){
+    case "Tests Offered":
+      return "Tests Offered"
+    case "Reports Uploaded":
+      return "View Reports"
+    case "Reports Shared":
+      return "View Reports"
+    case "Total Users":
+      setActiveKey("3")
+      return "Settings"
+  }
+}

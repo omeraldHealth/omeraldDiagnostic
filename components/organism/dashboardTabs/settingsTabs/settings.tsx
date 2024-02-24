@@ -57,7 +57,6 @@ export function SettingsCommon({
           <button
             onClick={() => {
               setAddElement(!addElement);
-              setEditElement(!editElement);
             }}
             className="bg-gray-200 p-2 rounded-md"
           >

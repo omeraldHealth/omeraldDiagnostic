@@ -116,8 +116,8 @@ export const parameterForm: FormType[] = [
     {"name": "aliases", "type": "tags", "label": "Aliases", "required": true}
 ]
 
-export const pathologistFormArray = [
-    {"name":"signature","type":"image","label":"Pathologist Signature","required":true,pattern: textPattern},
+export const pathologistFormArray = (): FormType[] => [
+    // {"name":"signature","type":"logo","label":"Pathologist Signature","required":true,pattern: textPattern},
     {"name":"name","type":"text","label":"Pathologist Name","required":true,pattern: textPattern},
     {"name":"designation","type":"text","label":"Pathologist Designation","required":true,pattern: textPattern},
 ]

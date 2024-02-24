@@ -73,9 +73,9 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
             });
           }} />
         </a>
-        <a>
+        {/* <a>
           <PencilIcon onClick={() => { handleEdit(record) }} className='w-4 text-gray-900' />
-        </a>
+        </a> */}
       </Space>
     ),
   },
@@ -129,12 +129,12 @@ export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any) 
     key: 'branchAddress  ',
     render: (_, record: any, index: any) => (
       <Space size="middle">
-        {(record?.branchContact !== profile?.phoneNumber) ? 
+        {/* {(record?.branchContact !== profile?.phoneNumber) ? 
           <a>
             <PencilIcon onClick={() => { handleEdit(record) }} className='w-4 text-gray-900' />
           </a>:
           <p className="text-sm font-bold italic text-red-500">Current Profile</p>
-        }
+        } */}
         {(record?.branchContact !== profile?.phoneNumber) && (
           <a>
             <TrashIcon className='w-4 text-red-500' onClick={() => {
@@ -188,12 +188,12 @@ export const EmployeeColumns = (handleEdit:any, handleRemove: any, profile: any)
     key: 'managerSignature  ',
     render: (i:any, record:any, index:any) => (
       <Space size="middle">
-        {(record?.managerRole !== "owner") && (
+        {/* {(record?.managerRole !== "owner") && (
           <a>
             <PencilIcon onClick={() => handleEdit(record)} className='w-4 text-gray-900' />
           </a>
-        )}
-        {(record?.managerRole !== "owner") && (
+        )} */}
+        {(record?.managerRole !== "owner" &&   record?.managerContact !== profile?.phoneNumber) && (
           <a>
             <TrashIcon onClick={() => {
               confirm({
@@ -208,7 +208,7 @@ export const EmployeeColumns = (handleEdit:any, handleRemove: any, profile: any)
         )}
       </Space>
     ),
-  },
+  },  
 ];
 
 interface TestTableColumn {

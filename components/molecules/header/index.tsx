@@ -38,6 +38,7 @@ export function DashboardHeader({}: DashboardHeaderProps) {
               <section className='flex gap-1'>
                 <Select
                   placeholder="Select Branch"
+                  disabled
                   value={{ label: currentBranch?.branchName, value: currentBranch }}
                   onChange={handleBranchChange}
                   options={branchList?.map((branch: any) => ({ label: branch?.branchName, value: branch?._id, key: branch?.branchName }))}

@@ -108,7 +108,6 @@ const OnboardComponents: React.FC = () => {
           updatedFormData?.managersDetail?.[0]?.managerName &&
           updatedFormData?.brandDetails?.brandLogo
         ) {
-          console.log(updatedFormData)
           createDiagProfile.mutate({data:updatedFormData})
         } else {
           errorAlert("Error creating profile: Missing required data");
@@ -187,7 +186,6 @@ const OnboardComponents: React.FC = () => {
         onFormSubmit();
         break;
       default:
-        // console.log(formData);
     }
   };
 
