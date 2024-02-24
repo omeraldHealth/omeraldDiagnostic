@@ -1,3 +1,5 @@
+import { ColumnsType } from "antd/es/table";
+
  export type BlogDataType = {
     title :string,
     description: string;
@@ -69,3 +71,39 @@ export interface UserNavigationItem {
     managerName?: string;
   };
   
+  export interface ReportSummaryProps {
+    handleSuccess: () => void;
+    report: any;
+    style: string;
+  }
+
+  export interface ProfileSummaryCardProps {
+    title: string;
+    value: string;
+    link?: string;
+  }
+
+  export interface ReportSummaryCompProps {
+    profile: any;
+    style: string;
+    handleSuccess: () => void;
+  }
+  
+  export interface TestTableProps {}
+
+  export interface ViewTestProps {
+    columns: ColumnsType<any>;
+    tests: any[];
+  }
+
+  export interface EditTestsProps {
+    form: any; // Replace with the appropriate type for your form
+    editElement: boolean;
+    handleSubmit: (values: any) => void;
+    defaultValues: any;
+  }
+
+  export interface TestToggleProps {
+    showTest: boolean;
+    setShowTest: React.Dispatch<React.SetStateAction<boolean>>;
+  }

@@ -176,3 +176,12 @@ export const userNavigation: UserNavigationItem[] = [
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
 ];
+
+export function formatTimeFromDate(date: Date): string {
+  const dates = new Date(date);
+  const month = (dates.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-based
+  const day = dates.getDate().toString().padStart(2, '0');
+  const year = dates.getFullYear();
+
+  return `${month}/${day}/${year}`;
+}

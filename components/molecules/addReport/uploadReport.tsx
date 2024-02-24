@@ -1,32 +1,36 @@
-import { useProfileValue } from "@components/common/constants/recoilValues";
-import DynamicFormGenerator from "../../common/form/dynamicForm";
-import { useState } from "react";
-import { Select } from "antd";
-import { manualReportForm, patientDetailsForm, reportUploadFormArray } from "utils/types/molecules/forms.interface";
-import { FileUploader } from "@components/atoms/fileUploder/fileUpload";
-import { useRecoilState } from "recoil";
-import { reportState } from "@components/common/recoil/report";
+import React, { useState } from 'react';
+import { Select } from 'antd';
+import { useProfileValue } from '@components/common/constants/recoilValues';
+import { useRecoilState } from 'recoil';
+import DynamicFormGenerator from '../../common/form/dynamicForm';
+import { manualReportForm, reportUploadFormArray } from 'utils/types/molecules/forms.interface';
+import { reportState } from '@components/common/recoil/report';
 
-export const UploadReport = ({handleSteps}: any) => {
-  
+interface UploadReportProps {
+  handleSteps: () => void;
+}
+
+export const UploadReport: React.FC<UploadReportProps> = ({ handleSteps }) => {
   const profileValue = useProfileValue();
-  const [manualReport, setManualReport] = useState(null);
-  const [reportValue,setReportState] = useRecoilState(reportState)
-  
-  const handleSubmit = (value:any):any => {
-    setReportState({...reportValue,...value})
-    handleSteps()
-  }
+  const [manualReport, setManualReport] = useState<boolean | null>(null);
+  const [reportValue, setReportState] = useRecoilState(reportState);
 
-  const handleSelect = (value: any) => {
+  const handleSubmit = (value: any): void => {
+    setReportState({ ...reportValue, ...value });
+    handleSteps();
+  };
+
+  const handleSelect = (value: boolean): void => {
     setManualReport(value);
-  };  
+  };
 
-  const handleUpload = (value: any) => {
+  const handleUpload = (value: any): void => {
+    // Handle upload logic if needed
+  };
 
-  };  
-
-  // const handleDate = (value: any) => {console.log(value)}
+  const handleDate = (value: any): void => {
+    // Handle upload logic if needed
+  };
 
   const formProps = manualReport ? manualReportForm(profileValue) : reportUploadFormArray(handleDate, handleUpload);
 
@@ -34,38 +38,44 @@ export const UploadReport = ({handleSteps}: any) => {
     <div className="px-8 py-2">
       <section className="w-[70vh] h-auto xl:h-[40vh] xl:mt-4">
         <ReportHeader handleSelect={handleSelect} />
-          {manualReport!=null && <DynamicFormGenerator
+        {manualReport !== null && (
+          <DynamicFormGenerator
             key="manualReportForm"
             formProps={formProps}
             buttonText="Continue"
             handleSubmit={handleSubmit}
-          />}
+          />
+        )}
       </section>
     </div>
   );
 };
 
-const ReportHeader: React.FC<any> = ({ handleSelect }) => {
+interface ReportHeaderProps {
+  handleSelect: (value: boolean) => void;
+}
+
+const ReportHeader: React.FC<ReportHeaderProps> = ({ handleSelect }) => {
   const uploadReportType = [
-    { value: true, label: 'Create Report with omerald' },
+    { value: true, label: 'Create Report with Omerald' },
     { value: false, label: 'Upload Existing Report' },
-  ]
+  ];
+
   return (
     <section>
       <section className="my-6">
-          <Select
-                placeholder={"Select Report Creation Type"}
-                onChange={handleSelect}
-              >
-                {uploadReportType && uploadReportType.map((option) => (
-                  <Select.Option key={option?.value} value={option?.value}>
-                    {option.label}
-                  </Select.Option>
-                ))}
-              </Select>
+        <Select
+          placeholder="Select Report Creation Type"
+          onChange={(value) => handleSelect(value as boolean)}
+        >
+          {uploadReportType.map((option) => (
+            <Select.Option key={option.value} value={option.value}>
+              {option.label}
+            </Select.Option>
+          ))}
+        </Select>
       </section>
     </section>
   );
 };
-
 

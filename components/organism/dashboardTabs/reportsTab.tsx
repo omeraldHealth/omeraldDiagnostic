@@ -4,9 +4,9 @@ import { DashboardTable } from '@components/molecules/dashboardItems/data-table'
 import { ReportTableColumns } from 'utils/forms/form';
 import { useQueryGetData } from 'utils/reactQuery';
 import { getDiagReportsApi } from '@utils';
-import { AddReportComponent } from '@components/molecules/addReport/addReport';
 import { useRecoilState } from 'recoil';
 import { reportState } from '@components/common/recoil/report';
+import { AddReportComponent } from '../../molecules/addReport/addReport';
 
 export default function ReportsTab() {
   const [showReport, setShowReport] = useState(false);

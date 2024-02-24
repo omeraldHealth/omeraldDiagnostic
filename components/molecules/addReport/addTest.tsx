@@ -5,7 +5,12 @@ import { SuccessTest } from '../addTest/successTest';
 import { TestDetail } from '../addTest/testDetail';
 import { AddKeywords } from '../addTest/addKeywords';
 
-export const AddTestComponent = ({ setTest, edit }: any) => {
+interface AddTestComponentProps {
+  setTest: React.Dispatch<React.SetStateAction<boolean>>;
+  edit?: any; // Adjust the type based on your requirements
+}
+
+export const AddTestComponent: React.FC<AddTestComponentProps> = ({ setTest, edit }) => {
   const [currentStep, setCurrentStep] = useState(addTestSteps[0]);
 
   const handleSuccess = () => {

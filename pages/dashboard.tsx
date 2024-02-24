@@ -9,7 +9,7 @@ import dynamic from 'next/dynamic';
 const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'), { loading:() => <Spinner /> });
 const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'), { loading:() => <Spinner /> });
 const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'), { loading:() => <Spinner /> });
-const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab').then((res) => res.TestTab), { loading:() => <Spinner /> });
+const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab').then((res) => res.default), { loading:() => <Spinner /> });
 const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab').then((res) => res.default), { loading:() => <Spinner /> });
 
 // Define a map of Dashboard tabs
