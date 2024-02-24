@@ -52,7 +52,6 @@ export const TestTable = () => {
   }
 
   const handleSubmit = async (values:any) => {
-    console.log(values)
   }
   
   return (

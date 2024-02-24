@@ -21,8 +21,6 @@ export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
   const [profile,setProfile] = useRecoilState(profileState)
   const currentBranch = useCurrentBranchValue()
 
-  console.log(testDetailState)
-
   const handleAddKeyword = (value: any) => {
       if(addKeyword){
         setTestDetail({

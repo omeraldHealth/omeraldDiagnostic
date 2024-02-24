@@ -81,7 +81,6 @@ export const TestDetail = ({handleSteps}:any) => {
     useEffect(()=>{
       if(booleanValue && testDetailState){
           setDefaultValue({"sampleName":testDetailState.sampleName, "testName":testDetailState.sampleType.testName})
-          console.log(defaultValue)
         }
     },[booleanValue])
 

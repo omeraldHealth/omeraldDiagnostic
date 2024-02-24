@@ -23,11 +23,10 @@ export const UploadReport = ({handleSteps}: any) => {
   };  
 
   const handleUpload = (value: any) => {
-    console.log(value);
+
   };  
 
-  const handleDate = (value: any) => {console.log(value)}
-
+  // const handleDate = (value: any) => {console.log(value)}
 
   const formProps = manualReport ? manualReportForm(profileValue) : reportUploadFormArray(handleDate, handleUpload);
 

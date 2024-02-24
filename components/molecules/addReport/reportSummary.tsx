@@ -76,7 +76,7 @@ const ReportSummaryComp = ({ profile, style, handleSuccess }: any) => {
           'Content-Type': 'multipart/form-data',
         },
       })
-      console.log(resp)
+      
       if(resp?.status === 200){
         setLoading(false);
         successAlert("Uploaded file successfully")

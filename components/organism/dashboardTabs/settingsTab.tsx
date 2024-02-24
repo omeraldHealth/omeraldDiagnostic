@@ -60,7 +60,6 @@ export function SettingsTab() {
     else {
       // Handle case where record.name is already present
       warningAlert("Record with name already exists");
-      console.log(`Record with name ${record.name} already exists in ${recordType}`);
       setAddElement(false);
       // You can show a message or take appropriate action here
     }
@@ -89,7 +88,6 @@ export function SettingsTab() {
     else {
       // Handle case where record.name is already present
       warningAlert("Record with name already exists");
-      console.log(`Record with name ${record.name} already exists in ${recordType}`);
       setAddElement(false);
       // You can show a message or take appropriate action here
     }
