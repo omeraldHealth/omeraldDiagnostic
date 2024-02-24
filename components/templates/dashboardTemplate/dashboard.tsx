@@ -1,6 +1,4 @@
-import DashboardLayout from "@components/organism/layout/dashboardLayout";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import dynamic from "next/dynamic";
 import "./dashboard.module.css"
 import { Spinner } from "@components/atoms/loader";
