@@ -1,7 +1,10 @@
 import React, { Fragment } from "react";
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
 
+// Border color constant
 const borderColor = "#90e5fc";
+
+// Styles for the table row
 const styles = StyleSheet.create({
   row: {
     display: "flex",
@@ -10,7 +13,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     alignItems: "center",
     height: 24,
-    fontStyle: "bold",
+    fontWeight: "bold", // Changed fontStyle to fontWeight for bold text
   },
   description: {
     width: "45%",
@@ -40,7 +43,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const TableRow = ({ items }) => {
+// TableRow component
+const TableRow: React.FC<{ items: any[] }> = ({ items }) => {
+  // Create rows based on the provided items
   const rows = items.map((item) => (
     <View style={styles.row} key={item.keyword}>
       <Text style={styles.description}>{item.keyword}</Text>
@@ -49,6 +54,7 @@ const TableRow = ({ items }) => {
       <Text style={styles.range}>{item.normalRange}</Text>
     </View>
   ));
+
   return <Fragment>{rows}</Fragment>;
 };
 

@@ -1,17 +1,17 @@
-import { useCurrentBranchValue, useLogoValue, useManagerValue, useProfileValue } from "@components/common/constants/recoilValues";
+import React, { useState } from 'react';
 import { PencilIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
-import { profileComponentType, profileSummaryCard } from "utils/store/types";
-import DynamicFormGenerator from "../../common/form/dynamicForm";
+import { useRecoilState } from "recoil";
+import { useCurrentBranchValue, useLogoValue, useManagerValue, useProfileValue } from "@components/common/constants/recoilValues";
 import { profileForm } from "utils/types/molecules/forms.interface";
 import { useUpdateDiagnostic } from "utils/reactQuery";
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
-import { useRecoilState } from "recoil";
-import { profileState } from "@components/common/recoil/profile";
 import LogoUploader from "@components/atoms/fileUploder/logoUploaders";
+import { profileState } from "@components/common/recoil/profile";
 import { logoStateData } from "@components/common/recoil/logo";
+import DynamicFormGenerator from '../../common/form/dynamicForm';
 
-export const ProfileSummaryComponent = ({ profile, style, summary }: profileComponentType) => {
+// Profile Summary Component
+export const ProfileSummaryComponent: React.FC<any> = ({ profile, style, summary }) => {
   return (
     <div className='h-auto'>
       {summary ? (
@@ -23,10 +23,11 @@ export const ProfileSummaryComponent = ({ profile, style, summary }: profileComp
   );
 };
 
-const ProfileSummaryCard = ({ title, value, link }: profileSummaryCard) => {
+// Profile Summary Card Component
+const ProfileSummaryCard: React.FC<any> = ({ title, value, link }) => {
   return (
     <div className="mb-6">
-      { !link && <p className="font-bold text-sm">{title}: <span className="text-black font-light">{value}</span></p>}
+      {!link && <p className="font-bold text-sm">{title}: <span className="text-black font-light">{value}</span></p>}
       {link && (
         <p className="text-blue-800 font-bold text-sm">
           {title} URL: <a href={link} className="text-blue-900 font-light">{link}</a>
@@ -36,15 +37,16 @@ const ProfileSummaryCard = ({ title, value, link }: profileSummaryCard) => {
   );
 };
 
-const ProfileSummary = ({ profile, style }: any) => {
-  const logo = useLogoValue(logoStateData)
-  let profileLogo = URL.createObjectURL(new Blob([logo], { type: logo.type }));
+// Profile Summary Component
+const ProfileSummary: React.FC<any> = ({ profile, style }) => {
+  const logo = useLogoValue(logoStateData);
+  const profileLogo = URL.createObjectURL(new Blob([logo], { type: logo.type }));
 
   return (
     <section>
       <div className={`w-[70vw] p-4 bg-white relative rounded-lg h-auto text-left ${style}`}>
         <section>
-        {profileLogo && <img src={profileLogo} alt="logo" className='w-[5vw] h-[5vw] rounded-full border-2' style={{ borderRadius: '50%' }} />}
+          {profileLogo && <img src={profileLogo} alt="logo" className='w-[5vw] h-[5vw] rounded-full border-2' style={{ borderRadius: '50%' }} />}
           <section className="grid grid-cols-2 w-[70%]">
             <aside>
               <ProfileSummaryCard title="Diagnostic Center Name" value={profile?.diagnosticName} />
@@ -66,19 +68,20 @@ const ProfileSummary = ({ profile, style }: any) => {
   );
 };
 
-const ProfileView = ({ style }: any) => {
-  const currentManager = useManagerValue()
-  const currentBranch = useCurrentBranchValue()
-  const [edit, setEdit] = useState()
+// Profile View Component
+const ProfileView: React.FC<any> = ({ style }) => {
+  const currentManager = useManagerValue();
+  const currentBranch = useCurrentBranchValue();
+  const [edit, setEdit] = useState<boolean>(false);
   const [profile, setProfile] = useRecoilState(profileState);
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
-      successAlert("Profile updated sucessfully")
+      successAlert("Profile updated successfully");
       setProfile(data?.data);
     },
     onError: (error) => {
-      errorAlert("Error updating profile")
+      errorAlert("Error updating profile");
     },
   });
 
@@ -89,12 +92,16 @@ const ProfileView = ({ style }: any) => {
 
   return (
     <section>
-             <div className={`w-auto p-4 bg-white sm:mt-14 relative rounded-lg h-auto shadow-xl text-left ${style}`}>
-               {currentManager?.managerRole.toLowerCase() === "owner" && <>
-               {!edit ? <a href='#' onClick={()=>{setEdit(!edit)}}><PencilIcon className='w-6 absolute right-20' /></a> :<a href='#' onClick={()=>{setEdit(!edit)}}>
-                <XMarkIcon className='w-6 absolute right-20' /></a>}
-               </> }
-               {
+      <div className={`w-auto p-4 bg-white sm:mt-14 relative rounded-lg h-auto shadow-xl text-left ${style}`}>
+        {currentManager?.managerRole.toLowerCase() === "owner" && (
+          <>
+            {!edit ? <a href='#' onClick={() => setEdit(!edit)}><PencilIcon className='w-6 absolute right-20' /></a> :
+              <a href='#' onClick={() => setEdit(!edit)}>
+                <XMarkIcon className='w-6 absolute right-20' />
+              </a>}
+          </>
+        )}
+         {
                 !edit ? 
                 <>
                   <section>
@@ -124,7 +131,7 @@ const ProfileView = ({ style }: any) => {
                   </section>
                 </>
               }
-            </div>
-        </section>
+      </div>
+    </section>
   );
 };

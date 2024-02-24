@@ -1,51 +1,66 @@
-import React from 'react'
-import { Tag } from 'antd'
-import { DashboardTable } from '../dashboardItems/data-table'
+import React from 'react';
+import { Tag } from 'antd';
+import { DashboardTable } from '../dashboardItems/data-table';
 
-export const AddKeyword = ({selectedTest}:any) => {
+interface Keyword {
+  keyword: string;
+  minRange: string;
+  maxRange: string;
+  unit: string;
+  aliases: string[];
+}
 
+interface AddKeywordProps {
+  selectedTest: {
+    sampleType: {
+      keywords: Keyword[];
+    };
+  } | null;
+}
+
+export const AddKeyword: React.FC<AddKeywordProps> = ({ selectedTest }) => {
   const columns = [
     {
-      key: "keyword",
-      title: "Parameter",
-      dataIndex: "keyword",
-      render: (text:any) => <a className="text-blue-800 font-medium">{text}</a>,
-      sorter: (a:any, b:any) => a.keyword.length - b.keyword.length,
+      key: 'keyword',
+      title: 'Parameter',
+      dataIndex: 'keyword',
+      render: (text: string) => <a className="text-blue-800 font-medium">{text}</a>,
+      sorter: (a: Keyword, b: Keyword) => a.keyword.length - b.keyword.length,
     },
     {
-      key: "minRange",
-      title: "Min Range",
-      dataIndex: "minRange",
-      render: (text:any)  => <a>{text}</a>,
-      sorter: (a:any, b:any) => a.minRange.length - b.minRange.length,
+      key: 'minRange',
+      title: 'Min Range',
+      dataIndex: 'minRange',
+      render: (text: string) => <a>{text}</a>,
+      sorter: (a: Keyword, b: Keyword) => a.minRange.length - b.minRange.length,
     },
     {
-      key: "maxRange",
-      title: "Max Range",
-      dataIndex: "maxRange",
-      render: (text:any)  => <a>{text}</a>,
-      sorter: (a:any, b:any) => a.maxRange.length - b.maxRange.length,
+      key: 'maxRange',
+      title: 'Max Range',
+      dataIndex: 'maxRange',
+      render: (text: string) => <a>{text}</a>,
+      sorter: (a: Keyword, b: Keyword) => a.maxRange.length - b.maxRange.length,
     },
     {
-      key: "unit",
-      title: "Unit",
-      dataIndex: "unit",
-      sorter: (a:any, b:any) => a.unit.length - b.unit.length,
-      render: (text:any)  => <a>{text}</a>,
+      key: 'unit',
+      title: 'Unit',
+      dataIndex: 'unit',
+      sorter: (a: Keyword, b: Keyword) => a.unit.length - b.unit.length,
+      render: (text: string) => <a>{text}</a>,
     },
     {
       key: 'aliases',
       title: 'Aliases',
       dataIndex: 'aliases',
-      sorter: (a:any, b:any) => a.aliases.length - b.aliases.length,
-      render: (tags: any) => {
-        if (!tags || tags?.length < 1) {
-          return null; // Return null instead of an empty <p></p>
+      sorter: (a: Keyword, b: Keyword) => a.aliases.length - b.aliases.length,
+      render: (tags: string[]) => {
+        if (!tags || tags.length < 1) {
+          return null;
         }
-  
+
         const displayTags = tags.slice(0, 6);
         const remainingTags = tags.slice(6);
-  
+
         return (
           <>
             {displayTags.length > 0 && (
@@ -71,7 +86,8 @@ export const AddKeyword = ({selectedTest}:any) => {
 
   return (
     <div>
-      <DashboardTable columns={columns} data={selectedTest ? selectedTest?.sampleType?.keywords : [] } />
+      <DashboardTable columns={columns} data={selectedTest ? selectedTest.sampleType.keywords : []} />
     </div>
-  )
-}
+  );
+};
+

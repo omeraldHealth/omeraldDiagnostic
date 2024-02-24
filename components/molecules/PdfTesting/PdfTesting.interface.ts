@@ -1,6 +1,7 @@
-import { ReportDetails, UserDetails } from "@utils";
+import { ReportDetailsInterface } from "../../../utils";
+import { ProfileDetailsInterface } from "../../../utils/types";
 
 export interface PdfTestingProps {
-  report: ReportDetails;
-  diagnosticDetails: UserDetails;
+  report: ReportDetailsInterface;
+  diagnosticDetails: ProfileDetailsInterface;
 }

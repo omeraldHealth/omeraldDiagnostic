@@ -1,7 +1,10 @@
 import React from "react";
 import { Text, View, StyleSheet } from "@react-pdf/renderer";
 
+// Border color constant
 const borderColor = "#90e5fc";
+
+// Styles for the table header
 const styles = StyleSheet.create({
   container: {
     display: "flex",
@@ -12,7 +15,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 24,
     textAlign: "center",
-    fontStyle: "bold",
+    fontWeight: "bold", // Changed fontStyle to fontWeight for bold text
     flexGrow: 1,
   },
   description: {
@@ -35,7 +38,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const TableHeader = () => (
+// TableHeader component
+const TableHeader: React.FC = () => (
   <View style={styles.container}>
     <Text style={styles.description}>Test Description</Text>
     <Text style={styles.result}>Result</Text>

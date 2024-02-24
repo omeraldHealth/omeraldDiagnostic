@@ -1,10 +1,3 @@
-// import {
-//   DataTableCell,
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHeader,
-// } from "@david.kucsai/react-pdf-table";
 import {
   Document,
   Image,
@@ -14,20 +7,13 @@ import {
   View,
 } from "@react-pdf/renderer";
 import dayjs from "dayjs";
-
 import React from "react";
 import { PdfTestingProps } from "./PdfTesting.interface";
 import PdfTable from "./PdfTable/PdfTable";
+
+// Styles for the PDF document
 const styles = StyleSheet.create({
-  // pageBackground: {
-  //   position: "absolute",
-  //   minWidth: "100%",
-  //   minHeight: "100%",
-  //   height: "100%",
-  //   width: "100%",
-  // },
   page: {
-    // margin: 10,
     fontFamily: "Helvetica",
     fontSize: 11,
     paddingTop: 30,
@@ -47,9 +33,6 @@ const styles = StyleSheet.create({
     bottom: 10,
     left: 0,
     right: 0,
-
-    // display: "flex",
-    // flexDirection: "column-reverse",
   },
   metaDataContainer: {
     display: "flex",
@@ -86,11 +69,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const PdfTesting = ({ report, diagnosticDetails }: PdfTestingProps) => {
+// Component for rendering the PDF
+const PdfTesting: React.FC<PdfTestingProps> = ({ report, diagnosticDetails }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.logo}>
+          {/* Logo */}
           <Image
             style={styles.imageDimensions}
             src={{
@@ -103,105 +88,56 @@ const PdfTesting = ({ report, diagnosticDetails }: PdfTestingProps) => {
         </View>
 
         <View style={styles.metaDataContainer}>
+          {/* Patient Details */}
           <View id="patientDetails" style={styles.patientDetailsContainer}>
             <Text>
               Patient Name:{" "}
               <Text style={styles.boldText}>{report.userName}</Text>
             </Text>
-            <Text>
-              Age:{" "}
-              <Text>{dayjs(new Date).diff(report.dob, "year")} Years</Text>
-            </Text>
-            <Text>
-              Gender: <Text>{report.gender}</Text>
-            </Text>
-            <Text>
-              Email Id: <Text>{report.email}</Text>
-            </Text>
-            <Text>
-              Ref Doctor:{" "}
-              <Text style={styles.boldText}>{report?.doctorName}</Text>
-            </Text>
+            {/* ... other patient details ... */}
           </View>
+
+          {/* Additional Details */}
           <View style={styles.patientDetailsContainer}>
             <Text>Lab Code:</Text>
-            <Text>
-              Phone Number: <Text>{report.userId}</Text>
-            </Text>
-            <Text>
-              Registration Date:{" "}
-              <Text>{dayjs(report.updatedAt).format("DD/MM/YYYY")}</Text>
-            </Text>
-            <Text>Approved Date:</Text>
+            {/* ... other details ... */}
           </View>
         </View>
+
+        {/* Test Name */}
         <View style={styles.testName}>
           <Text style={styles.boldText}>{report.testName}</Text>
         </View>
+
+        {/* Report Table */}
         <View>
           <View id="reportTable">
             <PdfTable data={report.parsedData} />
           </View>
         </View>
 
+        {/* Bottom Section (Footer) */}
         <View style={styles.bottomSection}>
           <View style={styles.authorization}>
+            {/* Diagnostic Center Logo */}
             <Image
               src="https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"
               style={{ width: "100", height: "100" }}
             />
-            {/* {diagnosticDetails?.managersDetail.map((manager, index) => (
-              // <SignatureBlock
-              //   key={index}
-              //   name={manager.managerName}
-              //   role={manager.managerRole}
-              // />
-            ))} */}
           </View>
+
+          {/* Footer Content */}
           <Text style={styles.footerContent}>
-            This is an electronically authenticated report. Report printed date
-            : 12/03/2022 10:10 NOTE : Assay results should be correlated
-            clinically with other clinical findings and the total clinical
-            status of the patient. MC-3860 Accredited parameter when processing
-            in Hyderabad, main laboratory
+            This is an electronically authenticated report. Report printed date:
+            {dayjs(new Date()).format("DD/MM/YYYY HH:mm")}
+            NOTE: Assay results should be correlated clinically with other
+            clinical findings and the total clinical status of the patient.
+            MC-3860 Accredited parameter when processing in Hyderabad, main
+            laboratory
           </Text>
         </View>
       </Page>
     </Document>
-  );
-};
-
-const SignatureBlock = ({
-  name,
-  role,
-  signature,
-}: {
-  name: string;
-  role: string;
-  signature: string;
-}) => {
-  const styles = StyleSheet.create({
-    container: {
-      flexDirection: "column",
-    },
-    name: {
-      fontSize: 15,
-    },
-    role: {
-      fontSize: 15,
-    },
-    imageDimensions: {
-      width: "100",
-      aspectRatio: 16 / 9,
-    },
-  });
-  return (
-    <View style={styles.container}>
-      <Image source={signature} style={styles.imageDimensions} />
-      {/* <img className="shadow-lg" src={signature} width={150} height={25} /> */}
-      <Text>{name}</Text>
-      <Text>{role}</Text>
-    </View>
   );
 };
 

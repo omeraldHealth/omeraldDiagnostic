@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import { dashTabs } from 'components/common/recoil/dashboard/index';
 import { classNames, privateRoutes } from '../../../utils/static/static';
 import Image from 'next/image';
-import { useManagerValue, useProfileValue } from '@components/common/constants/recoilValues';
+import { useManagerValue } from '@components/common/constants/recoilValues';
 
 export default function Sidebar() {
   const currentManager = useManagerValue()

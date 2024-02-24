@@ -5,80 +5,111 @@ import { Spinner } from "@components/atoms/loader";
 import { BackwardIcon, ForwardIcon } from "@heroicons/react/24/outline";
 import { onboardSteps } from "utils/static/static";
 import { StepHeader } from "@components/atoms/fileUploder/stepHeader";
-import { BrandDetailsFormInterface, OnboardStepsType, UserDetailsInterface, uploadDiagnosticLogoApi } from "@utils";
-import { BasicDetailsForm, BranchDetails, basicFormArray, branchDetailsFormArray, brandDetailsFormArray } from "utils/types/molecules/forms.interface";
-import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import {
+  BrandDetailsFormInterface,
+  OnboardStepsType,
+  UserDetailsInterface,
+  uploadDiagnosticLogoApi,
+} from "@utils";
+import {
+  BasicDetailsForm,
+  BranchDetails,
+  basicFormArray,
+  branchDetailsFormArray,
+  brandDetailsFormArray,
+} from "utils/types/molecules/forms.interface";
+import {
+  errorAlert,
+  successAlert,
+  warningAlert,
+} from "@components/atoms/alerts/alert";
 import dynamic from "next/dynamic";
-import DynamicFormGenerator from "../../common/form/dynamicForm";
 import { useRecoilState } from "recoil";
 import { logoStateData } from "@components/common/recoil/logo";
-import { useUploadBranding } from "utils/reactQuery";
+import { useCreateDiagnostic, useUploadBranding } from "utils/reactQuery";
 import axios from "axios";
 import { IManagerDetailsInterface } from "utils/types";
+import DynamicFormGenerator from "../../common/form/dynamicForm";
 
-const ProfileSummaryComponent = dynamic(() => import('../profile').then(res=>res.ProfileSummaryComponent),{loading: () => <Spinner/>})
+const ProfileSummaryComponent = dynamic(
+  () => import("../profile").then((res) => res.ProfileSummaryComponent),
+  { loading: () => <Spinner /> }
+);
 
-const OnboardComponents = () => {
-
+const OnboardComponents: React.FC = () => {
   const { user } = useUser();
   const router = useRouter();
-  const managerName = user && user?.fullName;
-  const phoneNumber = user && user?.phoneNumbers?.[0]?.phoneNumber;
-  const [currentStep, setCurrentStep] = useState<OnboardStepsType>(onboardSteps[0]);
-  const [formData, setFormData] = useState<BasicDetailsForm | BranchDetails | BrandDetailsFormInterface | UserDetailsInterface | IManagerDetailsInterface |  null>(null);
-  const [logoState, setLogoState] = useRecoilState(logoStateData) 
-  const [loading,setLoading] = useState(false)
+  const managerName = user?.fullName;
+  const phoneNumber = user?.phoneNumbers?.[0]?.phoneNumber;
+  const [currentStep, setCurrentStep] = useState<OnboardStepsType>(
+    onboardSteps[0]
+  );
+  const [formData, setFormData] =
+    useState<BasicDetailsForm | BranchDetails | BrandDetailsFormInterface | UserDetailsInterface | IManagerDetailsInterface | null>(null);
+  const [logoState, setLogoState] = useRecoilState(logoStateData);
+  const [loading, setLoading] = useState(false);
 
   const addLogo = useUploadBranding({
     onSuccess: (data) => {
-      setFormData({...formData,"brandLogo":data?.data})
-      successAlert("Profile updated sucessfully")
+      setFormData({ ...formData, brandLogo: data?.data });
+      successAlert("Profile updated successfully");
     },
     onError: (error) => {
-      errorAlert("Error updating profile")
+      errorAlert("Error updating profile");
     },
-  })
+  });
 
-  const onNext = async () => {
-    // Add logic for handling next step
-    if(currentStep.id <= 3) setCurrentStep(onboardSteps[currentStep.id])
+  const onNext = () => {
+    const nextStep =
+      onboardSteps.find((step) => step.id === currentStep.id + 1) ||
+      onboardSteps[0];
+    setCurrentStep(nextStep);
   };
 
   const onBack = () => {
-      // Add logic for handling previous step
-      const stepId = currentStep.id;
-      const targetStep = onboardSteps.find((step) => step.id === Math.max(0, stepId - 1)) || onboardSteps[0];
-      setCurrentStep(targetStep);
+    const previousStep =
+      onboardSteps.find((step) => step.id === currentStep.id - 1) ||
+      onboardSteps[0];
+    setCurrentStep(previousStep);
   };
+
+  const createDiagProfile = useCreateDiagnostic({
+      onSuccess:() => {
+        successAlert("Profile Created Succesfully")
+        router.push("/verifyUser")
+      },
+      onError:(err)=>{
+        warningAlert("Error creating profile", err)
+      }
+  })
 
   const onFormSubmit = async () => {
     try {
       successAlert("Creating Profile");
       setLoading(true);
-  
+
       // Upload logo
       const formDataImage = new FormData();
-      formDataImage.append('file', logoState);
-      const logoResp = await axios.post(uploadDiagnosticLogoApi, formDataImage, { headers: { 'Content-Type': 'multipart/form-data' } });
-  
+      formDataImage.append("file", logoState);
+      const logoResp = await axios.post(
+        uploadDiagnosticLogoApi,
+        formDataImage,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
       if (logoResp?.status === 200) {
-        // Update form data with logo and manager details
         const updatedFormData = {
           ...formData,
           brandDetails: { ...formData?.brandDetails, brandLogo: logoResp?.data?.url },
-          managersDetail: [{ managerName: managerName, managerContact: phoneNumber, managerRole: "owner" }]
+          managersDetail: [{ managerName, managerContact: phoneNumber, managerRole: "owner" }],
         };
-  
-        if (updatedFormData?.managersDetail?.[0]?.managerName && updatedFormData?.brandDetails?.brandLogo) {
-          // Create diagnostic profile
-          const insertDiag = await createDiagProfile(updatedFormData);
-  
-          if (insertDiag.status === 201) {
-            successAlert("Profile created successfully");
-            router.push("verifyUser");
-          } else {
-            errorAlert("Error creating profile: " + insertDiag.statusText);
-          }
+
+        if (
+          updatedFormData?.managersDetail?.[0]?.managerName &&
+          updatedFormData?.brandDetails?.brandLogo
+        ) {
+          console.log(updatedFormData)
+          createDiagProfile.mutate({data:updatedFormData})
         } else {
           errorAlert("Error creating profile: Missing required data");
         }
@@ -92,38 +123,57 @@ const OnboardComponents = () => {
   };
 
   const uploadImage = async (val: any) => {
-    let imageObject = Object.preventExtensions(val?.logo[0]?.originFileObj);
-    setLogoState(imageObject)
-  }
+    let imageObject = Object.preventExtensions(
+      val?.logo[0]?.originFileObj
+    );
+    setLogoState(imageObject);
+  };
 
   const getFormProps = () => {
-    // return form props for each step
     switch (currentStep?.id) {
       case 1:
-        return { formProps: formArrays?.basicForm, disableElement: true, buttonText: "Continue", disabledFields: ["phoneNumber","managerName"], defaultValues: {phoneNumber: phoneNumber, managerName: managerName, ...formData }  };
+        return {
+          formProps: formArrays?.basicForm,
+          disableElement: true,
+          buttonText: "Continue",
+          disabledFields: ["phoneNumber", "managerName"],
+          defaultValues: { phoneNumber, managerName, ...formData },
+        };
       case 2:
-        return { formProps: formArrays?.branchForm, disableElement: false, buttonText: "Continue", handleImage: uploadImage, disabledFields: ["branchContact"], defaultValues: {branchContact: phoneNumber, ...formData?.branchDetails?.[0]  }  };
+        return {
+          formProps: formArrays?.branchForm,
+          disableElement: false,
+          buttonText: "Continue",
+          handleImage: uploadImage,
+          disabledFields: ["branchContact"],
+          defaultValues: { branchContact: phoneNumber, ...formData?.branchDetails?.[0] },
+        };
       case 3:
-        return { formProps: formArrays?.brandForm, disableElement: true, buttonText: "Continue", defaultValues: {...formData?.brandDetails }};
+        return {
+          formProps: formArrays?.brandForm,
+          disableElement: true,
+          buttonText: "Continue",
+          defaultValues: { ...formData?.brandDetails },
+        };
       case 4:
         return { summary: true, props: formData, buttonText: "Submit" };
     }
   };
 
   const handleFormSubmit = (value: any) => {
-    // Handle form submission based on the current step
     switch (currentStep?.id) {
       case 1:
         setFormData((prevData) => ({ ...prevData, ...value }));
         onNext();
         break;
       case 2:
-        setFormData((prevData:any) => ({
+        setFormData((prevData: any) => ({
           ...prevData,
           branchDetails: [
             ...(prevData?.branchDetails || []),
             { ...value },
-         ],}));
+          ],
+        }));
         onNext();
         break;
       case 3:
@@ -134,7 +184,7 @@ const OnboardComponents = () => {
         onNext();
         break;
       case 4:
-        onFormSubmit()
+        onFormSubmit();
         break;
       default:
         // console.log(formData);
@@ -146,7 +196,7 @@ const OnboardComponents = () => {
     branchForm: branchDetailsFormArray,
     brandForm: brandDetailsFormArray(uploadImage),
   };
-  
+
   const formDetails = getFormProps();
 
   return (
@@ -162,13 +212,27 @@ const OnboardComponents = () => {
           </span>
 
           <div className={`w-[${currentStep?.id === 4 ? '100%' : currentStep?.id === 3 ? '60%' : currentStep?.id === 2 ? '50%' : '90%'}] h-auto p-4`}>
-            {currentStep?.id !== 4 && <DynamicFormGenerator formProps={formDetails?.formProps || basicFormArray} buttonText={formDetails?.buttonText || ""} handleSubmit={handleFormSubmit} 
-            disabledFields={formDetails?.disabledFields} defaultValues={formDetails?.defaultValues}  />}
+            {currentStep?.id !== 4 && (
+              <DynamicFormGenerator
+                formProps={formDetails?.formProps || basicFormArray}
+                buttonText={formDetails?.buttonText || ""}
+                handleSubmit={handleFormSubmit}
+                disabledFields={formDetails?.disabledFields}
+                defaultValues={formDetails?.defaultValues}
+              />
+            )}
             {currentStep?.id === 4 && (
               <div>
-                <ProfileSummaryComponent summary profile={formDetails?.props} style="" />
+                <ProfileSummaryComponent
+                  summary
+                  profile={formDetails?.props}
+                  style=""
+                />
                 <section className="mx-10 mb-4 flex justify-end">
-                  <button onClick={handleFormSubmit} className="bg-green-900 absolute text-white text-sm font-light px-4 py-2 rounded-md">
+                  <button
+                    onClick={handleFormSubmit}
+                    className="bg-green-900 absolute text-white text-sm font-light px-4 py-2 rounded-md"
+                  >
                     {formDetails?.buttonText}
                   </button>
                 </section>
@@ -179,7 +243,7 @@ const OnboardComponents = () => {
       </section>
       {loading && <Spinner />}
     </section>
-  )
+  );
 };
 
 export default OnboardComponents;

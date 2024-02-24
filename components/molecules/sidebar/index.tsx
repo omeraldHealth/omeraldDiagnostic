@@ -1,12 +1,16 @@
+import React, { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
-import { sideBarAtom } from 'components/common/recoil/sidebar';
-import React, { Fragment, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import Sidebar  from './sidebar';
+import { sideBarAtom } from 'components/common/recoil/sidebar';
+import Sidebar from './sidebar';
 
-export const DashboardSideBar = () => {
-  const [sidebarOpen, setSidebarOpen] = useRecoilState(sideBarAtom);
+export const DashboardSideBar: React.FC<any> = () => {
+  const [sidebarOpen, setSidebarOpen] = useRecoilState<any>(sideBarAtom);
+
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+  };
 
   return (
     <div>
@@ -14,7 +18,7 @@ export const DashboardSideBar = () => {
         <Dialog
           as="div"
           className="relative z-40 md:hidden"
-          onClose={setSidebarOpen}
+          onClose={handleCloseSidebar}
         >
           <Transition.Child
             as={Fragment}
@@ -52,7 +56,7 @@ export const DashboardSideBar = () => {
                     <button
                       type="button"
                       className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                      onClick={() => setSidebarOpen(false)}
+                      onClick={handleCloseSidebar}
                     >
                       <span className="sr-only">Close sidebar</span>
                       <XMarkIcon
