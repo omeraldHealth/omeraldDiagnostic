@@ -5,9 +5,8 @@ import { Spinner } from "@components/atoms/loader";
 import { BackwardIcon, ForwardIcon } from "@heroicons/react/24/outline";
 import { onboardSteps } from "utils/static";
 import { StepHeader } from "@components/atoms/fileUploder/stepHeader";
-import { UserDetails, BrandDetailsForm, OnboardStepsType, IManagerDetails, uploadDiagnosticLogoApi } from "@utils";
+import { BrandDetailsFormInterface, OnboardStepsType, UserDetailsInterface, uploadDiagnosticLogoApi } from "@utils";
 import { BasicDetailsForm, BranchDetails, basicFormArray, branchDetailsFormArray, brandDetailsFormArray } from "utils/types/molecules/forms.interface";
-import { createDiagProfile } from "utils/hook/userDetail";
 import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
 import dynamic from "next/dynamic";
 import DynamicFormGenerator from "../form/dynamicForm";
@@ -15,7 +14,7 @@ import { useRecoilState } from "recoil";
 import { logoStateData } from "@components/common/recoil/logo";
 import { useUploadBranding } from "utils/reactQuery";
 import axios from "axios";
-import { delay } from "lodash";
+import { IManagerDetailsInterface } from "utils/types";
 
 const ProfileSummaryComponent = dynamic(() => import('../profile').then(res=>res.ProfileSummaryComponent),{loading: () => <Spinner/>})
 
@@ -26,7 +25,7 @@ const OnboardComponents = () => {
   const managerName = user && user?.fullName;
   const phoneNumber = user && user?.phoneNumbers?.[0]?.phoneNumber;
   const [currentStep, setCurrentStep] = useState<OnboardStepsType>(onboardSteps[0]);
-  const [formData, setFormData] = useState<BasicDetailsForm | BranchDetails | BrandDetailsForm | UserDetails | IManagerDetails |  null>(null);
+  const [formData, setFormData] = useState<BasicDetailsForm | BranchDetails | BrandDetailsFormInterface | UserDetailsInterface | IManagerDetailsInterface |  null>(null);
   const [logoState, setLogoState] = useRecoilState(logoStateData) 
   const [loading,setLoading] = useState(false)
 

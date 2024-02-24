@@ -1,7 +1,6 @@
 import {ClipboardDocumentListIcon, HomeIcon, UserCircleIcon, WrenchScrewdriverIcon } from '@heroicons/react/20/solid'
 import { BeakerIcon} from '@heroicons/react/24/outline'
 import { OnboardStepsType } from 'utils/types/atoms/atoms';
-import { FormType } from 'utils/types/molecules/forms.interface';
 
 export const onboardSteps: OnboardStepsType[] = [
     { id: 1, name: "Basic Details" },
@@ -51,65 +50,79 @@ export const privateRoutes: any[] = [
       allowedRoles: ["owner","admin"]
     },
 ];
-export function classNames(...classes: [string, string]) {
-    return classes.filter(Boolean).join(" ");
+
+export function classNames(...classes: (string | undefined)[]): string {
+  return classes.filter(Boolean).join(" ");
 }
-export const settingsTab = ["Billing","Activity Feed","Employee Management","Branch Management","Pathologists","Support"]
 
-export const advertisement = [
+export const settingsTab: string[] = ["Billing", "Activity Feed", "Employee Management", "Branch Management", "Pathologists", "Support"];
+
+export const advertisement: { title: string; description: string; button: string }[] = [
   {
-      "title":"Get Started",
-      "description":"Please login to get started with uploading and sharing your reports",
-      "button": "Know more"
-
+      title: "Get Started",
+      description: "Please login to get started with uploading and sharing your reports",
+      button: "Know more",
   },
   {
-      "title":"Access Demo",
-      "description":"We are currently offering the service free of cost to help you",
-      "button":"Know more"
-
+      title: "Access Demo",
+      description: "We are currently offering the service free of cost to help you",
+      button: "Know more",
   },
   {
-      "title":"Check Offer",
-      "description":"We are currently offering the service free of cost to help you.",
-      "button":"Know more"
-  }
-]
-export const IndexObj = {
-  "/dashboard":0,
-  "/test":1,
-  "/reports":2,
-  "/profile":3,
-  "/settings":4
-}
-export const roles = ['Admin', 'Manager','Operator','Spoc'];
-export const plainOptions = ['Male', 'Female', 'Others'];
+      title: "Check Offer",
+      description: "We are currently offering the service free of cost to help you.",
+      button: "Know more",
+  },
+];
 
-export const navigation = {
+export const IndexObj: Record<string, number> = {
+  "/dashboard": 0,
+  "/test": 1,
+  "/reports": 2,
+  "/profile": 3,
+  "/settings": 4,
+};
+
+export const roles: string[] = ['Admin', 'Manager', 'Operator', 'Spoc'];
+
+export const plainOptions: string[] = ['Male', 'Female', 'Others'];
+
+interface NavigationItem {
+  name: string;
+  href: string;
+}
+
+interface Navigation {
+  policies: NavigationItem[];
+  support: NavigationItem[];
+  company: NavigationItem[];
+  legal: NavigationItem[];
+  social: NavigationItem[];
+}
+
+export const navigation: Navigation = {
   policies: [
-    { name: "Disclaimer", href: "/info/DISCLAIMER" },
-    { name: "Privacy Policy", href: "/info/PRIVACY" },
-    { name: "Terms of Service", href: "/info/TERMS" },
-    { name: "Platform Consent", href: "/info/CONSENT" },
+      { name: "Disclaimer", href: "/info/DISCLAIMER" },
+      { name: "Privacy Policy", href: "/info/PRIVACY" },
+      { name: "Terms of Service", href: "/info/TERMS" },
+      { name: "Platform Consent", href: "/info/CONSENT" },
   ],
   support: [
-    { name: "FAQ", href: "/info/FAQ" },
-    { name: "Pricing", href: "/pricing" },
-    { name: "Support", href: "/contact" },
-    { name: "Documentation", href: "/documentation" },
+      { name: "FAQ", href: "/info/FAQ" },
+      { name: "Pricing", href: "/pricing" },
+      { name: "Support", href: "/contact" },
+      { name: "Documentation", href: "/documentation" },
   ],
   company: [
-    { name: "Blog", href: "https:/blog.omerald.com/" },
-    { name: "Register", href: "/signUp" },
-    { name: "About", href: "/about" },
-    { name: "Partners", href: "/info/team" },
+      { name: "Blog", href: "https:/blog.omerald.com/" },
+      { name: "Register", href: "/signUp" },
+      { name: "About", href: "/about" },
+      { name: "Partners", href: "/info/team" },
   ],
   legal: [
-    { name: "Terms", href: "/info/TERMS" },
-    // { name: "Claim", href: "/privacy" },
+      { name: "Terms", href: "/info/TERMS" },
+      // { name: "Claim", href: "/privacy" },
   ],
-  social: [
-   
-  ],
+  social: [],
 };
 

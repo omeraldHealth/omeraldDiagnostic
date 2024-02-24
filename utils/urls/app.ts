@@ -1,11 +1,18 @@
-export const backendApiPath = "http://localhost:3002/"
+// Base URL for the backend API
+export const backendApiPath = "http://localhost:3002/";
 
-export const getDiagProfileByPhoneApi = backendApiPath+`profiles/getProfile/`
-export const createDiagProfileApi = backendApiPath+`profiles/createProfile/`
-export const updateDiagProfileApi = backendApiPath+`profiles/updateProfile`
+// API paths for diagnostic profiles
+export const getDiagProfileByPhoneApi = backendApiPath + `profiles/getProfile/`; // Endpoint to get diagnostic profile by phone
+export const createDiagProfileApi = backendApiPath + `profiles/createProfile/`; // Endpoint to create diagnostic profile
+export const updateDiagProfileApi = backendApiPath + `profiles/updateProfile`; // Endpoint to update diagnostic profile
 
-export const getDiagReportsApi  =  backendApiPath+`reports/getReports/`
-export const createDiagReportsApi  =  backendApiPath+`reports/createReport/`
-export const uploadDiagnosticReportApi = backendApiPath+`s3/reports/upload`
-export const uploadDiagnosticLogoApi = backendApiPath+`s3/omerald/upload`
-export const getAdminReportTypesApi = "https://backend-wpvf.onrender.com/reports/getAllReports"
+// API paths for diagnostic reports
+export const getDiagReportsApi = backendApiPath + `reports/getReports/`; // Endpoint to get diagnostic reports
+export const createDiagReportsApi = backendApiPath + `reports/createReport/`; // Endpoint to create diagnostic report
+export const uploadDiagnosticReportApi = backendApiPath + `s3/reports/upload`; // Endpoint to upload diagnostic report
+export const uploadDiagnosticLogoApi = backendApiPath + `s3/omerald/upload`; // Endpoint to upload diagnostic logo
+
+// External API path to get all admin report types
+export const getAdminReportTypesApi = "https://backend-wpvf.onrender.com/reports/getAllReports";
+
+// Comments added to explain the purpose of each API endpoint

@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { AuthContextInterface, getEmployeeById, initialAuthContext, UserDetails } from 'utils'
+import { AuthContextInterface, UserDetailsInterface, initialAuthContext } from 'utils'
 import { useRouter } from 'next/router';
-import { getUserDetails } from 'utils/hook/userDetail';
 import axios from 'axios';
 import { useUser,useClerk } from '@clerk/nextjs';
 
@@ -13,8 +12,8 @@ function useApplicationAuth() {
   const {user:ClerkUser} = useUser();
   const {signOut:logOut} = useClerk()
   const [user,setUser] = useState<any | null>(null);
-  const [diagnosticDetails, setDiagnosticDetails] = useState<UserDetails | null>(null);
-  const [operator, setOperator] = useState<UserDetails | null>(null);
+  const [diagnosticDetails, setDiagnosticDetails] = useState<UserDetailsInterface | null>(null);
+  const [operator, setOperator] = useState<UserDetailsInterface | null>(null);
   const [activeBranch, setActiveBranch] = useState< any | null>();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -53,32 +52,6 @@ function useApplicationAuth() {
       }
   }
 
-  const signIn = async (phoneNumber: any, redirect: string) => {
-    let flag=true
-    const {data:employees} = await axios.get(getEmployeeById+phoneNumber)
-    const {data,status} = await getUserDetails({phoneNumber: employees?.[0]?.mainBranchId || phoneNumber})
-
-    if (status==200 && (data?.phoneNumber || employees?.[0]?._id)) {
-      // @ts-ignore
-      setDiagnosticDetails(data);
-      // @ts-ignore
-      employees?.length>0 ? setOperator(employees[0]) : setOperator(data?.managersDetail[0])
-      flag && router.push(redirect);
-      flag=false
-    }
-    else {
-      router.push("/onboard");
-    }
-  };
-
-  const signOut = async () => {
-    logOut();
-    setUser(null);  
-    setActiveBranch(null)
-    setOperator(null)
-    setDiagnosticDetails(null)
-  };
-
   return {
     user,
     operator,
@@ -86,8 +59,6 @@ function useApplicationAuth() {
     loading,
     activeBranch,
     setActiveBranch,
-    signIn,
-    signOut
   };
 }
 
