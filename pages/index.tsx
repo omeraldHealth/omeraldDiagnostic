@@ -1,8 +1,10 @@
+
 import { UserLayout } from '../components/templates/pageTemplate';
-import { LoadableComponent } from 'utils/common/loadbale';
+import { Spinner } from '@components/atoms/loader';
+import dynamic from 'next/dynamic';
 
 // Dynamic import for LandingPage component with SSR disabled
-const LandingPage = LoadableComponent(() => import('@components/organism/landing/landingPage'));
+const LandingPage = dynamic(() => import('@components/organism/landing/landingPage'), { loading: ()=><Spinner /> });
 
 // Home component displaying the LandingPage
 export default function Home() {

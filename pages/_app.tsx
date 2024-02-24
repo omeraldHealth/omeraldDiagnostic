@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { AppProps } from 'next/app';
-import { GlobalStyle } from '@styles/index';
+import { ToastContainer } from 'react-toastify';
 import { ClerkProvider } from '@clerk/nextjs';
+import { GlobalStyle } from '@styles/index';
+import { useEffect, useState } from 'react';
 import { RecoilRoot } from 'recoil';
+import { AppProps } from 'next/app';
 import '@styles/tailwind.css';
 
 // Configure the QueryClient

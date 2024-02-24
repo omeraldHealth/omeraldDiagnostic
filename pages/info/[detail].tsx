@@ -1,8 +1,8 @@
-import { Fragment } from 'react';
-import { InfoPage } from '@components/organism/info';
 import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
+import { InfoPage } from '@components/organism/info';
 import { Spinner } from '@components/atoms/loader';
+import { Fragment } from 'react';
+import dynamic from 'next/dynamic';
 
 // Dynamic import for Head component
 const DynamicHead = dynamic(() => import('@components/atoms/head/head'));

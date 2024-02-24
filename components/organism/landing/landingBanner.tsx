@@ -8,7 +8,7 @@ import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import styles from "./landing.module.css";
 
-const LandingBanner = () => {
+export const LandingBanner = () => {
   const [phone,setPhone] = useState("")
     
 	return (
@@ -25,5 +25,3 @@ const LandingBanner = () => {
         </div>
     )
 }
-
-export default LandingBanner;

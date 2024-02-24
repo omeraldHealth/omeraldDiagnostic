@@ -25,24 +25,20 @@ const helpBusiness = [
 ]
 
 export function HelpYourBusiness() {
-	return (
+    return (
         <div className={`h-auto px-[4%] sm:px-[10%] py-10 sm:py-10 text-center ${styles['helpBusiness']}`}>
-            <p className='sm:mt-10 sm:py-4 lg:py-8'><HeaderText_2 style='mt-10 sm:mt-0'>We help your business grow faster.</HeaderText_2></p>
-            <p className='py-4 lg:py-8'><BodyText_1 style='lg:w-[40%] m-auto my-6'>Omerald's efficient software solution accelerates business growth for diagnostic centre's.</BodyText_1>
-            </p>
-            <section className="lg:flex gap-[4%] sm:gap-[2%] my-[7%] w-[100%] justify-around  ">
-                {
-                    helpBusiness.map((help,index) => {
-                        return <section key={index} className="text-left bg-white my-10 lg:my-0 lg:w-[33%] h-auto p-10 rounded-lg shadow-xl sm:shadow-md">
+            <div className='sm:mt-10 sm:py-4 lg:py-8'><HeaderText_2 style='mt-10 sm:mt-0'>We help your business grow faster.</HeaderText_2></div>
+            <div className='py-4 lg:py-8'><BodyText_1 style='lg:w-[40%] m-auto my-6'>Omerald's efficient software solution accelerates business growth for diagnostic centre's.</BodyText_1></div>
+            <section className="lg:flex gap-[4%] sm:gap-[2%] my-[7%] w-[100%] justify-around">
+                {helpBusiness.map((help, index) => (
+                    <div key={index} className="text-left bg-white my-10 lg:my-0 lg:w-[33%] h-auto p-10 rounded-lg shadow-xl sm:shadow-md">
                         {help?.icon}
                         <TitleText_2 style='my-4'> {help?.title}</TitleText_2>
-                        <BodyText_2 style='text-gray-400 my-4' > {help?.description}</BodyText_2>
+                        <BodyText_2 style='text-gray-400 my-4'> {help?.description}</BodyText_2>
                         <a className='absolute text-green-500'>Read More</a>
-                    </section>
-                    })
-                }
+                    </div>
+                ))}
             </section>
         </div>
-        )
+    );
 }
-

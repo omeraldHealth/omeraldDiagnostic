@@ -2,14 +2,15 @@ import { DashboardLayout } from '../components/organism/layout/dashboardLayout';
 import { UserLayout } from '../components/templates/pageTemplate';
 import { dashTabs } from '../components/common/recoil/dashboard';
 import { useRecoilValue } from 'recoil';
-import { LoadableComponent } from 'utils/common/loadbale';
+import { Spinner } from '@components/atoms/loader';
+import dynamic from 'next/dynamic';
 
-// Loadable components with the improved loading approach
-const ReportsTab = LoadableComponent(() => import('@components/organism/dashboardTabs/reportsTab'));
-const ProfileTab = LoadableComponent(() => import('@components/organism/dashboardTabs/profileTab'));
-const DashboardTab = LoadableComponent(() => import('@components/organism/dashboardTabs/dashboardTab'));
-const TestTab = LoadableComponent(() => import('@components/organism/dashboardTabs/testTab').then((res) => res.TestTab));
-const SettingsTab = LoadableComponent(() => import('@components/organism/dashboardTabs/settingsTab').then((res) => res.SettingsTab));
+// Dynamic import 
+const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'), { loading:() => <Spinner /> });
+const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'), { loading:() => <Spinner /> });
+const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'), { loading:() => <Spinner /> });
+const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab').then((res) => res.TestTab), { loading:() => <Spinner /> });
+const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab').then((res) => res.SettingsTab), { loading:() => <Spinner /> });
 
 // Define a map of Dashboard tabs
 const DashboardTabsMap: {
