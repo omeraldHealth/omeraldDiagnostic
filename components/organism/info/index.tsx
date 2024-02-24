@@ -1,6 +1,6 @@
 import React from 'react';
 import parse from 'html-react-parser';
-import { Footer } from '@components/molecules/footer';
+import { Footer } from '@components/common/footer';
 import { Navbar } from '@components/molecules/navbar';
 import { useQueryGetData } from 'utils/reactQuery';
 import { Spinner } from '@components/atoms/loader';

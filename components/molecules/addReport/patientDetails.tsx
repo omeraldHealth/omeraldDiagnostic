@@ -2,7 +2,7 @@ import { patientDetailsForm } from "utils/types/molecules/forms.interface";
 import { useProfileValue } from "@components/common/constants/recoilValues";
 import { useRecoilState } from "recoil";
 import { reportState } from "@components/common/recoil/report/index";
-import DynamicFormGenerator from "../form/dynamicForm";
+import DynamicFormGenerator from "../../common/form/dynamicForm";
 
 export const PatientDetails = ({handleSteps}: any) => {
  

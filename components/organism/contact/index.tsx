@@ -1,5 +1,5 @@
 import React from 'react';
-import { Footer } from '@components/molecules/footer';
+import { Footer } from '@components/common/footer';
 import { Navbar } from '@components/molecules/navbar';
 import { Support } from '../dashboardTabs/settingsTabs/support';
 import styles from '@styles/signIn.module.css';

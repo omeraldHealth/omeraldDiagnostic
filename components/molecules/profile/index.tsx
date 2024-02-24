@@ -2,7 +2,7 @@ import { useCurrentBranchValue, useLogoValue, useManagerValue, useProfileValue }
 import { PencilIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { profileComponentType, profileSummaryCard } from "utils/store/types";
-import DynamicFormGenerator from "../form/dynamicForm";
+import DynamicFormGenerator from "../../common/form/dynamicForm";
 import { profileForm } from "utils/types/molecules/forms.interface";
 import { useUpdateDiagnostic } from "utils/reactQuery";
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert";

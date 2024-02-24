@@ -6,7 +6,7 @@ import { DataType } from 'utils/store/types';
 import { useCurrentBranchValue, useProfileValue } from '@components/common/constants/recoilValues';
 import { DashboardTable } from '../dashboardItems/data-table';
 import { TestTableColumns } from 'utils/forms/form';
-import DynamicFormGenerator from '../form/dynamicForm';
+import DynamicFormGenerator from '../../common/form/dynamicForm';
 import { testForm } from 'utils/types/molecules/forms.interface';
 import { useUpdateDiagnostic } from 'utils/reactQuery';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';

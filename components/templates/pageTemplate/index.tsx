@@ -1,13 +1,13 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { ROUTES_WITHOUT_SIDEBAR } from 'components/common/constants/constants';
+import { ROUTES_WITHOUT_SIDEBAR } from 'components/common/constants/recoilValues';
 import { Spinner } from '../../atoms/loader';
 
 // Dynamic imports with loading spinner
 const PageHead = dynamic(() => import('components/atoms/head/head'),{ loading: () => <Spinner />});
 const Navbar = dynamic(() => import('@components/molecules/navbar').then(res => res.Navbar), { loading: () => <Spinner /> });
-const Footer = dynamic(() => import('@components/molecules/footer').then(res => res.Footer),{ loading: () => <Spinner />});
+const Footer = dynamic(() => import('@components/common/footer').then(res => res.Footer),{ loading: () => <Spinner />});
 
 /**
  * UserLayout component for pages with or without sidebar.

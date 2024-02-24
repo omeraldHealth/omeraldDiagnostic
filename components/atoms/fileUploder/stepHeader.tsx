@@ -6,7 +6,7 @@ interface StepHeaderProps {
   currentStep: OnboardStepsType;
 }
 
-const StepHeader: React.FC<StepHeaderProps> = ({ stepList, currentStep }) => {
+export const StepHeader: React.FC<StepHeaderProps> = ({ stepList, currentStep }) => {
   return (
     <>
       {stepList.map((step, index) => (
@@ -43,6 +43,3 @@ const StepHeader: React.FC<StepHeaderProps> = ({ stepList, currentStep }) => {
     </>
   );
 };
-
-export default StepHeader;
-  

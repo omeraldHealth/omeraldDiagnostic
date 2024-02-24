@@ -1,5 +1,5 @@
 import { useProfileValue } from "@components/common/constants/recoilValues";
-import DynamicFormGenerator from "../form/dynamicForm";
+import DynamicFormGenerator from "../../common/form/dynamicForm";
 import { useState } from "react";
 import { Select } from "antd";
 import { manualReportForm, patientDetailsForm, reportUploadFormArray } from "utils/types/molecules/forms.interface";

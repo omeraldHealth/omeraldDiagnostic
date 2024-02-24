@@ -1,6 +1,6 @@
 import React from 'react';
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
-import DynamicFormGenerator from "@components/molecules/form/dynamicForm";
+import DynamicFormGenerator from "@components/common/form/dynamicForm";
 
 /**
  * Common component for settings with a dynamic form and a data table.

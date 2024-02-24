@@ -9,7 +9,7 @@ import { BrandDetailsFormInterface, OnboardStepsType, UserDetailsInterface, uplo
 import { BasicDetailsForm, BranchDetails, basicFormArray, branchDetailsFormArray, brandDetailsFormArray } from "utils/types/molecules/forms.interface";
 import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
 import dynamic from "next/dynamic";
-import DynamicFormGenerator from "../form/dynamicForm";
+import DynamicFormGenerator from "../../common/form/dynamicForm";
 import { useRecoilState } from "recoil";
 import { logoStateData } from "@components/common/recoil/logo";
 import { useUploadBranding } from "utils/reactQuery";

@@ -9,7 +9,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { profileState } from '../../common/recoil/profile'
 
 import { testDetailsState } from '../../common/recoil/testDetails'
-import DynamicFormGenerator from '../form/dynamicForm'
+import DynamicFormGenerator from '../../common/form/dynamicForm'
 import { DashboardTable } from '../dashboardItems/data-table'
 import { ParameterColumns } from 'utils/forms/form'
 import { useUpdateDiagnostic } from 'utils/reactQuery'

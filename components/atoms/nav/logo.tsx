@@ -6,11 +6,13 @@ interface LogoProps {
   width?: string;
 }
 
+const logo = "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"
+
 const LogoImage: React.FC = () => {
   return (
     <Link href="/">
       <span className="flex justify-center">
-        <Logo src="your_logo_url" alt="Omerald Diagnostics" width="70px" />
+        <Logo src={logo} alt="Omerald Diagnostics" width="70px" />
         <p className="font-sans hidden sm:block sm:text-lg sm:font-bold self-center">
           OMERALD DIAGNOSTICS
         </p>
@@ -24,7 +26,7 @@ const DashboardLogo: React.FC = () => {
     <div className="pt-5 pb-4 overflow-y-auto">
       <Link href="/">
         <div className="flex items-center flex-shrink-0 px-4">
-          <Logo src="your_logo_url" alt="Omerald" width="50px" />
+          <Logo src={logo} alt="Omerald" width="50px" />
           <span className="text-white font-semibold text-xl ml-4 tracking-wider">
             Omerald
           </span>

@@ -17,11 +17,12 @@ export function Navbar() {
     const {diagnosticDetails} = useAuthContext()
     const { session } = useSession();
     const {user} = useUser();
+    const logo = "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"
     
 	return (
         <div  className={`flex justify-between items-center px-[4%] xl:px-[10%]`}>
             <Link href={"/"}><span className='flex'>
-                <Logo/>
+                <Logo src={logo} alt='logo' />
                 <p className='font-sans hidden sm:block sm:text-lg sm:font-bold self-center'>OMERALD DIAGNOSTICS</p>
             </span>
             </Link>

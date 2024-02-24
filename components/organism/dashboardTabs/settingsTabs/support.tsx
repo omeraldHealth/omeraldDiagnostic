@@ -1,4 +1,4 @@
-import { ContactForm } from "@components/molecules/form/contact-form";
+import { ContactForm } from "@components/common/form/contact-form";
 
 export function Support() {
 	return (

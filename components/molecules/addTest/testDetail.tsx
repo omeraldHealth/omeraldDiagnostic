@@ -5,7 +5,7 @@ import { customTestForm, selectForm, templateTestForm } from "utils/types/molecu
 import { ShowTable } from "./showTable";
 import { useRecoilState } from "recoil";
 import { testDetailsState } from "components/common/recoil/testDetails/index";
-import DynamicFormGenerator from "../form/dynamicForm";
+import DynamicFormGenerator from "../../common/form/dynamicForm";
 import _ from "lodash";
 import { useQueryGetData } from "utils/reactQuery";
 import { getAdminReportTypesApi } from "@utils";

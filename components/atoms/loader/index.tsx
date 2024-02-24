@@ -6,7 +6,7 @@ interface SpinnerProps {
   // Add any props if needed
 }
 
-const Spinner: React.FC<SpinnerProps> = () => {
+export const Spinner: React.FC<SpinnerProps> = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -41,4 +41,3 @@ const Spinner: React.FC<SpinnerProps> = () => {
   );
 };
 
-export default Spinner;
