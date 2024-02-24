@@ -1,46 +1,48 @@
-
-import { GlobalStyle, theme } from '@styles/index'
-import { useEffect, useState } from 'react'
-import { ToastContainer } from "react-toastify";
-import { QueryClient, QueryClientProvider } from 'react-query'
-import type { AppProps } from 'next/app'
-import '../styles/tailwind.css'
+import { useEffect, useState } from 'react';
+import { ToastContainer } from 'react-toastify';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { AppProps } from 'next/app';
+import { GlobalStyle } from '@styles/index';
 import { ClerkProvider } from '@clerk/nextjs';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import { RecoilRoot } from 'recoil';
-import { Provider } from 'react-redux';
-import store from 'utils/store/store'
+import '@styles/tailwind.css';
 
+// Configure the QueryClient
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       retry: false,
-      staleTime: 10 * (60 * 1000), // 10 mins 
+      staleTime: 10 * (60 * 1000), // 10 mins
     },
   },
-})
-const clerkFrontendApi = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+});
+
+// Ensure clerkFrontendApi is not undefined
+const clerkFrontendApi = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY as string;
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [isMounted, setIsMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
-		setIsMounted(true)
-	}, [])
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    // Return a loading state or skeleton component if needed
+    return null;
+  }
 
   return (
-    <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} {...pageProps}>
-          <ToastContainer/>
-          <GlobalStyle />
-          <Component {...pageProps} />
-        </ClerkProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </RecoilRoot>
-    </QueryClientProvider>
-    </Provider>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>
+          <ClerkProvider publishableKey={clerkFrontendApi} {...pageProps}>
+            <ToastContainer />
+            <GlobalStyle />
+            <Component {...pageProps} />
+          </ClerkProvider>
+        </RecoilRoot>
+      </QueryClientProvider>
   );
 }
