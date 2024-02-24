@@ -1,7 +1,11 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
-const DisplayToaster = () => {
+/**
+ * DisplayToaster component for rendering toast notifications.
+ * @returns JSX element for displaying toasts.
+ */
+const DisplayToaster: React.FC = () => {
   return (
     <Toaster
       position="top-right"
@@ -14,10 +18,6 @@ const DisplayToaster = () => {
         },
         success: {
           duration: 3000,
-          theme: {
-            primary: '#fff',
-            secondary: '#19222f',
-          },
         },
       }}
     />

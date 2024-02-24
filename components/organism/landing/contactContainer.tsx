@@ -24,7 +24,7 @@ export function ContactContainer(): React.ReactElement {
       </div>
       {/* Message Link */}
       <Link href='/contact'>
-        <a className='rounded-lg text-white w-[10%] bg-purple-800 px-4 py-3 sm:px-8 sm:py-4'>Message</a>
+        <p className='rounded-lg text-white w-[10%] bg-purple-800 px-4 py-3 sm:px-8 sm:py-4'>Message</p>
       </Link>
     </div>
   );

@@ -15,7 +15,7 @@ import {
 
 interface TestimonialProps {}
 
-const Testimonial: React.FC<TestimonialProps> = () => {
+export const Testimonial: React.FC<TestimonialProps> = () => {
   const fiveStar = ["", "", "", "", ""];
 
   return (
@@ -59,4 +59,3 @@ const Testimonial: React.FC<TestimonialProps> = () => {
   );
 };
 
-export default Testimonial;

@@ -1,5 +1,5 @@
 import { UserLayout } from '@components/templates/pageTemplate';
-import { Support } from '@components/organism/settingsTabs/support';
+import { Support } from '@components/organism/dashboardTabs/settingsTabs/support';
 
 interface ContactProps {}
 

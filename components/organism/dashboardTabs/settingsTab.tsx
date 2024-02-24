@@ -9,9 +9,9 @@ import { profileState } from '@components/common/recoil/profile';
 import { branchDetailsFormArray, managerFormArray, pathologistFormArray } from 'utils/types/molecules/forms.interface';
 import dynamic from 'next/dynamic';
 
-const Billing = dynamic(() => import('@components/organism/settingsTabs/billing').then(res=>res.Billing),{loading: () => <Spinner/>})
-const SettingsCommon = dynamic(() => import('@components/organism/settingsTabs/settings').then(res=>res.SettingsCommon),{loading: () => <Spinner/>})
-const Support = dynamic(() => import('@components/organism/settingsTabs/support').then(res=>res.Support),{loading: () => <Spinner/>})
+const Billing = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/billing').then(res=>res.Billing),{loading: () => <Spinner/>})
+const SettingsCommon = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/settings').then(res=>res.SettingsCommon),{loading: () => <Spinner/>})
+const Support = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/support').then(res=>res.Support),{loading: () => <Spinner/>})
 
 export default function SettingsTab() {
   const [activeKey, setActiveKey] = useState('Billing');
