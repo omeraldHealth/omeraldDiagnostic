@@ -1,5 +1,5 @@
 import { useCurrentBranchValue, useDashboardTabs, useProfileValue } from '@components/common/constants/constants'
-import { branchState } from '@components/common/recoil/blogs/branch'
+import { branchState } from '@components/common/recoil/branch/branch'
 import { Bars3Icon } from '@heroicons/react/20/solid'
 import { Select } from 'antd'
 import React from 'react'

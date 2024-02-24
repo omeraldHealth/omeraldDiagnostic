@@ -1,32 +1,33 @@
+import React, { useEffect } from 'react';
 import { SignUp, useUser } from '@clerk/nextjs';
 import { ClerkLoading } from "@clerk/nextjs";
 import { UserLayout } from '@components/templates/pageTemplate'
-import React, { useEffect } from 'react';
-import { warningAlert } from '../components/atoms/alerts/alert';
+import { warningAlert } from '@components/atoms/alerts/alert';
 
+// Component to handle user sign-up
 const SignUpComp = () => {
-
-  const {user} = useUser();
+  // Get user details using Clerk's useUser hook
+  const { user } = useUser();
   
-  useEffect(()=>{
-    if(user){
+  useEffect(() => {
+    // Check if user is already logged in and show a warning
+    if (user) {
       warningAlert("User already logged in")
     }
-  },[user])
+  }, [user])
 
   return (
-    <div>
-      <UserLayout tabName="Admin Omerald | Sign Up">
-        <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
-          <section className="my-10">
-            <SignUp signInUrl="/signIn" redirectUrl="/dashboard" />
-            <ClerkLoading>
-              <p>Loading...</p>
-            </ClerkLoading>
-          </section>
-        </div>
-      </UserLayout>
-    </div>
+    <UserLayout tabName="Admin Omerald | Sign Up">
+      <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
+        <section className="my-10">
+          {/* SignUp component from Clerk for user registration */}
+          <SignUp signInUrl="/signIn" redirectUrl="/dashboard" />
+          <ClerkLoading>
+            <p>Loading...</p>
+          </ClerkLoading>
+        </section>
+      </div>
+    </UserLayout>
   );
 };
 

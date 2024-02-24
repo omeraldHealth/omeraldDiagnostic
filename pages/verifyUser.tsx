@@ -6,9 +6,9 @@ import { getDiagProfileByPhoneApi } from '../utils';
 import { errorAlert, successAlert } from '../components/atoms/alerts/alert';
 import { useSetRecoilState } from 'recoil';
 import { profileState } from '../components/common/recoil/profile';
-import { branchState } from '../components/common/recoil/blogs/branch';
 import { operatorState } from "../components/common/recoil/operator/index";
 import axios from 'axios';
+import { branchState } from '@components/common/recoil/branch/branch';
 
 const VerifyUser = () => {
   const { session, isLoaded } = useSession();

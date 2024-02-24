@@ -3,7 +3,7 @@ import moment from 'moment';
 import React from 'react'
 import { useRecoilValue } from 'recoil';
 import { profileState } from '../../common/recoil/profile';
-import { branchState } from '../../common/recoil/blogs/branch';
+import { branchState } from '../../common/recoil/branch/branch';
 
 export const DashActivity = () => {
 

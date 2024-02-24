@@ -11,7 +11,7 @@ import { useQueryGetData } from 'utils/reactQuery';
 import { Spinner } from '@components/atoms/loader';
 import { profileState } from '../../common/recoil/profile';
 import { useRecoilValue } from 'recoil';
-import { branchState } from '../../common/recoil/blogs/branch';
+import { branchState } from '../../common/recoil/branch/branch';
 
 const { RangePicker } = DatePicker;
 

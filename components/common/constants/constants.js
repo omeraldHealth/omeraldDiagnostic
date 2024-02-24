@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { profileState } from "../recoil/profile";
 import { operatorState } from "../recoil/operator";
-import { branchState } from "../recoil/blogs/branch";
+import { branchState } from "../recoil/branch/branch";
 import { dashTabs } from "../recoil/dashboard";
 import { booleanState } from "../recoil/booleanAtom";
 import { testDetailsState } from "../recoil/testDetails";

@@ -4,7 +4,7 @@ import { Tooltip } from 'antd';
 import {DashCardTyes} from "utils/types/atoms/atoms"
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { profileState } from '../../common/recoil/profile';
-import { branchState } from '../../common/recoil/blogs/branch';
+import { branchState } from '../../common/recoil/branch/branch';
 import { dashTabs } from '../../common/recoil/dashboard';
 
 export const DashCard = () => {

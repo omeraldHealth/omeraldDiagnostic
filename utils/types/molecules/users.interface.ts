@@ -1,86 +1,85 @@
 import { ObjectId } from "mongodb";
 
-export interface DiagnosticUserSession {
-    userId: string;
-    token: string;
-}
-
-export interface UserDetails {
-  email: string;
-  updatedAt?: Date;
-  reports?: string[];
-  tests: ReportTypes[];
+export interface UserQueryInterface {
   phoneNumber: string;
-  diagnosticName: string;
-  sharedReport?: string[];
-  branchDetails?: BranchDetail[],
-  activities?: ActivityDetails[];
-  brandDetails: BrandDetailsForm;
-  managersDetail: IManagerDetails[];
-  pathologistDetail?: IPathologistDetails[];
-  managerName?: string
+  name: string;
+  email: string;
+  branch: string;
+  subject: string;
+  message: string;
 }
 
-export type BrandDetailsForm = {
-  brandLogo: string;
-  brandBanner: string;  
-  instaUrl?: string;
-  facebookUrl?: string;
-};
+export interface ActivityDetailsInterface {
+  activity: string;
+  updatedTime?: Date;
+  user: ManagerDetailsInterface;
+  branchId: string;
+}
 
-export type IManagerDetails = {
-  managerName: string;
-  managerRole: string;
-  managerContact: string;
-};
+export interface BranchDetailInterface {
+  branchName: string;
+  branchEmail: string;
+  branchAddress: string;
+  branchContact: string;
+  branchManager: ManagerDetailsInterface;
+}
 
-export type IPathologistDetails = {
+export interface PathologistDetailsInterface {
   name: string;
   designation: string;
   signature: string;
-};
-
-export type BranchDetail = {
-  branchName: String,
-  branchEmail: String,
-  branchAddress: String,
-  branchContact: String,
-  branchManager: IManagerDetails,
 }
 
-export type UserQuery = {
-  phoneNumber:String,
-  name:String,
-  email:String,
-  branch:String,
-  subject:String,
-  message:String
+export interface ManagerDetailsInterface {
+  managerName: string;
+  managerRole: string;
+  managerContact: string;
 }
 
-export type SampleTypes = {
-  _id: ObjectId;
-  testName: string;
-  keywords: ReportParamsType[];
-};
+export interface BrandDetailsFormInterface {
+  brandLogo: string;
+  brandBanner: string;
+  instaUrl?: string;
+  facebookUrl?: string;
+}
 
-export type ReportTypes = {
-  _id: ObjectId;
-  sampleName: string;
-  sampleType: SampleTypes
-};
+export interface AuthContextInterface {
+  user: any | null;
+  diagnosticDetails: UserDetailsInterface | null;
+  operator: any | null;
+  activeBranch: any;
+  loading: boolean;
+  signIn: (user: any, redirect: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  setActiveBranch: () => void;
+}
 
-export type ReportParamsType = {
+export interface UserDetailsInterface {
+  email: string;
+  updatedAt?: Date;
+  reports?: string[];
+  tests: ReportTypeInterface[];
+  phoneNumber: string;
+  diagnosticName: string;
+  sharedReport?: string[];
+  branchDetails?: BranchDetailInterface[];
+  activities?: ActivityDetailsInterface[];
+  brandDetails: BrandDetailsFormInterface;
+  managersDetail: ManagerDetailsInterface[];
+  pathologistDetail?: PathologistDetailsInterface[];
+  managerName?: string;
+}
+
+export interface ReportParamsTypeInterface {
   _id: ObjectId;
   keyword: string;
   aliases: string[];
   minRange: string;
   maxRange: string;
   unit: string;
-};
+}
 
-export type ReportParamsData = Pick<ReportParamsType,"keyword" | "unit" | "normalRange"> & { value: string };
-
-export type ReportDetails = {
+export interface ReportDetailsInterface {
   dob: Date;
   email: string;
   gender: string;
@@ -95,38 +94,35 @@ export type ReportDetails = {
   doctorName?: string;
   isManualReport: boolean;
   status: "parsed" | "parsing";
-  parsedData?: ReportParamsData[];
-};
+  // parsedData?: ReportParamsDataInterface[];
+}
 
-export type ActivityDetails = {
-  activity: string;
-  updatedTime?: Date;
-  user:IManagerDetails,
-  branchId: string
-};
+export interface ReportTypeInterface {
+  _id: ObjectId;
+  sampleName: string;
+  sampleType: SampleTypesInterface;
+}
 
-export interface AuthContextInterface {
-	  user: any | null
-    diagnosticDetails: UserDetails | null;
-    operator: any | null;
-    activeBranch: any;
-    loading: boolean;
-    signIn: (user: any, redirect: string) => Promise<void>;
-    signOut: () => Promise<void>;
-    setActiveBranch: () => void
-    // setDiagnosticDetails:() => Promise<void>;
+export interface SampleTypesInterface {
+  _id: ObjectId;
+  testName: string;
+  keywords: ReportParamsTypeInterface[];
+}
+
+export interface UserSessionInterface {
+  userId: string;
+  token: string;
 }
 
 export const initialAuthContext: AuthContextInterface = {
   user: null,
   diagnosticDetails: null,
-  activeBranch:null,
+  activeBranch: null,
   operator: null,
   loading: false,
   signIn: async () => {},
   signOut: async () => {},
   setActiveBranch: async () => {},
-  // setDiagnosticDetails: async() => {}
 };
 
-export const allowedPaths: Array<String> = ["/","/signIn","/404"];
+export const allowedPaths: string[] = ["/", "/signIn", "/404"];
