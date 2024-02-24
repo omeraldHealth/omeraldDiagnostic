@@ -1,6 +1,6 @@
-import { UserLayout } from '../components/templates/pageTemplate'
+import { UserLayout } from '@components/templates/pageTemplate'
+import { notFound } from '@utils'
 import Link from 'next/link'
-import { notFound } from '../utils'
 
 export default function ErrorComp() {
   return (
