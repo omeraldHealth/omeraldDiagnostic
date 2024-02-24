@@ -65,7 +65,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({ handleImage }) => {
           </div>
         )}
       </Upload>
-      <Modal visible={preview.open} title={preview.title} footer={null} onCancel={() => setPreview({ ...preview, open: false })}>
+      <Modal open={preview.open} title={preview.title} footer={null} onCancel={() => setPreview({ ...preview, open: false })}>
         <img alt='example' style={{ width: '100%' }} src={preview.image} />
       </Modal>
     </>

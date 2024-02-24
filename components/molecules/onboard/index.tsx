@@ -53,45 +53,43 @@ const OnboardComponents = () => {
   };
 
   const onFormSubmit = async () => {
-    // Add logic for submitting form data 
-
-    // addLogo?.mutate(formDataImage)
-    const formDataImage = new FormData();
-    formDataImage.append('file', logoState);
-    setLoading(true)
-    let logoResp = await  axios.post(uploadDiagnosticLogoApi, formDataImage, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    if(logoResp?.status === 200){
-      setLoading(false)
-      const updatedFormData = {
-        ...formData,
-        brandDetails: { ...formData?.brandDetails,brandLogo: logoResp?.data?.url}
-      };
-      setFormData(updatedFormData)
-      successAlert("Logo uploaded succesfully")
-    }
-
-    delay(async()=>{
-        setFormData((prevData: any) => ({ ...prevData, "managersDetail": [{managerName: managerName, managerContact: phoneNumber, managerRole : "owner"}] }));
-        console.log(formData)
-        if(formData?.managersDetail?.[0]?.managerName){
-          try {
-            let insertDiag = await createDiagProfile(formData)
-            if(insertDiag.status === 201){
-              successAlert("Profile created sucessfully")
-              router.push("verifyUser")
-              setLoading(false)
-            }
-          } catch (error) {
-              warningAlert("Error creating profile "+error)
-              setLoading(false)
+    try {
+      successAlert("Creating Profile");
+      setLoading(true);
+  
+      // Upload logo
+      const formDataImage = new FormData();
+      formDataImage.append('file', logoState);
+      const logoResp = await axios.post(uploadDiagnosticLogoApi, formDataImage, { headers: { 'Content-Type': 'multipart/form-data' } });
+  
+      if (logoResp?.status === 200) {
+        // Update form data with logo and manager details
+        const updatedFormData = {
+          ...formData,
+          brandDetails: { ...formData?.brandDetails, brandLogo: logoResp?.data?.url },
+          managersDetail: [{ managerName: managerName, managerContact: phoneNumber, managerRole: "owner" }]
+        };
+  
+        if (updatedFormData?.managersDetail?.[0]?.managerName && updatedFormData?.brandDetails?.brandLogo) {
+          // Create diagnostic profile
+          const insertDiag = await createDiagProfile(updatedFormData);
+  
+          if (insertDiag.status === 201) {
+            successAlert("Profile created successfully");
+            router.push("verifyUser");
+          } else {
+            errorAlert("Error creating profile: " + insertDiag.statusText);
           }
+        } else {
+          errorAlert("Error creating profile: Missing required data");
         }
-    },300)
-
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      warningAlert("Error creating profile: " + error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const uploadImage = async (val: any) => {
