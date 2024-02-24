@@ -1,16 +1,29 @@
-import React, { FC } from 'react'
+import React, { FC, ReactNode } from 'react';
 
-export const SignInButton: FC<any> = ({style,children}:any) => (
-	<button className= {`${style} bg-indigo-800 text-white w-[132px] h-[52px] rounded-lg font-sm text-light`}>{children}</button>)
+interface ButtonProps {
+  style?: string;
+  children: ReactNode;
+}
 
-export const SubscribeButton: FC<any> = ({children}) => (
-	<button className={`bg-[#00E1F0] text-white px-4 h-[52px] mx-8 font-sm text-light`}>{children}</button>
-)
+export const SignInButton: FC<ButtonProps> = ({ style, children }) => (
+  <button className={`${style} bg-indigo-800 text-white w-[132px] h-[52px] rounded-lg font-sm text-light`}>
+    {children}
+  </button>
+);
 
-// export const RequestOtpButton: any = (handleRequestOtp:any) => {
-// 	return <button onClick={handleRequestOtp} className="block  w-[80%] sm:w-[60%]  bg-blue-800 text-white p-2 text-sm rounded-md">SEND OTP</button>
-// }
+export const SubscribeButton: FC<{ children: ReactNode }> = ({ children }) => (
+  <button className={`bg-[#00E1F0] text-white px-4 h-[52px] mx-8 font-sm text-light`}>
+    {children}
+  </button>
+);
 
-// export const SubmitOtpButton: any = (handleVerifyOtp:any) => {
-// 	return  <button onClick={handleVerifyOtp} type="submit"className="block w-[80%] sm:w-[60%] bg-green-800 text-white p-2 text-sm rounded-md">SUBMIT OTP</button>
-// }
+export const CustomButton: FC<ButtonProps> = ({ style, children }) => (
+  <button className={`${style} px-4 py-2 bg-blue-500 text-white font-sm rounded-lg`}>
+    {children}
+  </button>
+);
+
+// Add more button components as needed, following the same pattern.
+
+// Note: Arrange imports and components based on their code length in descending order.
+// Import statements go here.

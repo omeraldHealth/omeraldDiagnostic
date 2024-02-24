@@ -1,4 +1,4 @@
-import { useProfileValue } from "@components/common/constants/constants";
+import { useProfileValue } from "@components/common/constants/recoilValues";
 import DynamicFormGenerator from "../form/dynamicForm";
 import { useState } from "react";
 import { Select } from "antd";

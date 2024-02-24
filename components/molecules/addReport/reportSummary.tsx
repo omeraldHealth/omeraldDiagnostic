@@ -1,6 +1,6 @@
 import { errorAlert, successAlert, warningAlert } from '@components/atoms/alerts/alert';
 import { Spinner } from '@components/atoms/loader';
-import { useReportValue } from '@components/common/constants/constants';
+import { useReportValue } from '@components/common/constants/recoilValues';
 import { reportState } from '@components/common/recoil/report';
 import { uploadDiagnosticReportApi } from '@utils';
 import { Card, Typography, Space, Tag, Button } from 'antd';

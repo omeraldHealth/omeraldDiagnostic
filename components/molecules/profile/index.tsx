@@ -1,4 +1,4 @@
-import { useCurrentBranchValue, useLogoValue, useManagerValue, useProfileValue } from "@components/common/constants/constants";
+import { useCurrentBranchValue, useLogoValue, useManagerValue, useProfileValue } from "@components/common/constants/recoilValues";
 import { PencilIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { profileComponentType, profileSummaryCard } from "utils/store/types";

@@ -4,7 +4,7 @@ import { addReportSteps } from 'utils/static/static';
 import { PatientDetails } from './patientDetails';
 import { UploadReport } from './uploadReport';
 import { ReportSummary } from './reportSummary';
-import { useProfileValue, useReportValue, useTestDataValue } from '@components/common/constants/constants';
+import { useProfileValue, useReportValue, useTestDataValue } from '@components/common/constants/recoilValues';
 import { SuccessReport } from './successReport';
 
 export const AddReportComponent = ({setAddReports}:any) => {

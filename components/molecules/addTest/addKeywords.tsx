@@ -13,7 +13,7 @@ import DynamicFormGenerator from '../form/dynamicForm'
 import { DashboardTable } from '../dashboardItems/data-table'
 import { ParameterColumns } from 'utils/forms/form'
 import { useUpdateDiagnostic } from 'utils/reactQuery'
-import { useCurrentBranchValue } from '@components/common/constants/constants'
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues'
 
 export const AddKeywords = ({handleSucess,handleBack,edit}:any) => {
   const [addKeyword,setAddKeyword] = useState(false)

@@ -9,7 +9,7 @@ import DynamicFormGenerator from "../form/dynamicForm";
 import _ from "lodash";
 import { useQueryGetData } from "utils/reactQuery";
 import { getAdminReportTypesApi } from "@utils";
-import { useBooleanValue } from "@components/common/constants/constants";
+import { useBooleanValue } from "@components/common/constants/recoilValues";
 
 const formArrays = {
     customForm: customTestForm,

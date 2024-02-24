@@ -1,10 +1,16 @@
-import Link from "next/link";
+import Link from 'next/link';
 
-export const LogoImage = () => {
+interface LogoProps {
+  src: string;
+  alt: string;
+  width?: string;
+}
+
+const LogoImage: React.FC = () => {
   return (
-    <Link href={"/"}>
+    <Link href="/">
       <span className="flex justify-center">
-        <Logo />
+        <Logo src="your_logo_url" alt="Omerald Diagnostics" width="70px" />
         <p className="font-sans hidden sm:block sm:text-lg sm:font-bold self-center">
           OMERALD DIAGNOSTICS
         </p>
@@ -13,17 +19,12 @@ export const LogoImage = () => {
   );
 };
 
-export const DashboardLogo = () => {
+const DashboardLogo: React.FC = () => {
   return (
     <div className="pt-5 pb-4 overflow-y-auto">
       <Link href="/">
         <div className="flex items-center flex-shrink-0 px-4">
-          <img
-            src={
-              "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"
-            }
-            className="w-[50px] sm:w-[40px] rounded-full"
-          />
+          <Logo src="your_logo_url" alt="Omerald" width="50px" />
           <span className="text-white font-semibold text-xl ml-4 tracking-wider">
             Omerald
           </span>
@@ -33,21 +34,12 @@ export const DashboardLogo = () => {
   );
 };
 
-export const Logo = () => (
-  <img
-    src={
-      "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"
-    }
-    className="w-[50px] sm:w-[70px]"
-  />
+const Logo: React.FC<LogoProps> = ({ src, alt, width = '50px' }) => (
+  <img src={src} alt={alt} className={`w-${width} sm:w-[70px]`} />
 );
 
-
-export const LogoRound = () => (
-  <img
-    src={
-      "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"
-    }
-    className="w-[50px] sm:w-[70px] rounded-full"
-  />
+const LogoRound: React.FC<LogoProps> = ({ src, alt, width = '50px' }) => (
+  <img src={src} alt={alt} className={`w-${width} sm:w-[70px] rounded-full`} />
 );
+
+export { LogoImage, DashboardLogo, Logo, LogoRound };

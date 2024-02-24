@@ -5,6 +5,11 @@
     date :string;
   }
 
+export interface UserNavigationItem {
+  name: string;
+  href: string;
+}
+
   export type IManagerDetailsInterface = {
     managerName: string;
     managerRole: string;

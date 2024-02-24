@@ -1,4 +1,4 @@
-import { useProfileValue } from '@components/common/constants/constants'
+import { useProfileValue } from '@components/common/constants/recoilValues'
 import { ProfileSummaryComponent } from '@components/molecules/profile'
 import { Fragment } from 'react'
 

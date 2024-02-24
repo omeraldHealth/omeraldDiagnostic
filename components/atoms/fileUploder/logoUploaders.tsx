@@ -3,12 +3,7 @@ import { Modal, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import type { RcFile, UploadProps } from 'antd/es/upload';
 import type { UploadFile } from 'antd/es/upload/interface';
-
 import './logo.module.css';
-import { useRecoilValue } from 'recoil';
-import { logoStateData } from '@components/common/recoil/logo';
-import { useLogoValue } from '@components/common/constants/constants';
-
 interface LogoUploaderProps {
   handleImage: (images: { logo: UploadFile[] }) => void;
 }
@@ -28,8 +23,6 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({ handleImage }) => {
     title: '',
   });
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const logoState = useLogoValue()
-  // const [logoData, setLogoState] = useRecoilValue(logoStateData)
 
   const handlePreview = async (file: UploadFile) => {
     if (!file.url && !file.preview) {
@@ -65,7 +58,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({ handleImage }) => {
           </div>
         )}
       </Upload>
-      <Modal open={preview.open} title={preview.title} footer={null} onCancel={() => setPreview({ ...preview, open: false })}>
+      <Modal visible={preview.open} title={preview.title} footer={null} onCancel={() => setPreview({ ...preview, open: false })}>
         <img alt='example' style={{ width: '100%' }} src={preview.image} />
       </Modal>
     </>

@@ -31,7 +31,7 @@ const VerifyUser = () => {
 
       if (status === 200 && data) {
         setProfile(data);
-        setManagerValue(assignManager(data.managersDetail, phoneNumber));
+        setManagerValue(assignManager(data.managersDetail, phoneNumber || ""));
         setCurrentBranch(data.branchDetails?.[0]);
         setOperator(data.managersDetail[0]);
         successAlert("Profile fetched successfully");

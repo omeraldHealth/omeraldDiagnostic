@@ -2,7 +2,7 @@
 import {ClipboardDocumentListIcon, HomeIcon, UserCircleIcon, WrenchScrewdriverIcon } from '@heroicons/react/20/solid'
 import { BeakerIcon} from '@heroicons/react/24/outline'
 import { OnboardStepsType } from 'utils/types/atoms/atoms';
-import { BlogDataType } from 'utils/types';
+import { BlogDataType, UserNavigationItem } from 'utils/types';
 
 export const onboardSteps: OnboardStepsType[] = [
     { id: 1, name: "Basic Details" },
@@ -170,3 +170,9 @@ export const sideBlogs : BlogDataType[] = [
   }
 ]
 
+export const userNavigation: UserNavigationItem[] = [
+  { name: 'Dashboard', href: '#' },
+  { name: 'Your Profile', href: '#' },
+  { name: 'Settings', href: '#' },
+  { name: 'Sign out', href: '#' },
+];

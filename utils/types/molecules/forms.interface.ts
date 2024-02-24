@@ -1,4 +1,4 @@
-import { useProfileValue } from "@components/common/constants/constants";
+import { useProfileValue } from "@components/common/constants/recoilValues";
 import { ReportDetails, ReportTypes } from "./users.interface";
 import path from "path";
 import { uploadDiagnosticReportApi } from "utils/urls/app";

@@ -3,7 +3,7 @@ import { Modal, Space, Tag, Popover } from 'antd';
 import { PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
 import { ColumnsType } from 'antd/es/table';
 import { DataType } from 'utils/store/types';
-import { useCurrentBranchValue, useProfileValue } from '@components/common/constants/constants';
+import { useCurrentBranchValue, useProfileValue } from '@components/common/constants/recoilValues';
 import { DashboardTable } from '../dashboardItems/data-table';
 import { TestTableColumns } from 'utils/forms/form';
 import DynamicFormGenerator from '../form/dynamicForm';

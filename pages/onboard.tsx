@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { UserLayout } from '../components/templates/pageTemplate';
-import { useProfileValue } from '@components/common/constants/constants';
+import { useProfileValue } from '@components/common/constants/recoilValues';
 import { useUser } from '@clerk/clerk-react';
 import { Spinner } from '@components/atoms/loader';
 import dynamic from 'next/dynamic';
