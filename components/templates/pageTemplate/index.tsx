@@ -15,7 +15,7 @@ const Footer = dynamic(() => import('@components/molecules/footer').then(res => 
  * @param {string} tabDescription - The description of the tab.
  * @param {ReactNode} children - The content to be rendered inside the layout.
  */
-const UserLayout = ({ tabName, tabDescription, children }: any) => {
+export const UserLayout = ({ tabName, tabDescription, children }: any) => {
   const { pathname } = useRouter();
 
   return (
@@ -41,4 +41,3 @@ const UserLayout = ({ tabName, tabDescription, children }: any) => {
   );
 };
 
-export default UserLayout;

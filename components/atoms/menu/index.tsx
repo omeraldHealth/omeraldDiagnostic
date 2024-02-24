@@ -2,7 +2,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router'
 import React, { Fragment } from 'react'
 import { useAuthContext } from 'utils/context/auth.context'
-import { classNames } from 'utils/static'
+import { classNames } from 'utils/static/static'
 
 const userNavigation = [
     { name: 'Dashboard', href: '#' },

@@ -1,6 +1,6 @@
 
 import { Spinner } from '@components/atoms/loader';
-import UserLayout from '@components/templates/pageTemplate';
+import {UserLayout} from '@components/templates/pageTemplate';
 import dynamic from 'next/dynamic';
 
 // Dynamic import for LandingPage component with SSR disabled

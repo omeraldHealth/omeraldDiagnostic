@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useUser } from "@clerk/clerk-react";
 import { Spinner } from "@components/atoms/loader";
 import { BackwardIcon, ForwardIcon } from "@heroicons/react/24/outline";
-import { onboardSteps } from "utils/static";
+import { onboardSteps } from "utils/static/static";
 import { StepHeader } from "@components/atoms/fileUploder/stepHeader";
 import { BrandDetailsFormInterface, OnboardStepsType, UserDetailsInterface, uploadDiagnosticLogoApi } from "@utils";
 import { BasicDetailsForm, BranchDetails, basicFormArray, branchDetailsFormArray, brandDetailsFormArray } from "utils/types/molecules/forms.interface";

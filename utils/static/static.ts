@@ -1,6 +1,8 @@
+
 import {ClipboardDocumentListIcon, HomeIcon, UserCircleIcon, WrenchScrewdriverIcon } from '@heroicons/react/20/solid'
 import { BeakerIcon} from '@heroicons/react/24/outline'
 import { OnboardStepsType } from 'utils/types/atoms/atoms';
+import { BlogDataType } from 'utils/types';
 
 export const onboardSteps: OnboardStepsType[] = [
     { id: 1, name: "Basic Details" },
@@ -125,4 +127,46 @@ export const navigation: Navigation = {
   ],
   social: [],
 };
+
+export const blogs : BlogDataType[] = [
+  {   
+      "title":"Believing neglected so so allowance existence departure.",
+      "description":"Blessing welcomed ladyship she met humoured sir breeding her. Six curiosity day assurance bed necessary.",
+      "url":"https://omerald-prod.s3.ap-south-1.amazonaws.com/images/Olive%20Oil%20and%20Turmeric_1654279005.webp",
+      "date":"08-11-2021"
+  },
+  {   
+      "title":"In design active temper be uneasy. Thirty for remove plenty regard you.",
+      "description":"Yet preference connection unpleasant yet melancholy but end appearance. And excellence partiality estimating terminated day everything.",
+      "url":"https://omerald-prod.s3.ap-south-1.amazonaws.com/images/glowing%20skin2_1653733484.webp",
+      "date":"08-11-2021"
+  }
+]
+
+export const sideBlogs : BlogDataType[] = [
+  {   
+      "title":"Believing neglected so so allowance existence departure.",
+      "description":"Blessing welcomed ladyship she met humoured sir breeding her. Six curiosity day assurance bed necessary.",
+      "url":"https://omerald-prod.s3.ap-south-1.amazonaws.com/images/Olive%20Oil%20and%20Turmeric_1654279005.webp",
+      "date":"08-11-2021"
+  },
+  {   
+      "title":"In design active temper be uneasy. Thirty for remove plenty regard you.",
+      "description":"Yet preference connection unpleasant yet melancholy but end appearance. And excellence partiality estimating terminated day everything.",
+      "url":"https://omerald-prod.s3.ap-south-1.amazonaws.com/images/glowing%20skin2_1653733484.webp",
+      "date":"08-11-2021"
+  },
+  {   
+      "title":"Believing neglected so so allowance existence departure.",
+      "description":"Blessing welcomed ladyship she met humoured sir breeding her. Six curiosity day assurance bed necessary.",
+      "url":"https://omerald-prod.s3.ap-south-1.amazonaws.com/images/Olive%20Oil%20and%20Turmeric_1654279005.webp",
+      "date":"08-11-2021"
+  },
+  {   
+      "title":"In design active temper be uneasy. Thirty for remove plenty regard you.",
+      "description":"Yet preference connection unpleasant yet melancholy but end appearance. And excellence partiality estimating terminated day everything.",
+      "url":"https://omerald-prod.s3.ap-south-1.amazonaws.com/images/glowing%20skin2_1653733484.webp",
+      "date":"08-11-2021"
+  }
+]
 

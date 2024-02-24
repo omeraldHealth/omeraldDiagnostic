@@ -1,6 +1,6 @@
 import { StepHeader } from '@components/atoms/fileUploder/stepHeader';
 import React, { useState } from 'react'
-import { addReportSteps } from 'utils/static';
+import { addReportSteps } from 'utils/static/static';
 import { PatientDetails } from './patientDetails';
 import { UploadReport } from './uploadReport';
 import { ReportSummary } from './reportSummary';

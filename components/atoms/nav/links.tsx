@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react'
-import { classNames, IndexObj, privateRoutes } from 'utils/static';
+import { classNames, IndexObj, privateRoutes } from 'utils/static/static';
 import { useAuthContext } from 'utils/context/auth.context';
 import { useMediaQuery } from 'react-responsive';
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StepHeader } from '@components/atoms/fileUploder/stepHeader';
-import { addTestSteps } from 'utils/static';
+import { addTestSteps } from 'utils/static/static';
 import { SuccessTest } from '../addTest/successTest';
 import { TestDetail } from '../addTest/testDetail';
 import { AddKeywords } from '../addTest/addKeywords';

@@ -2,7 +2,7 @@
 import { LogoRound } from "@components/atoms/nav/logo";
 import axios from "axios";
 
-import { navigation } from "utils/static";
+import { navigation } from "utils/static/static";
 
 
 export function Footer() {

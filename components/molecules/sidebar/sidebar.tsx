@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { dashTabs } from 'components/common/recoil/dashboard/index';
-import { classNames, privateRoutes } from '../../../utils/static';
+import { classNames, privateRoutes } from '../../../utils/static/static';
 import Image from 'next/image';
 import { useManagerValue, useProfileValue } from '@components/common/constants/constants';
 

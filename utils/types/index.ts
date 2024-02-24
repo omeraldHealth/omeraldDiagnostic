@@ -1,4 +1,11 @@
-export type IManagerDetailsInterface = {
+ export type BlogDataType = {
+    title :string,
+    description: string;
+    url:string;
+    date :string;
+  }
+
+  export type IManagerDetailsInterface = {
     managerName: string;
     managerRole: string;
     managerContact: string;
