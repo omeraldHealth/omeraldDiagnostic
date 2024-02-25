@@ -6,6 +6,9 @@ import { profileState } from '../../common/recoil/profile';
 import { branchState } from '../../common/recoil/branch/branch';
 import { dashTabs } from '../../common/recoil/dashboard';
 import { settingTabState } from '../../common/recoil/settings';
+import { useQuery } from 'react-query';
+import { useQueryGetData } from 'utils/reactQuery';
+import { getDiagReportsApi } from '@utils';
 
 interface TooltipProps {
   tipInfo: string;
@@ -25,12 +28,11 @@ export const DashCard = () => {
   const currentBranch = useRecoilValue(branchState);
   const setDashTab = useSetRecoilState(dashTabs);
   const [activeKey,setActiveKey] = useRecoilState(settingTabState);
+  const { data: reports, refetch } = useQueryGetData("reports", getDiagReportsApi);
 
-  let testList = profile?.tests?.filter((test: any) => test?.branchId === currentBranch?._id);
-  let reportList = profile?.reports?.data?.filter((report: any) => report?.branchId === currentBranch?._id);
-  let employeeList = profile?.managersDetail?.filter(
-    (emp: any) => emp.branchId === currentBranch?._id || emp?.managerRole.toLowerCase() === 'owner'
-  );
+  let testList = profile?.tests?.filter((test: any) => test?.branchId === currentBranch?._id );
+  let reportList = reports?.data?.filter((report: any) => report?.branchId === currentBranch?._id );
+  let employeeList = profile?.managersDetail?.filter((emp: any) => emp.branchId === currentBranch?._id || emp?.managerRole.toLowerCase() === 'owner');
 
   const dashCard: any[] = [
     {

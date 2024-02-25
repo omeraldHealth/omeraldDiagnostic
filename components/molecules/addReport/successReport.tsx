@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckBadgeIcon } from '@heroicons/react/20/solid';
 import { successUpload } from '@utils';
+import { useProfileValue } from '@components/common/constants/recoilValues';
 
 interface SuccessReportProps {
   setAddReports: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,10 +9,14 @@ interface SuccessReportProps {
 }
 
 export const SuccessReport: React.FC<SuccessReportProps> = ({ setAddReports, refetch }) => {
+
+  const profileValue = useProfileValue()
+
   const handleViewReport = () => {
-    setAddReports(false);
-    // Optionally, you can call refetch() here if needed
-    // refetch();
+    refetch();
+    if(profileValue){
+      setAddReports(false);
+    }
   };
 
   return (

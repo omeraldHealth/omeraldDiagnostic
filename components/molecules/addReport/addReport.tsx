@@ -9,9 +9,10 @@ import { SuccessReport } from './successReport';
 
 interface AddReportComponentProps {
   setAddReports: React.Dispatch<React.SetStateAction<boolean>>;
+  refetch:()=>{}
 }
 
-export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddReports }) => {
+export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddReports,refetch }) => {
   const [currentStep, setCurrentStep] = useState(addReportSteps[0]);
   const reportValue = useReportValue();
 
@@ -28,7 +29,7 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
       case 3:
         return <ReportSummary style='' handleSuccess={() => setCurrentStep(addReportSteps[3])} report={reportValue} />;
       default:
-        return <SuccessReport refetch={() => {}} setAddReports={handleSuccess} />;
+        return <SuccessReport refetch={refetch} setAddReports={handleSuccess} />;
     }
   };
 

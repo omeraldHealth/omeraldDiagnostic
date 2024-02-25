@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery, UseQueryOptions } from 'react-query';
-import { updateDiagProfileApi, createDiagReportsApi, uploadDiagnosticReportApi, uploadDiagnosticLogoApi, createDiagProfileApi } from 'utils/urls/app';
+import { updateDiagProfileApi, createDiagReportsApi, uploadDiagnosticReportApi, uploadDiagnosticLogoApi, createDiagProfileApi, deleteDiagReportsApi } from 'utils/urls/app';
 
 // useQuery hook to get data
 export function useQueryGetData<T>(
@@ -44,8 +44,8 @@ export function useUpdateDiagnostic<TData, TVariables>(props: UseMutationProps<T
   return createMutation('put', updateDiagProfileApi, props);
 }
 
-export function useUpdateReports<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {
-  return createMutation('post', createDiagReportsApi, props);
+export function useDeleteReports<TData, TVariables>(id: string, props: UseMutationProps<TData, TVariables>) {
+  return createMutation('delete', deleteDiagReportsApi + `?id=${id}`, props);
 }
 
 export function useUploadReportFile<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {

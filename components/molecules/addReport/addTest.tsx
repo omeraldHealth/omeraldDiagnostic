@@ -22,9 +22,9 @@ export const AddTestComponent: React.FC<AddTestComponentProps> = ({ setTest, edi
       case 1:
         return <TestDetail handleSteps={() => setCurrentStep(addTestSteps[1])} />;
       case 2:
-        return <AddKeywords handleBack={() => setCurrentStep(addTestSteps[0])} handleSucess={() => setCurrentStep(addTestSteps[2])} />;
+        return <AddKeywords handleSuccess={() => setCurrentStep(addTestSteps[2])} />;
       case 3:
-        return <SuccessTest handleSucess={handleSuccess} />;
+        return <SuccessTest handleSuccess={handleSuccess} />;
       default:
         return null;
     }

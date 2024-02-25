@@ -6,7 +6,7 @@ import type { UploadProps } from 'antd/es/upload/interface';
 import type { UploadFile } from 'antd/es/upload/interface';
 
 interface FileUploaderProps {
-  handleImage: (data: { logo: any }) => void;
+  handleImage: (data: { file: any }) => void;
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({ handleImage }) => {
@@ -16,7 +16,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ handleImage }) => {
     name: 'file',
     action: '',
     showUploadList: false,
-    accept: 'image/jpeg,image/png,application/pdf',
+    accept:".pdf,image/*",
     beforeUpload: beforeUpload,
   };
 
@@ -25,7 +25,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ handleImage }) => {
     const isAllowed = allowedTypes.includes(file.type || "");
 
     if (!isAllowed) {
-      errorAlert('You can only upload JPG/PNG/PDF files!');
+      errorAlert('You can only upload allowed files!');
     }
 
     if (fileList.length >= 1) {
@@ -39,12 +39,12 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ handleImage }) => {
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
     setFileList([]);
     setFileList(newFileList);
-    handleImage({ logo: newFileList[0]?.originFileObj });
+    handleImage({ file: newFileList[0] });
   };
 
   return (
     <section>
-      <Upload accept="application/pdf,image/*" maxCount={1} {...props} fileList={fileList} onChange={handleChange}>
+      <Upload accept="image/*" maxCount={1} {...props} fileList={fileList} onChange={handleChange}>
         <section className='flex'>
           <Button className='flex' icon={<ArrowUpCircleIcon className="w-6 text-blue-500" />}>
             Click to Upload

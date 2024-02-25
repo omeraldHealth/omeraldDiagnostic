@@ -10,7 +10,7 @@ interface InfoPageProps {
   detail: string;
 }
 
-const InfoPage: React.FC<InfoPageProps> = ({ detail }) => {
+export const InfoPage: React.FC<InfoPageProps> = ({ detail }) => {
 //   const { data: Info, isLoading } = useQueryGetData(['info', detail], getDiagnosticSetting + detail);
 //   const parsedHtml = Info?.data?.value && parse(Info?.data?.value);
 
@@ -26,5 +26,3 @@ const InfoPage: React.FC<InfoPageProps> = ({ detail }) => {
       </div>
   );
 };
-
-export default InfoPage;

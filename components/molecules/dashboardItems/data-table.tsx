@@ -7,7 +7,7 @@ interface DashboardTableProps {
   pageSize?: number;
 }
 
-export const DashboardTable: React.FC<DashboardTableProps> = ({ columns, data, pageSize = 6 }) => {
+export const DashboardTable: React.FC<DashboardTableProps> = ({ columns, data, pageSize = 6 }:DashboardTableProps) => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: pageSize,
@@ -24,7 +24,7 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({ columns, data, p
   return (
     <div style={{ width: '100%', overflowX: 'auto' }}>
       <Table
-        dataSource={data}
+        dataSource={data || []}
         columns={columns}
         pagination={pagination}
         onChange={handleTableChange}

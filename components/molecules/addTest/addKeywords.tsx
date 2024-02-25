@@ -9,16 +9,19 @@ import { ParameterColumns } from 'utils/forms/form';
 import { useUpdateDiagnostic } from 'utils/reactQuery';
 import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { parameterForm } from 'utils/types/molecules/forms.interface';
+import { Spinner } from '@components/atoms/loader';
 
 interface AddKeywordsProps {
   handleSuccess: () => void;
 }
 
-export const AddKeywords: React.FC<AddKeywordsProps> = ({ handleSuccess }) => {
+export const AddKeywords: React.FC<AddKeywordsProps> = ({handleSuccess}:AddKeywordsProps) => {
   const [addKeyword, setAddKeyword] = useState(false);
   const [testDetailState, setTestDetail] = useRecoilState(testDetailsState);
   const [profile, setProfile] = useRecoilState(profileState);
   const currentBranch = useCurrentBranchValue();
+  const [loading, setLoading] = useState(false);
 
   const handleAddKeyword = (value: any) => {
     if (addKeyword) {
@@ -41,13 +44,16 @@ export const AddKeywords: React.FC<AddKeywordsProps> = ({ handleSuccess }) => {
       successAlert('Profile updated successfully');
       setProfile(data?.data);
       handleSuccess();
+      setLoading(false)
     },
     onError: () => {
       errorAlert('Error updating profile');
+      setLoading(false)
     },
   });
 
   const handleSubmit = (data: any) => {
+    setLoading(true)
     updateDiagnostic.mutate({
       data: { id: profile?._id, tests: [...profile?.tests, { ...testDetailState, branchId: currentBranch?._id }] },
     });
@@ -57,6 +63,7 @@ export const AddKeywords: React.FC<AddKeywordsProps> = ({ handleSuccess }) => {
     <section className="my-2 w-[100%] mx-0 sm:w-[70%] md:w-[100%] h-auto p-4">
       <AddKeyWordHeader addKeyword={addKeyword} setAddKeyword={setAddKeyword} />
       {addKeyword ? <AddParameter handleAddKeyword={handleAddKeyword} /> : <ViewParameter testDetailState={testDetailState} handleSubmit={handleSubmit} />}
+      {loading && <Spinner/>}
     </section>
   );
 };
@@ -109,7 +116,7 @@ interface ViewParameterProps {
   handleSubmit: () => void;
 }
 
-const ViewParameter: React.FC<ViewParameterProps> = ({ testDetailState, handleSubmit }) => (
+const ViewParameter: React.FC<ViewParameterProps> = ({ testDetailState, handleSubmit }:ViewParameterProps) => (
   <section>
     <DashboardTable columns={ParameterColumns} data={testDetailState?.sampleType?.keywords || []} />
     <Button onClick={handleSubmit}>Submit</Button>

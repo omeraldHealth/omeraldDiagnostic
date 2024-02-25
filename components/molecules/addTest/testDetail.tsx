@@ -13,6 +13,7 @@ import _ from 'lodash';
 import { useQueryGetData } from 'utils/reactQuery';
 import { getAdminReportTypesApi } from '@utils';
 import { useBooleanValue } from '@components/common/constants/recoilValues';
+import { warningAlert } from '@components/atoms/alerts/alert';
 
 interface TestDetailProps {
   handleSteps: () => void;
@@ -23,13 +24,13 @@ const formArrays = {
   templatedForm: templateTestForm,
 };
 
-const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
+export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
   const [selectedValue, setSelectedValue] = useState<boolean>(false);
   const [testDetailState, setTestDetail] = useRecoilState(testDetailsState);
   const reportType = useQueryGetData('reportTypes', getAdminReportTypesApi);
   const [reportList, setReportList] = useState<any[]>(reportType.data?.data || []);
   const [selectedReport, setSelectedReport] = useState<any[]>([]);
-  const [defaultValue, setDefaultValue] = useState<any>({});
+  const [defaultValue, setDefaultValue] = useState<any>(reportList);
   const booleanValue = useBooleanValue();
 
   function transformData(inputArray: any) {
@@ -73,8 +74,22 @@ const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
         sampleName: value.sampleName,
         sampleType: { testName: filteredReport?.name || '', keywords: transformData(filteredReport?.parameters) },
       };
-      setTestDetail(testType);
-      handleSteps();
+
+      console.log(testType);
+
+      if (testType?.sampleName) {
+        setTestDetail(testType);
+        console.log(testDetailState);
+
+        // Now, testDetailState will be updated, and you can check its value
+        if (testDetailState?.sampleName) {
+          warningAlert("Error with predefined reports");
+          handleSteps();
+        }
+      } else {
+        warningAlert("Error with predefined reports");
+      }
+
     }
   };
 
@@ -97,7 +112,7 @@ const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
           {selectedValue ? (
             <DynamicFormGenerator
               formProps={formArrays?.templatedForm || selectForm}
-              buttonText={'' || ''}
+              buttonText={'Continue'}
               handleSubmit={handleFormSubmit}
               defaultValues={defaultValue}
               handleSearch={handleSearch}
@@ -110,12 +125,12 @@ const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
                   <DynamicFormGenerator
                     defaultValues={defaultValue}
                     formProps={formArrays?.customForm || selectForm}
-                    buttonText={'' || ''}
+                    buttonText={'Continue'}
                     handleSubmit={handleFormSubmit}
                   />
                 )
               ) : (
-                <DynamicFormGenerator formProps={formArrays?.customForm || selectForm} buttonText={'' || ''} handleSubmit={handleFormSubmit} />
+                <DynamicFormGenerator formProps={formArrays?.customForm || selectForm} buttonText={'Continue' || ''} handleSubmit={handleFormSubmit} />
               )}
             </>
           )}
@@ -139,5 +154,3 @@ const TestDetailHeader: React.FC<any> = ({ selectedValue, setSelectedValue }) =>
     </section>
   );
 };
-
-export default TestDetail;

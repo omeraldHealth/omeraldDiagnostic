@@ -94,6 +94,7 @@ export interface UserNavigationItem {
   export interface ViewTestProps {
     columns: ColumnsType<any>;
     tests: any[];
+    loading: boolean;
   }
 
   export interface EditTestsProps {
