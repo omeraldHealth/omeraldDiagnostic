@@ -6,11 +6,15 @@ import { useDeleteReports, useQueryGetData } from 'utils/reactQuery';
 import { getDiagReportsApi } from '@utils';
 import { AddReportComponent } from '../../molecules/addReport/addReport';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
 
 export default function ReportsTab() {
   const [showReport, setShowReport] = useState(false);
   const { data: reports, refetch } = useQueryGetData("reports", getDiagReportsApi);
   const [id, setDeleteId] = useState("");
+  const currentBranch = useCurrentBranchValue()
+
+  let reportsList = reports?.data?.filter((report: any) => report?.branchId === currentBranch?._id );
 
   const deleteMutation = useDeleteReports(id, {
     onSuccess: () => {
@@ -35,7 +39,7 @@ export default function ReportsTab() {
           {!showReport ? (
             <>
               {reports && reports.data && reports.data.length > 0 ? (
-                <DashboardTable pageSize={7} columns={ReportTableColumns(handleRemove)} data={reports.data} />
+                <DashboardTable pageSize={7} columns={ReportTableColumns(handleRemove)} data={reportsList} />
               ) : (
                 <DashboardTable pageSize={7} columns={ReportTableColumns(handleRemove)} data={[]} />
               )}

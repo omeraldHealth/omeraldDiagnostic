@@ -45,6 +45,7 @@ const LogoUploader: React.FC<LogoUploaderProps> = ({ handleImage }) => {
     <>
       <Upload
         action=''
+        accept='image/*'
         className='my-upload'
         listType='picture-circle'
         fileList={fileList}

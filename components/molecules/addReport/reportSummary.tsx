@@ -9,6 +9,7 @@ import { useCreateReport } from 'utils/reactQuery';
 import axios from 'axios';
 import { formatTimeFromDate } from '../../../utils/static/static';
 import { ProfileSummaryCardProps, ReportSummaryCompProps, ReportSummaryProps } from '../../../utils/types';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
 
 const { Title } = Typography;
 
@@ -38,6 +39,7 @@ const ProfileSummaryCard: React.FC<ProfileSummaryCardProps> = ({ title, value, l
 const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, handleSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [reportValue, setReportState] = useRecoilState(reportState);
+  const currentBranch = useCurrentBranchValue()
 
   const updateDiagnostic = useCreateReport({
     onSuccess: (data) => {
@@ -77,6 +79,7 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
           const newProp = {
             reportUrl: resp?.data?.url,
             reportId: newUuid,
+            branchId: currentBranch?._id
           };
 
           const updatedReport = { ...reportValue, ...newProp };
