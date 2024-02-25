@@ -23,7 +23,7 @@ const formArrays = {
   templatedForm: templateTestForm,
 };
 
-const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
+export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
   const [selectedValue, setSelectedValue] = useState<boolean>(false);
   const [testDetailState, setTestDetail] = useRecoilState(testDetailsState);
   const reportType = useQueryGetData('reportTypes', getAdminReportTypesApi);
@@ -139,5 +139,3 @@ const TestDetailHeader: React.FC<any> = ({ selectedValue, setSelectedValue }) =>
     </section>
   );
 };
-
-export default TestDetail;
