@@ -1,5 +1,5 @@
 // Base URL for the backend API
-export const backendApiPath = "https://diagnostic-backend.onrender.com";
+export const backendApiPath = "https://diagnostic-backend.onrender.com/ ";
 
 // API paths for diagnostic profiles
 export const getDiagProfileByPhoneApi = backendApiPath + `profiles/getProfile/`; // Endpoint to get diagnostic profile by phone
