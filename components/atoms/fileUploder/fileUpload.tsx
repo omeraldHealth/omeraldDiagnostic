@@ -6,7 +6,7 @@ import type { UploadProps } from 'antd/es/upload/interface';
 import type { UploadFile } from 'antd/es/upload/interface';
 
 interface FileUploaderProps {
-  handleImage: (data: { logo: any }) => void;
+  handleImage: (data: { file: any }) => void;
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = ({ handleImage }) => {
@@ -39,7 +39,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ handleImage }) => {
   const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
     setFileList([]);
     setFileList(newFileList);
-    handleImage({ logo: newFileList[0]?.originFileObj });
+    handleImage({ file: newFileList[0] });
   };
 
   return (

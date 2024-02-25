@@ -13,7 +13,6 @@ import { ProfileSummaryCardProps, ReportSummaryCompProps, ReportSummaryProps } f
 const { Title } = Typography;
 
 export const ReportSummary: React.FC<ReportSummaryProps> = ({ handleSuccess, report, style }) => {
-
   return (
     <section>
       <div className={`w-[70vw] p-4 bg-white relative rounded-lg h-auto text-left ${style}`}>
@@ -46,21 +45,24 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
       setReportState(data?.data);
       handleSuccess();
     },
-    onError: (error) => {
+    onError: () => {
       errorAlert("Error creating report");
     },
   });
 
-  const handleUpload = async (data: any) => {
-    const file = reportValue?.reportId?.file;
+  const handleUpload = async () => {
     setLoading(true);
 
-    if (file && file.originFileObj) {
-      warningAlert("Uploading File, please wait");
-      const formData = new FormData();
-      formData.append('file', file.originFileObj);
+    try {
+      const file = reportValue?.reportId?.file;
+      console.log(reportValue)
+      console.log("s",file)
+      if (file && file.originFileObj) {
+        warningAlert("Uploading File, please wait");
 
-      try {
+        const formData = new FormData();
+        formData.append('file', file.originFileObj);
+
         const resp = await axios.post(uploadDiagnosticReportApi, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -70,28 +72,29 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
         if (resp?.status === 200) {
           setLoading(false);
           successAlert("Uploaded file successfully");
-          setReportState({ ...reportValue, reportUrl: resp?.data?.url });
-          setLoading(false);
-          warningAlert("Saving report");
+
+          const newUuid = Array.from(crypto.getRandomValues(new Uint8Array(6))).map(value => value.toString(16).padStart(2, '0')).join('');
+          const newProp = {
+            reportUrl: resp?.data?.url,
+            reportId: newUuid,
+          };
+
+          const updatedReport = { ...reportValue, ...newProp };
+          console.log(updatedReport)
+          updateDiagnostic.mutate({data:updatedReport});
+        } else {
+          errorAlert("Error uploading file");
         }
-
-        const newUuid = Array.from(crypto.getRandomValues(new Uint8Array(6))).map(value => value.toString(16).padStart(2, '0')).join('');
-
-        const newProp = {
-          reportUrl: resp?.data?.url,
-          reportId: newUuid,
-        };
-
-        const updatedReport = { ...reportValue, ...newProp };
-        updateDiagnostic.mutate(updatedReport);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error uploading file:", error);
-        setLoading(false);
+      } else {
+        console.error("File or originFileObj is undefined.");
+        errorAlert("Error uploading file");
       }
-    } else {
-      console.error("File or originFileObj is undefined.");
+    } catch (error) {
+      console.error("An error occurred:", error);
+      errorAlert("An error occurred while uploading file");
+    } finally {
       setLoading(false);
+      warningAlert("Saving report");
     }
   };
 
@@ -101,6 +104,7 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
         <section>
           <section className="grid grid-cols-2 w-[70%]">
             <aside>
+            <ProfileSummaryCard title="Test Name" value={profile?.testName} />
               <ProfileSummaryCard title="Diagnostic User" value={profile?.userName} />
               <ProfileSummaryCard title="User Contact" value={profile?.userId} />
               <ProfileSummaryCard title="Email" value={profile?.email} />

@@ -14,8 +14,12 @@ export const UploadReport: React.FC<UploadReportProps> = ({ handleSteps }) => {
   const profileValue = useProfileValue();
   const [manualReport, setManualReport] = useState<boolean | null>(null);
   const [reportValue, setReportState] = useRecoilState(reportState);
+  const [file, setFile] = useState();
 
   const handleSubmit = (value: any): void => {
+    // console.log(value, reportId: file)
+    value = {...value, reportId: file}
+    console.log(value)
     setReportState({ ...reportValue, ...value });
     handleSteps();
   };
@@ -25,7 +29,8 @@ export const UploadReport: React.FC<UploadReportProps> = ({ handleSteps }) => {
   };
 
   const handleUpload = (value: any): void => {
-    // Handle upload logic if needed
+    setFile(value)
+    console.log(value)
   };
 
   const handleDate = (value: any): void => {

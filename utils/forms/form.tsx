@@ -1,6 +1,7 @@
-import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { TrashIcon } from "@heroicons/react/20/solid";
 import { Image, Modal, Popover, Space, Tag } from "antd";
 import moment from "moment";
+import dayjs from "dayjs"
 
 const { confirm } = Modal;
 
@@ -353,7 +354,7 @@ export const ReportTableColumns = [
       },
       {
         key:"name",
-        title: 'Name',
+        title: 'Patient Name',
         dataIndex: 'userName',
         sorter: (a, b) => a.userName.length - b.userName.length,
         // sortDirections: ['descend'],
@@ -382,7 +383,7 @@ export const ReportTableColumns = [
         key:"reportDate",
         title: 'Report Date',
         dataIndex: 'reportDate',
-        // render: ((date:string) => dayjs(date).format("MMM D, YYYY, HH:mm:ss") ),
+        render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
         // sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime(),
         defaultSortOrder: ['ascend']
       },

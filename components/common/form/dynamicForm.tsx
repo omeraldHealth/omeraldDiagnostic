@@ -3,6 +3,7 @@ import { Button, Col, DatePicker, Form, Input, Radio, Row, Select, Space, Spin, 
 import { FormType } from 'utils/types/molecules/forms.interface';
 import { UploadOutlined } from '@ant-design/icons';
 import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
+import { FileUploader } from '@components/atoms/fileUploder/fileUpload';
 
 
 interface DynamicFormType {
@@ -121,9 +122,11 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText
       case 'upload':
           return (
             <Form.Item key={formItem.label+1} className='mb-6' name={formItem.name} labelCol={{ span: 0 }} >
-                 <Upload action={formItem?.uploadUrl}  onChange={formItem?.handleUpload}>
-                    <Button icon={<UploadOutlined />}>Upload File</Button>
-                </Upload>
+                  {/* <Upload accept="application/pdf,image/*" maxCount={1} {...props} 
+                  onChange={formItem?.handleUpload}>
+                  <Button icon={<UploadOutlined />}>Upload File</Button>
+                </Upload> */}
+                <FileUploader handleImage={formItem?.handleUpload} />
             </Form.Item>
           );
       case 'logo':
@@ -134,10 +137,10 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText
         )
       case 'search':
         return (
-          <Form.Item key={formItem.label+1} className='mb-6' name={formItem.name} labelCol={{ span: 0 }} >
+          <Form.Item label={formItem.label} key={formItem.label+1} className='mb-6' name={formItem.name} labelCol={{ span: 0 }} >
            <Select
               showSearch
-              style={{ width: 380 }}
+              style={formItem.label === "Enter Test Name" ? { width: 380 }:{}}
               placeholder={"Test Name"}
               defaultActiveFirstOption={false}
               showArrow={false}

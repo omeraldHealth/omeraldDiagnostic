@@ -7,25 +7,26 @@ import { getDiagReportsApi } from '@utils';
 import { useRecoilState } from 'recoil';
 import { reportState } from '@components/common/recoil/report';
 import { AddReportComponent } from '../../molecules/addReport/addReport';
+import { Spinner } from '@components/atoms/loader';
+
 
 export default function ReportsTab() {
   const [showReport, setShowReport] = useState(false);
-
-  const {data:reports} = useQueryGetData("reports", getDiagReportsApi);
-  const [reportValue,setReportState] = useRecoilState(reportState)
-
-  useEffect(()=>{
-    if(reports){
-      setReportState(reports?.data)
-    }
-  },[reports])
+  const { data: reports, isLoading, refetch } = useQueryGetData("reports", getDiagReportsApi);
 
   return (
     <div className="p-0 sm:p-6 xl:p-8 h-auto bg-signBanner relative flex justify-center">
       <ReportToggle showTest={showReport} setShowTest={setShowReport} />
       <div className="w-[95vw] md:w-[90vw] xl:w-[70vw] h-auto bg-white shadow-2xl sm:shadow-lg my-24 sm:mt-14 rounded-lg">
-             {!showReport ?  <DashboardTable pageSize={7} columns={ReportTableColumns} data={reportValue || []}/> : 
-             <AddReportComponent setAddReports={setShowReport} />}
+          <>
+            {!showReport ? (
+              <>
+                  <DashboardTable pageSize={7} columns={ReportTableColumns} data={reports?.data} />
+              </>
+            ) : (
+              <AddReportComponent refetch={refetch} setAddReports={setShowReport} />
+            )}
+          </>
       </div>
     </div>
   );
