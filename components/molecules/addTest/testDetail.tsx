@@ -13,6 +13,7 @@ import _ from 'lodash';
 import { useQueryGetData } from 'utils/reactQuery';
 import { getAdminReportTypesApi } from '@utils';
 import { useBooleanValue } from '@components/common/constants/recoilValues';
+import { warningAlert } from '@components/atoms/alerts/alert';
 
 interface TestDetailProps {
   handleSteps: () => void;
@@ -29,7 +30,7 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
   const reportType = useQueryGetData('reportTypes', getAdminReportTypesApi);
   const [reportList, setReportList] = useState<any[]>(reportType.data?.data || []);
   const [selectedReport, setSelectedReport] = useState<any[]>([]);
-  const [defaultValue, setDefaultValue] = useState<any>({});
+  const [defaultValue, setDefaultValue] = useState<any>(reportList);
   const booleanValue = useBooleanValue();
 
   function transformData(inputArray: any) {
@@ -73,8 +74,22 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
         sampleName: value.sampleName,
         sampleType: { testName: filteredReport?.name || '', keywords: transformData(filteredReport?.parameters) },
       };
-      setTestDetail(testType);
-      handleSteps();
+
+      console.log(testType);
+
+      if (testType?.sampleName) {
+        setTestDetail(testType);
+        console.log(testDetailState);
+
+        // Now, testDetailState will be updated, and you can check its value
+        if (testDetailState?.sampleName) {
+          warningAlert("Error with predefined reports");
+          handleSteps();
+        }
+      } else {
+        warningAlert("Error with predefined reports");
+      }
+
     }
   };
 

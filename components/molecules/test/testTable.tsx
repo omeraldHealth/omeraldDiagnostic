@@ -58,7 +58,7 @@ export const TestTable: React.FC<TestTableProps> = () => {
       {!editTest ? (
         <ViewTest columns={TestTableColumns(handleEdit, handleRemove, profile)} tests={tests} loading={loading} />
       ) : (
-        <EditTests form={testForm} editElement={editTest} handleSubmit={handleSubmit} defaultValues={defaultValues} />
+        <AddTests form={testForm} editElement={editTest} handleSubmit={handleSubmit} defaultValues={defaultValues} />
       )}
     </div>
   );
@@ -71,7 +71,7 @@ const ViewTest: React.FC<ViewTestProps> = ({ columns, tests, loading }) => {
     </section>
 };
 
-const EditTests: React.FC<EditTestsProps> = ({ form, editElement, handleSubmit, defaultValues }) => {
+const AddTests: React.FC<EditTestsProps> = ({ form, editElement, handleSubmit, defaultValues }) => {
   return (
     <section className='p-2 sm:p-8 w-[100%] h-auto sm:max-h-[70vh] sm:overflow-y-scroll'>
       <AddTestComponent setTest={handleSubmit}/>
