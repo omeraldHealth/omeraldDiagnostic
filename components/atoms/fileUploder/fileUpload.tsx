@@ -16,7 +16,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ handleImage }) => {
     name: 'file',
     action: '',
     showUploadList: false,
-    accept: 'image/jpeg,image/png,application/pdf',
+    accept:".pdf,image/*",
     beforeUpload: beforeUpload,
   };
 
@@ -25,7 +25,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ handleImage }) => {
     const isAllowed = allowedTypes.includes(file.type || "");
 
     if (!isAllowed) {
-      errorAlert('You can only upload JPG/PNG/PDF files!');
+      errorAlert('You can only upload allowed files!');
     }
 
     if (fileList.length >= 1) {
@@ -44,7 +44,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({ handleImage }) => {
 
   return (
     <section>
-      <Upload accept="application/pdf,image/*" maxCount={1} {...props} fileList={fileList} onChange={handleChange}>
+      <Upload accept="image/*" maxCount={1} {...props} fileList={fileList} onChange={handleChange}>
         <section className='flex'>
           <Button className='flex' icon={<ArrowUpCircleIcon className="w-6 text-blue-500" />}>
             Click to Upload

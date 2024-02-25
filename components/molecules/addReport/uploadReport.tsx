@@ -62,7 +62,7 @@ interface ReportHeaderProps {
 
 const ReportHeader: React.FC<ReportHeaderProps> = ({ handleSelect }) => {
   const uploadReportType = [
-    { value: true, label: 'Create Report with Omerald' },
+    // { value: true, label: 'Create Report with Omerald' },
     { value: false, label: 'Upload Existing Report' },
   ];
 

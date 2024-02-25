@@ -155,10 +155,10 @@ export const patientDetailsForm = (profileValues:any): FormType[] => {
     const pathologistList = profileValues?.pathologistDetail?.map((path:any) => { return {"value":path.name}});
 
     return [
-        {"name":"testName","type":"search","label":"Search Sample Type","required":true},
-        {"name":"userName","type":"text","label":"Enter Patient Name","required":true},
+        {"name":"testName","type":"search","label":"Search Sample Type","required":true, pattern: textPattern},
+        {"name":"userName","type":"text","label":"Enter Patient Name","required":true,pattern: textPattern},
         {"name":"userId","type":"contact","label":"Enter Patient Contact","required":true},
-        {"name":"email","type":"email","label":"Patient Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
+        {"name":"email","type":"email","label":"Patient Email","required":true,pattern: emailPattern},
 
         {"name":"dob","type":"date","label":"Date of Birth","required":false},
         {"name":"gender","type":"select","label":"Select Gender","required":true, options: genderOptions},

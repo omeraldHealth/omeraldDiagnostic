@@ -9,6 +9,9 @@ export const updateDiagProfileApi = backendApiPath + `profiles/updateProfile`; /
 // API paths for diagnostic reports
 export const getDiagReportsApi = backendApiPath + `reports/getReports/`; // Endpoint to get diagnostic reports
 export const createDiagReportsApi = backendApiPath + `reports/createReport/`; // Endpoint to create diagnostic report
+export const deleteDiagReportsApi = backendApiPath + `reports/deleteReport/`; // Endpoint to create diagnostic report
+
+
 export const uploadDiagnosticReportApi = backendApiPath + `s3/reports/upload`; // Endpoint to upload diagnostic report
 export const uploadDiagnosticLogoApi = backendApiPath + `s3/omerald/upload`; // Endpoint to upload diagnostic logo
 

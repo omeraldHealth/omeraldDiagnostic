@@ -81,7 +81,7 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
 
           const updatedReport = { ...reportValue, ...newProp };
           console.log(updatedReport)
-          updateDiagnostic.mutate({data:updatedReport});
+          updateDiagnostic?.mutate({ data: updatedReport });
         } else {
           errorAlert("Error uploading file");
         }

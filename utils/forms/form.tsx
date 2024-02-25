@@ -1,4 +1,4 @@
-import { TrashIcon } from "@heroicons/react/20/solid";
+import { EyeIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { Image, Modal, Popover, Space, Tag } from "antd";
 import moment from "moment";
 import dayjs from "dayjs"
@@ -344,7 +344,9 @@ export const ParameterColumns =
     },
 ]
 
-export const ReportTableColumns = [
+export const ReportTableColumns : (handleRemove: any) => TestTableColumn[] = (  
+  handleRemove,
+) => [
       {
         key:"reportId",
         title: 'Report Id',
@@ -394,40 +396,41 @@ export const ReportTableColumns = [
       //   render: ((date:string) => dayjs(date).format("MMM D, YYYY") ),
       //   sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime() 
       // },
-      // {
-      //   key:"click",
-      //   title: 'Click to view',
-      //   dataIndex: "isManualReport",
-      //   render: ((stat:string,person: any) => 
-      //   <>
-      //   { 
-      //     !stat ? (
-      //     <a href={person.reportUrl} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
-      //   ) : (
-      //     <ViewPdf
-      //       report={person}
-      //       diagnosticDetails={diagnosticDetails as UserDetails}
-      //     />
-      //   )}
-      //   </>
-      //   ),
-      // },
-    //   {
-    //     key:"share",
-    //     title: 'Click to Share',
-    //     dataIndex: 'userName',
-    //     render: ((userName:string,record) => <>
-    //     <div className='flex justifty-between align-middle items-center h-[1vh]'>
-    //         <section className='mr-4 '>
-    //           <a href={record.reportUrl} type="application/pdf" download={false} rel="noopener noreferrer" target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
-    //         </section>
-    //         <section className='self-center'>
-    //           <a onClick={()=>{handleWhatsapp(record)}}>
-    //             <FaWhatsapp className='w-6 text-green-700'/>
-    //           </a>
-    //         </section>
+      {
+        key:"click",
+        title: 'View',
+        dataIndex: "isManualReport",
+        render: ((stat:string,person: any) => 
+        <>
+        { 
+          !stat ? (
+          <a href={person.reportUrl} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
+        ) : (
+          // <ViewPdf
+          //   report={person}
+          //   diagnosticDetails={diagnosticDetails as UserDetails}
+          // />
+          <></>
+        )}
+        </>
+        ),
+      },
+      {
+        key:"share",
+        title: 'Delete',
+        dataIndex: 'userName',
+        render: ((userName:string,record) => <>
+        <div className='flex justifty-between align-middle items-center h-[1vh]'>
+            {/* <section className='mr-4 '>
+              <a href={record.reportUrl} type="application/pdf" download={false} rel="noopener noreferrer" target="_blank" className="text-orange-700"><EyeIcon className='w-4 text-green-500'/></a>
+            </section> */}
+            <section className='self-center'>
+              <a onClick={()=>{handleRemove(record)}}>
+                <TrashIcon className='w-6 text-red-700'/>
+              </a>
+            </section>
   
-    //     </div>
-    //  </>),
-    //   },
+        </div>
+     </>),
+      },
 ];
