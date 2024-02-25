@@ -4,10 +4,9 @@ import { successUpload } from '@utils';
 
 interface SuccessTestProps {
   handleSuccess: () => void;
-  refetch: () => void;
 }
 
-export const SuccessTest: React.FC<SuccessTestProps> = ({ handleSuccess, refetch }) => {
+export const SuccessTest: React.FC<SuccessTestProps> = ({ handleSuccess }:SuccessTestProps ) => {
   return (
     <div>
       <section className="w-[40vh] h-auto xl:h-[40vh] m-auto xl:mt-4">

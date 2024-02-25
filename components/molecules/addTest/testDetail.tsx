@@ -97,7 +97,7 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
           {selectedValue ? (
             <DynamicFormGenerator
               formProps={formArrays?.templatedForm || selectForm}
-              buttonText={'' || ''}
+              buttonText={'Continue'}
               handleSubmit={handleFormSubmit}
               defaultValues={defaultValue}
               handleSearch={handleSearch}
@@ -110,12 +110,12 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
                   <DynamicFormGenerator
                     defaultValues={defaultValue}
                     formProps={formArrays?.customForm || selectForm}
-                    buttonText={'' || ''}
+                    buttonText={'Continue'}
                     handleSubmit={handleFormSubmit}
                   />
                 )
               ) : (
-                <DynamicFormGenerator formProps={formArrays?.customForm || selectForm} buttonText={'' || ''} handleSubmit={handleFormSubmit} />
+                <DynamicFormGenerator formProps={formArrays?.customForm || selectForm} buttonText={'Continue' || ''} handleSubmit={handleFormSubmit} />
               )}
             </>
           )}
