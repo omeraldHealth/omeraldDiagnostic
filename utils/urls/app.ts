@@ -1,5 +1,5 @@
 // Base URL for the backend API
-export const backendApiPath = "https://backend.omerald.com/diagStage/";
+export const backendApiPath = "https://diagnostic-backend.onrender.com/";
 
 // API paths for diagnostic profiles
 export const getDiagProfileByPhoneApi = backendApiPath + `profiles/getProfile/`; // Endpoint to get diagnostic profile by phone
@@ -16,6 +16,6 @@ export const uploadDiagnosticReportApi = backendApiPath + `s3/reports/upload`; /
 export const uploadDiagnosticLogoApi = backendApiPath + `s3/omerald/upload`; // Endpoint to upload diagnostic logo
 
 // External API path to get all admin report types
-export const getAdminReportTypesApi = "https://backend.omerald.com/adminStage";
+export const getAdminReportTypesApi = "https://backend-wpvf.onrender.com/reports/getAllReports";
 
 // Comments added to explain the purpose of each API endpoint
