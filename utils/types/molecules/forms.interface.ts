@@ -1,5 +1,4 @@
 import { useProfileValue } from "@components/common/constants/recoilValues";
-import { ReportDetails, ReportTypes } from "./users.interface";
 import path from "path";
 import { uploadDiagnosticReportApi } from "utils/urls/app";
 import { UploadFile } from "antd";
@@ -7,7 +6,7 @@ import { UploadFile } from "antd";
 export const textPattern = /[^0-9]/
 
 export const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-export const phonePattern = /^(?:\+91|0)?[6789]\d{9}$/
+export const phonePattern = /^\+91[6789]\d{9}$/;
 export const numberPattern = /^[1-50000]+$/
 
 export type BasicDetailsForm = {
@@ -85,7 +84,7 @@ export const brandDetailsFormArray = (handleImage: (images: { logo: UploadFile[]
 export const branchDetailsFormArray: FormType[] = [
     {"name":"branchName","type":"text","label":"Branch Name","required":true},
     {"name":"branchContact","type":"text","label":"Branch Contact","required":true,pattern:phonePattern},
-    {"name":"branchEmail","type":"email","label":"Branch Email","required":true},
+    {"name":"branchEmail","type":"email","label":"Branch Email","required":true, pattern: emailPattern},
     {"name":"branchAddress","type":"text","label":"Branch Address","required":true},
 
 ]
@@ -116,15 +115,22 @@ export const parameterForm: FormType[] = [
     {"name": "aliases", "type": "tags", "label": "Aliases", "required": true}
 ]
 
-export const pathologistFormArray = (): FormType[] => [
-    // {"name":"signature","type":"logo","label":"Pathologist Signature","required":true,pattern: textPattern},
+export const pathologistFormArray = (handleImage:any): FormType[] => [
+    {"name":"signature","type":"logo","label":"Pathologist Signature","required":true, handleImage:handleImage},
     {"name":"name","type":"text","label":"Pathologist Name","required":true,pattern: textPattern},
     {"name":"designation","type":"text","label":"Pathologist Designation","required":true,pattern: textPattern},
 ]
 
+const roles = [
+    {label:"Admin", value:"admin"},
+    {label:"Lab Manager", value:"manager"},
+    {label:"Operator", value:"operator"},
+    {label:"Spoc", value:"Spoc"}
+]
+
 export const managerFormArray = [
-    {"name":"managerName","type":"text","label":"Operator Name","required":true,pattern: textPattern},
-    {"name":"managerRole","type":"text","label":"Operator Role","required":true,pattern: textPattern},
+    {"name":"managerName","type":"text","label":"Operator Name","required":true,pattern: textPattern,},
+    {"name":"managerRole","type":"select","label":"Operator Role","required":true,options:roles},
     {"name":"managerContact","type":"text","label":"Operator Contact","required":true,pattern: textPattern},
 ]
 

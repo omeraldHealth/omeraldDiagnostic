@@ -1,5 +1,5 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { Modal, Popover, Space, Tag } from "antd";
+import { Image, Modal, Popover, Space, Tag } from "antd";
 import moment from "moment";
 
 const { confirm } = Modal;
@@ -51,8 +51,12 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
     key: 'signature',
     sorter: (a: any, b: any) => a.signature.length - b.signature.length,
     render: (text: any) => (
-      <span>
-        {text ? <img src={text} className="w-[100px] h-[30px]" /> : <p className="font-light text-sm text-red-600">Not found</p>}
+      <span className="w-[20px] h-[20px]">
+        {text ? (
+           <span className="object-cover border rounded">  <Image width={100} src={text} /></span>
+          ) : (
+            <p className="font-light text-sm text-red-600">Not found</p>
+          )}
       </span>
     ),
   },

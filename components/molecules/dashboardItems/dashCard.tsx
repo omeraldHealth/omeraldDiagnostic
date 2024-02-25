@@ -28,9 +28,7 @@ export const DashCard = () => {
 
   let testList = profile?.tests?.filter((test: any) => test?.branchId === currentBranch?._id);
   let reportList = profile?.reports?.data?.filter((report: any) => report?.branchId === currentBranch?._id);
-  let employeeList = profile?.managersDetail?.filter(
-    (emp: any) => emp.branchId === currentBranch?._id || emp?.managerRole.toLowerCase() === 'owner'
-  );
+  let employeeList = profile?.managersDetail?.filter((emp: any) => emp.branchId === currentBranch?._id || emp?.managerRole.toLowerCase() === 'owner');
 
   const dashCard: any[] = [
     {

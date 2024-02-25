@@ -9,6 +9,10 @@ import { profileState } from '@components/common/recoil/profile';
 import { branchDetailsFormArray, managerFormArray, pathologistFormArray } from 'utils/types/molecules/forms.interface';
 import dynamic from 'next/dynamic';
 import { settingTabState } from 'components/common/recoil/settings/index'
+import { logoStateData } from '@components/common/recoil/logo';
+import { uploadDiagnosticLogoApi } from '@utils';
+import axios from 'axios';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
 
 const Billing = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/billing').then(res=>res.Billing),{loading: () => <Spinner/>})
 const SettingsCommon = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/settings').then(res=>res.SettingsCommon),{loading: () => <Spinner/>})
@@ -20,6 +24,9 @@ export default function SettingsTab() {
   const [addElement,setAddElement] = useState(false);
   const [editElement,setEditElement] = useState(false);
   const [defaultValues,setDefaultValue] = useState({});
+  const [loading,setLoading] = useState(false);
+  const [logoState,setLogoState]  = useRecoilState(logoStateData)
+  const currentBranch = useCurrentBranchValue()
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
@@ -68,33 +75,53 @@ export default function SettingsTab() {
     // }
   }
 
-  const handleAdd = (record:any) => {
+  const handleAdd = async (record:any) => {
     let recordType = fetchRecordType(activeKey);
 
     // Check if record.name is not already present
     if (!profile?.[recordType].some((item) => item.name === record.name )) {
-      let updateData = [...profile?.[recordType], record];
-      updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
-      setAddElement(false);
-      successAlert("Added pathalogist")
-    } else if (!profile?.[recordType].some((item) => item.managerName === record.managerName )) {
+
+      // Upload logo
+      setLoading(true)
+      const formDataImage = new FormData();
+      formDataImage.append("file", logoState);
+      const logoResp = await axios.post(
+        uploadDiagnosticLogoApi,
+        formDataImage,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+ 
+
+      if (logoResp?.status === 200) {
+        record = {...record, signature: logoResp?.data?.url}
+        console.log(record)
+        let updateData = [...profile?.[recordType], record];
+        updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
+        setAddElement(false);
+        successAlert("Added pathalogist")
+        setLoading(false)
+      }else{
+        successAlert("Error adding pathalogist")
+        setLoading(false)
+      }
+
+     
+    } else if (!profile?.[recordType].some((item) => item.managerContact === record.managerContact || item.managerName === record.managerName )) {
+      record = {...record, branchId: currentBranch?._id}
       let updateData = [...profile?.[recordType], record];
       updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
       setAddElement(false);
       successAlert("Added manager")
     }
-    else if (!profile?.[recordType].some((item) => item.branchName === record.branchName )) {
+    else if (!profile?.[recordType].some((item) => item.branchContact === record.branchContact || item.branchName === record.branchName)) {
       let updateData = [...profile?.[recordType], record];
       updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
       setAddElement(false);
       successAlert("Added branch")
     }
-    
     else {
-      // Handle case where record.name is already present
-      warningAlert("Record with name already exists");
+      warningAlert("Duplicate Record already exists");
       setAddElement(false);
-      // You can show a message or take appropriate action here
     }
   };
 
@@ -115,9 +142,12 @@ export default function SettingsTab() {
     warningAlert(`Deleted  succesfully`)
   };
 
-  const handleImage = (file: any) => {
-    console.log(File)
-  }
+  const handleImage = async (val: any) => {
+    let imageObject = Object.preventExtensions(
+      val?.logo[0]?.originFileObj
+    );
+    setLogoState(imageObject);
+  };
 
   const settingProp = {
     handleSubmit: addElement ? handleAdd : handleEditValue,
@@ -169,7 +199,8 @@ export default function SettingsTab() {
   return (
     <div className="sm:p-6 xl:p-8 max-h-[30vh] bg-signBanner flex w-100 justify-center">
       <div className='w-[96vw] lg:w-[80vw] xl:w-[70vw] bg-white shadow-lg mt-10 h-[80vh] lg:h-[70vh] rounded-lg] sm:p-8 p-4'>
-        <Tabs defaultActiveKey={activeKey} items={tabComponents} onChange={handleTabChange} />;
+        <Tabs defaultActiveKey={activeKey} items={tabComponents} onChange={handleTabChange} />
+        {loading && <Spinner/>}
       </div>
     </div>
   );
