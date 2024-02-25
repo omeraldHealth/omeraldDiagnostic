@@ -34,7 +34,7 @@ const VerifyUser = () => {
         setManagerValue(assignManager(data.managersDetail, phoneNumber || ""));
         setCurrentBranch(data.branchDetails?.[0]);
         setOperator(data.managersDetail[0]);
-        successAlert("Profile fetched successfully");
+        // successAlert("Profile fetched successfully");
         router.push("/dashboard");
       }
     } catch (error) {
