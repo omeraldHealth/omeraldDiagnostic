@@ -69,12 +69,7 @@ export const advertisement: { title: string; description: string; button: string
       title: "Access Demo",
       description: "We are currently offering the service free of cost to help you",
       button: "Know more",
-  },
-  {
-      title: "Check Offer",
-      description: "We are currently offering the service free of cost to help you.",
-      button: "Know more",
-  },
+  }
 ];
 
 export const IndexObj: Record<string, number> = {

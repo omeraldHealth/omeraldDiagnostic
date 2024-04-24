@@ -23,7 +23,7 @@ export function ContactContainer(): React.ReactElement {
         <BodyText_2 style='text-gray-400'>End-to-end Diagnostic centre management in a single solution.</BodyText_2>
       </div>
       {/* Message Link */}
-      <Link href='/contact'>
+      <Link href='/contact' className='flex justify-center'>
         <p className='rounded-lg text-white w-[10%] bg-purple-800 px-4 py-3 sm:px-8 sm:py-4'>Message</p>
       </Link>
     </div>
