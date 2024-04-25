@@ -13,12 +13,13 @@ import {
   FaArrowAltCircleLeft,
 } from 'react-icons/fa';
 
-interface TestimonialProps {}
+interface TestimonialProps {
+  testimonials: any;
+}
 
-export const Testimonial: React.FC<TestimonialProps> = () => {
-  const fiveStar = ["", "", "", "", ""];
-
-  return (
+export const Testimonial: React.FC<TestimonialProps> = ({testimonials}) => {
+  console.log(testimonials)
+  return (  
     <div className='text-center px-[10%] py-[2vh] h-auto'>
       <TitleText_2 style='text-btnPrimary-600 mx-auto my-4'>TESTIMONIALS</TitleText_2>
       <HeaderText_2 style='w-[80%] mx-auto my-4'>Check what our clients are saying</HeaderText_2>
@@ -38,19 +39,19 @@ export const Testimonial: React.FC<TestimonialProps> = () => {
 
         <div className='lg:py-16'>
           <span className='flex mb-8'>
-            {fiveStar?.map((star, index) => (
+            {Array(testimonials?.landing?.testimonials[0]?.rating).fill(0)?.map((star, index) => (
               <FaStar key={index} className='text-purple-900 w-[30px]' />
             ))}
           </span>
           <div style={{ textAlign: 'left' }} className='my-4 text-[#1B1C31]'>
             <FaQuoteLeft className='text-orange-400 w-[15px] mr-2 mb-4 inline' />
-            Omerald is a valuable resource for individuals and healthcare providers who need accurate reports. They offer a wide range of services and report sharing.
+              {testimonials?.landing?.testimonials[0]?.comment}
             <FaQuoteRight className='text-orange-400 w-[15px] mb-4 inline' />
           </div>
           <div className='my-4 lg:my-2'>
             <TitleText style='text-left text-black'>
-              Raghu Dutta <br />
-              <span className='text-sm font-light'>EM, Rakuten</span>
+            {testimonials?.landing?.testimonials[0]?.name} <br />
+              <span className='text-sm font-light'></span>
             </TitleText>
           </div>
         </div>

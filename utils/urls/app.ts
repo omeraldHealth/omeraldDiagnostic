@@ -17,5 +17,10 @@ export const uploadDiagnosticLogoApi = backendApiPath + `s3/omerald/upload`; // 
 
 // External API path to get all admin report types
 export const getAdminReportTypesApi = "https://backend-wpvf.onrender.com/reports/getAllReports";
+// export const getDiagnosticLandingData = "https://adminstage.azurewebsites.net/api/v1/diagnosticLanding/getDiagLanding"
+export const getDiagnosticLandingData = "http://localhost:3001/api/v1/diagnosticLanding/getDiagLanding";
+
+
+export const getAdminApiGetToken = "https://adminstage.azurewebsites.net/api/v1/auth/getAuthToken"
 
 // Comments added to explain the purpose of each API endpoint
