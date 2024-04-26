@@ -12,7 +12,7 @@ const DashActivity: React.FC<DashActivityProps> = () => {
   const activities = profile?.activities?.length > 0 ? profile?.activities : [];
 
   return (
-    <section className="w-[94vw] sm:w-[50vw] lg:w-[30vw] xl:w-[20vw] h-[100%] shadow-xl bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0">
+    <section className="w-[94vw] sm:w-[60vw] lg:w-[35vw] xl:w-[30vw] h-[100%] shadow-xl bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0">
       <section className="">
         <p>Recent Activities</p>
         <p className="text-xs text-gray-400 font-light">Summary of the latest updated activities</p>

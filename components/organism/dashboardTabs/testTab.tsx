@@ -2,14 +2,25 @@ import React, { useState } from 'react';
 import { TestTable } from '@components/molecules/test/testTable';
 import { TestToggle } from '@components/molecules/test/testToggle';
 import { AddTestComponent } from '@components/molecules/addReport/addTest';
+import { Switch } from 'antd';
 
 export default function TestTab() {
   const [showTest, setShowTest] = useState(false);
 
   return (
-    <div className="p-0 sm:p-6 xl:p-8 h-auto bg-signBanner relative flex justify-center">
-      <TestToggle showTest={showTest} setShowTest={setShowTest} />
-      <div className="w-[95vw] md:w-[90vw] xl:w-[70vw] h-auto bg-white shadow-2xl sm:shadow-lg my-24 sm:mt-14 rounded-lg">
+    <div className="p-0 h-auto bg-signBanner">
+      <span className='flex justify-end'>
+        <Switch
+          style={{ fontSize: '10px' }}
+          checkedChildren="Add"
+          unCheckedChildren="View"
+          checked={showTest}
+          className='bg-black'
+          onChange={() => setShowTest(!showTest)}
+        />
+      </span>
+
+      <div className="h-auto bg-white my-4 sm:mt-4 ">
         {!showTest ? <TestTable /> : <AddTestComponent setTest={setShowTest} />}
       </div>
     </div>

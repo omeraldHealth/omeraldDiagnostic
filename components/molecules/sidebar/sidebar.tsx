@@ -21,7 +21,7 @@ export default function Sidebar() {
   
   return (
     <aside
-    className={`side-bar lg:block min-h-screen w-[70%] sm:w-[40%] md:w-[40%] xl:w-[100%] bg-orange-400 relative p-4 sm:pl-8 pr-0 shrink-0 ${
+    className={`side-bar lg:block min-h-screen w-[70%] sm:w-[40%] md:w-[40%] xl:w-[100%] bg-blue-900 relative p-4 sm:pl-8 pr-0 shrink-0 ${
       showSidebar ? '' : 'hidden'
     }`}
     aria-label="Sidebar"
@@ -44,7 +44,7 @@ export default function Sidebar() {
                 "group flex items-center px-6 py-2 text-sm font-medium rounded-l-md my-6"
               )}
             >
-              <item.icon className="mr-3 flex-shrink-0 h-6 w-6 text-gray-500" aria-hidden="true" />
+              <item.icon className={`mr-3 flex-shrink-0 h-6 w-6 ${item.name === dashTab ? 'text-black': 'text-white'}`} aria-hidden="true" />
               {item.name}
             </a>
           )}

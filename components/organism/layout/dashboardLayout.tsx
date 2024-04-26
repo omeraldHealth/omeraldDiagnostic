@@ -44,7 +44,7 @@ export function DashboardLayout({ children }: any) {
           <div className="xl:pl-64 flex flex-col flex-1">
             {profile && profile?._id && <DashboardHeader />}
             <main>
-              <div className="py-6">
+              <div className="py-2">
                 <div className="max-w-[98vw] mx-4 sm:mx-4 md:max-w-[95vw] m-auto md::max-w-[95%] lg:mx-12 mt-4">
                   <>{children}</>
                 </div>

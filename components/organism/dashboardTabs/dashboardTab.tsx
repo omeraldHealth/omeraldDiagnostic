@@ -11,7 +11,7 @@ const DashBanner = dynamic(() => import('@components/molecules/dashboardItems/ba
 
 export default function DashboardTab() {
   return (
-    <div className="xl:px-8  bg-signBanner">
+    <div className="bg-signBanner">
       <DashBanner/>
       <DashCard/>
       <section className="grid lg:flex gap-4 justify-between h-[45vh] my-4">

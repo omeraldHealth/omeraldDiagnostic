@@ -7,6 +7,7 @@ import { getDiagReportsApi } from '@utils';
 import { AddReportComponent } from '../../molecules/addReport/addReport';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { Switch } from 'antd';
 
 export default function ReportsTab() {
   const [showReport, setShowReport] = useState(false);
@@ -32,9 +33,18 @@ export default function ReportsTab() {
   };
 
   return (
-    <div className="p-0 sm:p-6 xl:p-8 h-auto bg-signBanner relative flex justify-center">
-      <ReportToggle showTest={showReport} setShowTest={setShowReport} />
-      <div className="w-[95vw] md:w-[90vw] xl:w-[70vw] h-auto bg-white shadow-2xl sm:shadow-lg my-24 sm:mt-14 rounded-lg">
+    <div className="p-0 h-auto bg-signBanner">
+      <span className='flex justify-end'>
+        <Switch
+          style={{ fontSize: '10px' }}
+          checkedChildren="Add"
+          unCheckedChildren="View"
+          checked={showReport}
+          className='bg-black'
+          onChange={() => setShowReport(!showReport)}
+        />
+      </span>
+      <div className=" h-auto bg-white mt-4">
         <>
           {!showReport ? (
             <>

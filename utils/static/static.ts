@@ -18,7 +18,7 @@ export const addReportSteps: OnboardStepsType[] = [
 ];
 export const addTestSteps: OnboardStepsType[] = [
   { id: 1, name: "Enter Test Details" },
-  { id: 2, name: "Enter Keywords & aliases" },
+  { id: 2, name: "Enter Parameters & aliases" },
   { id: 3, name: "Success" },
 ];
 export const privateRoutes: any[] = [

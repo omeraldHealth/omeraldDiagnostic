@@ -229,23 +229,16 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
   handleRemove,
 ) => [
   {
-    key: 'sampleName',
-    title: 'Input sample',
-    dataIndex: 'sampleName',
-    render: (text: any) => <a>{text}</a>,
-    sorter: (a: any, b: any) => a.sampleName.length - b.sampleName.length,
-  },
-  {
     key: 'testName',
     title: 'Test Name',
-    dataIndex: 'sampleType',
+    dataIndex: 'testName',
     render: (text: any) => <a>{text?.testName}</a>,
     sorter: (a: any, b: any) => a.sampleType.testName.length - b.sampleType.testName.length,
   },
   {
-    key: 'keywords',
-    title: 'Keywords (Hover to see aliases)',
-    dataIndex: 'sampleType',
+    key: 'parameters',
+    title: 'Parameters',
+    dataIndex: 'parameters',
     sorter: (a: any, b: any) => a.sampleType.keywords.length - b.sampleType.keywords.length,
     render: (sampleType: any, record: any) => (
       <>
@@ -260,6 +253,19 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
         ))}
       </>
     ),
+  },
+  {
+    key: 'status',
+    title: 'Status',
+    dataIndex: 'status',
+    sorter: (a: any, b: any) => a.sampleType.keywords.length - b.sampleType.keywords.length,
+    render : (text: any ) => {
+      if(text){
+        return <Tag color="green">Active</Tag>
+      }else{
+        return <Tag color="red">Inactive</Tag>
+      }
+    }
   },
   {
     key: 'action',

@@ -195,8 +195,8 @@ export default function SettingsTab() {
   ];
 
   return (
-    <div className="sm:p-6 xl:p-8 max-h-[30vh] bg-signBanner flex w-100 justify-center">
-      <div className='w-[96vw] lg:w-[80vw] xl:w-[70vw] bg-white shadow-lg mt-10 h-[80vh] lg:h-[70vh] rounded-lg] sm:p-8 p-4'>
+    <div className="justify-center flex">
+      <div className='bg-white p-8 w-full mt-4 min-h-[80vh]'>
         <Tabs defaultActiveKey={activeKey} items={tabComponents} onChange={handleTabChange} />
         {loading && <Spinner/>}
       </div>

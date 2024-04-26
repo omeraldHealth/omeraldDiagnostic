@@ -9,6 +9,7 @@ import LogoUploader from "@components/atoms/fileUploder/logoUploaders";
 import { profileState } from "@components/common/recoil/profile";
 import { logoStateData } from "@components/common/recoil/logo";
 import DynamicFormGenerator from '../../common/form/dynamicForm';
+import { Switch } from 'antd';
 
 // Profile Summary Component
 export const ProfileSummaryComponent: React.FC<any> = ({ profile, style, summary }) => {
@@ -91,14 +92,19 @@ const ProfileView: React.FC<any> = ({ style }) => {
   }
 
   return (
-    <section>
-      <div className={`w-auto p-4 bg-white sm:mt-14 relative rounded-lg h-auto shadow-xl text-left ${style}`}>
-        {currentManager?.managerRole.toLowerCase() === "owner" && (
+      <div className={`p-8 bg-white h-[80vh] text-left ${style}`}>
+        {currentManager?.managerRole.toLowerCase() === ("admin" || "owner") && (
           <>
-            {!edit ? <a href='#' onClick={() => setEdit(!edit)}><PencilIcon className='w-6 absolute right-20' /></a> :
-              <a href='#' onClick={() => setEdit(!edit)}>
-                <XMarkIcon className='w-6 absolute right-20' />
-              </a>}
+           <span className='flex justify-end'>
+              <Switch
+                style={{ fontSize: '10px' }}
+                checkedChildren="Add"
+                unCheckedChildren="View"
+                checked={edit}
+                className='bg-black'
+                onChange={() => setEdit(!edit)}
+              />
+            </span>
           </>
         )}
          {
@@ -132,6 +138,5 @@ const ProfileView: React.FC<any> = ({ style }) => {
                 </>
               }
       </div>
-    </section>
   );
 };
