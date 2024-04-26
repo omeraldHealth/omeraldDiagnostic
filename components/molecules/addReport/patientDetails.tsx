@@ -39,13 +39,10 @@ const PatientDetails: React.FC<PatientDetailsProps> = ({ handleSteps }) => {
         const lowercasedValue = value.toLowerCase();
 
         let filtered = reportList.filter((item) => item.name?.toLowerCase().includes(lowercasedValue));
-        console.log(filtered);
         setSelectedValue(filtered);
       } else {
         const response = await axios.get(getAdminReportTypesApi);
         const reports = response.data;
-
-        console.log(reports);
 
         if (response.status === 200) {
           setReportList(reports);

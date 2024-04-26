@@ -1,5 +1,6 @@
 // Base URL for the backend API
-export const backendApiPath = "https://diagnostic-backend.onrender.com/";
+// export const backendApiPath = "https://diagnostic-backend.onrender.com/";
+export const backendApiPath = "http://localhost:3002/";
 
 // API paths for diagnostic profiles
 export const getDiagProfileByPhoneApi = backendApiPath + `profiles/getProfile/`; // Endpoint to get diagnostic profile by phone
@@ -13,7 +14,7 @@ export const deleteDiagReportsApi = backendApiPath + `reports/deleteReport/`; //
 
 
 export const uploadDiagnosticReportApi = backendApiPath + `s3/reports/upload`; // Endpoint to upload diagnostic report
-export const uploadDiagnosticLogoApi = backendApiPath + `s3/omerald/upload`; // Endpoint to upload diagnostic logo
+export const uploadDiagnosticLogoApi = backendApiPath + `s3/diagnostic/reportUpload`; // Endpoint to upload diagnostic logo
 
 // External API path to get all admin report types
 export const getAdminReportTypesApi = "https://backend-wpvf.onrender.com/reports/getAllReports";

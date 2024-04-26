@@ -65,7 +65,6 @@ const LandingPage = () => {
 
   }, [token]);
 
-  console.log(landingData)
   return (
     <div>
       <LandingBanner />

@@ -17,9 +17,7 @@ export const UploadReport: React.FC<UploadReportProps> = ({ handleSteps }) => {
   const [file, setFile] = useState();
 
   const handleSubmit = (value: any): void => {
-    // console.log(value, reportId: file)
     value = {...value, reportId: file}
-    console.log(value)
     setReportState({ ...reportValue, ...value });
     handleSteps();
   };
@@ -30,7 +28,6 @@ export const UploadReport: React.FC<UploadReportProps> = ({ handleSteps }) => {
 
   const handleUpload = (value: any): void => {
     setFile(value)
-    console.log(value)
   };
 
   const handleDate = (value: any): void => {

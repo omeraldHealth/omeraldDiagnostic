@@ -50,7 +50,6 @@ export default function SettingsTab() {
 
   const handleEditValue = (record:any) => {
     //Disabled edit
-    // console.log(record)
     // let recordType = fetchRecordType(activeKey);
     // if (!profile?.[recordType].some((item) => item.name === record.name )) {
     //   const editedValue = profile?.[recordType].map((item) => item.name === defaultValues.name ? record : defaultValues);
@@ -94,7 +93,6 @@ export default function SettingsTab() {
 
       if (logoResp?.status === 200) {
         record = {...record, signature: logoResp?.data?.url}
-        console.log(record)
         let updateData = [...profile?.[recordType], record];
         updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
         setAddElement(false);

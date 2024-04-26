@@ -57,8 +57,6 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
 
     try {
       const file = reportValue?.reportId?.file;
-      console.log(reportValue)
-      console.log("s",file)
       if (file && file.originFileObj) {
         warningAlert("Uploading File, please wait");
 
@@ -83,7 +81,6 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
           };
 
           const updatedReport = { ...reportValue, ...newProp };
-          console.log(updatedReport)
           updateDiagnostic?.mutate({ data: updatedReport });
         } else {
           errorAlert("Error uploading file");

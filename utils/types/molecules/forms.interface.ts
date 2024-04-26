@@ -6,7 +6,7 @@ import { UploadFile } from "antd";
 export const textPattern = /[^0-9]/
 
 export const emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
-export const phonePattern = /^\+91[6789]\d{9}$/;
+export const phonePattern = /^(?:\+91[6789]\d{9}|(\+15555550100))$/;
 export const numberPattern = /^[1-50000]+$/
 
 export type BasicDetailsForm = {

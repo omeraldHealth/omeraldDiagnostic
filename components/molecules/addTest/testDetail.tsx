@@ -75,11 +75,8 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
         sampleType: { testName: filteredReport?.name || '', keywords: transformData(filteredReport?.parameters) },
       };
 
-      console.log(testType);
-
       if (testType?.sampleName) {
         setTestDetail(testType);
-        console.log(testDetailState);
 
         // Now, testDetailState will be updated, and you can check its value
         if (testDetailState?.sampleName) {
