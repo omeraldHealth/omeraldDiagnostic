@@ -224,6 +224,26 @@ interface TestTableColumn {
   sorter?: (a: any, b: any) => number;
 }
 
+const getPopOver = (param:any) => {
+  console.log(param)
+  return <div className="max-w-[5vw]">
+    <p><strong>Name</strong>: {param?.name}</p>
+    <p style={{ width: 300,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}  className="w-10 overflow-hidden whitespace-nowrap">{param?.description}</p>
+
+    <p><strong>Aliases</strong>: {param?.aliases.join(",")}</p>
+    <p><strong>IsActive</strong>: {param?.isActive}</p>
+    <p><strong>BioRefRange</strong>: 
+      <br/>
+      <span>
+        {
+          param?.bioRefRange.basicRange.map((basic:any) => {return <span>Basic: unit: {basic.unit}, min: {basic.min}, max: {basic.max}</span>})
+        }
+      </span>
+    </p>
+    {/* <p>BioRefRange: </p> */}
+  </div>
+}
+
 export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any) => TestTableColumn[] = (
   handleEdit,
   handleRemove,
@@ -232,22 +252,22 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
     key: 'testName',
     title: 'Test Name',
     dataIndex: 'testName',
-    render: (text: any) => <a>{text?.testName}</a>,
+    render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.sampleType.testName.length - b.sampleType.testName.length,
   },
   {
-    key: 'parameters',
+    key: 'parameter',
     title: 'Parameters',
-    dataIndex: 'parameters',
-    sorter: (a: any, b: any) => a.sampleType.keywords.length - b.sampleType.keywords.length,
-    render: (sampleType: any, record: any) => (
+    dataIndex: 'parameter',
+    render: (parameters: any, record: any) => (
       <>
-        {sampleType?.keywords?.map((param: any, index: any) => (
-          <a key={index} href='#'>
-            <Popover content={param.aliases} title={`${record?.sampleType?.testName} (${param.aliases} aliases)`}>
+      {console.log(parameters)}
+        {parameters?.map((param: any, index: any) => (
+          <a  key={index} href='#'>
+            <Popover content={getPopOver(param)} title={"Parameter Aliases"}>
               <Tag className='my-1' color='green' key={param}>
-                {param?.keyword}
-              </Tag>
+                {param?.name}
+              </Tag>  
             </Popover>
           </a>
         ))}
@@ -255,9 +275,9 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
     ),
   },
   {
-    key: 'status',
+    key: 'isActive',
     title: 'Status',
-    dataIndex: 'status',
+    dataIndex: 'isActive',
     sorter: (a: any, b: any) => a.sampleType.keywords.length - b.sampleType.keywords.length,
     render : (text: any ) => {
       if(text){

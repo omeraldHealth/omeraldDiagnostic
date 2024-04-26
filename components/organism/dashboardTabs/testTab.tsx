@@ -20,7 +20,7 @@ export default function TestTab() {
         />
       </span>
 
-      <div className="h-auto bg-white my-4 sm:mt-4 ">
+      <div className="h-auto bg-white my-4 sm:mt-4  min-h-[70vh] ">
         {!showTest ? <TestTable /> : <AddTestComponent setTest={setShowTest} />}
       </div>
     </div>

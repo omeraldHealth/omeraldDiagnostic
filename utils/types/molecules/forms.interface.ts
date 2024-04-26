@@ -135,7 +135,7 @@ export const managerFormArray = [
 ]
 
 export const customTestForm:FormType[] = [
-    {"name":"sampleName","type":"text","label":"Enter Custom Sample Name","required":true},
+    // {"name":"sampleName","type":"text","label":"Enter Custom Sample Name","required":true},
     {"name":"testName","type":"text","label":"Enter Test Name","required":true},
 ]
 

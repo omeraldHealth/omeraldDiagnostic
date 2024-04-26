@@ -64,16 +64,14 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
   const handleFormSubmit = (value: any) => {
     if (!selectedValue) {
       let testType = {
-        sampleName: value.sampleName,
-        sampleType: { testName: value.testName },
+        testName: value.testName ,
       };
       setTestDetail(testType);
       handleSteps();
     } else {
       let filteredReport = reportList.filter((item: any) => item._id === value?.testName)[0];
       let testType = {
-        sampleName: value.sampleName,
-        sampleType: { testName: filteredReport?.name || '', keywords: transformData(filteredReport?.parameters) },
+        testName: filteredReport?.name || '', keywords: transformData(filteredReport?.parameters)
       };
 
       if (testType?.sampleName) {

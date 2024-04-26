@@ -14,9 +14,10 @@ import { Spinner } from '@components/atoms/loader';
 
 interface AddKeywordsProps {
   handleSuccess: () => void;
+  handleBack: () => void;
 }
 
-export const AddKeywords: React.FC<AddKeywordsProps> = ({handleSuccess}:AddKeywordsProps) => {
+export const AddKeywords: React.FC<AddKeywordsProps> = ({handleSuccess, handleBack}:AddKeywordsProps) => {
   const [addKeyword, setAddKeyword] = useState(false);
   const [testDetailState, setTestDetail] = useRecoilState(testDetailsState);
   const [profile, setProfile] = useRecoilState(profileState);
@@ -61,8 +62,8 @@ export const AddKeywords: React.FC<AddKeywordsProps> = ({handleSuccess}:AddKeywo
 
   return (
     <section className="my-2 w-[100%] mx-0 sm:w-[70%] md:w-[100%] h-auto p-4">
-      <AddKeyWordHeader addKeyword={addKeyword} setAddKeyword={setAddKeyword} />
-      {addKeyword ? <AddParameter handleAddKeyword={handleAddKeyword} /> : <ViewParameter testDetailState={testDetailState} handleSubmit={handleSubmit} />}
+      <AddKeyWordHeader handleBack={handleBack} addKeyword={addKeyword} setAddKeyword={setAddKeyword} />
+      {/* {addKeyword ? <AddParameter handleAddKeyword={handleAddKeyword} /> : <ViewParameter testDetailState={testDetailState} handleSubmit={handleSubmit} />} */}
       {loading && <Spinner/>}
     </section>
   );
@@ -71,9 +72,10 @@ export const AddKeywords: React.FC<AddKeywordsProps> = ({handleSuccess}:AddKeywo
 interface AddKeyWordHeaderProps {
   addKeyword: boolean;
   setAddKeyword: React.Dispatch<React.SetStateAction<boolean>>;
+  handleBack: () => void;
 }
 
-const AddKeyWordHeader: React.FC<AddKeyWordHeaderProps> = ({ addKeyword, setAddKeyword }) => {
+const AddKeyWordHeader: React.FC<AddKeyWordHeaderProps> = ({ addKeyword, setAddKeyword, handleBack }) => {
   const testDetails = useRecoilValue(testDetailsState);
 
   const toggleAddKeyword = () => {
@@ -84,17 +86,17 @@ const AddKeyWordHeader: React.FC<AddKeyWordHeaderProps> = ({ addKeyword, setAddK
     <section className="flex w-full mb-2 justify-between">
       <section className="flex">
         <p className="text-xs sm:text-sm sm:font-bold">
-          Custom Report Name:
-          <span className="font-light mx-2">{testDetails?.sampleName}</span>
-        </p>
-        <p className="text-xs sm:text-sm sm:font-bold">
           Test Name:
-          <span className="font-light mx-2">{testDetails?.sampleType?.testName}</span>
+          <span className="font-light mx-2">{testDetails?.testName}</span>
         </p>
       </section>
-      <button onClick={toggleAddKeyword} className="p-1 text-xs sm:text-md sm:px-2 bg-gray-200 text-black">
-        {!addKeyword ? 'Add Parameter' : 'View Parameter'}
-      </button>
+      <section>
+        <button onClick={toggleAddKeyword} className="p-1 text-xs sm:text-md sm:px-2 bg-gray-200 text-black">
+          {!addKeyword ? 'Add Parameter' : 'View Parameter'}
+        </button>
+        <Button className='mx-4' onClick={handleBack}> Back</Button>
+      </section>
+
     </section>
   );
 };

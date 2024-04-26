@@ -26,7 +26,6 @@ export const TestTable: React.FC<TestTableProps> = () => {
   const { confirm } = Modal;
 
   const tests = profile?.tests.filter((test: any) => test?.branchId === currentBranch?._id);
-
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert("Profile updated successfully");
@@ -66,7 +65,7 @@ export const TestTable: React.FC<TestTableProps> = () => {
 
 const ViewTest: React.FC<ViewTestProps> = ({ columns, tests, loading }) => {
   return <section>
-    <DashboardTable pageSize={5} columns={columns} data={tests} />
+    <DashboardTable pageSize={10} columns={columns} data={tests} />
     {loading && <Spinner/>}
     </section>
 };
