@@ -30,7 +30,7 @@ const Onboard: React.FC = (): JSX.Element => {
   return (
       <div className='flex flex-col h-screen bg-white'>
          <PageHead
-            icon={'./favicon.ico'}
+            icon={'./favicon.png'}
             title={"Onboard"}
             description={"Onboarding Page"}
           />

@@ -32,8 +32,7 @@ export function Advertisement({advertisementBanner}:any): ReactElement {
             <HeaderText_3 style="my-8">{ad.title}</HeaderText_3>
             <BodyText_2 style="text-gray-500 my-8">{ad.description}</BodyText_2>
             {}
-            <a target='_blank' href={ad?.button === "Know More" ? 
-            advertisementBanner?.landing?.getStartedUrl:advertisementBanner?.landing?.demoVideoUrl}>
+            <a target='_blank' href={ad?.title === "Get Started" ? advertisementBanner?.landing?.getStartedUrl:advertisementBanner?.landing?.demoVideoUrl}>
               <SignInButton style="my-4">{ad?.button}</SignInButton>
             </a>
 

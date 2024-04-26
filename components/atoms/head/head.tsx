@@ -17,7 +17,7 @@ const PageHead: FC<PageHeadProps> = ({ title, description, icon }) => {
       <link rel="icon" href={icon || 'https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png'} />
       {/* Uncomment if you have a manifest file */}
       {/* <link rel="manifest" href="/manifest.json" /> */}
-      <link rel="apple-touch-icon" href="/favicon.ico" />
+      <link rel="apple-touch-icon" href="/favicon.png" />
     </Head>
   );
 };
