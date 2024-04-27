@@ -42,7 +42,7 @@ export const TestTable: React.FC<TestTableProps> = () => {
 
   const handleRemove = (record: any) => {
     setLoading(true)
-    const updateData = profile?.tests.filter((item: any) => item._id !== record._id);
+    const updateData = profile?.tests.filter((item: any) => item?._id !== record?._id);
     updateDiagnostic.mutate({ data: { id: profile?._id, tests: updateData } });
   };
 
