@@ -12,14 +12,16 @@ import { toast } from 'react-toastify';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 import { SuccessReport } from './successReport';
 import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { ManualReport } from './ManualReport';
 interface AddReportComponentProps {
   setAddReports: React.Dispatch<React.SetStateAction<boolean>>;
   refetch:()=>{}
 }
 
 export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddReports,refetch }) => {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(1);
   const [fileUrl, setFileUrl] = useState("");
+  const [manualReport, setManualReport] = useState("");
   const currentBranch = useCurrentBranchValue()
   const prev = () => {setCurrentStep(currentStep-1)}
   const next = () => {setCurrentStep(currentStep+1)}
@@ -31,8 +33,16 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
     },
     {
       title: 'Upload / Generate Report',
-      content:  <UploadReport  handleSteps={()=>{}} next={next} />
+      content:  <UploadReport manualReport={manualReport} setManualReport={setManualReport}  handleSteps={()=>{}} next={next} />
     },
+    ...(manualReport
+      ? [
+          {
+            title: 'Manual Report Step',
+            content: <ManualReport next={next} />
+          }
+        ]
+      : []),
     {
       title: 'Report Summary',
       content:<ReportSummary style='' handleSuccess={() => next()} />

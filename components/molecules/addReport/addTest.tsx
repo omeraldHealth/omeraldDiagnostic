@@ -213,7 +213,7 @@ const OmeraldTestDetails: React.FC<any> = ({next}:any) => {
               onChange={handleSelect}
               filterOption={filterOption} // Use custom filter function for search
             >
-              {reportData.map(item => (
+              {reportData?.map(item => (
                 <Option key={item._id} value={item?._id}>{item.name}</Option>
               ))}
             </Select>
