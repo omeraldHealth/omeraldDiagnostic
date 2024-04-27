@@ -17,7 +17,7 @@ export const uploadDiagnosticReportApi = backendApiPath + `s3/reports/upload`; /
 export const uploadDiagnosticLogoApi = backendApiPath + `s3/diagnostic/reportUpload`; // Endpoint to upload diagnostic logo
 
 // External API path to get all admin report types
-export const getAdminReportTypesApi = "https://backend-wpvf.onrender.com/reports/getAllReports";
+export const getAdminReportTypesApi = "https://adminstage.azurewebsites.net/api/v1/reports/getAllReports";
 // export const getDiagnosticLandingData = "https://adminstage.azurewebsites.net/api/v1/diagnosticLanding/getDiagLanding"
 export const getDiagnosticLandingData = "http://localhost:3001/api/v1/diagnosticLanding/getDiagLanding";
 

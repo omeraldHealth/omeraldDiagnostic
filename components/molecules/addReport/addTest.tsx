@@ -9,9 +9,12 @@ import { useForm } from "antd/es/form/Form";
 import { useUpdateDiagnostic } from "utils/reactQuery";
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
 import { profileState } from "@components/common/recoil/profile";
-import { useCurrentBranchValue, useParamValue, useTestDataValue } from "@components/common/constants/recoilValues";
+import { useCurrentBranchValue, useParamValue, useReportValue, useTestDataValue } from "@components/common/constants/recoilValues";
 import { SuccessTest } from "../addTest/successTest";
 import { paramState } from "@components/common/recoil/testDetails/param";
+import axios from "axios";
+import { getAdminReportTypesApi } from "@utils";
+import { reportState } from "@components/common/recoil/report";
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -38,12 +41,15 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
   });
 
   const handleSubmitTest = () => {
-    if(edit){
+
+    if(edit){ 
       let updatedProfile = profile?.tests.map(test => {
-        if(test?._id === testDetailState._id){
-          return testDetailState
+        if (test?._id === testDetailState._id) {
+            return testDetailState; // Update the test if its ID matches
+        } else {
+            return test; // Return the original test if its ID doesn't match
         }
-      })
+      });
       updateDiagnostic.mutate({data: { id: profile?._id, tests: updatedProfile}})
     }else{
       updateDiagnostic.mutate({
@@ -88,7 +94,7 @@ const TestDetail = ({next}:any) => {
   const [selectedValue,setSelectedValue] = useState(false);
   return  <div>
     <TestDetailHeader selectedValue={selectedValue} setSelectedValue={setSelectedValue} />
-    {selectedValue?<p></p>:<CustomTestDetails next={next}/>}
+    {selectedValue?<OmeraldTestDetails next={next}/>:<CustomTestDetails next={next}/>}
   </div>
 } 
 
@@ -134,6 +140,83 @@ const CustomTestDetails: React.FC<any> = ({next}:any) => {
         >
           {/* Ensure the input takes the full width of the form item */}
           <Input className="w-[20vw]" />
+        </Form.Item>
+        <Form.Item name="isActive" label="Is Active?"  initialValue={testDetailState?.isActive} valuePropName="checked">
+                <Switch className="mt-1" />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">Submit</Button>
+        </Form.Item>
+      </Form>
+    </section>
+  );
+};
+
+const OmeraldTestDetails: React.FC<any> = ({next}:any) => {
+
+  const [testDetailState, setTestDetail] = useRecoilState(testDataState);
+  const reportData =useReportValue()
+  
+  const onFinish = (values: any) => {
+    // if(testDetailState){
+    //   setTestDetail({...testDetailState, ...values});
+    // }else{
+    //   setTestDetail(values);
+    // }
+
+    next()
+  };
+
+  // Function to handle when an item is selected
+  const handleSelect = (value) => {
+    if(value){
+      // Filter the reportData to find the selected report based on the ID
+      let selectedReport = reportData?.filter((report) => report?._id === value);
+
+      // Check if selectedReport exists and has elements
+      if (selectedReport?.length > 0) {
+          const updatedTestDetailState = {
+            ...selectedReport[0],
+            testName: selectedReport[0]?.name // Add the "testName" property based on the "name" property
+          };
+          setTestDetail(updatedTestDetailState)
+      } else {
+          // Handle the case where `selectedReport` is empty
+          console.error("No test reports selected.");
+      }
+    }
+  };
+
+  // Filter function for searching within the dropdown
+  const filterOption = (inputValue, option) =>
+    option.children.toLowerCase().includes(inputValue.toLowerCase());
+
+  return (  
+    <section>
+      <Form
+       layout="vertical" 
+        onFinish={onFinish} // Set the function to handle form submission
+      >
+        <Form.Item
+          name="testName"
+          label="Enter Test Name"
+          initialValue={testDetailState?.testName}
+          rules={[{ required: true, message: 'Please input the test name!' }]} // Added rules for validation
+        >
+          {/* Ensure the input takes the full width of the form item */}
+          {/* <Input className="w-[20vw]" /> */}
+          <Select
+              showSearch
+              style={{ width: 200 }}
+              placeholder="Select a report type"
+              optionFilterProp="children" // Tells Select component to filter on the children prop
+              onChange={handleSelect}
+              filterOption={filterOption} // Use custom filter function for search
+            >
+              {reportData.map(item => (
+                <Option key={item._id} value={item?._id}>{item.name}</Option>
+              ))}
+            </Select>
         </Form.Item>
         <Form.Item name="isActive" label="Is Active?"  initialValue={testDetailState?.isActive} valuePropName="checked">
                 <Switch className="mt-1" />
@@ -309,7 +392,6 @@ const TestParams: React.FC<any> = ({data=[]}:any) => {
   const [profile, setProfile] = useRecoilState(profileState);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [paramData, setParamData] = useRecoilState(paramState);
-
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -323,7 +405,7 @@ const TestParams: React.FC<any> = ({data=[]}:any) => {
   };
 
   const handleRemoveParam = (value) => {
-    let updatedParam = testDetailState?.parameters?.filter(param => param._id !== value?._id)
+    let updatedParam = testDetailState?.parameters?.filter(param => param?._id !== value?._id)
     const newState = {
       ...testDetailState,
       parameters: updatedParam  // Correctly referencing the key as 'parameter'
@@ -471,7 +553,7 @@ const TestParams: React.FC<any> = ({data=[]}:any) => {
 
   return <div className="min-h-[50vh] h-auto">
     <Table
-        dataSource={data}
+        dataSource={testDetailState?.parameters}
         className="min-h-[50vh]"
         columns={parameterColumns}
         pagination={{
@@ -683,7 +765,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
           let updatedDetails = {
             ...testDetailState,  // Spread the existing state to retain other properties
             parameters: [
-              // Spread existing parameterss if it's an array, otherwise start with an empty array
+              // Spread existing parameters if it's an array, otherwise start with an empty array
               ...(Array.isArray(testDetailState.parameters) ? testDetailState.parameters : []),
               // Add new values, ensuring they are treated as an array
               ...(Array.isArray(values) ? values : [values])
@@ -1277,6 +1359,8 @@ const DetailsDropdown = ({ onChange }) => {
     </Dropdown>
   );
 };
+
+
 
 
 // import React, { useState } from 'react';
