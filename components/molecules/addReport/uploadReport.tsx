@@ -43,6 +43,7 @@ const ReportHeader: React.FC<ReportHeaderProps> = ({ handleSelect }) => {
       <section className="my-6">
         <Select
           placeholder="Select Report Creation Type"
+          defaultValue={uploadReportType.length > 0 ? uploadReportType[0].value : undefined}
           onChange={(value) => handleSelect(value as boolean)}
         >
           {uploadReportType.map((option) => (
@@ -109,7 +110,7 @@ const UploadReportFile: React.FC<any> = ({next}) => {
       </Form.Item>
       <Form.Item
         name="file"
-        label="Enter Report Name"
+        label="Upload Report File"
         rules={[{ required: true, message: 'Please upload the report file!' }]}
       >
          <Upload
