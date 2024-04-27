@@ -18,7 +18,6 @@ interface TestimonialProps {
 }
 
 export const Testimonial: React.FC<TestimonialProps> = ({testimonials}) => {
-  console.log(testimonials)
   return (  
     <div className='text-center px-[10%] py-[2vh] h-auto'>
       <TitleText_2 style='text-btnPrimary-600 mx-auto my-4'>TESTIMONIALS</TitleText_2>

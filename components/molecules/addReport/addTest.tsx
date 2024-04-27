@@ -44,7 +44,6 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
           return testDetailState
         }
       })
-      console.log("profile",updatedProfile)
       updateDiagnostic.mutate({data: { id: profile?._id, tests: updatedProfile}})
     }else{
       updateDiagnostic.mutate({
@@ -65,7 +64,6 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
     {
       title: 'Success Test',
       content: <SuccessTest handleSuccess={()=>{
-        console.log("view")
         setTest(false)}}/>
     },
   ];
@@ -551,11 +549,9 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
   const [profile, setProfile] = useRecoilState(profileState);
   const currentBranch = useCurrentBranchValue();
 
-  console.log("param",paramData)
   
   useEffect(()=>{
     if(edit){
-      console.log("edit Param", paramData)
       form.setFieldsValue(paramData);
       setBasicRange(paramData?.bioRefRange?.basicRange)
       let currentRanges = paramData?.bioRefRange?.advanceRange
@@ -586,7 +582,6 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
         //   // If no matching range found, append the new data
         //   updatedRanges.push(data);
         // }
-        console.log("updateRange",updatedRanges)
         return updatedRanges;
       });
     
@@ -649,7 +644,6 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
     };
 
     form.validateFields().then(values => {
-      console.log(values)
         advanceRange?.forEach((item) => {
         if (item.ageRangeType) {
           advanceRanges.ageRange.push({
@@ -684,7 +678,6 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
             ...testDetailState,  // Spread the existing state to retain other properties
             parameters: Array.isArray(updatedParameters) ? updatedParameters : [updatedParameters]
           };
-          console.log("sdsdsdd",updatedDetails)
            setTestDetail(updatedDetails)
         }else{
           let updatedDetails = {
@@ -701,7 +694,6 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
 
         handleOk()
     }).catch(info => {
-        console.log('Validate Failed:', info);
     });
   };
 
@@ -855,7 +847,6 @@ const handleAdvanceRangeSubmit = (data) => {
       // If no matching range found, append the new data
       updatedRanges.push(data);
     }
-    console.log("updateRange",updatedRanges)
     return updatedRanges;
   });
 };

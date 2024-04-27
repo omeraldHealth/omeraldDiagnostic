@@ -260,7 +260,6 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
     dataIndex: 'parameters',
     render: (parameters: any, record: any) => (
       <>
-      {console.log(parameters)}
         {parameters?.map((param: any, index: any) => (
           <a  key={index} href='#'>
             <Popover content={getPopOver(param)} title={"Parameter Aliases"}>

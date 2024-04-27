@@ -28,7 +28,6 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
   const [selectedValue, setSelectedValue] = useState<boolean>(false);
   const [testDetailState, setTestDetail] = useRecoilState(testDetailsState);
   const reportType = useQueryGetData('reportTypes', getAdminReportTypesApi);
-  console.log(reportType)
   const [reportList, setReportList] = useState<any[]>(reportType.data?.data || []);
   const [selectedReport, setSelectedReport] = useState<any[]>([]);
   const [defaultValue, setDefaultValue] = useState<any>(reportList);
