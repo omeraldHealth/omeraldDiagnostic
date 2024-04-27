@@ -1,11 +1,16 @@
 import { testDetailsState } from "@components/common/recoil/testDetails";
-import { Button, Col, Dropdown, Form, Input, List, Menu, Modal, Popover, Radio, Row, Space, Steps, Switch, Table, Tabs, Tag } from "antd";
+import { Button, Col, Dropdown, Form, Input, List, Menu, Modal, Popover, Radio, Row, Select, Space, Steps, Switch, Table, Tabs, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {testDataState} from "../../common/recoil/testDetails/test"
 import { FaSearchMinus } from "react-icons/fa";
 import { ArrowDownIcon, MinusCircleIcon, PlusCircleIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { useForm } from "antd/es/form/Form";
+import { useUpdateDiagnostic } from "utils/reactQuery";
+import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
+import { profileState } from "@components/common/recoil/profile";
+import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
+import { SuccessTest } from "../addTest/successTest";
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -14,6 +19,28 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const prev = () => setCurrentStep(currentStep-1)
   const next = () => setCurrentStep(currentStep+1)
+  const [testDetailState, setTestDetail] = useRecoilState(testDataState);
+  const [profile, setProfile] = useRecoilState(profileState);
+  const currentBranch = useCurrentBranchValue();
+
+  const updateDiagnostic = useUpdateDiagnostic({
+    onSuccess: (data) => {
+      successAlert('Profile updated successfully');
+      setProfile(data?.data);
+      next()
+    },
+    onError: () => {
+      errorAlert('Error updating profile');
+      // setLoading(false)
+    },
+  });
+
+  const handleSubmitTest = () => {
+    console.log("submiting", testDetailState)
+    updateDiagnostic.mutate({
+          data: { id: profile?._id, tests: [...profile?.tests, { ...testDetailState, branchId: currentBranch?._id }] },
+    });
+  }
 
   const steps = [
     {
@@ -22,11 +49,11 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
     },
     {
       title: 'Add Parameters',
-      content: <TestParams data={[]} />
+      content: <TestParams data={testDetailState?.parameter} />
     },
     {
       title: 'Success Test',
-      content: 'Content for success test',
+      content: <SuccessTest handleSuccess={()=>{setTest(false)}}/>
     },
   ];
 
@@ -40,7 +67,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
             <div className="mt-5">{steps[currentStep].content}</div>
             <div>
                {currentStep === 1 && <Button type="primary" onClick={prev} className="ml-5" >Previous</Button>}
-               {currentStep === 1 && <Button type="dashed" onClick={next} className="ml-5" >Submit</Button>}
+               {currentStep === 1 && <Button type="dashed" onClick={handleSubmitTest} className="ml-5" >Submit</Button>}
             </div>
       </div>
   </div>
@@ -97,6 +124,98 @@ const CustomTestDetails: React.FC<any> = ({next}:any) => {
         </Form.Item>
       </Form>
     </section>
+  );
+};
+
+export const getContent = (bioRefRange) => {
+  // Helper function to format range string based on available min and max values
+  const formatRange = (min, max, unit) => {
+    if (min && max) {
+      return `${min} > and < ${max} ${unit || ''}`;
+    } else if (min) {
+      return `> ${min} ${unit || ''}`;
+    } else if (max) {
+      return `< ${max} ${unit || ''}`;
+    }
+  };
+
+  // Determine if there's data for the advanced range to decide on displaying the section
+  const hasAdvancedData = bioRefRange.advanceRange && (
+    bioRefRange.advanceRange.ageRange?.length > 0 ||
+    bioRefRange.advanceRange.genderRange?.length > 0 ||
+    bioRefRange.advanceRange.customCategory?.length > 0
+  );
+
+  return (
+    <div style={{ maxHeight: '50vh', overflowY: 'auto', padding: '0 10px' }}>
+      {/* Basic Range */}
+      {bioRefRange.basicRange && bioRefRange.basicRange.map((basic, basicIndex) => (
+        <div key={basicIndex} className="mb-4">
+          <p className="font-bold">Basic Range:</p>
+          <p>{formatRange(basic.min, basic.max, basic.unit)}</p>
+        </div>
+      ))}
+
+      {/* Advanced Range - Conditional rendering based on hasAdvancedData */}
+      {hasAdvancedData && (
+        <div>
+          <p className="font-bold">Advanced Range:</p>
+          <div className="ml-2">
+            {/* Age Range */}
+            {bioRefRange.advanceRange.ageRange && bioRefRange.advanceRange.ageRange.map((age, ageIndex) => (
+              <div key={ageIndex}>
+                <p>Age Range:</p>
+                <p className="ml-4">{`${age.ageRangeType}: ${formatRange(age.min, age.max, age.unit)}`}</p>
+              </div>
+            ))}
+
+            {/* Gender Range */}
+            {bioRefRange.advanceRange.genderRange && bioRefRange.advanceRange.genderRange.map((gender, genderIndex) => (
+              <div key={genderIndex}>
+                <p>Gender Range:</p>
+                <p className="ml-4">{`${gender.genderRangeType} Range: ${formatRange(gender.min, gender.max, gender.unit)}`}</p>
+                {gender.genderRangeType === 'female' && gender.details && (
+                  <div className="ml-6">
+                    <p>Details:</p>
+                    <div className="ml-6">
+                      {gender.details.menopause && <p>Menopause: Yes</p>}
+                      {gender.details.prePuberty && <p>Pre-Puberty: Yes</p>}
+                      {gender.details.pregnant && (
+                        <>
+                          <p>Pregnant: Yes</p>
+                          {gender.details.trimester && gender.details.trimester?.type !== 'none' && (
+                            <p className="ml-6">Trimester: {gender.details.trimester?.type}</p>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Custom Category */}
+            {bioRefRange.advanceRange.customCategory && bioRefRange.advanceRange.customCategory.map((category, catIndex) => (
+              <div key={catIndex}>
+                <p className="font-bold">Custom Range:</p>
+                <p>{category.categoryName}</p>
+                {category.categoryOptions && category.categoryOptions.map((option, optIndex) => (
+                  <p key={optIndex} className="ml-4">{`${option.categoryType}: ${formatRange(option.min, option.max, option.unit)}`}</p>
+                ))}
+                {category.subCategory && (
+                  <div className="ml-4">
+                    <p>{category.subCategory.categoryName}</p>
+                    {category.subCategory.categoryOptions && category.subCategory.categoryOptions.map((subOpt, subOptIndex) => (
+                      <p key={subOptIndex} className="ml-4">{`${subOpt.categoryType}: ${formatRange(subOpt.min, subOpt.max, subOpt.unit)}`}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -167,7 +286,7 @@ const parameterColumns = [
       }
       return (
         <Space onMouseEnter={() => {}} size={[0, 1]} wrap>
-          {aliases.map(alias => (
+          {aliases?.map(alias => (
             <Tag color="geekblue" key={alias}>
               {alias}
             </Tag>
@@ -338,7 +457,6 @@ const ParameterComponent = () => {
 const ParameterModal = ({ isModalVisible, handleOk, handleCancel }) => {
 
   const [addRange, setAddRange] = useState(false)
-  const [submitLoading, setSubmitLoading] = useState(false);
   const [sampleOptions, setSampleOptions] = useState();
   const [bioRange, setBioRange] = useState([]);
 
@@ -352,6 +470,23 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel }) => {
   const [rangeType,setRangeType] = useState("basic");
   const [basicRange,setBasicRange] = useState([]);
   const [advanceRange,setAdvanceRange] = useState([]);
+  const [form] = Form.useForm();
+  const [testDetailState, setTestDetail] = useRecoilState(testDataState);
+  const [profile, setProfile] = useRecoilState(profileState);
+  const currentBranch = useCurrentBranchValue();
+
+  const updateDiagnostic = useUpdateDiagnostic({
+    onSuccess: (data) => {
+      successAlert('Profile updated successfully');
+      setProfile(data?.data);
+      handleOk();
+      // setLoading(false)
+    },
+    onError: () => {
+      errorAlert('Error updating profile');
+      // setLoading(false)
+    },
+  });
 
   const handleSubmitBioRange = data => {
     let object = {};
@@ -387,23 +522,73 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel }) => {
     }
   } 
 
+  const handleSubmit = () => {
+
+    const advanceRanges = {
+      ageRange: [],
+      genderRange: [],
+    };
+
+    form.validateFields().then(values => {
+        advanceRange?.forEach((item) => {
+        if (item.ageRangeType) {
+          advanceRanges.ageRange.push({
+            ageRangeType: item.ageRangeType,
+            unit: item.unit,
+            min: parseInt(item.min, 10), // Ensure base 10 for parsing
+            max: parseInt(item.max, 10),
+          });
+        } else if (item.genderRangeType) {
+          advanceRanges.genderRange.push({
+            genderRangeType: item.genderRangeType,
+            unit: item.unit,
+            min: parseInt(item.min, 10),
+            max: parseInt(item.max, 10),
+          });
+        }
+        });
+        values.bioRefRange = {
+          basicRange: basicRange,
+          advanceRange: advanceRanges
+        }
+        const updatedDetails = {
+          ...testDetailState,  // Spread the existing state to retain other properties
+          parameter: [
+            // Spread existing parameters if it's an array, otherwise start with an empty array
+            ...(Array.isArray(testDetailState.parameter) ? testDetailState.parameter : []),
+            // Add new values, ensuring they are treated as an array
+            ...(Array.isArray(values) ? values : [values])
+          ]
+        };
+      
+        console.log('Form Values:', updatedDetails); // Here you get all the values from the form 
+        setTestDetail(updatedDetails)
+        handleOk()
+        // updateDiagnostic.mutate({
+        //   data: { id: profile?._id, tests: [...profile?.tests, { ...updatedDetails, branchId: currentBranch?._id }] },
+        // });
+    }).catch(info => {
+        console.log('Validate Failed:', info);
+    });
+  };
+
   return (
     <Modal    
       title="Create New Parameter" 
       visible={isModalVisible} 
-      onOk={handleOk} 
+      onOk={handleSubmit} 
       onCancel={handleCancel} 
       style={{ padding: 0, minWidth: '50%' }}
       footer={[
         <Button key="back" onClick={handleCancel}>
           Cancel
         </Button>,
-        <Button key="submit" type="primary" onClick={handleOk}>
+        <Button key="submit" type="primary" onClick={handleSubmit}>
           Save
         </Button>,
       ]}
     >
-      <Form layout="vertical" className="m-auto">
+      <Form form={form} layout="vertical" className="m-auto">
         <section className="flex gap-12">
             <section className="min-w-[45%]">
               <Form.Item 
@@ -417,7 +602,19 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel }) => {
                 <Switch className="mt-1" />
               </Form.Item>
               <Form.Item name="aliases" label="Aliases">
-                <Input placeholder="Aliases" className="w-full" />
+              <Select
+                  mode="tags"
+                  // ref={ref}
+                  name={'aliases'}
+                  placeholder={"Enter Aliases"}
+                  // value={value}
+                  maxTagCount={15}
+                  style={{
+                    width: '100%',
+                  }}
+                  // onChange={handleInputChange}
+                  // options={options}
+                />
               </Form.Item>
               <Form.Item name="description" label="Description">
                 <Input.TextArea placeholder="Enter description" className="w-full" />
@@ -427,38 +624,38 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel }) => {
               </Form.Item>
             </section>
             <section>
-          <Form.Item name={"unit"} label="">
-          <Row>
-                <Col span={24}>
-                <section className='flex justify-between items-center mx-3'>
-                  <p level={5} className='p-0 m-0' style={{ fontWeight: 'normal' }}>Add Bio Ref Ranges</p>
-                  <a href="#"><PlusIcon className="w-6 bg-blue-900 text-white rounded-full" onClick={() => setAddRange(!addRange)} /></a>
-                </section>
+              <Form.Item name={"unit"} label="">
+                <Row>
+                  <Col span={24}>
+                  <section className='flex justify-between items-center mx-3'>
+                    <p level={5} className='p-0 m-0' style={{ fontWeight: 'normal' }}>Add Bio Ref Ranges</p>
+                    <a href="#"><PlusIcon className="w-6 bg-blue-900 text-white rounded-full" onClick={() => setAddRange(!addRange)} /></a>
+                  </section>
 
-                </Col>
-                {addRange && <section className='p-3'>    
-                  <InputForm
-                    formHook={{}} 
-                    sampleOptions={sampleOptions}
-                    rangeType={rangeType}
-                    setRangeType={setRangeType}
-                    setSampleType={setSampleType}
-                    setGender={setGender}
-                    submitRange={handleSubmitBioRange}
-                    setAgeRange={setAgeRange}
-                    setAddRange={setAddRange}
-                    setBasicRange={setBasicRange}
-                    basicRange={basicRange}
-                    setAdvanceRange={setAdvanceRange}
-                    advanceRange={advanceRange}
-                    index={0}
-                  />
-                </section>}
-                <section className='px-3'>
-                    <DisplayValues basicRange={basicRange} advanceRange={advanceRange} handleRemove={handleRemove} />
-                </section>
-              </Row>
-        </Form.Item>
+                  </Col>
+                  {addRange && <section className='p-3'>    
+                    <InputForm
+                      formHook={{}} 
+                      sampleOptions={sampleOptions}
+                      rangeType={rangeType}
+                      setRangeType={setRangeType}
+                      setSampleType={setSampleType}
+                      setGender={setGender}
+                      submitRange={handleSubmitBioRange}
+                      setAgeRange={setAgeRange}
+                      setAddRange={setAddRange}
+                      setBasicRange={setBasicRange}
+                      basicRange={basicRange}
+                      setAdvanceRange={setAdvanceRange}
+                      advanceRange={advanceRange}
+                      index={0}
+                    />
+                  </section>}
+                  <section className='px-3'>
+                      <DisplayValues basicRange={basicRange} advanceRange={advanceRange} handleRemove={handleRemove} />
+                  </section>
+                </Row>
+              </Form.Item>
             </section>
           </section>
       </Form>
