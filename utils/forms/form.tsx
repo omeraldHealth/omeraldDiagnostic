@@ -257,7 +257,7 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
   {
     key: 'parameter',
     title: 'Parameters',
-    dataIndex: 'parameter',
+    dataIndex: 'parameters',
     render: (parameters: any, record: any) => (
       <>
       {console.log(parameters)}

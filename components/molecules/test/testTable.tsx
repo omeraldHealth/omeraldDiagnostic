@@ -47,7 +47,6 @@ export const TestTable: React.FC<TestTableProps> = () => {
   };
 
   const handleEdit = async (record: any) => {
-    console.log("editRecord",record)
     setTestDetails(record);
     setBooleanAtom(true);
     setEditTest(true);

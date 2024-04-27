@@ -40,7 +40,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
   const handleSubmitTest = () => {
     if(edit){
       let updatedProfile = profile?.tests.map(test => {
-        if(test._id === testDetailState._id){
+        if(test?._id === testDetailState._id){
           return testDetailState
         }
       })
