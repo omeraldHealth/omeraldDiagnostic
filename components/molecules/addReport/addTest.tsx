@@ -68,7 +68,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
       content: <TestParams data={testDetailState?.parameters} />
     },
     {
-      title: 'Success Test',
+      title: 'Test Summary',
       content: <SuccessTest handleSuccess={()=>{
         setTest(false)}}/>
     },

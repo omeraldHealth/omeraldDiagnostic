@@ -14,9 +14,9 @@ export default function ReportsTab() {
   const { data: reports, refetch } = useQueryGetData("reports", getDiagReportsApi);
   const [id, setDeleteId] = useState("");
   const currentBranch = useCurrentBranchValue()
-
-  let reportsList = reports?.data?.filter((report: any) => report?.branchId === currentBranch?._id );
-
+  console.log(reports)
+  let reportsList = reports?.data?.filter((report: any) => report?.diagnosticCenter?.branch.id === currentBranch?._id );
+  console.log(reportsList)
   const deleteMutation = useDeleteReports(id, {
     onSuccess: () => {
       successAlert("Deleted Report");

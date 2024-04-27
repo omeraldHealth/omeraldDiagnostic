@@ -10,14 +10,18 @@ import axios from 'axios';
 import { formatTimeFromDate } from '../../../utils/static/static';
 import { ProfileSummaryCardProps, ReportSummaryCompProps, ReportSummaryProps } from '../../../utils/types';
 import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { reportDataState } from '@components/common/recoil/report/reportData';
 
 const { Title } = Typography;
 
-export const ReportSummary: React.FC<ReportSummaryProps> = ({ handleSuccess, report, style }) => {
+export const ReportSummary: React.FC<ReportSummaryProps> = ({ handleSuccess, style }) => {
+
+  const [reportData,setReportData] = useRecoilState(reportDataState) 
+
   return (
     <section>
       <div className={`w-[70vw] p-4 bg-white relative rounded-lg h-auto text-left ${style}`}>
-        <ReportSummaryComp profile={report} style={style} handleSuccess={handleSuccess} />
+        <ReportSummaryComp profile={reportData} style={style} handleSuccess={handleSuccess} />
       </div>
     </section>
   );
@@ -38,9 +42,9 @@ const ProfileSummaryCard: React.FC<ProfileSummaryCardProps> = ({ title, value, l
 
 const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, handleSuccess }) => {
   const [loading, setLoading] = useState(false);
-  const [reportValue, setReportState] = useRecoilState(reportState);
-  const currentBranch = useCurrentBranchValue()
-
+  const [reportData,setReportData] = useRecoilState(reportDataState)
+  const currentBranch = useCurrentBranchValue();
+  console.log("re", reportData)
   const updateDiagnostic = useCreateReport({
     onSuccess: (data) => {
       successAlert("Report added successfully");
@@ -98,28 +102,35 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
     }
   };
 
+  const moment = require('moment');
+
+  const formattedDate = moment(reportData ?.reportData?.reportDate).format('MM-DD-YYYY');
+
   return (
     <section>
       <div className={`w-[70vw] p-4 bg-white relative rounded-lg h-auto text-left ${style}`}>
         <section>
-          <section className="grid grid-cols-2 w-[70%]">
+          <section className="grid grid-cols-3 gap-2">
             <aside>
-            <ProfileSummaryCard title="Test Name" value={profile?.testName} />
-              <ProfileSummaryCard title="Diagnostic User" value={profile?.userName} />
-              <ProfileSummaryCard title="User Contact" value={profile?.userId} />
-              <ProfileSummaryCard title="Email" value={profile?.email} />
-              <ProfileSummaryCard title="Gender" value={profile?.gender} />
-              <ProfileSummaryCard title="Dob" value={formatTimeFromDate(profile?.dob)} />
+              <h2 className='font-bold text-2xl mb-6'>Report Details</h2>
+              <ProfileSummaryCard title="Report Name" value={reportData?.reportData?.reportName} />
+              <ProfileSummaryCard title="Report Date" value={formattedDate} />
+              <ProfileSummaryCard title="Report Uploaded" value={reportData?.reportData?.file?.fileList[0].name} />
             </aside>
             <aside>
-              <ProfileSummaryCard title="File Uploaded" value={profile.reportId?.file?.name} />
-              <ProfileSummaryCard title="Pathologist" value={profile.doctorName} />
-              <ProfileSummaryCard title="Report Date" value={formatTimeFromDate(profile?.reportDate)} />
-              <ProfileSummaryCard title="Status" value={profile.doctorName} />
+              <h2 className='font-bold text-2xl mb-6'>Patient Details</h2>
+              <ProfileSummaryCard title="Patient Name" value={reportData?.patient?.name} />
+              <ProfileSummaryCard title="Patient Gender" value={reportData?.patient?.gender} />
+              <ProfileSummaryCard title="Patient Contact" value={reportData?.patient?.contact?.phone} />
+              <ProfileSummaryCard title="Patient Email" value={reportData?.patient?.contact?.email} />
+            </aside>
+            <aside>
+              <h2 className='font-bold text-2xl mb-6'>Diagnostic Center Details</h2>
+              <ProfileSummaryCard title="Diagnostic Name" value={reportData?.diagnosticCenter?.name} />
+              <ProfileSummaryCard title="Diagnostic Branch" value={reportData?.diagnosticCenter?.branch?.name} />
+              <ProfileSummaryCard title="Diagnostic Branch" value={reportData?.pathologist?.name} />
             </aside>
           </section>
-          <Button onClick={handleUpload} >Upload Report</Button>
-          {loading && <Spinner />}
         </section>
       </div>
     </section>

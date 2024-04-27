@@ -73,7 +73,7 @@ export interface UserNavigationItem {
   
   export interface ReportSummaryProps {
     handleSuccess: () => void;
-    report: any;
+    report?: any;
     style: string;
   }
 

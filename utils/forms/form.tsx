@@ -372,39 +372,51 @@ export const ParameterColumns =
 export const ReportTableColumns : (handleRemove: any) => TestTableColumn[] = (  
   handleRemove,
 ) => [
+      // {
+      //   key:"reportId",
+      //   title: 'Report Id',
+      //   dataIndex: 'reportId',
+      //   sorter: (a, b) => a.reportId.length - b.reportId.length,
+      //   // sortDirections: ['descend'],
+      // },
       {
-        key:"reportId",
-        title: 'Report Id',
-        dataIndex: 'reportId',
-        sorter: (a, b) => a.reportId.length - b.reportId.length,
-        // sortDirections: ['descend'],
-      },
-      {
-        key:"name",
+        key:"patient",
         title: 'Patient Name',
-        dataIndex: 'userName',
+        dataIndex: 'patient',
         sorter: (a, b) => a.userName.length - b.userName.length,
         // sortDirections: ['descend'],
+        render(patient, record) {
+            return <p>{patient?.name}</p>
+        },
       },
       {
-        key:"email",
+        key:"patient",
         title: 'Email',
-        dataIndex: 'email',
+        dataIndex: 'patient',
         // defaultSortOrder: 'descend',
         sorter: (a, b) => a.email - b.email,
+        render(patient, record) {
+          return <p>{patient?.contact?.email}</p>
+        },
       },
       {
-        key:"userId",
+        key:"patient",
         title: 'Contact',
-        dataIndex: 'userId',
+        dataIndex: 'patient',
         // defaultSortOrder: 'descend',
         sorter: (a, b) => a.userId - b.userId,
+        render(patient, record) {
+          return <p>{patient?.contact?.phone  }</p>
+        },
       },
       {
-        key:"testName",
-        title: 'Sample Type',
-        dataIndex: 'testName',
+        key:"reportData",
+        title: 'Report Name',
+        dataIndex: 'reportData',
         sorter: (a, b) => a.testName.length - b.testName.length,
+        render(reportData, record) {
+          return <p>{reportData?.reportName}</p>
+        },
       },
       {
         key:"reportDate",
@@ -425,11 +437,11 @@ export const ReportTableColumns : (handleRemove: any) => TestTableColumn[] = (
         key:"click",
         title: 'View',
         dataIndex: "isManualReport",
-        render: ((stat:string,person: any) => 
+        render: ((stat:string,report: any) => 
         <>
         { 
           !stat ? (
-          <a href={person.reportUrl} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
+          <a href={report?.reportData.url} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
         ) : (
           // <ViewPdf
           //   report={person}
