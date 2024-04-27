@@ -60,7 +60,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
     },
     {
       title: 'Add Parameters',
-      content: <TestParams data={testDetailState?.parameter} />
+      content: <TestParams data={testDetailState?.parameters} />
     },
     {
       title: 'Success Test',
@@ -325,10 +325,10 @@ const TestParams: React.FC<any> = ({data=[]}:any) => {
   };
 
   const handleRemoveParam = (value) => {
-    let updatedParam = testDetailState?.parameter?.filter(param => param._id !== value?._id)
+    let updatedParam = testDetailState?.parameters?.filter(param => param._id !== value?._id)
     const newState = {
       ...testDetailState,
-      parameter: updatedParam  // Correctly referencing the key as 'parameter'
+      parameters: updatedParam  // Correctly referencing the key as 'parameter'
     };
     setTestDetail(newState);
   }
@@ -673,7 +673,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
         }
 
         if(edit){
-          const updatedParameters = testDetailState.parameter.map(param => {
+          const updatedParameters = testDetailState.parameters.map(param => {
             if(param._id === paramData._id){
               return values;
             }else{
@@ -682,16 +682,16 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
           });
           let updatedDetails = {
             ...testDetailState,  // Spread the existing state to retain other properties
-            parameter: Array.isArray(updatedParameters) ? updatedParameters : [updatedParameters]
+            parameters: Array.isArray(updatedParameters) ? updatedParameters : [updatedParameters]
           };
           console.log("sdsdsdd",updatedDetails)
            setTestDetail(updatedDetails)
         }else{
           let updatedDetails = {
             ...testDetailState,  // Spread the existing state to retain other properties
-            parameter: [
-              // Spread existing parameters if it's an array, otherwise start with an empty array
-              ...(Array.isArray(testDetailState.parameter) ? testDetailState.parameter : []),
+            parameters: [
+              // Spread existing parameterss if it's an array, otherwise start with an empty array
+              ...(Array.isArray(testDetailState.parameters) ? testDetailState.parameters : []),
               // Add new values, ensuring they are treated as an array
               ...(Array.isArray(values) ? values : [values])
             ]
