@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { TestTable } from '@components/molecules/test/testTable';
 import { TestToggle } from '@components/molecules/test/testToggle';
 import { AddTestComponent } from '@components/molecules/addReport/addTest';
 import { Switch } from 'antd';
+import { useRecoilState } from 'recoil';
+import { testDataState } from '@components/common/recoil/testDetails/test';
 
 export default function TestTab() {
   const [showTest, setShowTest] = useState(false);
+  const [testDetail,setTestDetail] = useRecoilState(testDataState)
 
   return (
     <div className="p-0 h-auto bg-signBanner">
@@ -16,7 +19,9 @@ export default function TestTab() {
           unCheckedChildren="View"
           checked={showTest}
           className='bg-black'
-          onChange={() => setShowTest(!showTest)}
+          onChange={() => {
+            setTestDetail({})
+            setShowTest(!showTest)}}
         />
       </span>
 

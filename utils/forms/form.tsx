@@ -1,4 +1,4 @@
-import { EyeIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { Image, Modal, Popover, Space, Tag } from "antd";
 import moment from "moment";
 import dayjs from "dayjs"
@@ -225,10 +225,9 @@ interface TestTableColumn {
 }
 
 const getPopOver = (param:any) => {
-  console.log(param)
   return <div className="max-w-[5vw]">
     <p><strong>Name</strong>: {param?.name}</p>
-    <p style={{ width: 300,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}  className="w-10 overflow-hidden whitespace-nowrap">{param?.description}</p>
+    <p style={{ width: 300,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}  className="w-10 overflow-hidden whitespace-nowrap"><strong>Description</strong>: {param?.description}</p>
 
     <p><strong>Aliases</strong>: {param?.aliases.join(",")}</p>
     <p><strong>IsActive</strong>: {param?.isActive}</p>
@@ -293,7 +292,8 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
     dataIndex: 'action',
     render: (text: any, record: any) => (
       <Space size='middle'>
-        <a>
+        <a className="flex gap-2">
+          <PencilIcon className='w-4 text-blue-500' onClick={() => handleEdit(record)} />
           <TrashIcon className='w-4 text-red-500' onClick={() => handleRemove(record)} />
         </a>
         {/* <a>

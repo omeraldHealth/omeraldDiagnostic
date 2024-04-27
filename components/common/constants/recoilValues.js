@@ -7,6 +7,7 @@ import { booleanState } from "../recoil/booleanAtom";
 import { testDetailsState } from "../recoil/testDetails";
 import { reportState } from "../recoil/report";
 import { logoStateData } from "../recoil/logo" 
+import {paramState} from "../recoil/testDetails/param"
 
 export const ROUTES_WITHOUT_SIDEBAR = [
     '/',
@@ -26,3 +27,4 @@ export const useBooleanValue = () => useRecoilValue(booleanState);
 export const useManagerValue = () => useRecoilValue(operatorState);
 export const useCurrentBranchValue = () => useRecoilValue(branchState);
 export const useDashboardTabs = () => useRecoilValue(dashTabs);
+export const useParamValue = () => useRecoilValue(paramState);

@@ -13,6 +13,7 @@ import { testDetailsState } from '@components/common/recoil/testDetails';
 import { booleanState } from "@components/common/recoil/booleanAtom";
 import { EditTestsProps, TestTableProps, ViewTestProps } from '../../../utils/types';
 import { Spinner } from '@components/atoms/loader';
+import { testDataState } from '@components/common/recoil/testDetails/test';
 
 export const TestTable: React.FC<TestTableProps> = () => {
   const [editTest, setEditTest] = useState(false);
@@ -24,6 +25,7 @@ export const TestTable: React.FC<TestTableProps> = () => {
   const [testEdited, setTestEdited] = useState({});
   const [loading, setLoading] = useState(false);
   const { confirm } = Modal;
+  const [testDetailState, setTestDetails] = useRecoilState(testDataState);
 
   const tests = profile?.tests.filter((test: any) => test?.branchId === currentBranch?._id);
   const updateDiagnostic = useUpdateDiagnostic({
@@ -45,19 +47,20 @@ export const TestTable: React.FC<TestTableProps> = () => {
   };
 
   const handleEdit = async (record: any) => {
-    setTestDetail(record);
+    console.log("editRecord",record)
+    setTestDetails(record);
     setBooleanAtom(true);
     setEditTest(true);
   };
 
-  const handleSubmit = async (values: any) => {};
+  const handleSubmit = async (values: any) => {setEditTest(false)};
 
   return (
     <div>
       {!editTest ? (
         <ViewTest columns={TestTableColumns(handleEdit, handleRemove, profile)} tests={tests} loading={loading} />
       ) : (
-        <AddTests form={testForm} editElement={editTest} handleSubmit={handleSubmit} defaultValues={defaultValues} />
+        <AddTestComponent edit={true} setTest={handleSubmit}/>
       )}
     </div>
   );

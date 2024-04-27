@@ -1,16 +1,17 @@
 import { testDetailsState } from "@components/common/recoil/testDetails";
 import { Button, Col, Dropdown, Form, Input, List, Menu, Modal, Popover, Radio, Row, Select, Space, Steps, Switch, Table, Tabs, Tag } from "antd";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {testDataState} from "../../common/recoil/testDetails/test"
 import { FaSearchMinus } from "react-icons/fa";
-import { ArrowDownIcon, MinusCircleIcon, PlusCircleIcon, PlusIcon } from "@heroicons/react/20/solid";
+import { ArrowDownIcon, MinusCircleIcon, PencilIcon, PlusCircleIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { useForm } from "antd/es/form/Form";
 import { useUpdateDiagnostic } from "utils/reactQuery";
 import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
 import { profileState } from "@components/common/recoil/profile";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
+import { useCurrentBranchValue, useParamValue, useTestDataValue } from "@components/common/constants/recoilValues";
 import { SuccessTest } from "../addTest/successTest";
+import { paramState } from "@components/common/recoil/testDetails/param";
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -27,6 +28,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
     onSuccess: (data) => {
       successAlert('Profile updated successfully');
       setProfile(data?.data);
+      setTestDetail({})
       next()
     },
     onError: () => {
@@ -36,10 +38,19 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
   });
 
   const handleSubmitTest = () => {
-    console.log("submiting", testDetailState)
-    updateDiagnostic.mutate({
+    if(edit){
+      let updatedProfile = profile?.tests.map(test => {
+        if(test._id === testDetailState._id){
+          return testDetailState
+        }
+      })
+      console.log("profile",updatedProfile)
+      updateDiagnostic.mutate({data: { id: profile?._id, tests: updatedProfile}})
+    }else{
+      updateDiagnostic.mutate({
           data: { id: profile?._id, tests: [...profile?.tests, { ...testDetailState, branchId: currentBranch?._id }] },
-    });
+      });
+    }
   }
 
   const steps = [
@@ -53,7 +64,9 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
     },
     {
       title: 'Success Test',
-      content: <SuccessTest handleSuccess={()=>{setTest(false)}}/>
+      content: <SuccessTest handleSuccess={()=>{
+        console.log("view")
+        setTest(false)}}/>
     },
   ];
 
@@ -100,7 +113,12 @@ const CustomTestDetails: React.FC<any> = ({next}:any) => {
   const [testDetailState, setTestDetail] = useRecoilState(testDataState);
   
   const onFinish = (values: any) => {
-    setTestDetail(values)
+    if(testDetailState){
+      setTestDetail({...testDetailState, ...values});
+    }else{
+      setTestDetail(values);
+    }
+
     next()
   };
 
@@ -118,6 +136,9 @@ const CustomTestDetails: React.FC<any> = ({next}:any) => {
         >
           {/* Ensure the input takes the full width of the form item */}
           <Input className="w-[20vw]" />
+        </Form.Item>
+        <Form.Item name="isActive" label="Is Active?"  initialValue={testDetailState?.isActive} valuePropName="checked">
+                <Switch className="mt-1" />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">Submit</Button>
@@ -219,124 +240,8 @@ export const getContent = (bioRefRange) => {
   );
 };
 
-const parameterColumns = [
-  {
-    title: 'Parameter',
-    dataIndex: 'name',
-    key: 'name',
-    ellipsis: true,
-    width: 150,
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    render: text => <div style={{ width: 150,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{text}</div>,
-  },
-  {
-    title: 'Description',
-    dataIndex: 'description',
-    key: 'description',
-    width: 100,
-    render: text => <div style={{ width: 200,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: text }}></div>,
-  },
-  {
-    title: 'Remedy',
-    dataIndex: 'remedy',
-    key: 'remedy',
-    width: 100,
-    render: text => <div style={{ width: 100,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: text }}></div>,
-  },
-  {
-    title: 'Unit',
-    dataIndex: 'units',
-    key: 'units',
-    width: 100,
-    render: (text, record) => <ParameterUnitsColumn data={record}  />
-  },
-  {
-    title: 'Alias',
-    dataIndex: 'aliases',
-    key: 'aliases',
-    width: 250,
-    filterIcon: filtered => (
-      <FaSearchMinus style={{ color: filtered ? '#1890ff' : undefined }} />
-    ),
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          placeholder="Search aliases"
-          value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          // onPressEnter={() => handleSearch(selectedKeys, confirm)}
-          style={{ marginBottom: 8, display: 'block' }}
-        />
-        <Space>
-          {/* <Button type="primary" onClick={() => handleSearch(selectedKeys, confirm)}>
-            Search
-          </Button> */}
-          <Button onClick={() => clearFilters && clearFilters()}>
-            Reset
-          </Button>
-        </Space>
-      </div>
-    ),
-    onFilter: (value, record) => record.aliases.some(alias => alias.toLowerCase().includes(value.toLowerCase())),
-    render: aliases => {
-      let moreDots = false;
-      if (aliases?.length > 3) {
-        aliases = aliases.slice(0, 3);
-        moreDots = true;
-      }
-      return (
-        <Space onMouseEnter={() => {}} size={[0, 1]} wrap>
-          {aliases?.map(alias => (
-            <Tag color="geekblue" key={alias}>
-              {alias}
-            </Tag>
-          ))}
-          {moreDots && <Tag color="geekblue">...</Tag>}
-        </Space>
-      );
-    },
-  },
-  {
-    title: 'Bio Ref',
-    dataIndex: 'bioRefRange',
-    key: 'bioRefRange',
-    width: 100,
-    render: (bioRefRange,record) => {
-      let moreDots = false;
-      if (bioRefRange?.length > 3) {
-        bioRefRange = bioRefRange.slice(0, 3);
-        moreDots = true;
-      }
-      return (
-        <>
-        <Popover content={getContent(bioRefRange)} title="Bio Ref Range Details" trigger="hover">
-          <Tag color="blue">Reference value</Tag>
-        </Popover>
-        </>
-      );
-    },
-  },
-  {
-    title: 'Status',
-    key: 'isActive',
-    dataIndex: 'isActive',
-    filters: [
-      { text: 'Active', value: true },
-      { text: 'Inactive', value: false },
-    ],
-    onFilter: (value, record) => record.isActive === value,
-    render: active => (
-      <span>
-        <Tag color={active ? 'green' : 'red'}>
-          {active ? 'Active' : 'Inactive'}
-        </Tag>
-      </span>
-    ),
-  },
-];
 
 const ParameterUnitsColumn = ({ data }) => {
-
   if(data){
     const [visibleUnits, setVisibleUnits] = useState([]);
     const allUnits = extractUnitValues(data?.bioRefRange);
@@ -376,8 +281,6 @@ const ParameterUnitsColumn = ({ data }) => {
   }else{
     <p>null</p>
   }
-
- 
 };
 
 // Function to extract unique unit values
@@ -403,6 +306,171 @@ const extractUnitValues = (bioRefRange) => {
 
 
 const TestParams: React.FC<any> = ({data=[]}:any) => {
+
+  const [testDetailState, setTestDetail] = useRecoilState(testDataState);
+  const [profile, setProfile] = useRecoilState(profileState);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [paramData, setParamData] = useRecoilState(paramState);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleRemoveParam = (value) => {
+    let updatedParam = testDetailState?.parameter?.filter(param => param._id !== value?._id)
+    const newState = {
+      ...testDetailState,
+      parameter: updatedParam  // Correctly referencing the key as 'parameter'
+    };
+    setTestDetail(newState);
+  }
+
+  const handleEditParam = (value) => {
+    if(value){
+      setParamData(value)
+      showModal()
+    }
+  }
+
+  const parameterColumns = [
+    {
+      title: 'Parameter',
+      dataIndex: 'name',
+      key: 'name',
+      ellipsis: true,
+      width: 150,
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: text => <div style={{ width: 150,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{text}</div>,
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+      width: 100,
+      render: text => <div style={{ width: 200,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: text }}></div>,
+    },
+    {
+      title: 'Remedy',
+      dataIndex: 'remedy',
+      key: 'remedy',
+      width: 100,
+      render: text => <div style={{ width: 100,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: text }}></div>,
+    },
+    {
+      title: 'Unit',
+      dataIndex: 'units',
+      key: 'units',
+      width: 100,
+      render: (text, record) => <ParameterUnitsColumn data={record}  />
+    },
+    {
+      title: 'Alias',
+      dataIndex: 'aliases',
+      key: 'aliases',
+      width: 250,
+      filterIcon: filtered => (
+        <FaSearchMinus style={{ color: filtered ? '#1890ff' : undefined }} />
+      ),
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="Search aliases"
+            value={selectedKeys[0]}
+            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            // onPressEnter={() => handleSearch(selectedKeys, confirm)}
+            style={{ marginBottom: 8, display: 'block' }}
+          />
+          <Space>
+            {/* <Button type="primary" onClick={() => handleSearch(selectedKeys, confirm)}>
+              Search
+            </Button> */}
+            <Button onClick={() => clearFilters && clearFilters()}>
+              Reset
+            </Button>
+          </Space>
+        </div>
+      ),
+      onFilter: (value, record) => record.aliases.some(alias => alias.toLowerCase().includes(value.toLowerCase())),
+      render: aliases => {
+        let moreDots = false;
+        if (aliases?.length > 3) {
+          aliases = aliases.slice(0, 3);
+          moreDots = true;
+        }
+        return (
+          <Space onMouseEnter={() => {}} size={[0, 1]} wrap>
+            {aliases?.map(alias => (
+              <Tag color="geekblue" key={alias}>
+                {alias}
+              </Tag>
+            ))}
+            {moreDots && <Tag color="geekblue">...</Tag>}
+          </Space>
+        );
+      },
+    },
+    {
+      title: 'Bio Ref',
+      dataIndex: 'bioRefRange',
+      key: 'bioRefRange',
+      width: 100,
+      render: (bioRefRange,record) => {
+        let moreDots = false;
+        if (bioRefRange?.length > 3) {
+          bioRefRange = bioRefRange.slice(0, 3);
+          moreDots = true;
+        }
+        return (
+          <>
+          <Popover content={getContent(bioRefRange)} title="Bio Ref Range Details" trigger="hover">
+            <Tag color="blue">Reference value</Tag>
+          </Popover>
+          </>
+        );
+      },
+    },
+    {
+      title: 'Status',
+      key: 'isActive',
+      dataIndex: 'isActive',
+      filters: [
+        { text: 'Active', value: true },
+        { text: 'Inactive', value: false },
+      ],
+      onFilter: (value, record) => record.isActive === value,
+      render: active => (
+        <span>
+          <Tag color={active ? 'green' : 'red'}>
+            {active ? 'Active' : 'Inactive'}
+          </Tag>
+        </span>
+      ),
+    },
+    {
+      title: 'Action',
+      dataIndex: 'name',
+      key: 'name  ',
+      render: (text: any, record: any) => (
+        <Space size="middle">
+        <a onClick={()=>{handleRemoveParam(record)}}>
+          <TrashIcon className='w-4 h-4 text-red-500 cursor-pointer' />
+        </a>
+        <a onClick={() => handleEditParam(record)}>
+          <PencilIcon className='w-4 h-4 text-gray-900 cursor-pointer' />
+        </a>
+      </Space>
+      ),
+    },
+  ];
+
   return <div className="min-h-[50vh] h-auto">
     <Table
         dataSource={data}
@@ -420,6 +488,13 @@ const TestParams: React.FC<any> = ({data=[]}:any) => {
     <span className="flex justify-end">
     {/* <a className="bg-green-800 rounded p-2 text-white" href="#"><p className="flex text-xs"><PlusCircleIcon className="w-4 mx-2" /> Add Param </p></a> */}
     <ParameterComponent/>
+    <ParameterModal 
+        isModalVisible={isModalVisible} 
+        handleOk={handleOk} 
+        handleCancel={handleCancel} 
+        edit={true}
+    />
+  
     </span>
 
   </div>
@@ -454,11 +529,12 @@ const ParameterComponent = () => {
   );
 };
 
-const ParameterModal = ({ isModalVisible, handleOk, handleCancel }) => {
+const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
 
   const [addRange, setAddRange] = useState(false)
   const [sampleOptions, setSampleOptions] = useState();
   const [bioRange, setBioRange] = useState([]);
+  const paramData = useParamValue();
 
   // const title = isEdit ? updateParameterMeta.title : createParameterMeta.title;
   // const { data: parameters = [], isLoading } = useGetParameters();
@@ -474,6 +550,49 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel }) => {
   const [testDetailState, setTestDetail] = useRecoilState(testDataState);
   const [profile, setProfile] = useRecoilState(profileState);
   const currentBranch = useCurrentBranchValue();
+
+  console.log("param",paramData)
+  
+  useEffect(()=>{
+    if(edit){
+      console.log("edit Param", paramData)
+      form.setFieldsValue(paramData);
+      setBasicRange(paramData?.bioRefRange?.basicRange)
+      let currentRanges = paramData?.bioRefRange?.advanceRange
+      setAdvanceRange((currentRanges) => {
+        let updated = false; // Flag to check if the array was updated
+      
+        const updatedRanges = currentRanges.map(range => {
+          // Determine the type (ageRange or genderRange) and the key (ageRangeType or genderRangeType)
+          const type = data?.ageRange ? "ageRange" : "genderRange";
+          const keyType = data?.ageRange ? "ageRangeType" : "genderRangeType";
+      
+          // Check if the range and data[type] are defined
+          if (range[type] && data[type]) {
+            // Check if any range in the currentRanges matches the incoming data's type and key
+            const matchingRangeIndex = range[type]?.findIndex(item => item[keyType] === data[type][0][keyType]);
+      
+            if (matchingRangeIndex !== -1) {
+              // If a matching range is found, update it
+              updated = true;
+              range[type][matchingRangeIndex] = data[type][0];
+            }
+          }
+      
+          return range; // Return the updated or unchanged range
+        });
+      
+        // if (!updated) {
+        //   // If no matching range found, append the new data
+        //   updatedRanges.push(data);
+        // }
+        console.log("updateRange",updatedRanges)
+        return updatedRanges;
+      });
+    
+    }
+  },[paramData])
+  
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
@@ -530,6 +649,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel }) => {
     };
 
     form.validateFields().then(values => {
+      console.log(values)
         advanceRange?.forEach((item) => {
         if (item.ageRangeType) {
           advanceRanges.ageRange.push({
@@ -551,22 +671,35 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel }) => {
           basicRange: basicRange,
           advanceRange: advanceRanges
         }
-        const updatedDetails = {
-          ...testDetailState,  // Spread the existing state to retain other properties
-          parameter: [
-            // Spread existing parameters if it's an array, otherwise start with an empty array
-            ...(Array.isArray(testDetailState.parameter) ? testDetailState.parameter : []),
-            // Add new values, ensuring they are treated as an array
-            ...(Array.isArray(values) ? values : [values])
-          ]
-        };
-      
-        console.log('Form Values:', updatedDetails); // Here you get all the values from the form 
-        setTestDetail(updatedDetails)
+
+        if(edit){
+          const updatedParameters = testDetailState.parameter.map(param => {
+            if(param._id === paramData._id){
+              return values;
+            }else{
+              return param;
+            }
+          });
+          let updatedDetails = {
+            ...testDetailState,  // Spread the existing state to retain other properties
+            parameter: Array.isArray(updatedParameters) ? updatedParameters : [updatedParameters]
+          };
+          console.log("sdsdsdd",updatedDetails)
+           setTestDetail(updatedDetails)
+        }else{
+          let updatedDetails = {
+            ...testDetailState,  // Spread the existing state to retain other properties
+            parameter: [
+              // Spread existing parameters if it's an array, otherwise start with an empty array
+              ...(Array.isArray(testDetailState.parameter) ? testDetailState.parameter : []),
+              // Add new values, ensuring they are treated as an array
+              ...(Array.isArray(values) ? values : [values])
+            ]
+          };
+           setTestDetail(updatedDetails)
+        }
+
         handleOk()
-        // updateDiagnostic.mutate({
-        //   data: { id: profile?._id, tests: [...profile?.tests, { ...updatedDetails, branchId: currentBranch?._id }] },
-        // });
     }).catch(info => {
         console.log('Validate Failed:', info);
     });
@@ -725,7 +858,6 @@ const handleAdvanceRangeSubmit = (data) => {
     console.log("updateRange",updatedRanges)
     return updatedRanges;
   });
-  
 };
 
 const handleSubmit = (data) => {
