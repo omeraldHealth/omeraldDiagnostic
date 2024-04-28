@@ -17,7 +17,7 @@ export const uploadDiagnosticReportApi = backendApiPath + `s3/omerald/logoUpload
 export const uploadDiagnosticLogoApi = backendApiPath + `s3/diagnostic/reportUpload`; // Endpoint to upload diagnostic logo
 
 // External API path to get all admin report types
-export const getAdminReportTypesApi = "https://diagnostic-backend.onrender.com/api/v1/reports/getAllReports";
-export const getDiagnosticLandingData = "https://diagnostic-backend.onrender.com/api/v1/diagnosticLanding/getDiagLanding";
-export const getAdminApiGetToken = "https://diagnostic-backend.onrender.com//api/v1/auth/getAuthToken"
+export const getAdminReportTypesApi = "https://adminstage.azurewebsites.net/api/v1/reports/getAllReports";
+export const getDiagnosticLandingData = "https://adminstage.azurewebsites.net/api/v1/diagnosticLanding/getDiagLanding";
+export const getAdminApiGetToken = "https://adminstage.azurewebsites.net/api/v1/auth/getAuthToken"
 
