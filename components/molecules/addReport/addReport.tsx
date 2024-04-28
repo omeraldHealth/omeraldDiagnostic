@@ -21,7 +21,7 @@ interface AddReportComponentProps {
 export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddReports,refetch }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [fileUrl, setFileUrl] = useState("");
-  const [manualReport, setManualReport] = useState(false  );
+  const [manualReport, setManualReport] = useState(false);
   const currentBranch = useCurrentBranchValue()
   const prev = () => {setCurrentStep(currentStep-1)}
   const next = () => {setCurrentStep(currentStep+1)}
@@ -111,8 +111,7 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
             },
           },
       };
-    
-      
+      console.log("updatedReportData",updatedReportData)
       setReportData(updatedReportData)
       updateDiagnnosticReport.mutate({data:updatedReportData})
     }

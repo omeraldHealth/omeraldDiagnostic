@@ -7,6 +7,7 @@ import { profile } from 'console';
 import { useRecoilState } from 'recoil';
 const { Option } = Select;
 import {reportDataState} from "../../common/recoil/report/reportData"
+import { ManualReport } from './ManualReport';
 
 export function PatientDetails({next}:any) {
   const profile = useProfileValue();
@@ -116,20 +117,21 @@ export function PatientDetails({next}:any) {
               <Input />
             </Form.Item>
             {/* <h2 className="text-xl font-bold mb-4">Pathologist Information</h2> */}
-            <Form.Item
-              name={['pathologist', 'name']}
-              label="Pathalogist"
-            >
-              <Select
-                showSearch
-                placeholder="Select pathalogist"
-                optionFilterProp="children"
-              >
-                {pathologistList?.map(path => (
-                  <Option key={path._id} value={path?._id}>{path?.name}</Option>
-                ))}
-              </Select>
-            </Form.Item>
+                <Form.Item
+                    name={['pathologist', 'name']}
+                    label="Pathologist"
+                >
+                    <Select
+                        showSearch
+                        placeholder="Select pathologist"
+                        optionFilterProp="children"
+                    >
+                        {pathologistList?.map(path => (
+                            <Option key={path._id} value={path?._id}>{path?.name}</Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+
           </div>
 
         </div>
