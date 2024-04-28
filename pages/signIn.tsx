@@ -12,7 +12,7 @@ const SignInComp = () => {
   useEffect(() => {
     // Check if user is already logged in and show a warning
     if (user) {
-      warningAlert("User already logged in");
+      // warningAlert("User already logged in");
     }
   }, [user]);
 
