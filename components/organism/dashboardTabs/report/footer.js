@@ -20,7 +20,7 @@ const Footer = () => {
           </div>
           <div>
           <section className="mt-8">
-              <img className="w-20" src="https://www.wisestamp.com/wp-content/uploads/2020/08/Oprah-Winfrey-Signature-1.png" />
+              <img className="w-20" src="https://www.fillhq.com/wp-content/uploads/2021/11/Handwritten-Signature--1024x637.png" />
               <p className="mb-1">Avinash</p>
               <p className="mb-0">(MD, Pathologist)</p>
             </section>

@@ -116,22 +116,6 @@ export function PatientDetails({next}:any) {
             >
               <Input />
             </Form.Item>
-            {/* <h2 className="text-xl font-bold mb-4">Pathologist Information</h2> */}
-                <Form.Item
-                    name={['pathologist', 'name']}
-                    label="Pathologist"
-                >
-                    <Select
-                        showSearch
-                        placeholder="Select pathologist"
-                        optionFilterProp="children"
-                    >
-                        {pathologistList?.map(path => (
-                            <Option key={path._id} value={path?._id}>{path?.name}</Option>
-                        ))}
-                    </Select>
-                </Form.Item>
-
           </div>
 
         </div>

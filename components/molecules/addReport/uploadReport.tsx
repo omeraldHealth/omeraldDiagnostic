@@ -2,11 +2,12 @@
 
 import { reportState } from "@components/common/recoil/report";
 import { ArrowUpIcon } from "@heroicons/react/20/solid";
-import { Button, DatePicker, Form, Input, Select, Switch, Upload } from "antd";
+import { Button, DatePicker, Form, Input, Row, Select, Switch, Upload } from "antd";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import {reportDataState} from "../../common/recoil/report/reportData"
 import { useProfileValue } from "@components/common/constants/recoilValues";
+import { ManualReport } from "./ManualReport";
 
 interface UploadReportProps {
   handleSteps?: () => void;
@@ -25,7 +26,7 @@ export const UploadReport: React.FC<UploadReportProps> = ({ next, setManualRepor
         <div className="px-8 py-2">
           <section className="w-[70vh] h-auto xl:h-[40vh] xl:mt-4">
             <ReportHeader handleSelect={handleSelect} />
-            {!manualReport ? <UploadReportFile next={next}/> : <GenerateReport next={next}/>}
+            {!manualReport ? <UploadReportFile next={next}/> : <GenerateReport manualReport={manualReport} next={next}/>}
           </section>
         </div>
   );
@@ -106,6 +107,7 @@ const UploadReportFile: React.FC<any> = ({next}) => {
        <Form.Item
         name="reportName"
         label="Enter Report Name"
+        className="w-[20vw]"
         rules={[{ required: true, message: 'Please input the report name!' }]}
       >
         <Input />
@@ -140,11 +142,13 @@ const UploadReportFile: React.FC<any> = ({next}) => {
   </div>
 }
 
-const GenerateReport:React.FC<any> = ({next}) => {
+const GenerateReport:React.FC<any> = ({next, manualReport}) => {
   const [form] = Form.useForm();
   const [reportData,setReportData] = useRecoilState(reportDataState)  
   const profile = useProfileValue()
   const testList = profile?.tests
+  const pathologistList = profile?.pathologistDetail;
+
 
     const onFinish = (values: any) => {
       if(reportData){
@@ -187,6 +191,25 @@ const GenerateReport:React.FC<any> = ({next}) => {
       >
         <Input />
       </Form.Item>
+       {/* <h2 className="text-xl font-bold mb-4">Pathologist Information</h2> */}
+       {manualReport && <>
+            <Form.Item
+                    name={['pathologist', 'name']}
+                    label="Pathologist"
+                    className="w-[20vw]"
+                >
+                    <Select
+                        showSearch
+                        placeholder="Select pathologist"
+                        optionFilterProp="children"
+                    >
+                        {pathologistList?.map(path => (
+                            <Option key={path._id} value={path?._id}>{path?.name}</Option>
+                        ))}
+                    </Select>
+          </Form.Item>
+           </>}
+      <Row className="flex gap-2 item-center">
       <Form.Item
         name="reportDate"
         label="Report Date"
@@ -214,6 +237,10 @@ const GenerateReport:React.FC<any> = ({next}) => {
               ))}
             </Select>
         </Form.Item>
+          
+      </Row>
+   
+           
       <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit
