@@ -19,6 +19,12 @@ const showToastIfNotDisplayed = (msg: string, options: ToastOptions): void => {
   }
 };
 
+const showToastIfDisplayed = (msg: string, options: ToastOptions): void => {
+
+    toast(msg, options);
+    displayedMessages.add(msg);
+};
+
 /**
  * Displays a success toast message.
  * @param {string} msg - The success message.
@@ -36,6 +42,8 @@ export const infoAlert = (msg: string): void => showToastIfNotDisplayed(msg, { t
  * @param {string} msg - The warning message.
  */
 export const warningAlert = (msg: string): void => showToastIfNotDisplayed(msg, { type: "warning" });
+
+export const warningAlert2 = (msg: string): void => showToastIfDisplayed(msg, { type: "warning" });
 
 /**
  * Displays an error toast message.

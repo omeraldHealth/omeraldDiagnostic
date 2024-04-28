@@ -75,6 +75,7 @@ export interface UserNavigationItem {
     handleSuccess: () => void;
     report?: any;
     style: string;
+    isManual?: boolean
   }
 
   export interface ProfileSummaryCardProps {
@@ -86,6 +87,7 @@ export interface UserNavigationItem {
   export interface ReportSummaryCompProps {
     profile: any;
     style: string;
+    isManual?: boolean
     handleSuccess: () => void;
   }
   

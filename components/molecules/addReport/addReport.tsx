@@ -19,9 +19,9 @@ interface AddReportComponentProps {
 }
 
 export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddReports,refetch }) => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [fileUrl, setFileUrl] = useState("");
-  const [manualReport, setManualReport] = useState("");
+  const [manualReport, setManualReport] = useState(false  );
   const currentBranch = useCurrentBranchValue()
   const prev = () => {setCurrentStep(currentStep-1)}
   const next = () => {setCurrentStep(currentStep+1)}
@@ -45,7 +45,7 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
       : []),
     {
       title: 'Report Summary',
-      content:<ReportSummary style='' handleSuccess={() => next()} />
+      content:<ReportSummary isManual={manualReport} style='' handleSuccess={() => next()} />
     },
     {
       title: 'Report Success',
@@ -65,28 +65,54 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
   });
 
   const handleSubmitTest = async () => {
-    let url = await customRequest({endpoint: uploadDiagnosticLogoApi, file: reportData?.reportData?.file, header:{
-      'Content-Type': 'multipart/form-data',
-    }})
-    if(url?.status === 200){
-      successAlert("File uploaded succesfully")
-      // update reportData
+    if(!manualReport){
+      let url = await customRequest({endpoint: uploadDiagnosticLogoApi, file: reportData?.reportData?.file, header:{
+        'Content-Type': 'multipart/form-data',
+      }})
+      if(url?.status === 200){
+        successAlert("File uploaded succesfully")
+        // update reportData
+        const updatedReportData = {
+          ...reportData,
+          reportData: {
+            ...reportData.reportData,
+            url: url?.data?.url,
+            isManual: false
+          },
+          diagnosticCenter: {
+            ...reportData.diagnosticCenter,
+            branch: {
+              ...reportData.diagnosticCenter.branch,
+              id: currentBranch?._id
+            }
+          }
+        };
+        
+        setReportData(updatedReportData)
+        updateDiagnnosticReport.mutate({data:updatedReportData})
+      }
+    }
+    else{
       const updatedReportData = {
         ...reportData,
-        reportData: {
-          ...reportData.reportData,
-          url: url?.data?.url
-        },
         diagnosticCenter: {
-          ...reportData.diagnosticCenter,
-          branch: {
-            ...reportData.diagnosticCenter.branch,
-            id: currentBranch?._id
-          }
-        }
+            ...reportData.diagnosticCenter,
+            branch: {
+                ...reportData.diagnosticCenter.branch,
+                id: currentBranch?._id // assuming currentBranch might be undefined
+            }
+        },
+        reportData: {
+            ...reportData.reportData,
+            parsedData: {
+                ...reportData.reportData?.parsedData,
+                name: reportData.reportData?.parsedData?.testName,
+                isManual: true
+            },
+          },
       };
+    
       
-      console.log("ssaif",currentBranch?._id)
       setReportData(updatedReportData)
       updateDiagnnosticReport.mutate({data:updatedReportData})
     }
@@ -99,13 +125,11 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
         formData.append('file', file.fileList[0].originFileObj);
         // Make the request with axios including the token in the headers and form data
         const response = await axios.post(endpoint, formData, { headers });
-        console.log("Response:", response.data);
         setFileUrl(response.data?.url)
   
         // Return the response if needed
         return response;
       } else {
-        console.log("File or fileList is undefined or empty.");
       }
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -113,7 +137,7 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
     }
   };
   
-
+  const submitStep = manualReport? 3 : 2
   return <div className="container mx-auto p-8 h-auto">
       <div className="w-[100%] h-auto min-h-[60vh]">
             <Steps current={currentStep}>
@@ -123,8 +147,8 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
             </Steps>
             <div className="mt-5">{steps[currentStep].content}</div>
             <div className='flex justify-end'>
-               {(currentStep === 1 || currentStep === 2) && <Button type="primary" onClick={prev} className="ml-5" >Previous</Button>}
-               {currentStep === (2) && <Button type="dashed" onClick={handleSubmitTest} className="ml-5" >Submit</Button>}
+               {(currentStep === 1 || currentStep === 2 || currentStep === 3) && <Button type="primary" onClick={prev} className="ml-5" >Previous</Button>}
+               {currentStep === (submitStep) && <Button type="dashed" onClick={handleSubmitTest} className="ml-5" >Submit</Button>}
             </div>
       </div>
   </div>

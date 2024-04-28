@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { Typography, Button } from 'antd';
 import { errorAlert, successAlert, warningAlert } from '@components/atoms/alerts/alert';
@@ -14,14 +14,14 @@ import { reportDataState } from '@components/common/recoil/report/reportData';
 
 const { Title } = Typography;
 
-export const ReportSummary: React.FC<ReportSummaryProps> = ({ handleSuccess, style }) => {
+export const ReportSummary: React.FC<ReportSummaryProps> = ({ handleSuccess, style, isManual }) => {
 
   const [reportData,setReportData] = useRecoilState(reportDataState) 
 
   return (
     <section>
       <div className={`w-[70vw] p-4 bg-white relative rounded-lg h-auto text-left ${style}`}>
-        <ReportSummaryComp profile={reportData} style={style} handleSuccess={handleSuccess} />
+        <ReportSummaryComp isManual={isManual} profile={reportData} style={style} handleSuccess={handleSuccess} />
       </div>
     </section>
   );
@@ -40,11 +40,33 @@ const ProfileSummaryCard: React.FC<ProfileSummaryCardProps> = ({ title, value, l
   );
 };
 
-const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, handleSuccess }) => {
+const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, handleSuccess, isManual }) => {
   const [loading, setLoading] = useState(false);
   const [reportData,setReportData] = useRecoilState(reportDataState)
   const currentBranch = useCurrentBranchValue();
-  console.log("re", reportData)
+
+  useEffect(()=>{
+    if(isManual){
+       // Creating a new object with reportDetails nested
+       const updatedReportData = {
+        ...reportData,
+        reportData: {
+            reportName: reportData.reportName,
+            reportDate: reportData.reportDate,
+            parsedData: reportData?.parsedData
+        }
+    };
+
+    // Removing old keys
+    delete updatedReportData.reportName;
+    delete updatedReportData.reportDate;
+    delete updatedReportData.reportType;
+    delete updateDiagnostic?.parsedData
+    console.log(updatedReportData)
+    setReportData(updatedReportData);
+   }
+  },[])
+
   const updateDiagnostic = useCreateReport({
     onSuccess: (data) => {
       successAlert("Report added successfully");
@@ -115,7 +137,9 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
               <h2 className='font-bold text-2xl mb-6'>Report Details</h2>
               <ProfileSummaryCard title="Report Name" value={reportData?.reportData?.reportName} />
               <ProfileSummaryCard title="Report Date" value={formattedDate} />
-              <ProfileSummaryCard title="Report Uploaded" value={reportData?.reportData?.file?.fileList[0].name} />
+              {!isManual ? <ProfileSummaryCard title="Report Uploaded" value={reportData?.reportData?.file?.fileList[0].name} />:
+               <ProfileSummaryCard title="Report Uploaded" value={reportData?.reportData?.parsedData?.testName} />}
+
             </aside>
             <aside>
               <h2 className='font-bold text-2xl mb-6'>Patient Details</h2>

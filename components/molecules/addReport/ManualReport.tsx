@@ -4,6 +4,9 @@ import { PencilIcon } from '@heroicons/react/20/solid';
 import { FaSave, FaSearchMinus } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import { reportDataState } from '@components/common/recoil/report/reportData';
+import { toast } from 'react-toastify';
+import { errorAlert, successAlert, warningAlert, warningAlert2 } from '@components/atoms/alerts/alert';
+import { success } from '@styles/styleTemplate/color';
 
 const { Option } = Select;
 
@@ -39,6 +42,7 @@ const flattenBioRefTypes = () => {
 };
 
 const BioRefDropDown = ({ record, editState, handleValueChange }) => {
+
   const options = flattenBioRefTypes();
   return (
     <div className="flex space-x-2">
@@ -46,18 +50,18 @@ const BioRefDropDown = ({ record, editState, handleValueChange }) => {
         className="w-1/2"
         placeholder="Select Type"
         onChange={(value) => handleValueChange('type', value)}
-        value={editState.type || record.bioRefValue?.type}
+        value={record.bioRefValue?.type}
         disabled={!editState.isEditing}
       >
         {options.map(opt => (
-          <Option key={opt.key} value={opt.key}>{opt.label}</Option>
+          <Option key={opt._id} value={opt.key}>{opt.label}</Option>
         ))}
       </Select>
       <Input
         className="w-1/2"
         placeholder="Enter Value"
         onChange={e => handleValueChange('value', e.target.value)}
-        value={editState.value || record.bioRefValue?.value}
+        value={record.bioRefValue?.value}
         disabled={!editState.isEditing}
       />
     </div>
@@ -68,34 +72,53 @@ export const ManualReport = ({ next }) => {
     const [reportData, setReportData] = useRecoilState(reportDataState);
     const [editStates, setEditStates] = useState({});
 
-
-  const toggleEditing = (key) => {
-    const isEditing = editStates[key]?.isEditing;
-    setEditStates(prev => ({
-      ...prev,
-      [key]: { ...prev[key], isEditing: !isEditing }
-    }));
+    const toggleEditing = (id) => {
+      setEditStates(prev => ({
+          ...prev,
+          [id]: {
+              ...prev[id],
+              isEditing: !prev[id]?.isEditing
+          }
+      }));
   };
 
-  const handleValueChange = (key, fieldName, value) => {
+  const handleValueChange = (id, fieldName, value) => {
     setEditStates(prev => ({
-      ...prev,
-      [key]: { ...prev[key], [fieldName]: value }
+        ...prev,
+        [id]: {
+            ...prev[id],
+            [fieldName]: value
+        }
     }));
-  };
+};
 
-  const saveData = (key) => {
-    const editedData = editStates[key];
+  const saveData = (id) => {
+    const editedData = editStates[id]; // Get the edited data for the specific row
     const newData = reportData.parsedData.parameters.map(item => {
-      if (item.key === key) {
-        return { ...item, ...editedData, isEditing: false };
-      }
-      return item;
+        if (item._id === id) {  // Check for matching _id
+            return {
+                ...item,
+                bioRefRange: {
+                    ...item.bioRefRange,
+                    value: {
+                        ...editedData  // Assign edited data to bioRefRange.value
+                    }
+                }
+            };
+        }
+        return item;
     });
-    setReportData({ ...reportData, parsedData: { ...reportData.parsedData, parameters: newData } });
-    toggleEditing(key);
+    setReportData({
+        ...reportData,
+        parsedData: {
+            ...reportData.parsedData,
+            parameters: newData
+        }
+    });
+    console.log("manual", reportData?.parsedData?.parameters[0]?.bioRefRange?.value)
+    console.log("manual", reportData?.parsedData?.parameters[1]?.bioRefRange?.value)
+    toggleEditing(id); // Optionally turn off editing mode after save
   };
-  
 
   const parameterColumns = [
     {
@@ -144,8 +167,8 @@ export const ManualReport = ({ next }) => {
       render: (text, record) => (
         <BioRefDropDown
           record={record}
-          editState={editStates[record.key] || {}}
-          handleValueChange={(fieldName, value) => handleValueChange(record.key, fieldName, value)}
+          editState={editStates[record?._id] || {}} 
+          handleValueChange={(fieldName, value) => handleValueChange(record._id, fieldName, value)}
         />
       ),
     },
@@ -153,12 +176,12 @@ export const ManualReport = ({ next }) => {
       title: 'Actions',
       key: 'actions',
       render: (_, record) => (
-        editStates[record.key]?.isEditing ? (
-          <a onClick={() => saveData(record.key)}>
+        editStates[record._id]?.isEditing ? (
+          <a onClick={() => saveData(record._id)}>
             <FaSave className="w-4 h-4" />
           </a>
         ) : (
-          <a onClick={() => toggleEditing(record.key)}>
+          <a onClick={() => toggleEditing(record._id)}>
             <PencilIcon className="w-4 h-4" />
           </a>
         )
@@ -179,6 +202,19 @@ export const ManualReport = ({ next }) => {
         }}
         scroll={{ x: 'max-content' }}
       />
+      <Button onClick={()=>{
+        console.log("check",checkIfValueExist(reportData?.parsedData?.parameters))
+        if(checkIfValueExist(reportData?.parsedData?.parameters)){
+          successAlert("All values updated succesfully")
+          next()
+        }
+        warningAlert2("Please enter values for all params")
+      }} type='primary'>Next</Button>
     </section>
   );
 };
+
+const checkIfValueExist = (parameters:any) => {
+  // Check if every parameter has a non-undefined, non-null `bioRefRange.value`
+  return parameters.every(param => param?.bioRefRange?.value !== undefined && param?.bioRefRange?.value !== null);
+}

@@ -74,7 +74,6 @@ const UploadReportFile: React.FC<any> = ({next}) => {
       };
       setReportData(updatedData);
     }
-    console.log("report",reportData)
     next()
     // Check if `reportData.reportData` exists and if true, log the current state and proceed to the next step
     // if (reportData?.reportData) {
@@ -161,7 +160,7 @@ const GenerateReport:React.FC<any> = ({next}) => {
       if(value){
         // Filter the reportData to find the selected report based on the ID
         let selectedReport = testList?.filter((report) => report?._id === value);
-        setReportData({parsedData: selectedReport[0]})
+        setReportData({...reportData,parsedData: selectedReport[0]})
         
       }
     };
