@@ -8,12 +8,15 @@ import { AddReportComponent } from '../../molecules/addReport/addReport';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
 import { Switch } from 'antd';
+import PreviewComponent from './previewReport';
 
 export default function ReportsTab() {
   const [showReport, setShowReport] = useState(false);
   const { data: reports, refetch } = useQueryGetData("reports", getDiagReportsApi);
   const [id, setDeleteId] = useState("");
+  const [previewRecord, setPreviewRecord] = useState({})
   const currentBranch = useCurrentBranchValue()
+  const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
   let reportsList = reports?.data?.filter((report: any) => report?.diagnosticCenter?.branch.id === currentBranch?._id );
   const deleteMutation = useDeleteReports(id, {
     onSuccess: () => {
@@ -30,6 +33,11 @@ export default function ReportsTab() {
     deleteMutation.mutate();
   };
 
+  const handlePreview = (record) => {
+    console.log(record)
+    setPreviewRecord(record)
+    setPreviewReportModalOpen(true)
+  }
   return (
     <div className="p-0 h-auto bg-signBanner">
       <span className='flex justify-end'>
@@ -47,15 +55,24 @@ export default function ReportsTab() {
           {!showReport ? (
             <>
               {reports && reports.data && reports.data.length > 0 ? (
-                <DashboardTable pageSize={7} columns={ReportTableColumns(handleRemove)} data={reportsList} />
+                <DashboardTable pageSize={7} columns={ReportTableColumns(handleRemove,handlePreview)} data={reportsList} />
               ) : (
-                <DashboardTable pageSize={7} columns={ReportTableColumns(handleRemove)} data={[]} />
+                <DashboardTable pageSize={7} columns={ReportTableColumns(handleRemove,handlePreview)} data={[]} />
               )}
             </>
           ) : (
             <AddReportComponent refetch={refetch} setAddReports={setShowReport} />
           )}
         </>
+        {
+        previewReportModalOpen && (
+          <PreviewComponent
+            showPreview={previewReportModalOpen} 
+            onClose={() => setPreviewReportModalOpen(false)}
+            record={previewRecord}
+            />
+        )
+      }
       </div>
     </div>
   );

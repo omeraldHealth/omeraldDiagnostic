@@ -369,8 +369,9 @@ export const ParameterColumns =
     },
 ]
 
-export const ReportTableColumns : (handleRemove: any) => TestTableColumn[] = (  
+export const ReportTableColumns : (handleRemove: any,handlePreview:any) => TestTableColumn[] = (  
   handleRemove,
+  handlePreview
 ) => [
       // {
       //   key:"reportId",
@@ -383,6 +384,7 @@ export const ReportTableColumns : (handleRemove: any) => TestTableColumn[] = (
         key:"patient",
         title: 'Patient Name',
         dataIndex: 'patient',
+        className: "w-[10vw]",
         sorter: (a, b) => a.userName.length - b.userName.length,
         // sortDirections: ['descend'],
         render(patient, record) {
@@ -440,14 +442,10 @@ export const ReportTableColumns : (handleRemove: any) => TestTableColumn[] = (
         render: ((stat:string,report: any) => 
         <>
         { 
-          !stat ? (
-          <a href={report?.reportData.url} target="_blank" className="text-orange-700"><EyeIcon className='w-4'/></a>
+          report?.reportData.url ? (
+          <a href={report?.reportData.url} target="_blank" className="text-orange-700"><EyeIcon className='w-4 text-orange-500'/></a>
         ) : (
-          // <ViewPdf
-          //   report={person}
-          //   diagnosticDetails={diagnosticDetails as UserDetails}
-          // />
-          <></>
+          <a onClick={()=>{handlePreview(report)}} className="text-orange-700"><EyeIcon className='w-4 text-green-900'/></a>
         )}
         </>
         ),

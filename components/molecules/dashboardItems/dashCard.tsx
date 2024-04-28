@@ -31,9 +31,9 @@ export const DashCard = () => {
   const { data: reports, refetch } = useQueryGetData("reports", getDiagReportsApi);
 
   let testList = profile?.tests?.filter((test: any) => test?.branchId === currentBranch?._id );
-  let reportList = reports?.data?.filter((report: any) => report?.branchId === currentBranch?._id );
+  // let reportList = reports?.data?.filter((report: any) => report?.branchId === currentBranch?._id );
   let employeeList = profile?.managersDetail?.filter((emp: any) => emp.branchId === currentBranch?._id || emp?.managerRole.toLowerCase() === 'owner');
-
+  let reportList = reports?.data?.filter((report: any) => report?.diagnosticCenter?.branch.id === currentBranch?._id );
   const dashCard: any[] = [
     {
       href: '/test',
@@ -65,7 +65,7 @@ export const DashCard = () => {
       icon: <BeakerIcon className="w-10 h-10" />,
       tipInfo: 'The number of users in your diagnostic center',
       title: 'Total Users',
-      value: employeeList?.length,
+      value: employeeList?.length && employeeList?.length+ 1,
     },
   ];
 
