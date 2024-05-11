@@ -6,10 +6,10 @@ import NavFont from '@components/atoms/nav/navFont';
 import { useAuthContext } from 'utils/context/auth.context';
 
 const navLinks = [
-  { navLink: '/feature', navText: 'Features' },
-  { navLink: '/knowledge', navText: 'Knowledge' },
-  { navLink: '/blog', navText: 'Blog' },
-  { navLink: '/pricing', navText: 'Pricing' },
+  { navLink: '/info/features', navText: 'Features' },
+  { navLink: '/info/knowledge', navText: 'Knowledge' },
+  { navLink: '/info/blog', navText: 'Blog' },
+  { navLink: '/info/pricing', navText: 'Pricing' },
 ];
 
 interface NavbarProps {

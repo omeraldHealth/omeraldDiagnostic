@@ -22,7 +22,7 @@ export const UserLayout = ({ tabName, tabDescription, children }: any) => {
     <div className='flex flex-col max-h-[100vh]'>
       {/* Head component for SEO metadata */}
       <PageHead
-        icon={'./favicon.png'}
+        icon={'/favicon.png'}
         title={tabName}
         description={tabDescription}
       />

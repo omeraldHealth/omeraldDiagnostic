@@ -16,7 +16,11 @@ export const ROUTES_WITHOUT_SIDEBAR = [
     '/verifyUser',
     '/signIn',
     '/signUp',
-    '/onboard'
+    '/onboard',
+    '/info/features',
+    '/info/knowledge',
+    '/info/pricing',
+    '/info/blog'
 ];
 
 export const useProfileValue = () => useRecoilValue(profileState);
