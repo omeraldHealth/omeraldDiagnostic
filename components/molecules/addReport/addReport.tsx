@@ -49,10 +49,12 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
     },
     {
       title: 'Report Success',
-      content: <SuccessReport refetch={refetch} setAddReports={()=>{setAddReports(false)}} />
+      content: <SuccessReport refetch={refetch} setAddReports={()=>{
+        setReportData([]);
+        setAddReports(false)}} />
     },
   ];
-
+  console.log("record", reportData)
   const updateDiagnnosticReport = useCreateReport({
     onSuccess: (data) => {
       successAlert('Report added successfully');

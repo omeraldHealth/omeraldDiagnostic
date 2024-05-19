@@ -3,14 +3,14 @@ import { Tabs, TabsProps } from 'antd';
 import { Spinner } from '@components/atoms/loader';
 import { ActivityColumns, BranchColumns, EmployeeColumns, PathologistColumns } from 'utils/forms/form';
 import { useUpdateDiagnostic } from 'utils/reactQuery';
-import { errorAlert, successAlert, warningAlert } from '@components/atoms/alerts/alert';
+import { errorAlert, errorAlert2, successAlert, warningAlert } from '@components/atoms/alerts/alert';
 import { useRecoilState } from 'recoil';
 import { profileState } from '@components/common/recoil/profile';
 import { branchDetailsFormArray, managerFormArray, pathologistFormArray } from 'utils/types/molecules/forms.interface';
 import dynamic from 'next/dynamic';
 import { settingTabState } from 'components/common/recoil/settings/index'
 import { logoStateData } from '@components/common/recoil/logo';
-import { uploadDiagnosticLogoApi } from '@utils';
+import { uploadDiagnosticLogoApi, uploadDiagnosticReportApi } from '@utils';
 import axios from 'axios';
 import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
 
@@ -74,42 +74,84 @@ export default function SettingsTab() {
     // }
   }
 
+
+  const customRequest = async ({ endpoint, file, headers }: any) => {
+    console.log("file", file)
+    console.log("fileList", file?.fileList)
+    console.log("fileList", file?.fileList)
+
+
+    try {
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        // Make the request with axios including the token in the headers and form data
+        const response = await axios.post(endpoint, formData, { headers });
+        // setFileUrl(response.data?.url)
+  
+        // Return the response if needed
+        return response;
+      } else {""
+        errorAlert2("Error uploading signature")
+      }
+    } catch (error) {
+      errorAlert2("Error uploading file:");
+      throw new Error('File upload failed.');
+    }
+  };
+  
+
   const handleAdd = async (record:any) => {
     let recordType = fetchRecordType(activeKey);
 
     // Check if record.name is not already present
     if (!profile?.[recordType].some((item) => item.name === record.name )) {
 
-      // Upload logo
-      setLoading(true)
-      const formDataImage = new FormData();
-      formDataImage.append("file", logoState);
-      const logoResp = await axios.post(
-        uploadDiagnosticLogoApi,
-        formDataImage,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
- 
+        let logoResp = await customRequest({endpoint: uploadDiagnosticReportApi, file: logoState, header:{
+          'Content-Type': 'multipart/form-data',
+        }})
 
-      if (logoResp?.status === 200) {
-        record = {...record, signature: logoResp?.data?.url}
-        let updateData = [...profile?.[recordType], record];
-        updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
-        setAddElement(false);
-        successAlert("Added pathalogist")
-        setLoading(false)
-      }else{
-        successAlert("Error adding pathalogist")
-        setLoading(false)
-      }
-
-     
-    } else if (!profile?.[recordType].some((item) => item.managerContact === record.managerContact || item.managerName === record.managerName )) {
+        if(logoResp?.status === 200){
+          successAlert("File uploaded succesfully")
+          record = {...record, signature: logoResp?.data?.url}
+          let updatedBranches = profile.branches.map(branch => {
+            if (branch._id === currentBranch._id) {
+              let updatedPathologistDetail;
+              if (Array.isArray(branch.pathologistDetail) && branch.pathologistDetail.length > 0) {
+                updatedPathologistDetail = branch.pathologistDetail.map(pathologist => 
+                  pathologist.name === record.name ? { ...pathologist, ...record } : pathologist
+                );
+              } else {
+                updatedPathologistDetail = [record];
+              }
+          
+              return {
+                ...branch,
+                pathologistDetail: updatedPathologistDetail,
+                updatedAt: new Date()
+              };
+            }
+            return branch;
+          });
+          let updatedProfile = {...profile, "branches":updatedBranches}
+          console.log("Updated profile:", updatedProfile);
+          updateDiagnostic.mutate({ data: { id: profile?._id, branches: updatedProfile?.branches } });
+          setAddElement(false);
+          successAlert("Added pathalogist")
+          setLoading(false)
+        }
+        else{
+          successAlert("Error uploading pathalogist signature")
+          setLoading(false)
+        }
+     } 
+     else if (!profile?.[recordType].some((item) => item.managerContact === record.managerContact || item.managerName === record.managerName )) {
       record = {...record, branchId: currentBranch?._id}
       let updateData = [...profile?.[recordType], record];
       updateDiagnostic.mutate({ data: { id: profile?._id, [recordType]: updateData } });
       setAddElement(false);
       successAlert("Added manager")
+      setLoading(false)
     }
     else if (!profile?.[recordType].some((item) => item.branchContact === record.branchContact || item.branchName === record.branchName)) {
       let updateData = [...profile?.[recordType], record];
@@ -155,7 +197,10 @@ export default function SettingsTab() {
     setEditElement: setEditElement,
     defaultValues: defaultValues,
   };
-
+  console.log(currentBranch?._id)
+  console.log(profile?.branches[0]?._id)
+  const filteredBranch = profile?.branches?.filter((branch:any) => branch?._id === currentBranch?._id)?.[0]
+  console.log(filteredBranch)
   const tabComponents: TabsProps['items'] = [
     {
       key: '1',
@@ -183,7 +228,7 @@ export default function SettingsTab() {
     {
       key: '5',
       label:  "Pathologist Management",
-      children:   <SettingsCommon columns={PathologistColumns(handleAdd, handleRemove)} data={profile ? profile?.pathologistDetail : []} 
+      children:   <SettingsCommon columns={PathologistColumns(handleAdd, handleRemove)} data={filteredBranch ? filteredBranch?.pathologistDetail : []} 
       tabName="Pathologist" form={pathologistFormArray(handleImage)} {...settingProp}
       />,
     },

@@ -45,6 +45,8 @@ export const warningAlert = (msg: string): void => showToastIfNotDisplayed(msg, 
 
 export const warningAlert2 = (msg: string): void => showToastIfDisplayed(msg, { type: "warning" });
 
+export const errorAlert2 = (msg: string): void => showToastIfDisplayed(msg, { type: "error" });
+
 /**
  * Displays an error toast message.
  * @param {string} msg - The error message.

@@ -12,7 +12,7 @@ import { ManualReport } from './ManualReport';
 export function PatientDetails({next}:any) {
   const profile = useProfileValue();
   const branchList = profile?.branchDetails;
-  const pathologistList = profile?.pathologistDetail;
+
   const [reportData,setReportData] = useRecoilState(reportDataState)
 
   const onFinish = (values:any) => {
@@ -40,6 +40,7 @@ export function PatientDetails({next}:any) {
             <Form.Item
               name={['patient', 'name']}
               label="Name"
+              initialValue={reportData?.patient?.name}
               rules={[{ required: true }]}
             >
               <Input />
@@ -49,6 +50,7 @@ export function PatientDetails({next}:any) {
                 <Form.Item
                   name={['patient', 'dob']}
                   label="Date of Birth"
+                  initialValue={reportData?.patient?.dob}
                   rules={[{ required: true }]}
                 >
                   <Input type="date" />
@@ -59,6 +61,7 @@ export function PatientDetails({next}:any) {
                   name={['patient', 'gender']}
                   label="Gender"
                   rules={[{ required: true }]}
+                  initialValue={reportData?.patient?.gender}
                 >
                   <Select>
                     <Option value="Male">Male</Option>
@@ -72,12 +75,14 @@ export function PatientDetails({next}:any) {
               name={['patient', 'contact', 'phone']}
               label="Phone"
               rules={[{ required: true }]}
+              initialValue={reportData?.patient?.contact?.phone}
             >
               <Input />
             </Form.Item>
             <Form.Item
               name={['patient', 'contact', 'email']}
               label="Email"
+              initialValue={reportData?.patient?.contact?.email}
               rules={[{ required: true }]}
             >
               <Input />
@@ -98,6 +103,7 @@ export function PatientDetails({next}:any) {
             <Form.Item
               name={['diagnosticCenter', 'branch', 'name']}
               label="Branch Name"
+              initialValue={reportData?.diagnosticCenter?.branch?.name}
               rules={[{ required: true }]}
             >
               <Select
@@ -110,27 +116,14 @@ export function PatientDetails({next}:any) {
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               name={['diagnosticCenter', 'branch', 'details']}
               label="Branch Details"
+              initialValue={reportData?.diagnosticCenter?.branch?.details}
             >
               <Input />
-            </Form.Item>
+            </Form.Item> */}
             {/* <h2 className="text-xl font-bold mb-4">Pathologist Information</h2> */}
-                <Form.Item
-                    name={['pathologist', 'name']}
-                    label="Pathologist"
-                >
-                    <Select
-                        showSearch
-                        placeholder="Select pathologist"
-                        optionFilterProp="children"
-                    >
-                        {pathologistList?.map(path => (
-                            <Option key={path._id} value={path?._id}>{path?.name}</Option>
-                        ))}
-                    </Select>
-                </Form.Item>
 
           </div>
 

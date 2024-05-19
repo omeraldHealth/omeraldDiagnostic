@@ -2,11 +2,13 @@
 
 import { reportState } from "@components/common/recoil/report";
 import { ArrowUpIcon } from "@heroicons/react/20/solid";
-import { Button, DatePicker, Form, Input, Select, Switch, Upload } from "antd";
+import { Button, Col, DatePicker, Form, Input, Row, Select, Switch, Upload } from "antd";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import {reportDataState} from "../../common/recoil/report/reportData"
 import { useProfileValue } from "@components/common/constants/recoilValues";
+import moment from "moment";
+import { errorAlert, errorAlert2, warningAlert, warningAlert2 } from "@components/atoms/alerts/alert";
 
 interface UploadReportProps {
   handleSteps?: () => void;
@@ -24,7 +26,7 @@ export const UploadReport: React.FC<UploadReportProps> = ({ next, setManualRepor
   return (
         <div className="px-8 py-2">
           <section className="w-[70vh] h-auto xl:h-[40vh] xl:mt-4">
-            <ReportHeader handleSelect={handleSelect} />
+            <ReportHeader manualReport={manualReport} handleSelect={handleSelect} />
             {!manualReport ? <UploadReportFile next={next}/> : <GenerateReport next={next}/>}
           </section>
         </div>
@@ -33,9 +35,10 @@ export const UploadReport: React.FC<UploadReportProps> = ({ next, setManualRepor
 
 interface ReportHeaderProps {
   handleSelect: (value: boolean) => void;
+  manualReport: boolean
 }
 
-const ReportHeader: React.FC<ReportHeaderProps> = ({ handleSelect }) => {
+const ReportHeader: React.FC<ReportHeaderProps> = ({ handleSelect, manualReport }) => {
   const uploadReportType = [
     { value: false, label: 'Upload Existing Report' },
     { value: true, label: 'Generate Omerald Powered Report' },
@@ -46,7 +49,7 @@ const ReportHeader: React.FC<ReportHeaderProps> = ({ handleSelect }) => {
       <section className="my-6">
         <Select
           placeholder="Select Report Creation Type"
-          defaultValue={uploadReportType.length > 0 ? uploadReportType[0].value : undefined}
+          defaultValue={manualReport ? manualReport : false}
           onChange={(value) => handleSelect(value as boolean)}
         >
           {uploadReportType.map((option) => (
@@ -86,11 +89,17 @@ const UploadReportFile: React.FC<any> = ({next}) => {
     // }
   };
 
+  const reportDate = reportData?.reportData?.reportDate;
+  const initialDateValue = reportDate ? moment(reportDate, 'YYYY-MM-DD HH:mm:ss') : null;
+
+
   const dummyRequest = ({ file, onSuccess }) => {
     setTimeout(() => {
       onSuccess("ok");
     }, 0);
   };
+
+  const fileList = reportData?.reportData?.file?.fileList || [];
 
   return <div className="h-auto">
     <Form
@@ -98,9 +107,9 @@ const UploadReportFile: React.FC<any> = ({next}) => {
       layout="vertical"
       onFinish={onFinish}
       initialValues={{
-        reportName: '',
+        reportName: reportData?.reportData?.reportName,
         isManual: false,
-        reportDate: null, // Date.now is handled on the server side for default values
+        reportDate: initialDateValue, // Date.now is handled on the server side for default values
       }}
       className="h-auto">
        <Form.Item
@@ -113,9 +122,11 @@ const UploadReportFile: React.FC<any> = ({next}) => {
       <Form.Item
         name="file"
         label="Upload Report File"
+        initialValue={fileList}
         rules={[{ required: true, message: 'Please upload the report file!' }]}
       >
          <Upload
+          defaultFileList={fileList}
           name="file" // The name property for the file input
           listType="text" // Or other list types like 'picture'
           beforeUpload={() => false} // Return false so that antd doesn't upload the file right away
@@ -131,7 +142,8 @@ const UploadReportFile: React.FC<any> = ({next}) => {
       >
         <DatePicker />
       </Form.Item>
-      <Form.Item>
+      <Form.Item
+      >
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
@@ -145,14 +157,20 @@ const GenerateReport:React.FC<any> = ({next}) => {
   const [reportData,setReportData] = useRecoilState(reportDataState)  
   const profile = useProfileValue()
   const testList = profile?.tests
+  const pathologistList = profile?.pathologistDetail;
 
     const onFinish = (values: any) => {
-      if(reportData){
-        setReportData({...reportData, ...values});
+      console.log(values)
+      if(!values?.pathologist?.name){
+        errorAlert2("Please Add Pathologist Details")
       }else{
-        setReportData(values);
+        if(reportData){
+          setReportData({...reportData, ...values});
+        }else{
+          setReportData(values);
+        }
+        next()
       }
-      next()
     };
 
     // Function to handle when an item is selected
@@ -167,16 +185,18 @@ const GenerateReport:React.FC<any> = ({next}) => {
   
     // Filter function for searching within the dropdown
     const filterOption = (inputValue, option) => option.children.toLowerCase().includes(inputValue.toLowerCase());
-
+    const reportDate = reportData?.reportData?.reportDate;
+    const initialDateValue = reportDate ? moment(reportDate, 'YYYY-MM-DD HH:mm:ss') : null;
+  
   return <div>
       <Form
       form={form}
       layout="vertical"
       onFinish={onFinish}
       initialValues={{
-        reportName: '',
+        reportName: reportData?.reportData?.reportName,
         isManual: false,
-        reportDate: null, // Date.now is handled on the server side for default values
+        reportDate: initialDateValue, // Date.now is handled on the server side for default values
       }}
       className="h-auto">
        <Form.Item
@@ -187,13 +207,17 @@ const GenerateReport:React.FC<any> = ({next}) => {
       >
         <Input />
       </Form.Item>
-      <Form.Item
-        name="reportDate"
-        label="Report Date"
-      >
-        <DatePicker />
-      </Form.Item>
-      <Form.Item
+      <Row gutter={10}>
+        <Col>
+          <Form.Item
+            name="reportDate"
+            label="Report Date"
+          >
+            <DatePicker />
+          </Form.Item>
+        </Col>
+        <Col>
+        <Form.Item
           name="reportType"
           label="Choose Report Type"
           // initialValue={testList?.testName}
@@ -214,6 +238,27 @@ const GenerateReport:React.FC<any> = ({next}) => {
               ))}
             </Select>
         </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Form.Item
+                    name={['pathologist', 'name']}
+                    label="Pathologist"
+                    initialValue={reportData?.pathologist?.name}
+                >
+                    <Select
+                        showSearch
+                        placeholder="Select pathologist"
+                        optionFilterProp="children"
+                    >
+                        {pathologistList?.map(path => (
+                            <Option key={path._id} value={path?._id}>{path?.name}</Option>
+                        ))}
+                    </Select>
+          </Form.Item>
+        </Col>
+      </Row>
       <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit
