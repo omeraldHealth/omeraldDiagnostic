@@ -22,7 +22,7 @@ const PatientInfo = ({record}) => {
             <h3 className="font-semibold text-left">Sample Collected From:</h3>
             <p className="text-sm">{record?.diagnosticCenter?.name} </p>
             <p className="text-sm">{record?.diagnosticCenter?.branch?.name} </p>
-            <p className="text-sm mt-2">Ref. By: Dr. Avinash</p>
+            <p className="text-sm mt-2">Pathologist: {record?.pathologist?.name}</p>
           </div>
         </div>
         <div className="flex flex-col justify-between px-4">

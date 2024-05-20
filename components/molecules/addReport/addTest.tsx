@@ -126,6 +126,9 @@ const CustomTestDetails: React.FC<any> = ({next}:any) => {
     next()
   };
 
+
+  const isActiveValue = testDetailState?.isActive != undefined ? testDetailState?.isActive: true
+
   return (  
     <section>
       <Form
@@ -141,7 +144,7 @@ const CustomTestDetails: React.FC<any> = ({next}:any) => {
           {/* Ensure the input takes the full width of the form item */}
           <Input className="w-[20vw]" />
         </Form.Item>
-        <Form.Item name="isActive" label="Is Active?"  initialValue={testDetailState?.isActive} valuePropName="checked">
+        <Form.Item name="isActive" label="Is Active?" initialValue={isActiveValue} valuePropName="checked">
                 <Switch className="mt-1" />
         </Form.Item>
         <Form.Item>
@@ -190,6 +193,7 @@ const OmeraldTestDetails: React.FC<any> = ({next}:any) => {
   // Filter function for searching within the dropdown
   const filterOption = (inputValue, option) =>
     option.children.toLowerCase().includes(inputValue.toLowerCase());
+  const isActiveValue = testDetailState?.isActive != undefined ? testDetailState?.isActive: true
 
   return (  
     <section>
@@ -218,7 +222,7 @@ const OmeraldTestDetails: React.FC<any> = ({next}:any) => {
               ))}
             </Select>
         </Form.Item>
-        <Form.Item name="isActive" label="Is Active?"  initialValue={testDetailState?.isActive} valuePropName="checked">
+        <Form.Item name="isActive" label="Is Active?"  initialValue={isActiveValue} valuePropName="checked">
                 <Switch className="mt-1" />
         </Form.Item>
         <Form.Item>
@@ -778,6 +782,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
     }).catch(info => {
     });
   };
+  const isActiveValue = testDetailState?.isActive != undefined ? testDetailState?.isActive: true
 
   return (
     <Modal    
@@ -805,7 +810,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
               >
                 <Input placeholder="Enter Parameter Name" className="w-full" />
               </Form.Item>
-              <Form.Item name="isActive" label="Is Active?" valuePropName="checked">
+              <Form.Item name="isActive" label="Is Active?" initialValue={isActiveValue} valuePropName="checked">
                 <Switch className="mt-1" />
               </Form.Item>
               <Form.Item name="aliases" label="Aliases">

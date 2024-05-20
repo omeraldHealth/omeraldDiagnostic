@@ -137,7 +137,8 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
               <h2 className='font-bold text-2xl mb-6'>Report Details</h2>
               <ProfileSummaryCard title="Report Name" value={reportData?.reportData?.reportName} />
               <ProfileSummaryCard title="Report Date" value={formattedDate} />
-              {!isManual ? <ProfileSummaryCard title="Report Uploaded" value={reportData?.reportData?.file?.fileList[0].name} />:
+              {!isManual ? <ProfileSummaryCard title="Report Uploaded" 
+              value={reportData?.reportData?.file?.fileList[0].name} />:
                <ProfileSummaryCard title="Report Uploaded" value={reportData?.reportData?.parsedData?.testName} />}
 
             </aside>
@@ -152,7 +153,7 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
               <h2 className='font-bold text-2xl mb-6'>Diagnostic Center Details</h2>
               <ProfileSummaryCard title="Diagnostic Name" value={reportData?.diagnosticCenter?.name} />
               <ProfileSummaryCard title="Diagnostic Branch" value={reportData?.diagnosticCenter?.branch?.name} />
-              <ProfileSummaryCard title="Diagnostic Branch" value={reportData?.pathologist?.name} />
+              <ProfileSummaryCard title="Diagnostic Pathalogist" value={reportData?.pathologist?.name} />
             </aside>
           </section>
         </section>
