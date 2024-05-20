@@ -254,7 +254,7 @@ const GenerateReport:React.FC<any> = ({next}) => {
                         optionFilterProp="children"
                     >
                         {branch[0]?.pathologistDetail?.map(path => (
-                            <Option key={path._id} value={path?._id}>{path?.name}</Option>
+                            <Option key={path._id} value={path?.name}>{path?.name}</Option>
                         ))}
                     </Select>
           </Form.Item>
