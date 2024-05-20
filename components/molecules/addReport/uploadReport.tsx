@@ -6,7 +6,7 @@ import { Button, Col, DatePicker, Form, Input, Row, Select, Switch, Upload } fro
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import {reportDataState} from "../../common/recoil/report/reportData"
-import { useProfileValue } from "@components/common/constants/recoilValues";
+import { useCurrentBranchValue, useProfileValue } from "@components/common/constants/recoilValues";
 import moment from "moment";
 import { errorAlert, errorAlert2, warningAlert, warningAlert2 } from "@components/atoms/alerts/alert";
 
@@ -157,7 +157,8 @@ const GenerateReport:React.FC<any> = ({next}) => {
   const [reportData,setReportData] = useRecoilState(reportDataState)  
   const profile = useProfileValue()
   const testList = profile?.tests
-  const pathologistList = profile?.pathologistDetail;
+  const currentBranch = useCurrentBranchValue()
+  const branch = profile?.branches?.filter((branch:any) => branch?._id === currentBranch?._id);
 
     const onFinish = (values: any) => {
       console.log(values)
@@ -252,7 +253,7 @@ const GenerateReport:React.FC<any> = ({next}) => {
                         placeholder="Select pathologist"
                         optionFilterProp="children"
                     >
-                        {pathologistList?.map(path => (
+                        {branch[0]?.pathologistDetail?.map(path => (
                             <Option key={path._id} value={path?._id}>{path?.name}</Option>
                         ))}
                     </Select>
