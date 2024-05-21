@@ -1,28 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { UserLayout } from '@components/templates/pageTemplate';
-import { useUserValues } from '../components/common/constants/recoilValues';
+import { useDashboardTabs, useUserValues } from '../components/common/constants/recoilValues';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { useQueryGetData } from '../utils/reactQuery';
-import { getDiagProfileByPhoneApi } from '../utils';
+import { getDiagProfileByPhoneApi, getDiagnosticUserApi } from '../utils';
 import { useSetRecoilState } from 'recoil';
 import { profileState } from '../components/common/recoil/profile';
 import { errorAlert, successAlert } from '../components/atoms/alerts/alert';
 import { Loader } from '../components/atoms/loader/loader';
+import { useUser } from '@clerk/clerk-react';
 
 const ChooseDc: React.FC = () => {
-  const userData = useUserValues();
+  // const userData = useUserValues();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const setDiagnosticCenter = useSetRecoilState(profileState)
   const [selectedCenterId, setSelectedCenterId] = useState<string | null>(null);
   const {data:diagnosticCenter, status} = useQueryGetData('diagnosticCenter', getDiagProfileByPhoneApi+ selectedCenterId, {enabled: !!selectedCenterId });
+  const { user } = useUser();
+  const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
+
+  const { data: userData, status:State, refetch, isLoading } = useQueryGetData(
+    'userData',
+    getDiagnosticUserApi + userPhoneNumber,
+    { enabled: !!userPhoneNumber }
+  );
 
   useEffect(() => {
-    if (!userData?.diagnosticCenters) {
+    if (!userData?.data?.diagnosticCenters) {
       router.push('/verifyUser');
     }
-  }, [userData, router]);
+  }, [userData?.data, router]);
 
   const handleCardClick = (centerId: string) => {
     setSelectedCenterId(prevId => (prevId === centerId ? null : centerId));
@@ -48,7 +57,7 @@ const ChooseDc: React.FC = () => {
         <div className="min-h-[50vh] h-auto flex justify-center mt-20">
           <div>
             <section className="flex gap-6 text-center">
-              {userData?.diagnosticCenters?.map((center) => (
+              {userData?.data?.diagnosticCenters?.map((center) => (
                 <DiagnosticCard
                   key={center.diagnostic._id}
                   center={center}
@@ -86,7 +95,7 @@ interface DiagnosticCardProps {
 
 const DiagnosticCard: React.FC<DiagnosticCardProps> = ({ center, isSelected, handleCardClick }) => (
   <div
-    className={`w-[275px] h-[100px] bg-white border border-1 shadow-xl p-6 cursor-pointer transform hover:scale-105 transition-transform duration-300 ${isSelected ? 'bg-gray-300' : ''}`}
+    className={`w-[275px] ${isSelected? 'bg-gray-400':'bg-white'} h-[100px] bg-white border border-1 shadow-xl p-6 cursor-pointer transform hover:scale-105 transition-transform duration-300 ${isSelected ? 'bg-gray-300' : ''}`}
     onClick={() => handleCardClick(center.diagnostic._id)}
   >
     <div className="flex items-center">

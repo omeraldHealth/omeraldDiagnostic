@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery, UseQueryOptions } from 'react-query';
-import { updateDiagProfileApi, createDiagReportsApi, uploadDiagnosticReportApi, uploadDiagnosticLogoApi, createDiagProfileApi, deleteDiagReportsApi } from 'utils/urls/app';
+import { updateDiagProfileApi, createDiagReportsApi, uploadDiagnosticReportApi, uploadDiagnosticLogoApi, createDiagProfileApi, deleteDiagReportsApi, createDiagnosticUserApi, updateDiagnosticUserApi } from 'utils/urls/app';
 
 // useQuery hook to get data
 export function useQueryGetData<T>(
@@ -35,6 +35,14 @@ function createMutation<TData, TVariables>(
 }
 
 // Functions for different mutations
+
+export function useCreateUser<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {
+  return createMutation('post', createDiagnosticUserApi, props);
+}
+
+export function useUpdateUser<TData, TVariables>(props: UseMutationProps<TData, TVariables>, userId: String) {
+  return createMutation('put', updateDiagnosticUserApi+userId, props);
+}
 
 export function useCreateDiagnostic<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {
   return createMutation('post', createDiagProfileApi, props);

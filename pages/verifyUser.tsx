@@ -1,44 +1,76 @@
 import { useUser } from '@clerk/clerk-react';
-import { successAlert, warningAlert2 } from '@components/atoms/alerts/alert';
+import { errorAlert, successAlert, warningAlert } from '@components/atoms/alerts/alert';
 import { Loader } from '@components/atoms/loader/loader';
 import { UserLayout } from '@components/templates/pageTemplate';
 import { getDiagnosticUserApi } from '@utils';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { useQueryGetData } from 'utils/reactQuery';
+import { useCreateUser, useQueryGetData } from 'utils/reactQuery';
 import { userState } from '../components/common/recoil/user';
 
 const VerifyUser = () => {
-
   const { user } = useUser();
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const setUserData = useSetRecoilState(userState)
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const setUserData = useSetRecoilState(userState);
 
-  // Fetch User
-  let userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
+  const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
+  const userName = user?.fullName;
 
-  // Get Users From DB when userPhoneNumber is found
-  const {data:userData, status} = useQueryGetData('userData', getDiagnosticUserApi+ userPhoneNumber, {enabled: !!userPhoneNumber });
-
-  useEffect(() => {
-    if (status === "success") {
+  const createUser = useCreateUser({
+    onSuccess: () => {
+      successAlert("Created User");
+      fetchUserData();
+    },
+    onError: () => {
+      errorAlert("Error Creating User");
       setLoading(false);
     }
+  });
 
-    if (userData && userData.data) {
-      const diagnosticCenters = userData.data?.diagnosticCenters || [];
-      setUserData(userData?.data)
+  const { data: userData, status, refetch, isLoading } = useQueryGetData(
+    'userData',
+    getDiagnosticUserApi + userPhoneNumber,
+    { enabled: !!userPhoneNumber }
+  );
+
+  const fetchUserData = async () => {
+    const result = await refetch();
+    if (result.status === 'success' && result.data) {
+      handleUserData(result.data);
+    } else {
+      errorAlert("User Not Found");
+    }
+    setLoading(false)
+  };
+
+  const handleUserData = (data:any) => {
+    if (data && data.data && !isLoading) {
+      const diagnosticCenters = data.data?.diagnosticCenters || [];
+      setUserData(data.data);
       if (diagnosticCenters.length > 0) {
         successAlert("Diagnostic Centers Found");
+        setLoading(false);
         router.push("/chooseDc");
       } else {
-        warningAlert2("No Diagnostic Centers found");
+        warningAlert("No Diagnostic Centers found");
+        setLoading(false);
         router.push("/onboard");
       }
     }
-  }, [status, userData, router]);
+  };
+
+  useEffect(() => {
+    if (status === 'success' && userData) {
+      handleUserData(userData);
+    } else if (status === 'error') {
+      errorAlert("User Not Found");
+      if(userName && userPhoneNumber){
+        createUser.mutate({data:{userName, "phoneNumber": userPhoneNumber }});
+      }
+    }
+  }, [status, userData, router, userPhoneNumber]);
 
   return (
     <UserLayout tabName="Admin Omerald | Verify User">
@@ -55,4 +87,3 @@ const VerifyUser = () => {
 };
 
 export default VerifyUser;
-
