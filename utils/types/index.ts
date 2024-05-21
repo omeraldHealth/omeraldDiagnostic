@@ -56,19 +56,13 @@ export interface UserNavigationItem {
   };
   
   export interface ProfileDetailsInterface {
-    email: string;
-    updatedAt?: Date;
-    reports?: string[];
-    tests: ReportTypes[];
-    phoneNumber: string;
-    diagnosticName: string;
-    sharedReport?: string[];
-    branchDetails?: BranchDetailInterface[];
-    activities?: ActivityDetailsInterface[];
-    brandDetails: BrandDetailsFormInterface;
-    managersDetail: IManagerDetailsInterface[];
-    pathologistDetail?: IPathologistDetails[];
-    managerName?: string;
+    centerName: {type:String},
+    phoneNumber: {type:String},
+    ownerId:  {type:String},
+    brandingInfo: {type: Object},
+    branches:  {type: [Object]},
+    email:  {type:String},
+    updatedAt: {type: Date}, 
   };
   
   export interface ReportSummaryProps {

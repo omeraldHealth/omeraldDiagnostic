@@ -17,10 +17,10 @@ const showToastIfNotDisplayed = (msg: string, options: ToastOptions): void => {
     // Add the message to the set to mark it as displayed
     displayedMessages.add(msg);
   }
+  displayedMessages.clear()
 };
 
 const showToastIfDisplayed = (msg: string, options: ToastOptions): void => {
-
     toast(msg, options);
     displayedMessages.add(msg);
 };

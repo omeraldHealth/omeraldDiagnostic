@@ -8,6 +8,7 @@ import { testDetailsState } from "../recoil/testDetails";
 import { reportState } from "../recoil/report";
 import { logoStateData } from "../recoil/logo" 
 import {paramState} from "../recoil/testDetails/param"
+import {userState} from "../recoil/user"
 
 export const ROUTES_WITHOUT_SIDEBAR = [
     '/',
@@ -20,7 +21,8 @@ export const ROUTES_WITHOUT_SIDEBAR = [
     '/info/features',
     '/info/knowledge',
     '/info/pricing',
-    '/info/blog'
+    '/info/blog',
+    '/chooseDc'
 ];
 
 export const useProfileValue = () => useRecoilValue(profileState);
@@ -32,3 +34,4 @@ export const useManagerValue = () => useRecoilValue(operatorState);
 export const useCurrentBranchValue = () => useRecoilValue(branchState);
 export const useDashboardTabs = () => useRecoilValue(dashTabs);
 export const useParamValue = () => useRecoilValue(paramState);
+export const useUserValues = () => useRecoilValue(userState);
