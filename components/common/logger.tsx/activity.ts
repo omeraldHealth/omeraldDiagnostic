@@ -3,7 +3,7 @@ import { useProfileValue, useUserValues } from "../constants/recoilValues";
 import { successAlert } from "@components/atoms/alerts/alert";
 
 export const useActivityLogger = () => {
-    const selectedCenterId = localStorage.getItem("selectedDc");
+    let selectedCenterId = localStorage.getItem("selectedDc") ?? {};
     const userData = useUserValues();
     const { data: profileData } = useGetDcProfile(selectedCenterId);
 

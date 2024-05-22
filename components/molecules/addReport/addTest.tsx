@@ -181,7 +181,7 @@ const CustomTestDetails: React.FC<any> = ({next}:any) => {
           name="testName"
           label="Enter Test Name"
           initialValue={testDetailState?.testName}
-          rules={[{ required: true, message: 'Please input the test name!' }]} // Added rules for validation
+          // rules={[{ required: true, message: 'Please input the test name!' }]} // Added rules for validation
         >
           {/* Ensure the input takes the full width of the form item */}
           <Input className="w-[20vw]" />
@@ -247,7 +247,7 @@ const OmeraldTestDetails: React.FC<any> = ({next}:any) => {
           name="testName"
           label="Enter Test Name"
           initialValue={testDetailState?.testName}
-          rules={[{ required: true, message: 'Please input the test name!' }]} // Added rules for validation
+          // rules={[{ required: true, message: 'Please input the test name!' }]} // Added rules for validation
         >
           {/* Ensure the input takes the full width of the form item */}
           {/* <Input className="w-[20vw]" /> */}
