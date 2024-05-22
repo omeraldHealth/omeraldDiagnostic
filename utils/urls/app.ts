@@ -9,7 +9,7 @@ export const updateDiagnosticUserApi = diagBackendApiPath + `user/updateUser/`; 
 // API paths for diagnostic profiles
 export const getDiagProfileByPhoneApi = diagBackendApiPath + `profiles/getProfile/`; // Endpoint to get diagnostic profile by phone
 export const createDiagProfileApi = diagBackendApiPath + `profiles/createProfile/`; // Endpoint to create diagnostic profile
-export const updateDiagProfileApi = diagBackendApiPath + `profiles/updateProfile`; // Endpoint to update diagnostic profile
+export const updateDiagProfileApi = diagBackendApiPath + `profiles/updateProfile/`; // Endpoint to update diagnostic profile
 
 // API paths for diagnostic reports
 export const getDiagReportsApi = diagBackendApiPath + `reports/getReports/`; // Endpoint to get diagnostic reports

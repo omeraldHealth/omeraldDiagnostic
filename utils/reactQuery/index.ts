@@ -55,8 +55,8 @@ export function useCreateDiagnostic<TData, TVariables>(props: UseMutationProps<T
   return createMutation('post', createDiagProfileApi, props);
 }
 
-export function useUpdateDiagnostic<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {
-  return createMutation('put', updateDiagProfileApi, props);
+export function useUpdateDiagnostic<TData, TVariables>(props: UseMutationProps<TData, TVariables>,profileId: String) {
+  return createMutation('put', updateDiagProfileApi+ profileId, props);
 }
 
 export function useDeleteReports<TData, TVariables>(id: string, props: UseMutationProps<TData, TVariables>) {

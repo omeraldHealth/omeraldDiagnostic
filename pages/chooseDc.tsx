@@ -9,6 +9,8 @@ import { profileState } from '../components/common/recoil/profile';
 import { errorAlert, successAlert } from '../components/atoms/alerts/alert';
 import { Loader } from '../components/atoms/loader/loader';
 import { useUser } from '@clerk/clerk-react';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
+
 
 const ChooseDc: React.FC = () => {
   const { user } = useUser();
@@ -17,6 +19,9 @@ const ChooseDc: React.FC = () => {
   const setDiagnosticCenter = useSetRecoilState(profileState);
   const [selectedCenterId, setSelectedCenterId] = useState<string | null>(null);
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
+
+  const { logActivity } = useActivityLogger();
+
 
   const { data: userData, status: userStatus } = useQueryGetData(
     'userData',
@@ -49,6 +54,7 @@ const ChooseDc: React.FC = () => {
       localStorage.setItem('diagnosticCenter', JSON.stringify(diagnosticCenter.data), { expires: 1 / 24 });
       localStorage.setItem('selectedBranch', JSON.stringify(diagnosticCenter.data?.branches[0]), { expires: 1 / 24 });
       successAlert("Logging into Diagnostic Profile");
+      // logActivity("Saif Logged in")
       router.push("/dashboard");
     } else {
       errorAlert("Error logging into Diagnostic Center");

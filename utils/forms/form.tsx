@@ -17,7 +17,7 @@ export const ActivityColumns = [
     key: 'user',
     title: 'Activity By',
     dataIndex: 'user',
-    render: (text: any) => <a>{text?.managerName}</a>,
+    render: (text: any) => <a>{text?.name}</a>,
     sorter: (a: any, b: any) => a.user.length - b.user.length,
   },
   {
