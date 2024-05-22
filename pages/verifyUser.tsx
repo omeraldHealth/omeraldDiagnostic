@@ -17,8 +17,6 @@ const VerifyUser = () => {
   const setUserData = useSetRecoilState(userState);
   const setDiagnosticCenter = useSetRecoilState(profileState);
   const dcData = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
-
-
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
   const userName = user?.fullName;
 
@@ -27,11 +25,10 @@ const VerifyUser = () => {
       'diagnosticCenter',
       getDiagProfileByPhoneApi + selectedCenterId,
       { enabled: !!selectedCenterId }
-    );
+    );  
   
     useEffect(() => {
       if (centerStatus === 'success' && diagnosticCenter?.data) {
-        console.log("dc",diagnosticCenter)
         localStorage.setItem('diagnosticCenter', JSON.stringify(diagnosticCenter.data));
       }
     }, [centerStatus, diagnosticCenter]);

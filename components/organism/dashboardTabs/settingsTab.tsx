@@ -29,7 +29,7 @@ export default function SettingsTab() {
   const [logoState, setLogoState] = useRecoilState(logoStateData);
   const currentBranch = useCurrentBranchValue();
 
-  const selectedBranch = localStorage?.getItem("selectedBranch");
+  const selectedBranch = JSON.parse(localStorage?.getItem("selectedBranch"));
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {

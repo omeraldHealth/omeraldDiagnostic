@@ -25,7 +25,6 @@ export function DashboardHeader({}: DashboardHeaderProps) {
     let branch = branchList?.filter((branch: any) => branch?._id === value)[0];
     setCurrentBranch(branch);
     localStorage.setItem('selectedBranch',JSON.stringify(branch))
-    console.log(selectedBranch)
     setLoading(false)
   };
 

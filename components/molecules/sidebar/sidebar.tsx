@@ -5,23 +5,21 @@ import { classNames, privateRoutes } from '../../../utils/static/static';
 import Image from 'next/image';
 import { useUserValues } from '@components/common/constants/recoilValues';
 import { useRouter } from 'next/router';
-import { DiagnosticCenter, Branch } from 'types'; // Assuming you have defined these types
 
 export default function Sidebar() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [dashTab, setDashTab] = useRecoilState(dashTabs);
   const currentUser = useUserValues();
-  const [currentBranch, setCurrentBranch] = useState<Branch | null>(null);
-  const router = useRouter();
+  const [currentBranch, setCurrentBranch] = useState<any | null>(null);
+  const router = useRouter(); 
 
   useEffect(() => {
     if (currentUser) {
       try {
-        const dcData: DiagnosticCenter = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
-        const branchData: Branch = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
-
-        if (currentUser.diagnosticCenters) {
-          const branch = fetchBranchByDiagnosticCenterId(currentUser.diagnosticCenters, dcData?._id, branchData?._id);
+        const dcData: any = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
+        const branchData: any = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
+        if (currentUser?.diagnosticCenters) {
+          const branch = fetchBranchByDiagnosticCenterId(currentUser?.diagnosticCenters, dcData?._id, branchData?._id);
           setCurrentBranch(branch);
         }
       } catch (error) {
@@ -81,13 +79,14 @@ export default function Sidebar() {
 }
 
 const fetchBranchByDiagnosticCenterId = (
-  diagnosticCenters: DiagnosticCenter[], 
+  diagnosticCenters: any[], 
   dcId: string, 
   branchId: string
-): Branch | null => {
+): any | null => {
+
   for (const center of diagnosticCenters) {
     if (center?.diagnostic?._id === dcId) {
-      const branch = center.branches.find(branch => branch?.branchId === branchId);
+      const branch = center.branches.find((branch:any) => branch?.branchId === branchId);
       if (branch) {
         return branch;
       }
