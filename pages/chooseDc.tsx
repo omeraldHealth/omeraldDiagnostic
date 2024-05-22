@@ -57,7 +57,7 @@ const ChooseDc: React.FC = () => {
   };
 
   return (
-    <UserLayout tabName="Admin Omerald | Choose Diagnostic Center">
+    <UserLayout tabDescription='Choose DC' tabName="Admin Omerald | Choose Diagnostic Center">
       {loading && <Loader />}
       <section className="m-8 text-center">
         <h2 className="mt-20 font-bold text-xl text-purple-900">Choose Diagnostic Center to login</h2>

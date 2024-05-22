@@ -104,7 +104,7 @@ const VerifyUser = () => {
   }, [status, userData, userName, userPhoneNumber, dcData]);
 
   return (
-    <UserLayout tabName="Admin Omerald | Verify User">
+    <UserLayout tabDescription='Verify User' tabName="Admin Omerald | Verify User">
       <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
         <section className="my-10">
           <div className="bg-container w-[75vw] m-auto">
