@@ -5,6 +5,7 @@ import { useSetRecoilState } from 'recoil';
 import { useCurrentBranchValue, useDashboardTabs, useProfileValue } from '@components/common/constants/recoilValues';
 import { branchState } from '@components/common/recoil/branch/branch';
 import { Loader } from '@components/atoms/loader/loader';
+import { successAlert, warningAlert } from '@components/atoms/alerts/alert';
 interface DashboardHeaderProps {
   // Add any additional props if needed
 }
@@ -22,10 +23,17 @@ export function DashboardHeader({}: DashboardHeaderProps) {
 
   const handleBranchChange = (value: any) => {
     setLoading(true)
-    let branch = branchList?.filter((branch: any) => branch?._id === value)[0];
-    setCurrentBranch(branch);
-    localStorage.setItem('selectedBranch',JSON.stringify(branch))
-    setLoading(false)
+
+    setTimeout(()=>{
+      let branch = branchList?.filter((branch: any) => branch?._id === value)[0];
+      setCurrentBranch(branch);
+      localStorage.setItem('selectedBranch',JSON.stringify(branch))
+      warningAlert("Switched to "+selectedBranch?.branchName)
+      setLoading(false)
+
+    }, 1000)
+
+
   };
 
   return (

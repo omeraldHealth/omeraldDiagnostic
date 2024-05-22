@@ -161,11 +161,11 @@ export default function SettingsTab() {
       label: 'Activity',
       children: <SettingsCommon tabName="Activity" columns={ActivityColumns} data={selectedBranch ? selectedBranch.activities : []} hideButton={true} />,
     },
-    {
-      key: '3',
-      label: 'Employee Management',
-      children: <SettingsCommon columns={EmployeeColumns(handleEdit, handleRemove, profile)} data={profile ? profile.managersDetail : []} tabName="Employee" form={managerFormArray} {...settingProp} />,
-    },
+    // {
+    //   key: '3',
+    //   label: 'Employee Management',
+    //   children: <SettingsCommon columns={EmployeeColumns(handleEdit, handleRemove, profile)} data={profile ? profile.managersDetail : []} tabName="Employee" form={managerFormArray} {...settingProp} />,
+    // },
     {
       key: '4',
       label: "Branch Management",
