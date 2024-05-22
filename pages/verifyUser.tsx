@@ -11,18 +11,13 @@ import { userState } from '../components/common/recoil/user';
 import Cookies from 'js-cookie';
 import { profileState } from '@components/common/recoil/profile';
 
-
 const VerifyUser = () => {
   const { user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const setUserData = useSetRecoilState(userState);
-  const setDiagnosticCenter = useSetRecoilState(profileState)
-  const dcData = JSON.parse(Cookies.get('diagnosticCenter'))
-
-  useEffect(()=>{
-    
-  },dcData)
+  const setDiagnosticCenter = useSetRecoilState(profileState);
+  const dcData = JSON.parse(Cookies.get('diagnosticCenter') || '{}');
 
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
   const userName = user?.fullName;
@@ -50,44 +45,47 @@ const VerifyUser = () => {
       handleUserData(result.data);
     } else {
       errorAlert("User Not Found");
+      setLoading(false);
     }
-    setLoading(false)
   };
 
-  const handleUserData = (data:any) => {
-      if (data && data.data && !isLoading) {
-        const diagnosticCenters = data.data?.diagnosticCenters || [];
-        setUserData(data.data);
-        if (diagnosticCenters.length > 0) {
-          successAlert("Diagnostic Centers Found");
-          setLoading(false);
-          router.push("/chooseDc");
-        } else {
-          warningAlert("No Diagnostic Centers found");
-          setLoading(false);
-          router.push("/onboard");
-        }
+  const handleUserData = (data) => {
+    if (data && data.data && !isLoading) {
+      const diagnosticCenters = data.data?.diagnosticCenters || [];
+      setUserData(data.data);
+      if (diagnosticCenters.length > 0) {
+        successAlert("Diagnostic Centers Found");
+        setLoading(false);
+        router.push("/chooseDc");
+      } else {
+        warningAlert("No Diagnostic Centers found");
+        setLoading(false);
+        router.push("/onboard");
       }
+    }
   };
 
   useEffect(() => {
-
-    if(dcData?._id){
-      setDiagnosticCenter(dcData);
-      successAlert("Logging into Diagnostic Profile");
-      router.push("/dashboard")
-      return
-    }
-
-    if (status === 'success' && userData) {
-      handleUserData(userData);
-    } else if (status === 'error') {
-      errorAlert("User Not Found");
-      if(userName && userPhoneNumber){
-        createUser.mutate({data:{userName, "phoneNumber": userPhoneNumber }});
+    const initialize = async () => {
+      if (dcData?._id) {
+        setDiagnosticCenter(dcData);
+        setUserData(userData?.data);
+        successAlert("Logging into Diagnostic Profile");
+        router.push("/dashboard");
+      } else {
+        if (status === 'success' && userData) {
+          handleUserData(userData);
+        } else if (status === 'error') {
+          errorAlert("User Not Found");
+          if (userName && userPhoneNumber) {
+            createUser.mutate({ data: { userName, phoneNumber: userPhoneNumber } });
+          }
+        }
       }
-    }
-  }, [status, userData, router, userPhoneNumber,dcData]);
+    };
+
+    initialize();
+  }, [status, userData, userName, userPhoneNumber, dcData]);
 
   return (
     <UserLayout tabName="Admin Omerald | Verify User">

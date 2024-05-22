@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { UserLayout } from '@components/templates/pageTemplate';
-import { useDashboardTabs, useUserValues } from '../components/common/constants/recoilValues';
 import { CheckIcon } from '@heroicons/react/20/solid';
 import { useQueryGetData } from '../utils/reactQuery';
 import { getDiagProfileByPhoneApi, getDiagnosticUserApi } from '../utils';
@@ -12,52 +11,53 @@ import { Loader } from '../components/atoms/loader/loader';
 import { useUser } from '@clerk/clerk-react';
 import Cookies from 'js-cookie';
 
-
 const ChooseDc: React.FC = () => {
-  // const userData = useUserValues();
+  const { user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
-  const setDiagnosticCenter = useSetRecoilState(profileState)
+  const setDiagnosticCenter = useSetRecoilState(profileState);
   const [selectedCenterId, setSelectedCenterId] = useState<string | null>(null);
-  const {data:diagnosticCenter, status} = useQueryGetData('diagnosticCenter', getDiagProfileByPhoneApi+ selectedCenterId, {enabled: !!selectedCenterId });
-  const { user } = useUser();
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
-  
 
-  const { data: userData, status:State, refetch, isLoading } = useQueryGetData(
+  const { data: userData, status: userStatus } = useQueryGetData(
     'userData',
     getDiagnosticUserApi + userPhoneNumber,
     { enabled: !!userPhoneNumber }
   );
 
+  const { data: diagnosticCenter, status: centerStatus } = useQueryGetData(
+    'diagnosticCenter',
+    getDiagProfileByPhoneApi + selectedCenterId,
+    { enabled: !!selectedCenterId }
+  );
+
   useEffect(() => {
-    if (!userData?.data?.diagnosticCenters) {
+    if (userStatus === 'success' && !userData?.data?.diagnosticCenters) {
       router.push('/verifyUser');
     }
-  }, [userData?.data, router]);
-
-
+  }, [userStatus, userData, router]);
 
   const handleCardClick = (centerId: string) => {
     setSelectedCenterId(prevId => (prevId === centerId ? null : centerId));
   };
 
-  const handleDCSelected = () => {
+  const handleDCSelected = async () => {
     setLoading(true);
-    if (status === 'success' && diagnosticCenter?.data) {
-      setDiagnosticCenter(diagnosticCenter?.data);
-      Cookies.set('diagnosticCenter', JSON.stringify(diagnosticCenter?.data), { expires: 1 / 24 }); // 1 hour
+    if (centerStatus === 'success' && diagnosticCenter?.data) {
+      setDiagnosticCenter(diagnosticCenter.data);
+      Cookies.set('diagnosticCenter', JSON.stringify(diagnosticCenter.data), { expires: 1 / 24 });
+      Cookies.set('selectedBranch', JSON.stringify(diagnosticCenter.data?.branches[0]), { expires: 1 / 24 });
       successAlert("Logging into Diagnostic Profile");
-      router.push("/dashboard")
+      router.push("/dashboard");
     } else {
       errorAlert("Error logging into Diagnostic Center");
     }
-  
     setLoading(false);
   };
+
   return (
     <UserLayout tabName="Admin Omerald | Choose Diagnostic Center">
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <section className="m-8 text-center">
         <h2 className="mt-20 font-bold text-xl text-purple-900">Choose Diagnostic Center to login</h2>
         <div className="min-h-[50vh] h-auto flex justify-center mt-20">
@@ -73,7 +73,10 @@ const ChooseDc: React.FC = () => {
               ))}
             </section>
             {selectedCenterId && (
-              <button onClick={handleDCSelected} className="bg-green-800 h-auto text-white w-[10vw] my-20 px-2 py-2 rounded-md transition-opacity duration-2000 opacity-100">
+              <button
+                onClick={handleDCSelected}
+                className="bg-green-800 h-auto text-white w-[10vw] my-20 px-2 py-2 rounded-md transition-opacity duration-2000 opacity-100"
+              >
                 Proceed
               </button>
             )}
@@ -101,7 +104,7 @@ interface DiagnosticCardProps {
 
 const DiagnosticCard: React.FC<DiagnosticCardProps> = ({ center, isSelected, handleCardClick }) => (
   <div
-    className={`w-[275px] ${isSelected? 'bg-gray-400':'bg-white'} h-[100px] bg-white border border-1 shadow-xl p-6 cursor-pointer transform hover:scale-105 transition-transform duration-300 ${isSelected ? 'bg-gray-300' : ''}`}
+    className={`w-[275px] h-[100px] border border-1 shadow-xl p-6 cursor-pointer transform hover:scale-105 transition-transform duration-300 ${isSelected ? 'bg-gray-300' : 'bg-white'}`}
     onClick={() => handleCardClick(center.diagnostic._id)}
   >
     <div className="flex items-center">
