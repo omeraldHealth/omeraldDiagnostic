@@ -17,10 +17,11 @@ export default function Sidebar() {
     try {
       const dcData: DiagnosticCenter = JSON.parse(Cookies.get('diagnosticCenter') || '{}');
       const branchData: Branch = JSON.parse(Cookies.get('selectedBranch') || '{}');
-
+      console.log("current",currentUser)
       if (currentUser && currentUser.diagnosticCenters) {
         const branch = fetchBranchByDiagnosticCenterId(currentUser.diagnosticCenters, dcData?._id, branchData?._id);
         setCurrentBranch(branch);
+        console.log("branch",branch)
       }
     } catch (error) {
       console.error('Error parsing cookies', error);

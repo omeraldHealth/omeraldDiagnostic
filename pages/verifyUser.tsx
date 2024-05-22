@@ -67,7 +67,7 @@ const VerifyUser = () => {
 
   useEffect(() => {
     const initialize = async () => {
-      if (dcData?._id) {
+      if (dcData?._id && userData?.data) {
         setDiagnosticCenter(dcData);
         setUserData(userData?.data);
         successAlert("Logging into Diagnostic Profile");
