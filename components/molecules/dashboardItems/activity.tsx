@@ -1,16 +1,20 @@
 import { UserCircleIcon } from '@heroicons/react/20/solid';
 import moment from 'moment';
 import React from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { profileState } from '../../common/recoil/profile';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { dashTabs } from '@components/common/recoil/dashboard';
+import { settingTabState } from '@components/common/recoil/settings';
 
 
 interface DashActivityProps {}
 
 const DashActivity: React.FC<DashActivityProps> = () => {
-  const profile = useRecoilValue(profileState);
-  const activities = profile?.activities?.length > 0 ? profile?.activities : [];
-
+  const currentBranch = useCurrentBranchValue()
+  // const currentBranch = localStorage.getItem("selectedBranch")
+  const activities = currentBranch?.activities?.length > 0 ? currentBranch?.activities : [];
+  console.log(currentBranch)
   return (
     <section className="w-[94vw] sm:w-[60vw] lg:w-[35vw] xl:w-[30vw] h-[100%] shadow-xl bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0">
       <section className="">
@@ -30,6 +34,8 @@ interface ActivityItemProps {
 
 const ActivityItem: React.FC<ActivityItemProps> = ({ activityList }) => {
   const date = Date.now();
+  const setDashTab = useSetRecoilState(dashTabs);
+  const setActiveKey = useSetRecoilState(settingTabState);
 
   return (
     <section>
@@ -40,7 +46,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ activityList }) => {
               <UserCircleIcon className="w-8 h-8 self-center bg-blue-700 text-white rounded-full mr-2" />
               <span>
                 <p className="text-light text-gray-600 mt-1">
-                  <span className="font-bold">{activity.user.managerName} </span>
+                  <span className="font-bold">{activity.user.name} </span>
                   {activity.activity}
                 </p>
                 {activity?.updatedTime ? (
@@ -53,7 +59,10 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ activityList }) => {
           </section>
         );
       })}
-      <a href="#" className="font-light text-xs text-blue-700">
+      <a onClick={() => {
+        setDashTab("Settings")
+        setActiveKey("2")
+        }}  href="#" className="font-light text-xs text-blue-700">
         Read More....
       </a>
     </section>
