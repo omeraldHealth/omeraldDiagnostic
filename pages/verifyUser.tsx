@@ -8,12 +8,21 @@ import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useCreateUser, useQueryGetData } from 'utils/reactQuery';
 import { userState } from '../components/common/recoil/user';
+import Cookies from 'js-cookie';
+import { profileState } from '@components/common/recoil/profile';
+
 
 const VerifyUser = () => {
   const { user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const setUserData = useSetRecoilState(userState);
+  const setDiagnosticCenter = useSetRecoilState(profileState)
+  const dcData = JSON.parse(Cookies.get('diagnosticCenter'))
+
+  useEffect(()=>{
+    
+  },dcData)
 
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
   const userName = user?.fullName;
@@ -46,22 +55,30 @@ const VerifyUser = () => {
   };
 
   const handleUserData = (data:any) => {
-    if (data && data.data && !isLoading) {
-      const diagnosticCenters = data.data?.diagnosticCenters || [];
-      setUserData(data.data);
-      if (diagnosticCenters.length > 0) {
-        successAlert("Diagnostic Centers Found");
-        setLoading(false);
-        router.push("/chooseDc");
-      } else {
-        warningAlert("No Diagnostic Centers found");
-        setLoading(false);
-        router.push("/onboard");
+      if (data && data.data && !isLoading) {
+        const diagnosticCenters = data.data?.diagnosticCenters || [];
+        setUserData(data.data);
+        if (diagnosticCenters.length > 0) {
+          successAlert("Diagnostic Centers Found");
+          setLoading(false);
+          router.push("/chooseDc");
+        } else {
+          warningAlert("No Diagnostic Centers found");
+          setLoading(false);
+          router.push("/onboard");
+        }
       }
-    }
   };
 
   useEffect(() => {
+
+    if(dcData?._id){
+      setDiagnosticCenter(dcData);
+      successAlert("Logging into Diagnostic Profile");
+      router.push("/dashboard")
+      return
+    }
+
     if (status === 'success' && userData) {
       handleUserData(userData);
     } else if (status === 'error') {
@@ -70,7 +87,7 @@ const VerifyUser = () => {
         createUser.mutate({data:{userName, "phoneNumber": userPhoneNumber }});
       }
     }
-  }, [status, userData, router, userPhoneNumber]);
+  }, [status, userData, router, userPhoneNumber,dcData]);
 
   return (
     <UserLayout tabName="Admin Omerald | Verify User">

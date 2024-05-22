@@ -10,6 +10,8 @@ import { profileState } from '../components/common/recoil/profile';
 import { errorAlert, successAlert } from '../components/atoms/alerts/alert';
 import { Loader } from '../components/atoms/loader/loader';
 import { useUser } from '@clerk/clerk-react';
+import Cookies from 'js-cookie';
+
 
 const ChooseDc: React.FC = () => {
   // const userData = useUserValues();
@@ -20,6 +22,7 @@ const ChooseDc: React.FC = () => {
   const {data:diagnosticCenter, status} = useQueryGetData('diagnosticCenter', getDiagProfileByPhoneApi+ selectedCenterId, {enabled: !!selectedCenterId });
   const { user } = useUser();
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
+  
 
   const { data: userData, status:State, refetch, isLoading } = useQueryGetData(
     'userData',
@@ -33,6 +36,8 @@ const ChooseDc: React.FC = () => {
     }
   }, [userData?.data, router]);
 
+
+
   const handleCardClick = (centerId: string) => {
     setSelectedCenterId(prevId => (prevId === centerId ? null : centerId));
   };
@@ -41,6 +46,7 @@ const ChooseDc: React.FC = () => {
     setLoading(true);
     if (status === 'success' && diagnosticCenter?.data) {
       setDiagnosticCenter(diagnosticCenter?.data);
+      Cookies.set('diagnosticCenter', JSON.stringify(diagnosticCenter?.data), { expires: 1 / 24 }); // 1 hour
       successAlert("Logging into Diagnostic Profile");
       router.push("/dashboard")
     } else {
