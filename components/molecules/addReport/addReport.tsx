@@ -54,7 +54,7 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
         setAddReports(false)}} />
     },
   ];
-  console.log("record", reportData)
+
   const updateDiagnnosticReport = useCreateReport({
     onSuccess: (data) => {
       successAlert('Report added successfully');
@@ -113,7 +113,7 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
             },
           },
       };
-      console.log("updatedReportData",updatedReportData)
+
       setReportData(updatedReportData)
       updateDiagnnosticReport.mutate({data:updatedReportData})
     }

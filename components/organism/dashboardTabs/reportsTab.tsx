@@ -34,7 +34,6 @@ export default function ReportsTab() {
   };
 
   const handlePreview = (record) => {
-    console.log(record)
     setPreviewRecord(record)
     setPreviewReportModalOpen(true)
   }

@@ -37,7 +37,9 @@ const ChooseDc: React.FC = () => {
   }, [userStatus, userData, router]);
 
   const handleCardClick = (centerId: string) => {
+   
     setSelectedCenterId(prevId => (prevId === centerId ? null : centerId));
+    localStorage.setItem("selectedDc", centerId)
   };
 
   const handleDCSelected = async () => {
@@ -64,9 +66,9 @@ const ChooseDc: React.FC = () => {
             <section className="flex gap-6 text-center">
               {userData?.data?.diagnosticCenters?.map((center) => (
                 <DiagnosticCard
-                  key={center.diagnostic._id}
+                  key={center?.diagnostic?._id}
                   center={center}
-                  isSelected={center.diagnostic._id === selectedCenterId}
+                  isSelected={center?.diagnostic?._id === selectedCenterId}
                   handleCardClick={handleCardClick}
                 />
               ))}
@@ -104,16 +106,16 @@ interface DiagnosticCardProps {
 const DiagnosticCard: React.FC<DiagnosticCardProps> = ({ center, isSelected, handleCardClick }) => (
   <div
     className={`w-[275px] h-[100px] border border-1 shadow-xl p-6 cursor-pointer transform hover:scale-105 transition-transform duration-300 ${isSelected ? 'bg-gray-300' : 'bg-white'}`}
-    onClick={() => handleCardClick(center.diagnostic._id)}
+    onClick={() => handleCardClick(center?.diagnostic?._id)}
   >
     <div className="flex items-center">
       <CheckIcon className={`w-6 h-6 text-lg ${isSelected ? 'text-green-900' : 'text-gray-300'}`} />
       <h2 className="text-lg font-semibold text-gray-700 ml-2">
-        {center.diagnostic.centerName}
+        {center?.diagnostic?.centerName}
       </h2>
     </div>
     <p className="text-gray-500 mt-2">
-      Role: {center.branches[0]?.roleName}
+      Role: {center?.branches[0]?.roleName}
     </p>
   </div>
 );

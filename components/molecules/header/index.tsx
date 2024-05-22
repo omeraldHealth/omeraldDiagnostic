@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Bars3Icon } from '@heroicons/react/20/solid';
 import { Select } from 'antd';
 import { useSetRecoilState } from 'recoil';
 import { useCurrentBranchValue, useDashboardTabs, useProfileValue } from '@components/common/constants/recoilValues';
 import { branchState } from '@components/common/recoil/branch/branch';
+import { Loader } from '@components/atoms/loader/loader';
 interface DashboardHeaderProps {
   // Add any additional props if needed
 }
@@ -14,20 +15,23 @@ export function DashboardHeader({}: DashboardHeaderProps) {
   const currentBranch = useCurrentBranchValue();
   const setCurrentBranch = useSetRecoilState(branchState);
   const selectedBranch = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
-
+  const [loading, setLoading] = useState(false)
 
   // @ts-ignore
   const branchList = profile && profile?.branches;
 
-  console.log("bselectedBranchr",selectedBranch)
-
   const handleBranchChange = (value: any) => {
+    setLoading(true)
     let branch = branchList?.filter((branch: any) => branch?._id === value)[0];
     setCurrentBranch(branch);
+    localStorage.setItem('selectedBranch',JSON.stringify(branch))
+    console.log(selectedBranch)
+    setLoading(false)
   };
 
   return (
     <div className={`flex justify-between items-center`}>
+      {loading && <Loader/>}
       <div className="flex flex-1 flex-col">
         <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow">
           <div className="flex flex-1 justify-between px-4">

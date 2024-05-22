@@ -15,7 +15,7 @@
 // ];
 
 // const LabReportTable = ({report}) => {
-//   console.log("labRe", report?.reportData?.parsedData)
+
 
 //   return (
 //     <div className="overflow-x-auto p-5">

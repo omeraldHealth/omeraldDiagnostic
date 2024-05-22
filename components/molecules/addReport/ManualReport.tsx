@@ -119,8 +119,7 @@ export const ManualReport = ({ next }) => {
         parameters: newData
       }
     });
-    console.log("manual", reportData?.parsedData?.parameters[0]?.bioRefRange?.value);
-    console.log("manual", reportData?.parsedData?.parameters[1]?.bioRefRange?.value);
+
     toggleEditing(id); // Optionally turn off editing mode after save
   };
 
@@ -341,8 +340,7 @@ const checkIfValueExist = (parameters) => {
 //             parameters: newData
 //         }
 //     });
-//     console.log("manual", reportData?.parsedData?.parameters[0]?.bioRefRange?.value)
-//     console.log("manual", reportData?.parsedData?.parameters[1]?.bioRefRange?.value)
+
 //     toggleEditing(id); // Optionally turn off editing mode after save
 //   };
 

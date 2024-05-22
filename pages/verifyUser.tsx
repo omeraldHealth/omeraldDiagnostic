@@ -2,7 +2,7 @@ import { useUser } from '@clerk/clerk-react';
 import { errorAlert, successAlert, warningAlert } from '@components/atoms/alerts/alert';
 import { Loader } from '@components/atoms/loader/loader';
 import { UserLayout } from '@components/templates/pageTemplate';
-import { getDiagnosticUserApi } from '@utils';
+import { getDiagProfileByPhoneApi, getDiagnosticUserApi } from '@utils';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
@@ -18,8 +18,25 @@ const VerifyUser = () => {
   const setDiagnosticCenter = useSetRecoilState(profileState);
   const dcData = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
 
+
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
   const userName = user?.fullName;
+
+    let selectedCenterId = localStorage.getItem("selectedDc")
+    const { data: diagnosticCenter, status: centerStatus } = useQueryGetData(
+      'diagnosticCenter',
+      getDiagProfileByPhoneApi + selectedCenterId,
+      { enabled: !!selectedCenterId }
+    );
+  
+    useEffect(() => {
+      if (centerStatus === 'success' && diagnosticCenter?.data) {
+        console.log("dc",diagnosticCenter)
+        localStorage.setItem('diagnosticCenter', JSON.stringify(diagnosticCenter.data));
+      }
+    }, [centerStatus, diagnosticCenter]);
+  
+
 
   const createUser = useCreateUser({
     onSuccess: () => {

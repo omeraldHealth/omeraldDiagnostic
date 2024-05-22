@@ -4,6 +4,7 @@ import { dashTabs } from 'components/common/recoil/dashboard/index';
 import { classNames, privateRoutes } from '../../../utils/static/static';
 import Image from 'next/image';
 import { useUserValues } from '@components/common/constants/recoilValues';
+import { useRouter } from 'next/router';
 import { DiagnosticCenter, Branch } from 'types'; // Assuming you have defined these types
 
 export default function Sidebar() {
@@ -11,22 +12,25 @@ export default function Sidebar() {
   const [dashTab, setDashTab] = useRecoilState(dashTabs);
   const currentUser = useUserValues();
   const [currentBranch, setCurrentBranch] = useState<Branch | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    try {
-      const dcData: DiagnosticCenter = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
-      console.log("currentUser", currentUser)
-      const branchData: Branch = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
-      console.log("branchData", branchData)
-      if (currentUser && currentUser.diagnosticCenters) {
-        const branch = fetchBranchByDiagnosticCenterId(currentUser.diagnosticCenters, dcData?._id, branchData?._id);
-        setCurrentBranch(branch);
-        console.log("branch",branch)
+    if (currentUser) {
+      try {
+        const dcData: DiagnosticCenter = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
+        const branchData: Branch = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
+
+        if (currentUser.diagnosticCenters) {
+          const branch = fetchBranchByDiagnosticCenterId(currentUser.diagnosticCenters, dcData?._id, branchData?._id);
+          setCurrentBranch(branch);
+        }
+      } catch (error) {
+        console.error('Error parsing localStorage', error);
       }
-    } catch (error) {
-      console.error('Error parsing localStorage', error);
+    } else {
+      router.push('/verifyUser');
     }
-  }, [currentUser]);
+  }, [currentUser, router]);
 
   const handleSidebarToggle = () => {
     setShowSidebar(!showSidebar);
@@ -82,8 +86,8 @@ const fetchBranchByDiagnosticCenterId = (
   branchId: string
 ): Branch | null => {
   for (const center of diagnosticCenters) {
-    if (center.diagnostic._id === dcId) {
-      const branch = center.branches.find(branch => branch.branchId === branchId);
+    if (center?.diagnostic?._id === dcId) {
+      const branch = center.branches.find(branch => branch?.branchId === branchId);
       if (branch) {
         return branch;
       }

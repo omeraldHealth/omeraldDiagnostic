@@ -80,7 +80,6 @@ const UploadReportFile: React.FC<any> = ({next}) => {
     next()
     // Check if `reportData.reportData` exists and if true, log the current state and proceed to the next step
     // if (reportData?.reportData) {
-    //   console.log("Updated Report Data:", reportData);
     //   if (next) {
     //     next(); // Ensure `next` is defined or handled appropriately if not
     //   } else {
@@ -161,7 +160,6 @@ const GenerateReport:React.FC<any> = ({next}) => {
   const branch = profile?.branches?.filter((branch:any) => branch?._id === currentBranch?._id);
 
     const onFinish = (values: any) => {
-      console.log(values)
       if(!values?.pathologist?.name){
         errorAlert2("Please Add Pathologist Details")
       }else{
