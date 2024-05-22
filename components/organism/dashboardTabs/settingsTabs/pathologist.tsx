@@ -26,6 +26,7 @@ export default function PathologistComp() {
         successAlert("Added pathologist succesfully")
         setShowTest(false)
         setCurrentBranch(data?.data?.branches?.filter(branch=> branch?._id === currentBranch?._id)[0])
+        localStorage.setItem("selectedBranch",JSON.stringify(data?.data?.branches?.filter(branch=> branch?._id === currentBranch?._id)[0] ))
         setDiagnosticProfile(data?.data)
         setLoading(false)
     },

@@ -11,7 +11,7 @@ import { userState } from '../components/common/recoil/user';
 import { profileState } from '@components/common/recoil/profile';
 
 const VerifyUser = () => {
-  let selectedCenterId = localStorage.getItem("selectedDc")
+  let selectedCenterId = localStorage.getItem("selectedDc") ?? {};
   const { user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
