@@ -84,15 +84,13 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
   },
 ];
 
-export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any) => [
+export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any, currentBranch: any) => [
   {
     title: 'Branch Name',
     dataIndex: 'branchName',
     key: 'branchName',
     render: (text: any) => <a className='text-blue-800 font-medium'>{text}</a>,
     sorter: (a: any, b: any) => a.branchName.length - b.branchName.length,
-    // filters: branchList,
-    // onFilter: (value: string, record) => record?.branchName?.indexOf(value) === 0,
   },
   {
     title: 'Branch Email',
@@ -115,17 +113,6 @@ export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any) 
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.branchAddress.length - b.branchAddress.length,
   },
-  // {
-  //   title: 'Branch Operator',
-  //   dataIndex: 'branchOperator',
-  //   key: 'branchOperator',
-  //   render: (text: any) => {
-  //     getOperator(""); // Call your function here
-  //     const operatorTags = text?.map((tag: any) => <Tag color="green" key={tag}>{tag}</Tag>); // Assuming getOperator returns tag directly
-  //     return operatorTags;
-  //   },
-  //   // sorter: (a:any, b:any) => a.branchAddress.length - b.branchAddress.length,
-  // },
   {
     title: 'Action',
     dataIndex: 'branchAddress',
@@ -138,14 +125,14 @@ export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any) 
           </a>:
           <p className="text-sm font-bold italic text-red-500">Current Profile</p>
         } */}
-        {(record?.branchContact !== profile?.phoneNumber) && (
+        {(record?.branchContact !== profile?.phoneNumber && record?._id !== currentBranch?._id) && (
           <a>
             <TrashIcon className='w-4 text-red-500' onClick={() => {
               confirm({
                 title: 'Do you want to delete this branch?',
                 content: 'The action cannot be undone.',
                 onOk() {
-                  handleRemove("branchDetails",record)
+                  handleRemove(record?._id)
                 },
               })
             }} />

@@ -14,6 +14,7 @@ import { uploadDiagnosticReportApi } from '@utils';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import PathologistComp from './settingsTabs/pathologist';
+import BranchComp from './settingsTabs/branch';
 
 
 const Billing = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/billing').then(res => res.Billing), { loading: () => <Spinner /> });
@@ -168,7 +169,8 @@ export default function SettingsTab() {
     {
       key: '4',
       label: "Branch Management",
-      children: <SettingsCommon columns={BranchColumns(handleEdit, handleRemove, profile)} data={profile ? profile.branchDetails : []} tabName="Branch" form={branchDetailsFormArray} {...settingProp} />,
+      children: <BranchComp/>
+      // children: <SettingsCommon columns={BranchColumns(handleEdit, handleRemove, profile)} data={profile ? profile.branchDetails : []} tabName="Branch" form={branchDetailsFormArray} {...settingProp} />,
     },
     {
       key: '5',
