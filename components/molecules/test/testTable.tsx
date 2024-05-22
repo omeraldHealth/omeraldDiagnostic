@@ -6,7 +6,7 @@ import { TestTableColumns } from 'utils/forms/form';
 import { testForm } from 'utils/types/molecules/forms.interface';
 import { useUpdateDiagnostic } from 'utils/reactQuery';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { profileState } from '@components/common/recoil/profile';
 import { AddTestComponent } from '../addReport/addTest';
 import { testDetailsState } from '@components/common/recoil/testDetails';
@@ -14,6 +14,7 @@ import { booleanState } from "@components/common/recoil/booleanAtom";
 import { EditTestsProps, TestTableProps, ViewTestProps } from '../../../utils/types';
 import { Spinner } from '@components/atoms/loader';
 import { testDataState } from '@components/common/recoil/testDetails/test';
+import { branchState } from '@components/common/recoil/branch/branch';
 
 export const TestTable: React.FC<TestTableProps> = () => {
   const [editTest, setEditTest] = useState(false);
@@ -27,7 +28,10 @@ export const TestTable: React.FC<TestTableProps> = () => {
   const { confirm } = Modal;
   const [testDetailState, setTestDetails] = useRecoilState(testDataState);
 
-  const tests = profile?.tests.filter((test: any) => test?.branchId === currentBranch?._id);
+  const tests = currentBranch?.tests;
+  const setCurrentBranch = useSetRecoilState(branchState)
+
+  console.log("tests",tests)
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert("Profile updated successfully");
@@ -38,12 +42,29 @@ export const TestTable: React.FC<TestTableProps> = () => {
       errorAlert("Error updating profile");
       setLoading(false)
     },
-  });
+  }, profile?._id);
 
   const handleRemove = (record: any) => {
     setLoading(true)
-    const updateData = profile?.tests.filter((item: any) => item?._id !== record._id);
-    updateDiagnostic.mutate({ data: { id: profile?._id, tests: updateData } });
+    const SampleType = currentBranch?.tests.filter((item: any) => item?._id !== record._id);
+    const updatedBranch = { ...currentBranch, tests: SampleType };
+      localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
+      setCurrentBranch(updatedBranch)
+      const updatedBranches = profile?.branches.map(branch => {
+        if (branch._id === updatedBranch._id) {
+            return updatedBranch;
+        }
+        return branch;
+      });
+
+      try {
+        const updatedProfile = { data: { branches: updatedBranches } };
+        updateDiagnostic.mutate(updatedProfile);
+      } catch (error) {
+          console.error("Error logging activity:", error);
+      }
+    // const updateData = currentBranch?.tests.filter((item: any) => item?._id !== record._id);
+    // updateDiagnostic.mutate({ data: { id: profile?._id, tests: updateData } });
   };
 
   const handleEdit = async (record: any) => {

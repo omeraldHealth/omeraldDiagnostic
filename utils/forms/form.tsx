@@ -229,7 +229,7 @@ const getPopOver = (param:any) => {
     <p><strong>Name</strong>: {param?.name}</p>
     <p style={{ width: 300,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}  className="w-10 overflow-hidden whitespace-nowrap"><strong>Description</strong>: {param?.description}</p>
 
-    <p><strong>Aliases</strong>: {param?.aliases.join(",")}</p>
+    <p><strong>Aliases</strong>: {param?.aliases?.join(",")}</p>
     <p><strong>IsActive</strong>: {param?.isActive}</p>
     <p><strong>BioRefRange</strong>: 
       <br/>

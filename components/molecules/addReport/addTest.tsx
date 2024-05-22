@@ -1,7 +1,7 @@
 import { testDetailsState } from "@components/common/recoil/testDetails";
 import { Button, Col, Dropdown, Form, Input, List, Menu, Modal, Popover, Radio, Row, Select, Space, Steps, Switch, Table, Tabs, Tag } from "antd";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import {testDataState} from "../../common/recoil/testDetails/test"
 import { FaSearchMinus } from "react-icons/fa";
 import { ArrowDownIcon, MinusCircleIcon, PencilIcon, PlusCircleIcon, PlusIcon, TrashIcon } from "@heroicons/react/20/solid";
@@ -15,6 +15,7 @@ import { paramState } from "@components/common/recoil/testDetails/param";
 import axios from "axios";
 import { getAdminReportTypesApi } from "@utils";
 import { reportState } from "@components/common/recoil/report";
+import { branchState } from "@components/common/recoil/branch/branch";
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -26,6 +27,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
   const [testDetailState, setTestDetail] = useRecoilState(testDataState);
   const [profile, setProfile] = useRecoilState(profileState);
   const currentBranch = useCurrentBranchValue();
+  const setCurrentBranch = useSetRecoilState(branchState)
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
@@ -38,23 +40,63 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
       errorAlert('Error updating profile');
       // setLoading(false)
     },
-  });
+  },profile?._id);
+
 
   const handleSubmitTest = () => {
 
     if(edit){ 
-      let updatedProfile = profile?.tests.map(test => {
+      let updatedTest = currentBranch?.tests.map(test => {
         if (test?._id === testDetailState._id) {
-            return testDetailState; // Update the test if its ID matches
+            let SampleType = {
+              testName: testDetailState?.testName,
+              parameters: testDetailState?.parameters, // Use ParametersSchemas here
+              isActive: testDetailState?.isActive
+            };
+            return SampleType; // Update the test if its ID matches
         } else {
             return test; // Return the original test if its ID doesn't match
         }
       });
-      updateDiagnostic.mutate({data: { id: profile?._id, tests: updatedProfile}})
-    }else{
-      updateDiagnostic.mutate({
-          data: { id: profile?._id, tests: [...profile?.tests, { ...testDetailState, branchId: currentBranch?._id }] },
+      const updatedBranch = { ...currentBranch, tests: updatedTest};
+      localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
+      setCurrentBranch(updatedBranch)
+      const updatedBranches = profile?.branches.map(branch => {
+        if (branch._id === updatedBranch._id) {
+            return updatedBranch;
+        }
+        return branch;
       });
+      try {
+        const updatedProfile = { data: { branches: updatedBranches } };
+        updateDiagnostic.mutate(updatedProfile);
+      } catch (error) {
+          console.error("Error logging activity:", error);
+      }
+    }else{
+
+      let SampleType = {
+        testName: testDetailState?.testName,
+        parameters: testDetailState?.parameters, // Use ParametersSchemas here
+        isActive: testDetailState?.isActive
+      };
+
+      const updatedBranch = { ...currentBranch, tests: [...(currentBranch.tests || []), SampleType] };
+      localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
+      setCurrentBranch(updatedBranch)
+      const updatedBranches = profile?.branches.map(branch => {
+        if (branch._id === updatedBranch._id) {
+            return updatedBranch;
+        }
+        return branch;
+      });
+
+      try {
+        const updatedProfile = { data: { branches: updatedBranches } };
+        updateDiagnostic.mutate(updatedProfile);
+      } catch (error) {
+          console.error("Error logging activity:", error);
+      }
     }
   }
 
