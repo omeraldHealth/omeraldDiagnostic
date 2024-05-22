@@ -3,7 +3,6 @@ import { useRecoilState } from 'recoil';
 import { dashTabs } from 'components/common/recoil/dashboard/index';
 import { classNames, privateRoutes } from '../../../utils/static/static';
 import Image from 'next/image';
-import Cookies from 'js-cookie';
 import { useUserValues } from '@components/common/constants/recoilValues';
 import { DiagnosticCenter, Branch } from 'types'; // Assuming you have defined these types
 
@@ -15,16 +14,17 @@ export default function Sidebar() {
 
   useEffect(() => {
     try {
-      const dcData: DiagnosticCenter = JSON.parse(Cookies.get('diagnosticCenter') || '{}');
-      const branchData: Branch = JSON.parse(Cookies.get('selectedBranch') || '{}');
-      console.log("current",currentUser)
+      const dcData: DiagnosticCenter = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
+      console.log("currentUser", currentUser)
+      const branchData: Branch = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
+      console.log("branchData", branchData)
       if (currentUser && currentUser.diagnosticCenters) {
         const branch = fetchBranchByDiagnosticCenterId(currentUser.diagnosticCenters, dcData?._id, branchData?._id);
         setCurrentBranch(branch);
         console.log("branch",branch)
       }
     } catch (error) {
-      console.error('Error parsing cookies', error);
+      console.error('Error parsing localStorage', error);
     }
   }, [currentUser]);
 

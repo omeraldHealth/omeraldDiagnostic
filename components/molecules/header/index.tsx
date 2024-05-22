@@ -4,7 +4,6 @@ import { Select } from 'antd';
 import { useSetRecoilState } from 'recoil';
 import { useCurrentBranchValue, useDashboardTabs, useProfileValue } from '@components/common/constants/recoilValues';
 import { branchState } from '@components/common/recoil/branch/branch';
-
 interface DashboardHeaderProps {
   // Add any additional props if needed
 }
@@ -14,9 +13,13 @@ export function DashboardHeader({}: DashboardHeaderProps) {
   const profile = useProfileValue();
   const currentBranch = useCurrentBranchValue();
   const setCurrentBranch = useSetRecoilState(branchState);
+  const selectedBranch = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
+
 
   // @ts-ignore
-  const branchList = profile && profile?.branchDetails;
+  const branchList = profile && profile?.branches;
+
+  console.log("bselectedBranchr",selectedBranch)
 
   const handleBranchChange = (value: any) => {
     let branch = branchList?.filter((branch: any) => branch?._id === value)[0];
@@ -38,8 +41,7 @@ export function DashboardHeader({}: DashboardHeaderProps) {
               <section className='flex gap-1'>
                 <Select
                   placeholder="Select Branch"
-                  disabled
-                  value={{ label: currentBranch?.branchName, value: currentBranch }}
+                  value={{ label: selectedBranch?.branchName, value: selectedBranch }}
                   onChange={handleBranchChange}
                   options={branchList?.map((branch: any) => ({ label: branch?.branchName, value: branch?._id, key: branch?.branchName }))}
                 />

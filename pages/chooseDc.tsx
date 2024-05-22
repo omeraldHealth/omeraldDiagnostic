@@ -9,7 +9,6 @@ import { profileState } from '../components/common/recoil/profile';
 import { errorAlert, successAlert } from '../components/atoms/alerts/alert';
 import { Loader } from '../components/atoms/loader/loader';
 import { useUser } from '@clerk/clerk-react';
-import Cookies from 'js-cookie';
 
 const ChooseDc: React.FC = () => {
   const { user } = useUser();
@@ -45,8 +44,8 @@ const ChooseDc: React.FC = () => {
     setLoading(true);
     if (centerStatus === 'success' && diagnosticCenter?.data) {
       setDiagnosticCenter(diagnosticCenter.data);
-      Cookies.set('diagnosticCenter', JSON.stringify(diagnosticCenter.data), { expires: 1 / 24 });
-      Cookies.set('selectedBranch', JSON.stringify(diagnosticCenter.data?.branches[0]), { expires: 1 / 24 });
+      localStorage.setItem('diagnosticCenter', JSON.stringify(diagnosticCenter.data), { expires: 1 / 24 });
+      localStorage.setItem('selectedBranch', JSON.stringify(diagnosticCenter.data?.branches[0]), { expires: 1 / 24 });
       successAlert("Logging into Diagnostic Profile");
       router.push("/dashboard");
     } else {

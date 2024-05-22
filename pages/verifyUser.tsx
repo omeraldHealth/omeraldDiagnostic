@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useCreateUser, useQueryGetData } from 'utils/reactQuery';
 import { userState } from '../components/common/recoil/user';
-import Cookies from 'js-cookie';
 import { profileState } from '@components/common/recoil/profile';
 
 const VerifyUser = () => {
@@ -17,7 +16,7 @@ const VerifyUser = () => {
   const [loading, setLoading] = useState(true);
   const setUserData = useSetRecoilState(userState);
   const setDiagnosticCenter = useSetRecoilState(profileState);
-  const dcData = JSON.parse(Cookies.get('diagnosticCenter') || '{}');
+  const dcData = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
 
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
   const userName = user?.fullName;
