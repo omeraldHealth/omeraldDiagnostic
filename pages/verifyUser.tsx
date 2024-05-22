@@ -9,7 +9,6 @@ import { useSetRecoilState } from 'recoil';
 import { useCreateUser, useGetDcProfile, useGetUser } from 'utils/reactQuery';
 import { userState } from '../components/common/recoil/user';
 import { profileState } from '@components/common/recoil/profile';
-import { ActivityLogger } from '@components/common/logger.tsx/activity';
 
 const VerifyUser = () => {
   let selectedCenterId = localStorage.getItem("selectedDc")
