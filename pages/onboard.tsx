@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { UserLayout } from '../components/templates/pageTemplate';
 import { useProfileValue } from '@components/common/constants/recoilValues';
 import { UserButton, useUser } from '@clerk/clerk-react';
-import { Spinner } from '@components/atoms/loader';
-import dynamic from 'next/dynamic';
 import PageHead from '@components/atoms/head/head';
 import Link from 'next/link';
 import { Logo } from '@components/atoms/nav/logo';
 import { logoUrl } from '@utils';
 import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import OnboardNewComponents from '@components/molecules/onboard/onboard';
+import { useSetRecoilState } from 'recoil';
+import { userState } from '@components/common/recoil/user';
 
 /**
  * Onboard page component.
@@ -27,6 +26,7 @@ const Onboard: React.FC = (): JSX.Element => {
       router?.push('/dashboard');
     }
   }, [profileValue, user, router]);
+
   return (
       <div className='flex flex-col h-screen bg-white'>
          <PageHead

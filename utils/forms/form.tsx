@@ -17,7 +17,7 @@ export const ActivityColumns = [
     key: 'user',
     title: 'Activity By',
     dataIndex: 'user',
-    render: (text: any) => <a>{text?.managerName}</a>,
+    render: (text: any) => <a>{text?.name}</a>,
     sorter: (a: any, b: any) => a.user.length - b.user.length,
   },
   {
@@ -43,8 +43,6 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
     key: 'designation',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.designation.length - b.designation.length,
-    // filters: pathList,
-    // onFilter: (value: string, record) => record.designation.indexOf(value) === 0,
   },
   {
     title: 'Pathologist Signature',
@@ -54,7 +52,7 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
     render: (text: any) => (
       <span className="w-[20px] h-[20px]">
         {text ? (
-           <span className="object-cover border rounded">  <Image width={100} src={text} /></span>
+           <span className="object-cover border rounded">  <Image width={220} height={70} src={text} /></span>
           ) : (
             <p className="font-light text-sm text-red-600">Not found</p>
           )}
@@ -73,7 +71,7 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
               title: 'Do you want to delete this pathologist?',
               content: 'The action cannot be undone.',
               onOk() {
-                handleRemove("pathologistDetail",record);
+                handleRemove(record?._id);
               },
             });
           }} />
@@ -86,15 +84,13 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
   },
 ];
 
-export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any) => [
+export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any, currentBranch: any) => [
   {
     title: 'Branch Name',
     dataIndex: 'branchName',
     key: 'branchName',
     render: (text: any) => <a className='text-blue-800 font-medium'>{text}</a>,
     sorter: (a: any, b: any) => a.branchName.length - b.branchName.length,
-    // filters: branchList,
-    // onFilter: (value: string, record) => record?.branchName?.indexOf(value) === 0,
   },
   {
     title: 'Branch Email',
@@ -117,17 +113,6 @@ export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any) 
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.branchAddress.length - b.branchAddress.length,
   },
-  // {
-  //   title: 'Branch Operator',
-  //   dataIndex: 'branchOperator',
-  //   key: 'branchOperator',
-  //   render: (text: any) => {
-  //     getOperator(""); // Call your function here
-  //     const operatorTags = text?.map((tag: any) => <Tag color="green" key={tag}>{tag}</Tag>); // Assuming getOperator returns tag directly
-  //     return operatorTags;
-  //   },
-  //   // sorter: (a:any, b:any) => a.branchAddress.length - b.branchAddress.length,
-  // },
   {
     title: 'Action',
     dataIndex: 'branchAddress',
@@ -140,14 +125,14 @@ export const BranchColumns = (handleEdit: any, handleRemove: any, profile: any) 
           </a>:
           <p className="text-sm font-bold italic text-red-500">Current Profile</p>
         } */}
-        {(record?.branchContact !== profile?.phoneNumber) && (
+        {(record?.branchContact !== profile?.phoneNumber && record?._id !== currentBranch?._id) && (
           <a>
             <TrashIcon className='w-4 text-red-500' onClick={() => {
               confirm({
                 title: 'Do you want to delete this branch?',
                 content: 'The action cannot be undone.',
                 onOk() {
-                  handleRemove("branchDetails",record)
+                  handleRemove(record?._id)
                 },
               })
             }} />
@@ -229,7 +214,7 @@ const getPopOver = (param:any) => {
     <p><strong>Name</strong>: {param?.name}</p>
     <p style={{ width: 300,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}  className="w-10 overflow-hidden whitespace-nowrap"><strong>Description</strong>: {param?.description}</p>
 
-    <p><strong>Aliases</strong>: {param?.aliases.join(",")}</p>
+    <p><strong>Aliases</strong>: {param?.aliases?.join(",")}</p>
     <p><strong>IsActive</strong>: {param?.isActive}</p>
     <p><strong>BioRefRange</strong>: 
       <br/>

@@ -62,7 +62,7 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({ profile, style, h
     delete updatedReportData.reportDate;
     delete updatedReportData.reportType;
     delete updateDiagnostic?.parsedData
-    console.log(updatedReportData)
+
     setReportData(updatedReportData);
    }
   },[])

@@ -17,7 +17,7 @@ const SignUpComp = () => {
   }, [user])
 
   return (
-    <UserLayout tabName="Admin Omerald | Sign Up">
+    <UserLayout tabDescription='Sign up' tabName="Admin Omerald | Sign Up">
       <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
         <section className="my-10">
           {/* SignUp component from Clerk for user registration */}

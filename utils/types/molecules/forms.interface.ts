@@ -52,11 +52,13 @@ export type FormType = {
 };
 
 export const profileForm: FormType[] = [
-    {"name":"brandLogo","type":"image","label":"Logo","required":true},
-    {"name":"diagnosticName","type":"text","label":"Diagnostic Center Name","required":true},
+    {"name":"brandLogo","type":"logo","label":"Logo","required":true},
+    {"name":"centerName","type":"text","label":"Diagnostic Center Name","required":true},
     {"name":"email","type":"email","label":"Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
-    {"name":"facebookUrl","type":"text","label":"Facebook Url","required":true},
-    {"name":"instaUrl","type":"text","label":"Instagram Url","required":true},
+    {"name":"branchName","type":"text","label":"Branch Name","required":true},
+    {"name":"branchEmail","type":"email","label":"Branch Email","required":false},
+    {"name":"branchContact","type":"text","label":"Branch Contact","required":true},
+    {"name":"branchAddress","type":"text","label":"Branch Address","required":false},
 ]
 
 export const selectForm: FormType[] = [

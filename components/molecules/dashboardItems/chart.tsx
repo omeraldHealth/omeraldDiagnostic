@@ -22,7 +22,9 @@ const ReportSharedVsTime2: React.FC<ReportSharedVsTime2Props> = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reportCount, setReportCount] = useState<number[]>([]);
 
-  const reportsList = profile?.reports?.filter((report: any) => report?.branchId === currentBranch?._id);
+  let reports:any = [];
+
+  const reportsList = reports?.filter((report: any) => currentBranch?.reports.includes(report?._id));
 
   useEffect(() => {
     const sixMonthsAgo = moment().subtract(6, 'months').toDate();

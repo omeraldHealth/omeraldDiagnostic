@@ -1,14 +1,10 @@
 import React from 'react';
 import { BeakerIcon, ChartBarIcon, ShareIcon } from '@heroicons/react/20/solid';
 import { Tooltip } from 'antd';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { profileState } from '../../common/recoil/profile';
-import { branchState } from '../../common/recoil/branch/branch';
+import { useSetRecoilState } from 'recoil';
 import { dashTabs } from '../../common/recoil/dashboard';
 import { settingTabState } from '../../common/recoil/settings';
-import { useQuery } from 'react-query';
-import { useQueryGetData } from 'utils/reactQuery';
-import { getDiagReportsApi } from '@utils';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
 
 interface TooltipProps {
   tipInfo: string;
@@ -24,16 +20,10 @@ const CustomTooltip: React.FC<TooltipProps> = ({ tipInfo, icon }) => {
 };
 
 export const DashCard = () => {
-  const profile = useRecoilValue(profileState);
-  const currentBranch = useRecoilValue(branchState);
+  const currentBranch = useCurrentBranchValue()
   const setDashTab = useSetRecoilState(dashTabs);
-  const [activeKey,setActiveKey] = useRecoilState(settingTabState);
-  const { data: reports, refetch } = useQueryGetData("reports", getDiagReportsApi);
+  const setActiveKey = useSetRecoilState(settingTabState);
 
-  let testList = profile?.tests?.filter((test: any) => test?.branchId === currentBranch?._id );
-  // let reportList = reports?.data?.filter((report: any) => report?.branchId === currentBranch?._id );
-  let employeeList = profile?.managersDetail?.filter((emp: any) => emp.branchId === currentBranch?._id || emp?.managerRole.toLowerCase() === 'owner');
-  let reportList = reports?.data?.filter((report: any) => report?.diagnosticCenter?.branch.id === currentBranch?._id );
   const dashCard: any[] = [
     {
       href: '/test',
@@ -41,7 +31,7 @@ export const DashCard = () => {
       icon: <BeakerIcon className="w-10 h-10" />,
       tipInfo: 'The number of tests your laboratory offers.',
       title: 'Tests Offered',
-      value: testList?.length,
+      value: currentBranch?.tests?.length,
     },
     {
       href: '/reports',
@@ -49,7 +39,7 @@ export const DashCard = () => {
       icon: <ChartBarIcon className="w-10 h-10" />,
       tipInfo: 'The number of tests your laboratory offers',
       title: 'Reports Uploaded',
-      value: reportList?.length,
+      value: currentBranch?.reports?.length,
     },
     {
       href: '/reports',
@@ -57,7 +47,7 @@ export const DashCard = () => {
       icon: <ShareIcon className="w-10 h-10" />,
       tipInfo: 'The number of tests shared by your laboratory',
       title: 'Reports Shared',
-      value: 0,
+      value: currentBranch?.sharedReport?.length,
     },
     {
       href: '/settings',
@@ -65,7 +55,9 @@ export const DashCard = () => {
       icon: <BeakerIcon className="w-10 h-10" />,
       tipInfo: 'The number of users in your diagnostic center',
       title: 'Total Users',
-      value: employeeList?.length && employeeList?.length+ 1,
+      value: 1 + (currentBranch?.operators?.length || 0)
+
+
     },
   ];
 

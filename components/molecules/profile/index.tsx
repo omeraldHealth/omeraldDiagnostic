@@ -75,6 +75,7 @@ const ProfileView: React.FC<any> = ({ style }) => {
   const currentBranch = useCurrentBranchValue();
   const [edit, setEdit] = useState<boolean>(false);
   const [profile, setProfile] = useRecoilState(profileState);
+  const selectedBranch = JSON.parse(localStorage.getItem("selectedBranch"))
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
@@ -93,39 +94,39 @@ const ProfileView: React.FC<any> = ({ style }) => {
 
   return (
       <div className={`p-8 bg-white h-[80vh] text-left ${style}`}>
-        {currentManager?.managerRole.toLowerCase() === ("admin" || "owner") && (
+        {/* {currentManager?.managerRole.toLowerCase() === ("admin" || "owner") && ( */}
           <>
-           <span className='flex justify-end'>
+           {/* <span className='flex justify-end'>
               <Switch
                 style={{ fontSize: '10px' }}
-                checkedChildren="Add"
+                checkedChildren="Edit"
                 unCheckedChildren="View"
                 checked={edit}
                 className='bg-black'
                 onChange={() => setEdit(!edit)}
               />
-            </span>
+            </span> */}
           </>
-        )}
+        {/* )} */}
          {
                 !edit ? 
                 <>
                   <section>
-                  <img src={profile?.brandDetails?.brandLogo} alt="logo" className='w-[18vw] h-[18vw] sm:w-[7vw] sm:h-[7vw] rounded-full border-2' />
-                  <section className='grid sm:grid-cols-2 grid-cols-1 gap-0 lg:gap-[10vw] w-[100%]'> 
+                  <img src={profile?.brandingInfo?.logoUrl} alt="logo" className='w-[18vw] h-[18vw] sm:w-[7vw] sm:h-[7vw] rounded-full border-2' />
+                  <section className='grid sm:grid-cols-3 grid-cols-1 gap-0 lg:gap-[1vw] w-[100%]'> 
                               <aside>
-                                <p className='my-8 font-bold text-sm'>{"Diagnostic Center Name: "}<span className='text-black font-light'>{profile?.diagnosticName}</span></p>
+                                <p className='my-8 font-bold text-sm'>{"Diagnostic Center Name: "}<span className='text-black font-light'>{profile?.centerName}</span></p>
                                 <p className='my-8 font-bold text-sm'>{"Email: "}<span className='text-black font-light lowercase'>{profile?.email}</span></p>
                                 <p className='my-8 font-bold text-sm'>{"Contact: "}<span className='text-black font-light'>{profile?.phoneNumber}</span></p>
     
-                                <p className='my-8 font-bold text-sm'>{"Facebook Url "}<a href={profile?.brandDetails?.facebookUrl} className='text-black font-light'>{profile?.brandDetails?.facebookUrl}</a></p>
-                                <p className='my-8 font-bold text-sm'>{"Instagram Url: "}<a href={profile?.brandDetails?.instaUrl} className='text-black font-light lowercase'>{profile?.brandDetails?.instaUrl}</a></p>
+                                {/* <p className='my-8 font-bold text-sm'>{"Facebook Url "}<a href={profile?.brandDetails?.facebookUrl} className='text-black font-light'>{profile?.brandDetails?.facebookUrl}</a></p>
+                                <p className='my-8 font-bold text-sm'>{"Instagram Url: "}<a href={profile?.brandDetails?.instaUrl} className='text-black font-light lowercase'>{profile?.brandDetails?.instaUrl}</a></p> */}
                               </aside>
                               <aside>
-                                <p className='my-8 font-bold text-sm'>{"Branch Name: "}<span className='text-black font-light'>{currentBranch?.branchName}</span></p>
-                                <p className='my-8 font-bold text-sm'>{"Branch Email: "}<span className='text-black font-light lowercase'>{currentBranch?.branchEmail}</span></p>
-                                <p className='my-8 font-bold text-sm'>{"Branch Contact: "}<span className='text-black font-light'>{currentBranch?.branchContact}</span></p>
-                                <p className='my-8 font-bold text-sm'>{"Branch Address "}<span className='text-black font-light'>{currentBranch?.branchAddress}</span></p>
+                                <p className='my-8 font-bold text-sm'>{"Branch Name: "}<span className='text-black font-light'>{selectedBranch?.branchName}</span></p>
+                                <p className='my-8 font-bold text-sm'>{"Branch Email: "}<span className='text-black font-light lowercase'>{selectedBranch?.branchEmail}</span></p>
+                                <p className='my-8 font-bold text-sm'>{"Branch Contact: "}<span className='text-black font-light'>{selectedBranch?.branchContact}</span></p>
+                                <p className='my-8 font-bold text-sm'>{"Branch Address "}<span className='text-black font-light'>{selectedBranch?.branchAddress}</span></p>
                               </aside>
                   </section>
                   </section>
@@ -133,7 +134,7 @@ const ProfileView: React.FC<any> = ({ style }) => {
                 <>
                   <section className='sm:my-2 w-[80vw] sm:w-[50vw] sm:pr-[16vw]'>  
                     <p className='mb-6 italic font-bold text-md'>Edit your profile</p>
-                    <DynamicFormGenerator formProps={profileForm} buttonText="Update" handleSubmit={handleSubmit} defaultValues={{...profile,...profile?.brandDetails}} />
+                    <DynamicFormGenerator formProps={profileForm} buttonText="Update" handleSubmit={handleSubmit} defaultValues={{...profile,...profile?.brandDetails,...selectedBranch}} />
                   </section>
                 </>
               }

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Bars3Icon } from '@heroicons/react/20/solid';
 import { Select } from 'antd';
 import { useSetRecoilState } from 'recoil';
 import { useCurrentBranchValue, useDashboardTabs, useProfileValue } from '@components/common/constants/recoilValues';
 import { branchState } from '@components/common/recoil/branch/branch';
-
+import { Loader } from '@components/atoms/loader/loader';
+import { successAlert, warningAlert } from '@components/atoms/alerts/alert';
 interface DashboardHeaderProps {
   // Add any additional props if needed
 }
@@ -14,17 +15,30 @@ export function DashboardHeader({}: DashboardHeaderProps) {
   const profile = useProfileValue();
   const currentBranch = useCurrentBranchValue();
   const setCurrentBranch = useSetRecoilState(branchState);
+  const selectedBranch = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
+  const [loading, setLoading] = useState(false)
 
   // @ts-ignore
-  const branchList = profile && profile?.branchDetails;
+  const branchList = profile && profile?.branches;
 
   const handleBranchChange = (value: any) => {
-    let branch = branchList?.filter((branch: any) => branch?._id === value)[0];
-    setCurrentBranch(branch);
+    setLoading(true)
+
+    setTimeout(()=>{
+      let branch = branchList?.filter((branch: any) => branch?._id === value)[0];
+      setCurrentBranch(branch);
+      localStorage.setItem('selectedBranch',JSON.stringify(branch))
+      warningAlert("Switched to "+selectedBranch?.branchName)
+      setLoading(false)
+
+    }, 1000)
+
+
   };
 
   return (
     <div className={`flex justify-between items-center`}>
+      {loading && <Loader/>}
       <div className="flex flex-1 flex-col">
         <div className="sticky top-0 z-10 flex h-16 flex-shrink-0 bg-white shadow">
           <div className="flex flex-1 justify-between px-4">
@@ -38,8 +52,7 @@ export function DashboardHeader({}: DashboardHeaderProps) {
               <section className='flex gap-1'>
                 <Select
                   placeholder="Select Branch"
-                  disabled
-                  value={{ label: currentBranch?.branchName, value: currentBranch }}
+                  value={{ label: selectedBranch?.branchName, value: selectedBranch }}
                   onChange={handleBranchChange}
                   options={branchList?.map((branch: any) => ({ label: branch?.branchName, value: branch?._id, key: branch?.branchName }))}
                 />

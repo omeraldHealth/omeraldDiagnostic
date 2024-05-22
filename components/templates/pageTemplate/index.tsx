@@ -5,9 +5,9 @@ import { ROUTES_WITHOUT_SIDEBAR } from 'components/common/constants/recoilValues
 import { Spinner } from '../../atoms/loader';
 
 // Dynamic imports with loading spinner
-const PageHead = dynamic(() => import('components/atoms/head/head'),{ loading: () => <Spinner />});
+const PageHead = dynamic(() => import('components/atoms/head/head'), { loading: () => <Spinner /> });
 const Navbar = dynamic(() => import('@components/molecules/navbar').then(res => res.Navbar), { loading: () => <Spinner /> });
-const Footer = dynamic(() => import('@components/common/footer').then(res => res.Footer),{ loading: () => <Spinner />});
+const Footer = dynamic(() => import('@components/common/footer').then(res => res.Footer), { loading: () => <Spinner /> });
 
 /**
  * UserLayout component for pages with or without sidebar.
@@ -15,11 +15,11 @@ const Footer = dynamic(() => import('@components/common/footer').then(res => res
  * @param {string} tabDescription - The description of the tab.
  * @param {ReactNode} children - The content to be rendered inside the layout.
  */
-export const UserLayout = ({ tabName, tabDescription, children }: any) => {
+export const UserLayout = ({ tabName, tabDescription, children }: { tabName: string, tabDescription: string, children: React.ReactNode }) => {
   const { pathname } = useRouter();
 
   return (
-    <div className='flex flex-col max-h-[100vh]'>
+    <div className="flex flex-col min-h-screen">
       {/* Head component for SEO metadata */}
       <PageHead
         icon={'/favicon.png'}
@@ -28,7 +28,7 @@ export const UserLayout = ({ tabName, tabDescription, children }: any) => {
       />
 
       {/* Display Navbar only for routes without sidebar */}
-      {ROUTES_WITHOUT_SIDEBAR.includes(pathname) ? <Navbar /> : null}
+      {ROUTES_WITHOUT_SIDEBAR.includes(pathname) && <Navbar />}
 
       {/* Main content area */}
       <main className="flex-grow">
@@ -36,8 +36,7 @@ export const UserLayout = ({ tabName, tabDescription, children }: any) => {
       </main>
 
       {/* Display Footer only for routes without sidebar */}
-      {ROUTES_WITHOUT_SIDEBAR.includes(pathname) ? <Footer /> : null}
+      {ROUTES_WITHOUT_SIDEBAR.includes(pathname) && <Footer />}
     </div>
   );
 };
-

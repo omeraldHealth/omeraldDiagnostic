@@ -20,7 +20,6 @@ const showToastIfNotDisplayed = (msg: string, options: ToastOptions): void => {
 };
 
 const showToastIfDisplayed = (msg: string, options: ToastOptions): void => {
-
     toast(msg, options);
     displayedMessages.add(msg);
 };

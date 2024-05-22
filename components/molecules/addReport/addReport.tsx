@@ -4,15 +4,16 @@ import { PatientDetails } from './patientDetails';
 import { UploadReport } from './uploadReport';
 import { ReportSummary } from './reportSummary';
 import { reportDataState } from '@components/common/recoil/report/reportData';
-import { useRecoilState } from 'recoil';
-import { useCreateDiagnostic, useCreateReport, useUploadReportFile } from 'utils/reactQuery';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useCreateDiagnostic, useCreateReport, useUpdateDiagnostic, useUploadReportFile } from 'utils/reactQuery';
 import axios from 'axios';
-import { uploadDiagnosticLogoApi } from '@utils';
+import { uploadDiagnosticLogoApi, uploadDiagnosticReportApi } from '@utils';
 import { toast } from 'react-toastify';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 import { SuccessReport } from './successReport';
-import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { useCurrentBranchValue, useProfileValue } from '@components/common/constants/recoilValues';
 import { ManualReport } from './ManualReport';
+import { branchState } from '@components/common/recoil/branch/branch';
 interface AddReportComponentProps {
   setAddReports: React.Dispatch<React.SetStateAction<boolean>>;
   refetch:()=>{}
@@ -23,9 +24,11 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
   const [fileUrl, setFileUrl] = useState("");
   const [manualReport, setManualReport] = useState(false);
   const currentBranch = useCurrentBranchValue()
+  const setCurrentBranch = useSetRecoilState(branchState)
   const prev = () => {setCurrentStep(currentStep-1)}
   const next = () => {setCurrentStep(currentStep+1)}
   const [reportData,setReportData] = useRecoilState(reportDataState)
+  const profile = useProfileValue()
   const steps = [
     {
       title: 'Report Details',
@@ -54,11 +57,34 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
         setAddReports(false)}} />
     },
   ];
-  console.log("record", reportData)
-  const updateDiagnnosticReport = useCreateReport({
+
+  const updateDiagnosticProfile = useUpdateDiagnostic({
+    onSuccess: ()=>{  
+        successAlert('Report updated to profile successfully')
+        next()
+    ;},
+    onError: ()=>{}
+  },profile?._id)
+
+  const updateDiagnosticReport = useCreateReport({
     onSuccess: (data) => {
       successAlert('Report added successfully');
-      next()
+      const updatedReports = [...(currentBranch?.reports || []), data?.data?._id];
+
+      const updatedBranch = {
+        ...currentBranch,
+        reports: updatedReports,
+      };
+      setCurrentBranch(updatedBranch)
+      localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch))
+      const updatedBranches = profile?.branches?.map((branch)=> {
+          if(branch?._id === updatedBranch?._id){
+              return updatedBranch
+          }else{
+              branch
+          }
+      })
+      updateDiagnosticProfile.mutate({data: {branches: updatedBranches}})
     },
     onError: () => {
       errorAlert('Error updating report');
@@ -68,7 +94,7 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
 
   const handleSubmitTest = async () => {
     if(!manualReport){
-      let url = await customRequest({endpoint: uploadDiagnosticLogoApi, file: reportData?.reportData?.file, header:{
+      let url = await customRequest({endpoint: uploadDiagnosticReportApi, file: reportData?.reportData?.file, header:{
         'Content-Type': 'multipart/form-data',
       }})
       if(url?.status === 200){
@@ -83,15 +109,16 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
           },
           diagnosticCenter: {
             ...reportData.diagnosticCenter,
+            diagnostic: profile?._id,
             branch: {
               ...reportData.diagnosticCenter.branch,
               id: currentBranch?._id
             }
           }
         };
-        
+
         setReportData(updatedReportData)
-        updateDiagnnosticReport.mutate({data:updatedReportData})
+        updateDiagnosticReport.mutate({data:updatedReportData})
       }
     }
     else{
@@ -99,6 +126,7 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
         ...reportData,
         diagnosticCenter: {
             ...reportData.diagnosticCenter,
+            diagnostic: profile?._id,
             branch: {
                 ...reportData.diagnosticCenter.branch,
                 id: currentBranch?._id // assuming currentBranch might be undefined
@@ -113,9 +141,9 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
             },
           },
       };
-      console.log("updatedReportData",updatedReportData)
+
       setReportData(updatedReportData)
-      updateDiagnnosticReport.mutate({data:updatedReportData})
+      updateDiagnosticReport.mutate({data:updatedReportData})
     }
   }
 

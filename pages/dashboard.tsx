@@ -1,9 +1,11 @@
 import { DashboardLayout } from '../components/organism/layout/dashboardLayout';
 import { UserLayout } from '../components/templates/pageTemplate';
 import { dashTabs } from '../components/common/recoil/dashboard';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { Spinner } from '@components/atoms/loader';
 import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
+import { branchState } from '@components/common/recoil/branch/branch';
 
 // Dynamic import 
 const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/reportsTab'), { loading:() => <Spinner /> });
@@ -26,6 +28,12 @@ const DashboardTabsMap: {
 export default function Dashboard() {
   // Get the selected dashboard tab from Recoil state
   const dashboard = useRecoilValue(dashTabs);
+  const setCurrentBracn = useSetRecoilState(branchState)
+  const currentBranch = JSON.parse(localStorage.getItem("selectedBranch"))
+
+  useEffect(()=>{
+    setCurrentBracn(currentBranch)
+  },[currentBranch])
 
   return (
     <UserLayout tabName={`Admin Omerald | ${dashboard}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">

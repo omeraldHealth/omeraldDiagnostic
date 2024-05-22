@@ -18,10 +18,11 @@ export default function ReportsTab() {
   const currentBranch = useCurrentBranchValue()
   const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
   let reportsList = reports?.data?.filter((report: any) => report?.diagnosticCenter?.branch.id === currentBranch?._id );
+
   const deleteMutation = useDeleteReports(id, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       successAlert("Deleted Report");
-      refetch();
+      refetch()
     },
     onError: (error) => {
       errorAlert("Error Deleting Report");
@@ -34,10 +35,10 @@ export default function ReportsTab() {
   };
 
   const handlePreview = (record) => {
-    console.log(record)
     setPreviewRecord(record)
     setPreviewReportModalOpen(true)
   }
+  
   return (
     <div className="p-0 h-auto bg-signBanner">
       <span className='flex justify-end'>

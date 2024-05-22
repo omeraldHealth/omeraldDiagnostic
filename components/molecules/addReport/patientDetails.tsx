@@ -1,6 +1,6 @@
 // pages/index.js or wherever your form should live
 
-import { useProfileValue } from '@components/common/constants/recoilValues';
+import { useCurrentBranchValue, useProfileValue } from '@components/common/constants/recoilValues';
 import { reportState } from '@components/common/recoil/report';
 import { Form, Input, Button, Select, Row, Col } from 'antd';
 import { profile } from 'console';
@@ -12,6 +12,7 @@ import { ManualReport } from './ManualReport';
 export function PatientDetails({next}:any) {
   const profile = useProfileValue();
   const branchList = profile?.branchDetails;
+  const currentBranch = useCurrentBranchValue()
 
   const [reportData,setReportData] = useRecoilState(reportDataState)
 
@@ -95,18 +96,19 @@ export function PatientDetails({next}:any) {
             <Form.Item
               name={['diagnosticCenter', 'name']}
               label="Center Name"
-              initialValue={profile?.diagnosticName || ""}
+              initialValue={profile?.centerName || ""}
               rules={[{ required: true }]}
             >
-              <Input disabled={!!profile?.diagnosticName} />
+              <Input disabled={!!profile?.centerName} />
             </Form.Item>
             <Form.Item
               name={['diagnosticCenter', 'branch', 'name']}
               label="Branch Name"
-              initialValue={reportData?.diagnosticCenter?.branch?.name}
+              initialValue={currentBranch.branchName}
               rules={[{ required: true }]}
             >
-              <Select
+                <Input disabled={!!currentBranch?.branchName} />
+              {/* <Select
                 showSearch
                 placeholder="Select a branch"
                 optionFilterProp="children"
@@ -114,7 +116,7 @@ export function PatientDetails({next}:any) {
                 {branchList?.map(branch => (
                   <Option key={branch._id} value={branch?.branchName}>{branch?.branchName}</Option>
                 ))}
-              </Select>
+              </Select> */}
             </Form.Item>
             {/* <Form.Item
               name={['diagnosticCenter', 'branch', 'details']}
