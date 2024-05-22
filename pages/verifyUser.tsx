@@ -6,35 +6,31 @@ import { getDiagProfileByPhoneApi, getDiagnosticUserApi } from '@utils';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { useCreateUser, useQueryGetData } from 'utils/reactQuery';
+import { useCreateUser, useGetDcProfile, useGetUser } from 'utils/reactQuery';
 import { userState } from '../components/common/recoil/user';
 import { profileState } from '@components/common/recoil/profile';
 
 const VerifyUser = () => {
+  let selectedCenterId = localStorage.getItem("selectedDc")
   const { user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const setUserData = useSetRecoilState(userState);
   const setDiagnosticCenter = useSetRecoilState(profileState);
-  const dcData = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
+  // const dcData = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
   const userName = user?.fullName;
-
-    let selectedCenterId = localStorage.getItem("selectedDc")
-    const { data: diagnosticCenter, status: centerStatus } = useQueryGetData(
-      'diagnosticCenter',
-      getDiagProfileByPhoneApi + selectedCenterId,
-      { enabled: !!selectedCenterId }
-    );  
   
-    useEffect(() => {
-      if (centerStatus === 'success' && diagnosticCenter?.data) {
-        localStorage.setItem('diagnosticCenter', JSON.stringify(diagnosticCenter.data));
-      }
-    }, [centerStatus, diagnosticCenter]);
+  const { data: diagnosticCenter, status: centerStatus } = useGetDcProfile(selectedCenterId)
+  const { data: userData, status, refetch, isLoading } = useGetUser({userPhoneNumber})
+
   
-
-
+  useEffect(() => {
+    if (centerStatus === 'success' && diagnosticCenter?.data) {
+      setDiagnosticCenter(diagnosticCenter?.data)
+    }
+  }, [centerStatus, diagnosticCenter]);
+  
   const createUser = useCreateUser({
     onSuccess: () => {
       successAlert("Created User");
@@ -46,12 +42,6 @@ const VerifyUser = () => {
     }
   });
 
-  const { data: userData, status, refetch, isLoading } = useQueryGetData(
-    'userData',
-    getDiagnosticUserApi + userPhoneNumber,
-    { enabled: !!userPhoneNumber }
-  );
-
   const fetchUserData = async () => {
     const result = await refetch();
     if (result.status === 'success' && result.data) {
@@ -62,7 +52,7 @@ const VerifyUser = () => {
     }
   };
 
-  const handleUserData = (data) => {
+  const handleUserData = (data:any) => {
     if (data && data.data && !isLoading) {
       const diagnosticCenters = data.data?.diagnosticCenters || [];
       setUserData(data.data);
@@ -80,8 +70,7 @@ const VerifyUser = () => {
 
   useEffect(() => {
     const initialize = async () => {
-      if (dcData?._id && userData?.data) {
-        setDiagnosticCenter(dcData);
+      if (diagnosticCenter?.data && userData?.data) {
         setUserData(userData?.data);
         successAlert("Logging into Diagnostic Profile");
         router.push("/dashboard");
@@ -98,7 +87,7 @@ const VerifyUser = () => {
     };
 
     initialize();
-  }, [status, userData, userName, userPhoneNumber, dcData]);
+  }, [status, userData, userName, userPhoneNumber, profileState]);
 
   return (
     <UserLayout tabDescription='Verify User' tabName="Admin Omerald | Verify User">

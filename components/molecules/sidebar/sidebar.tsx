@@ -3,23 +3,25 @@ import { useRecoilState } from 'recoil';
 import { dashTabs } from 'components/common/recoil/dashboard/index';
 import { classNames, privateRoutes } from '../../../utils/static/static';
 import Image from 'next/image';
-import { useUserValues } from '@components/common/constants/recoilValues';
+import { useProfileValue, useUserValues } from '@components/common/constants/recoilValues';
 import { useRouter } from 'next/router';
 
 export default function Sidebar() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [dashTab, setDashTab] = useRecoilState(dashTabs);
   const currentUser = useUserValues();
+  const profileData = useProfileValue();
+
   const [currentBranch, setCurrentBranch] = useState<any | null>(null);
   const router = useRouter(); 
 
   useEffect(() => {
     if (currentUser) {
       try {
-        const dcData: any = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
         const branchData: any = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
-        if (currentUser?.diagnosticCenters) {
-          const branch = fetchBranchByDiagnosticCenterId(currentUser?.diagnosticCenters, dcData?._id, branchData?._id);
+        if (currentUser?._id) {
+          const branch = fetchBranchByDiagnosticCenterId(currentUser?.diagnosticCenters, profileData?._id, branchData?._id);
+          console.log("branch", branch)
           setCurrentBranch(branch);
         }
       } catch (error) {
@@ -29,6 +31,8 @@ export default function Sidebar() {
       router.push('/verifyUser');
     }
   }, [currentUser, router]);
+
+
 
   const handleSidebarToggle = () => {
     setShowSidebar(!showSidebar);
