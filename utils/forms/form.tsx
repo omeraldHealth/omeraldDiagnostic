@@ -43,8 +43,6 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
     key: 'designation',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.designation.length - b.designation.length,
-    // filters: pathList,
-    // onFilter: (value: string, record) => record.designation.indexOf(value) === 0,
   },
   {
     title: 'Pathologist Signature',
@@ -54,7 +52,7 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
     render: (text: any) => (
       <span className="w-[20px] h-[20px]">
         {text ? (
-           <span className="object-cover border rounded">  <Image width={100} src={text} /></span>
+           <span className="object-cover border rounded">  <Image width={220} height={70} src={text} /></span>
           ) : (
             <p className="font-light text-sm text-red-600">Not found</p>
           )}
@@ -73,7 +71,7 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
               title: 'Do you want to delete this pathologist?',
               content: 'The action cannot be undone.',
               onOk() {
-                handleRemove("pathologistDetail",record);
+                handleRemove(record?._id);
               },
             });
           }} />

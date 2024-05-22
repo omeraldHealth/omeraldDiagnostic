@@ -13,6 +13,7 @@ import { logoStateData } from '@components/common/recoil/logo';
 import { uploadDiagnosticReportApi } from '@utils';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
+import PathologistComp from './settingsTabs/pathologist';
 
 
 const Billing = dynamic(() => import('@components/organism/dashboardTabs/settingsTabs/billing').then(res => res.Billing), { loading: () => <Spinner /> });
@@ -73,7 +74,7 @@ export default function SettingsTab() {
   const handleAdd = async (record: any) => {
     const recordType = fetchRecordType(activeKey);
 
-    if (!profile?.[recordType].some((item: any) => item.name === record.name)) {
+    if (!currentBranch?.[recordType].some((item: any) => item.name === record.name)) {
       try {
         const logoResp = await customRequest({
           endpoint: uploadDiagnosticReportApi,
@@ -172,7 +173,8 @@ export default function SettingsTab() {
     {
       key: '5',
       label: "Pathologist Management",
-      children: <SettingsCommon columns={PathologistColumns(handleAdd, handleRemove)} data={filteredBranch ? filteredBranch.pathologistDetail : []} tabName="Pathologist" form={pathologistFormArray(handleImage)} {...settingProp} />,
+      children: <PathologistComp/>
+      // children: <SettingsCommon columns={PathologistColumns(handleAdd, handleRemove)} data={filteredBranch ? filteredBranch.pathologistDetail : []} tabName="Pathologist" form={pathologistFormArray(handleImage)} {...settingProp} />,
     },
     {
       key: '6',

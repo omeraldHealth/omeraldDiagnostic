@@ -60,7 +60,7 @@ export function useUpdateDiagnostic<TData, TVariables>(props: UseMutationProps<T
 }
 
 export function useDeleteReports<TData, TVariables>(id: string, props: UseMutationProps<TData, TVariables>) {
-  return createMutation('delete', deleteDiagReportsApi + `?id=${id}`, props);
+  return createMutation('delete', deleteDiagReportsApi + id, props);
 }
 
 export function useUploadReportFile<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {

@@ -155,8 +155,9 @@ const GenerateReport:React.FC<any> = ({next}) => {
   const [form] = Form.useForm();
   const [reportData,setReportData] = useRecoilState(reportDataState)  
   const profile = useProfileValue()
-  const testList = profile?.tests
+
   const currentBranch = useCurrentBranchValue()
+  const testList = currentBranch?.tests
   const branch = profile?.branches?.filter((branch:any) => branch?._id === currentBranch?._id);
 
     const onFinish = (values: any) => {
