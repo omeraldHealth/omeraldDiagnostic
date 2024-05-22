@@ -58,7 +58,7 @@ export default function Sidebar() {
       <div className="mb-8">
         {privateRoutes.map((item) => (
           <Fragment key={item.name}>
-            {item?.allowedRoles?.includes(currentBranch?.roleName?.toLowerCase() || '') && (
+            {/* {item?.allowedRoles?.includes(currentBranch?.roleName?.toLowerCase() || '') && ( */}
               <a
                 key={item.name}
                 href="#"
@@ -71,7 +71,7 @@ export default function Sidebar() {
                 <item.icon className={`mr-3 flex-shrink-0 h-6 w-6 ${item.name === dashTab ? 'text-black' : 'text-white'}`} aria-hidden="true" />
                 {item.name}
               </a>
-            )}
+            {/* )} */}
           </Fragment>
         ))}
       </div>

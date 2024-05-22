@@ -24,7 +24,6 @@ const VerifyUser = () => {
   const { data: diagnosticCenter, status: centerStatus } = useGetDcProfile(selectedCenterId)
   const { data: userData, status, refetch, isLoading } = useGetUser({userPhoneNumber})
 
-  
   useEffect(() => {
     if (centerStatus === 'success' && diagnosticCenter?.data) {
       setDiagnosticCenter(diagnosticCenter?.data)

@@ -43,8 +43,6 @@ export function useGetDcProfile({selectedCenterId}:any) {
 return useQueryGetData('diagnosticCenter',getDiagProfileByPhoneApi + selectedCenterId,{ enabled: !!selectedCenterId }); 
 }
 
-
-
 export function useCreateUser<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {
   return createMutation('post', createDiagnosticUserApi, props);
 }
