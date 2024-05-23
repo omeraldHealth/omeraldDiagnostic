@@ -4,7 +4,7 @@ import { useCurrentBranchValue } from '@components/common/constants/recoilValues
 import { DashboardTable } from '../dashboardItems/data-table';
 import { TestTableColumns } from 'utils/forms/form';
 import { testForm } from 'utils/types/molecules/forms.interface';
-import { useUpdateDiagnostic } from 'utils/reactQuery';
+import { useGetDcProfile, useUpdateDiagnostic } from 'utils/reactQuery';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { profileState } from '@components/common/recoil/profile';
@@ -15,6 +15,7 @@ import { EditTestsProps, TestTableProps, ViewTestProps } from '../../../utils/ty
 import { Spinner } from '@components/atoms/loader';
 import { testDataState } from '@components/common/recoil/testDetails/test';
 import { branchState } from '@components/common/recoil/branch/branch';
+import { useCurrentBranch } from '@components/common/logger.tsx/activity';
 
 export const TestTable: React.FC<TestTableProps> = () => {
   const [editTest, setEditTest] = useState(false);
@@ -27,15 +28,18 @@ export const TestTable: React.FC<TestTableProps> = () => {
   const [loading, setLoading] = useState(false);
   const { confirm } = Modal;
   const [testDetailState, setTestDetails] = useRecoilState(testDataState);
+   let selectedCenterId = localStorage.getItem("selectedDc") ?? {};
+  const { data: profileData } = useGetDcProfile(selectedCenterId);
 
   const tests = currentBranch?.tests;
   const setCurrentBranch = useSetRecoilState(branchState)
+  const {updateCurrentBranch} = useCurrentBranch()
 
-  console.log("tests",tests)
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert("Profile updated successfully");
       setProfile(data?.data);
+      updateCurrentBranch(data?.data)
       setLoading(false)
     },
     onError: (error) => {
@@ -48,8 +52,8 @@ export const TestTable: React.FC<TestTableProps> = () => {
     setLoading(true)
     const SampleType = currentBranch?.tests.filter((item: any) => item?._id !== record._id);
     const updatedBranch = { ...currentBranch, tests: SampleType };
-      localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
-      setCurrentBranch(updatedBranch)
+      // localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
+      // setCurrentBranch(updatedBranch)
       const updatedBranches = profile?.branches.map(branch => {
         if (branch._id === updatedBranch._id) {
             return updatedBranch;

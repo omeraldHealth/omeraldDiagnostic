@@ -1,6 +1,9 @@
 import { useGetDcProfile, useUpdateDiagnostic } from "utils/reactQuery";
-import { useProfileValue, useUserValues } from "../constants/recoilValues";
+import { useCurrentBranchValue, useProfileValue, useUserValues } from "../constants/recoilValues";
 import { successAlert } from "@components/atoms/alerts/alert";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { branchState } from "../recoil/branch/branch";
 
 export const useActivityLogger = () => {
     let selectedCenterId = localStorage.getItem("selectedDc") ?? {};
@@ -49,4 +52,20 @@ export const useActivityLogger = () => {
     };
 
     return { logActivity };
+};
+
+export const useCurrentBranch = () => {
+    const currentBranch = useCurrentBranchValue()
+    const setCurrentBranch = useSetRecoilState(branchState)
+
+    const updateCurrentBranch = async (profileData) => {
+        let updatedBranch = profileData?.branches.find((branch) => branch?._id === currentBranch?._id); 
+        localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch))
+        console.log(updatedBranch)
+        setCurrentBranch(updatedBranch)
+        successAlert('Current Branch updated successfully');
+    };
+
+    return { updateCurrentBranch };
+
 };

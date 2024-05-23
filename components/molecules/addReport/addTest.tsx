@@ -16,6 +16,7 @@ import axios from "axios";
 import { getAdminReportTypesApi } from "@utils";
 import { reportState } from "@components/common/recoil/report";
 import { branchState } from "@components/common/recoil/branch/branch";
+import { useCurrentBranch } from "@components/common/logger.tsx/activity";
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -28,11 +29,13 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
   const [profile, setProfile] = useRecoilState(profileState);
   const currentBranch = useCurrentBranchValue();
   const setCurrentBranch = useSetRecoilState(branchState)
+  const {updateCurrentBranch} = useCurrentBranch()
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert('Profile updated successfully');
       setProfile(data?.data);
+      updateCurrentBranch(data?.data)
       setTestDetail({})
       next()
     },
@@ -59,8 +62,8 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
         }
       });
       const updatedBranch = { ...currentBranch, tests: updatedTest};
-      localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
-      setCurrentBranch(updatedBranch)
+      // localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
+      // setCurrentBranch(updatedBranch)
       const updatedBranches = profile?.branches.map(branch => {
         if (branch._id === updatedBranch._id) {
             return updatedBranch;
@@ -82,8 +85,8 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
       };
 
       const updatedBranch = { ...currentBranch, tests: [...(currentBranch.tests || []), SampleType] };
-      localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
-      setCurrentBranch(updatedBranch)
+      // localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
+      // setCurrentBranch(updatedBranch)
       const updatedBranches = profile?.branches.map(branch => {
         if (branch._id === updatedBranch._id) {
             return updatedBranch;
