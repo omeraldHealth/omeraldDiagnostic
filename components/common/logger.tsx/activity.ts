@@ -17,7 +17,7 @@ export const useActivityLogger = () => {
         onError: (error) => {
             console.error("Error updating profile:", error);
         },
-    }, profileData?.data?._id);
+    },selectedCenterId);
 
     const logActivity = async (activity) => {
         const selectedBranch = JSON.parse(localStorage.getItem("selectedBranch"));
