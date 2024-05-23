@@ -8,8 +8,6 @@ import { Logo } from '@components/atoms/nav/logo';
 import { logoUrl } from '@utils';
 import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import OnboardNewComponents from '@components/molecules/onboard/onboard';
-import { useSetRecoilState } from 'recoil';
-import { userState } from '@components/common/recoil/user';
 
 /**
  * Onboard page component.
@@ -19,10 +17,12 @@ const Onboard: React.FC = (): JSX.Element => {
   const { user } = useUser();
   const router = useRouter();
   const profileValue = useProfileValue();
+  let createDc = localStorage.getItem("createDC")
 
   useEffect(() => {
     // Redirect to dashboard if user and profileValue exist
-    if (user && profileValue?._id) {
+    console.log(profileValue)
+    if (user && profileValue?._id && createDc === "false") {
       router?.push('/dashboard');
     }
   }, [profileValue, user, router]);

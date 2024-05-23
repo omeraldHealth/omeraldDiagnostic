@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { UserLayout } from '@components/templates/pageTemplate';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { CheckIcon, HomeIcon, PlusCircleIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { useQueryGetData } from '../utils/reactQuery';
 import { getDiagProfileByPhoneApi, getDiagnosticUserApi } from '../utils';
 import { useSetRecoilState } from 'recoil';
 import { profileState } from '../components/common/recoil/profile';
-import { errorAlert, successAlert } from '../components/atoms/alerts/alert';
+import { errorAlert, successAlert, warningAlert2 } from '../components/atoms/alerts/alert';
 import { Loader } from '../components/atoms/loader/loader';
 import { useUser } from '@clerk/clerk-react';
-import { useActivityLogger } from '@components/common/logger.tsx/activity';
+import { useActivityLogger, useCurrentBranch } from '@components/common/logger.tsx/activity';
 import { branchState } from '@components/common/recoil/branch/branch';
 
 
@@ -21,9 +21,7 @@ const ChooseDc: React.FC = () => {
   const setCurrentBranch = useSetRecoilState(branchState);
   const [selectedCenterId, setSelectedCenterId] = useState<string | null>(null);
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
-
   const { logActivity } = useActivityLogger();
-
 
   const { data: userData, status: userStatus } = useQueryGetData(
     'userData',
@@ -31,7 +29,7 @@ const ChooseDc: React.FC = () => {
     { enabled: !!userPhoneNumber }
   );
 
-  const { data: diagnosticCenter, status: centerStatus } = useQueryGetData(
+  const { data: diagnosticCenter, status: centerStatus, refetch } = useQueryGetData(
     'diagnosticCenter',
     getDiagProfileByPhoneApi + selectedCenterId,
     { enabled: !!selectedCenterId }
@@ -43,10 +41,18 @@ const ChooseDc: React.FC = () => {
     }
   }, [userStatus, userData, router]);
 
+  useEffect(() => {
+    if (centerStatus === 'success' && !diagnosticCenter?.data) {
+      setCurrentBranch(diagnosticCenter?.branches[0])
+      localStorage?.setItem("selectedBranch", JSON.stringify(diagnosticCenter?.branches[0]))
+    }
+  }, [centerStatus, diagnosticCenter]);
+
+  useEffect(()=>{refetch()},[selectedCenterId])
+
   const handleCardClick = (centerId: string) => {
-   
     setSelectedCenterId(prevId => (prevId === centerId ? null : centerId));
-    localStorage.setItem("selectedDc", centerId)
+    localStorage.setItem("selectedDc", centerId)   
   };
 
   const handleDCSelected = async () => {
@@ -56,8 +62,9 @@ const ChooseDc: React.FC = () => {
       setCurrentBranch(diagnosticCenter.data?.branches[0])
       localStorage.setItem('diagnosticCenter', JSON.stringify(diagnosticCenter.data), { expires: 1 / 24 });
       localStorage.setItem('selectedBranch', JSON.stringify(diagnosticCenter.data?.branches[0]), { expires: 1 / 24 });
-      successAlert("Logging into Diagnostic Profile");
+      warningAlert2("Logging into " +diagnosticCenter?.data?.centerName);
       // logActivity("Saif Logged in")
+      localStorage.setItem("createDC", "false")
       router.push("/dashboard");
     } else {
       errorAlert("Error logging into Diagnostic Center");
@@ -72,7 +79,10 @@ const ChooseDc: React.FC = () => {
         <h2 className="mt-20 font-bold text-xl text-purple-900">Choose Diagnostic Center to login</h2>
         <div className="min-h-[50vh] h-auto flex justify-center mt-20">
           <div>
-            <section className="flex gap-6 text-center">
+            <section className="grid grid-cols-4  gap-6 text-center">
+              <AddDC handleCardClick={()=>{
+                localStorage.setItem("createDC", "true")
+                router.push("/onboard")}}/>
               {userData?.data?.diagnosticCenters?.map((center) => (
                 <DiagnosticCard
                   key={center?.diagnostic?._id}
@@ -126,6 +136,20 @@ const DiagnosticCard: React.FC<DiagnosticCardProps> = ({ center, isSelected, han
     <p className="text-gray-500 mt-2">
       Role: {center?.branches[0]?.roleName}
     </p>
+  </div>
+);
+
+const AddDC: React.FC<any> = ({handleCardClick,isSelected}) => (
+  <div
+    className={`w-[275px] text-center h-[100px] border border-1 shadow-xl p-6 cursor-pointer transform hover:scale-105 transition-transform duration-300`}
+    onClick={handleCardClick}
+  >
+    <div className="items-center">
+      <PlusIcon className={`w-6 h-6 text-lg mx-auto mb-1`} />
+      <h2 className="text-md font-semibold text-gray-700 ml-2">
+        Add New Diagnostic Center
+      </h2>
+    </div>
   </div>
 );
 

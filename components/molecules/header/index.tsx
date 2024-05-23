@@ -6,6 +6,8 @@ import { useCurrentBranchValue, useDashboardTabs, useProfileValue } from '@compo
 import { branchState } from '@components/common/recoil/branch/branch';
 import { Loader } from '@components/atoms/loader/loader';
 import { successAlert, warningAlert } from '@components/atoms/alerts/alert';
+import { UserButton } from '@clerk/clerk-react';
+import SelectDC from './selectDc';
 interface DashboardHeaderProps {
   // Add any additional props if needed
 }
@@ -56,6 +58,10 @@ export function DashboardHeader({}: DashboardHeaderProps) {
                   onChange={handleBranchChange}
                   options={branchList?.map((branch: any) => ({ label: branch?.branchName, value: branch?._id, key: branch?.branchName }))}
                 />
+                 <section className="flex gap-4 items-center mx-4">
+                    <UserButton afterSignOutUrl="/" />
+                    <SelectDC/>
+                  </section>
               </section>
             </div>
           </div>
