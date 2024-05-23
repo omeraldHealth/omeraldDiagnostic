@@ -35,10 +35,12 @@ const ChooseDc: React.FC = () => {
     { enabled: !!selectedCenterId }
   );
 
+
   useEffect(() => {
     if (userStatus === 'success' && !userData?.data?.diagnosticCenters) {
       router.push('/verifyUser');
     }
+    setLoading(false)
   }, [userStatus, userData, router]);
 
   useEffect(() => {
@@ -46,6 +48,7 @@ const ChooseDc: React.FC = () => {
       setCurrentBranch(diagnosticCenter?.branches[0])
       localStorage?.setItem("selectedBranch", JSON.stringify(diagnosticCenter?.branches[0]))
     }
+    setLoading(false)
   }, [centerStatus, diagnosticCenter]);
 
   useEffect(()=>{refetch()},[selectedCenterId])
@@ -74,7 +77,7 @@ const ChooseDc: React.FC = () => {
 
   return (
     <UserLayout tabDescription='Choose DC' tabName="Admin Omerald | Choose Diagnostic Center">
-      {loading && <Loader />}
+      {!loading ? 
       <section className="m-8 text-center">
         <h2 className="mt-20 font-bold text-xl text-purple-900">Choose Diagnostic Center to login</h2>
         <div className="min-h-[50vh] h-auto flex justify-center mt-20">
@@ -102,7 +105,7 @@ const ChooseDc: React.FC = () => {
             )}
           </div>
         </div>
-      </section>
+      </section>:<Loader />}
     </UserLayout>
   );
 };

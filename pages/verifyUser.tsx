@@ -24,6 +24,16 @@ const VerifyUser = () => {
   const { data: diagnosticCenter, status: centerStatus } = useGetDcProfile(selectedCenterId)
   const { data: userData, status, refetch, isLoading } = useGetUser({userPhoneNumber})
   
+  const localProfile = JSON.parse(localStorage  .getItem('diagnosticCenter'));
+
+  useEffect(()=>{
+    if(localProfile){
+      setDiagnosticCenter(localProfile)
+      successAlert("Login to "+localProfile?.centerName)
+      router.push("/dashboard")
+      setLoading(false)
+    }
+  },[localProfile])
 
   useEffect(() => {
     if (centerStatus === 'success' && diagnosticCenter?.data) {
