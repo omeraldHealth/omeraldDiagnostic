@@ -43,7 +43,7 @@ const OnboardNewComponents: React.FC = () => {
         onSuccess:(data) => {
             successAlert("Profile Created Succesfully")
             if(data?.status === 201 && data?.data?._id){
-                let diagnosticCenters= [
+                let newDiagnosticCenters= 
                     {
                         "diagnostic": data?.data?._id,
                         "branches": [
@@ -53,9 +53,8 @@ const OnboardNewComponents: React.FC = () => {
                             }
                         ]
                     }
-                ]
-
-                updateUser.mutate({data: {diagnosticCenters: diagnosticCenters}})
+                let updatedDC = [...userData?.data?.diagnosticCenters, newDiagnosticCenters];
+                updateUser.mutate({data: {diagnosticCenters: updatedDC}})
             }else{
                 errorAlert("Error fetching alert")
             }

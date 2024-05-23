@@ -11,6 +11,7 @@ import { Loader } from '@components/atoms/loader/loader';
 import { useSetRecoilState } from 'recoil';
 import { branchState } from '@components/common/recoil/branch/branch';
 import { profileState } from '@components/common/recoil/profile';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
 
 
 export default function BranchComp() {
@@ -22,17 +23,18 @@ export default function BranchComp() {
   const profile = useProfileValue()
   const [loading,setLoading] = useState(false)
   const user = useUserValues()
+  const {logActivity} = useActivityLogger()
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data)=>{
-        successAlert("Added pathologist succesfully")
+        successAlert("Added Branch succesfully")
         setShowTest(false)
         setCurrentBranch(data?.data?.branches?.filter(branch=> branch?._id === currentBranch?._id)[0])
         setDiagnosticProfile(data?.data)
         setLoading(false)
     },
     onError: ()=>{
-        errorAlert2("Error adding pathologist")
+        errorAlert2("Error adding branch")
         setLoading(false)
     }
   },profile?._id)
@@ -40,7 +42,7 @@ export default function BranchComp() {
 
   const handleEdit = async (data) => {
     let finaleData = { ...data, branchOperator: [user?._id] };
-
+    logActivity("Added Branch `"+ finaleData?.branchName+"`")
     // Create a new array of branches containing existing branches plus finaleData
     let updatedBranches = [...(profile?.branches || []), finaleData];
     updateDiagnostic.mutate({data: {branches: updatedBranches}})
@@ -48,6 +50,8 @@ export default function BranchComp() {
   
 
   const handleRemove = (id) => {
+    let removing = profile?.branches?.filter((path)=>path?._id === id)[0]
+    logActivity("Deleted Branch "+ removing?.branchName)
     let filteredBranches = profile?.branches?.filter((path)=>path?._id !== id)
     updateDiagnostic.mutate({data: {branches: filteredBranches}})
   };
