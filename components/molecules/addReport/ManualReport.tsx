@@ -70,7 +70,7 @@ const BioRefDropDown = ({ record, editState, handleValueChange }) => {
 export const ManualReport = ({ next }) => {
   const [reportData, setReportData] = useRecoilState(reportDataState);
   const [editStates, setEditStates] = useState(
-    reportData.parsedData.parameters.reduce((acc, param) => {
+    reportData?.parsedData?.parameters?.reduce((acc, param) => {
       acc[param._id] = { isEditing: true };
       return acc;
     }, {})
