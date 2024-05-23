@@ -41,27 +41,30 @@ export default function PathologistComp() {
     setLoading(true)
     try {
       const imageUrl = await uploadImage(image);
-      if(imageUrl){
+      if (imageUrl) {
         successAlert('Signature uploaded');
-        let updatedPath = {...data,signature:imageUrl};
+        let updatedPath = { ...data, signature: imageUrl };
         const updatedBranch = {
-            ...currentBranch,
-            pathologistDetail: [...currentBranch.pathologistDetail, updatedPath],
+          ...currentBranch,
+          pathologistDetail: [...currentBranch.pathologistDetail, updatedPath],
         };
-        const updatedBranches = profile?.branches?.map((branch)=> {
-            if(branch?._id === updatedBranch?._id){
-                return updatedBranch
-            }else{
-                branch
-            }
+        console.log(updatedBranch)
+        const updatedBranches = profile?.branches?.map((branch) => {
+          if (branch?._id === currentBranch?._id) {
+            return updatedBranch
+          } else {
+            return branch; // Corrected return statement
+          }
         })
-        updateDiagnostic.mutate({data: {branches: updatedBranches}})
+        console.log("update", updatedBranches)
+        updateDiagnostic.mutate({ data: { branches: updatedBranches } })
       }
     } catch (error) {
-        errorAlert2('Error creating path:', error);
+      errorAlert2('Error creating path:', error);
     }
     setLoading(false)
   };
+  
 
   const handleRemove = (id) => {
     let removedPath = currentBranch?.pathologistDetail?.filter((path)=>path?._id !== id)
@@ -70,14 +73,15 @@ export default function PathologistComp() {
         pathologistDetail: removedPath,
     };
     const updatedBranches = profile?.branches?.map((branch)=> {
-        if(branch?._id === updatedBranch?._id){
+        if(branch?._id === currentBranch?._id){
             return updatedBranch
         }else{
-            branch
+            return branch; // Corrected return statement
         }
     })
     updateDiagnostic.mutate({data: {branches: updatedBranches}})
   };
+  
 
   return (
     <div className="p-0 h-auto bg-signBanner">
