@@ -34,6 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
     return null;
   }
 
+  
   return (
       <QueryClientProvider client={queryClient}>
         <RecoilRoot>
