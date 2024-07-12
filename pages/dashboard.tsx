@@ -36,7 +36,7 @@ export default function Dashboard() {
   },[currentBranch])
 
   return (
-    <UserLayout tabName={`Admin Omerald | ${dashboard}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">
+    <UserLayout tabName={`Admin Diagnostic | ${dashboard}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">
       {/* Render the selected dashboard tab inside DashboardLayout */}
       <DashboardLayout>{DashboardTabsMap[dashboard]}</DashboardLayout>
     </UserLayout>

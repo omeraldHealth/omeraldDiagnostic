@@ -27,7 +27,7 @@ export const DashboardTemplate = () => {
   const selectedDashboardTab = useRecoilValue(dashTabs);
 
   return (
-    <UserLayout tabName={`Admin Omerald | ${selectedDashboardTab}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">
+    <UserLayout tabName={`Admin Diagnostic | ${selectedDashboardTab}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">
       {/* Dashboard layout with selected tab content */}
       <DashboardLayout>{DashboardTabs[selectedDashboardTab]}</DashboardLayout>
     </UserLayout>

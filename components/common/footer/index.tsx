@@ -112,8 +112,8 @@ export function Footer() {
         </div>
         <div className="mt-12 border-t border-gray-200 pt-8">
           <p className={"text-black text-md text-center"}>
-            &copy; 2023 <a href="https://omerald.com/" target="_blank" className="text-blue-700">Omerald.com. 
-              </a> All rights reserved.
+            &copy; 2024 <a href="https://omerald.com/" target="_blank" className="text-blue-700">Omerald.com. 
+              </a> All rights reserved to Avin Mednologies Private Limited and Omerald
           </p>
         </div>
       </div>

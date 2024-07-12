@@ -22,6 +22,7 @@ export const ROUTES_WITHOUT_SIDEBAR = [
     '/info/knowledge',
     '/info/pricing',
     '/info/blog',
+    '/info/about',
     '/chooseDc'
 ];
 

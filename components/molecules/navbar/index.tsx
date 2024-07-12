@@ -14,6 +14,7 @@ const navLinks = [
   { navLink: '/info/knowledge', navText: 'Knowledge' },
   { navLink: '/info/blog', navText: 'Blog' },
   { navLink: '/info/pricing', navText: 'Pricing' },
+  { navLink: '/info/about', navText: 'About Us' },
 ];
 
 interface NavbarProps {

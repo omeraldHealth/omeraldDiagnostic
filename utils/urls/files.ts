@@ -16,3 +16,4 @@ export const giftBoxImage: string = "https://res.cloudinary.com/drjut62wv/image/
 export const mailImage: string = "https://res.cloudinary.com/drjut62wv/image/upload/v1677057612/omerald/diagnosticCenter/undraw_newsletter_re_wrob_csjitg.svg";
 export const successUpload: string = "https://res.cloudinary.com/drjut62wv/image/upload/v1673693847/omerald/diagnosticCenter/undraw_happy_announcement_re_tsm0_1_jggnix.svg";
 export const errorImage: string = "https://res.cloudinary.com/drjut62wv/image/upload/v1678160767/omerald/diagnosticCenter/undraw_fixing_bugs_w7gi_ugllbk.svg";
+export const aboutImage: string = "https://res.cloudinary.com/drjut62wv/image/upload/v1720789401/1_nhj86g.png";
