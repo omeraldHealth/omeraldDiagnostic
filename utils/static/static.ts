@@ -90,7 +90,6 @@ interface NavigationItem {
 }
 
 interface Navigation {
-  policies: NavigationItem[];
   support: NavigationItem[];
   company: NavigationItem[];
   legal: NavigationItem[];
@@ -98,27 +97,20 @@ interface Navigation {
 }
 
 export const navigation: Navigation = {
-  policies: [
-      { name: "Disclaimer", href: "/info/DISCLAIMER" },
-      { name: "Privacy Policy", href: "/info/PRIVACY" },
-      { name: "Terms of Service", href: "/info/TERMS" },
-      { name: "Platform Consent", href: "/info/CONSENT" },
+  legal: [
+    { name: "Terms of Service", href: "/info/terms" },
+    { name: "Platform Consent", href: "/info/consent" },
+    { name: "Privacy Policy", href: "/info/privacy" },
+    { name: "Disclaimer", href: "/info/disclaimer" },
   ],
   support: [
-      { name: "FAQ", href: "/info/FAQ" },
-      { name: "Pricing", href: "/pricing" },
-      { name: "Support", href: "/contact" },
-      { name: "Documentation", href: "/documentation" },
+      { name: "FAQ", href: "/info/faq" },
+      { name: "Contact", href: "/contact" },
   ],
   company: [
       { name: "Blog", href: "https:/blog.omerald.com/" },
       { name: "Register", href: "/signUp" },
-      { name: "About", href: "/about" },
-      { name: "Partners", href: "/info/team" },
-  ],
-  legal: [
-      { name: "Terms", href: "/info/TERMS" },
-      // { name: "Claim", href: "/privacy" },
+      { name: "About", href: "/info/about" },
   ],
   social: [],
 };
