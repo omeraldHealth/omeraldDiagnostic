@@ -11,6 +11,7 @@ import { Testimonial } from '@components/organism/landing/testimonial';
 import { ContactContainer } from '@components/organism/landing/contactContainer';
 import { BottomBanner } from '@components/organism/landing/bottomBanner';
 import { Loader } from '@components/atoms/loader/loader';
+import { Spinner } from '@components/atoms/loader';
 
 const LandingPage = () => {
   const [loading, setLoading] = useState(true);
@@ -61,7 +62,7 @@ const LandingPage = () => {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white">
         <LandingBanner />
-        <Loader />
+        <Spinner />
       </div>
     );
   }

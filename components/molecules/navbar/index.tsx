@@ -10,10 +10,12 @@ import { profileState } from '@components/common/recoil/profile';
 import { useSetRecoilState } from 'recoil';
 
 const navLinks = [
-  { navLink: '/info/features', navText: 'Features' },
-  { navLink: '/info/knowledge', navText: 'Knowledge' },
-  { navLink: '/info/blog', navText: 'Blog' },
-  { navLink: '/info/pricing', navText: 'Pricing' },
+  // { navLink: '/info/features', navText: 'Features' },
+  // { navLink: '/info/knowledge', navText: 'Knowledge' },
+  // { navLink: '/info/pricing', navText: 'Pricing' },
+  { navLink: '/info/about', navText: 'About Us' },
+  { navLink: '/info/faq', navText: 'FAQ' },
+  { navLink: '/info/privacy', navText: 'Privacy Policy' },
 ];
 
 interface NavbarProps {

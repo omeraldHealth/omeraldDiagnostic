@@ -6,7 +6,7 @@ import { SignIn } from '@clerk/nextjs';
 // Component to handle user sign-in
 const SignInComp = () => {
   return (
-    <UserLayout tabDescription='signIn' tabName="Admin Omerald | Sign In">
+    <UserLayout tabDescription='signIn' tabName="Admin Diagnostic | Sign In">
       <div className="h-[70vh] p-4 py-10 text-center m-auto flex justify-center">
         <section className="my-10">
           {/* SignIn component from Clerk for authentication */}

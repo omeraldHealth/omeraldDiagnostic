@@ -9,6 +9,7 @@ import { useSetRecoilState } from 'recoil';
 import { useCreateUser, useGetDcProfile, useGetUser } from 'utils/reactQuery';
 import { userState } from '../components/common/recoil/user';
 import { profileState } from '@components/common/recoil/profile';
+import { Spinner } from '@components/atoms/loader';
 
 const VerifyUser = () => {
   let selectedCenterId = localStorage.getItem("selectedDc") ?? {};
@@ -100,11 +101,11 @@ const VerifyUser = () => {
   }, [status, userData, userName, userPhoneNumber, profileState]);
 
   return (
-    <UserLayout tabDescription='Verify User' tabName="Admin Omerald | Verify User">
+    <UserLayout tabDescription='Verify User' tabName="Admin Diagnostic | Verify User">
       <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
         <section className="my-10">
           <div className="bg-container w-[75vw] m-auto">
-            {loading && <Loader />}
+            {loading && <Spinner />}
             <img src='/verifyProfile.gif' alt="Verification" />
           </div>
         </section>

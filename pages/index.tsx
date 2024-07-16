@@ -7,7 +7,7 @@ const LandingPage = dynamic(() => import('@components/organism/landing/landingPa
 
 export default function Home() {
   return (
-    <UserLayout tabDescription='Home page' tabName="Admin Omerald | Home">
+    <UserLayout tabDescription='Home page' tabName="Diagnostic Omerald | Home">
       <div className='min-h-screen'>
         <LandingPage />
       </div>
