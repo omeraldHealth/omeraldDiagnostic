@@ -25,7 +25,7 @@ const VerifyUser = () => {
   const { data: diagnosticCenter, status: centerStatus } = useGetDcProfile(selectedCenterId)
   const { data: userData, status, refetch, isLoading } = useGetUser({userPhoneNumber})
   
-  const localProfile = JSON.parse(localStorage  .getItem('diagnosticCenter'));
+  const localProfile = JSON.parse(localStorage.getItem('diagnosticCenter'));
 
   useEffect(()=>{
     if(localProfile){
