@@ -27,7 +27,7 @@ const LandingPage = () => {
         });
         if (response.status === 200 && response.data.accessToken) {
           localStorage.setItem('token', response.data.accessToken);
-          toast.success('Authentication successful');
+          // toast.success('Authentication successful');
           return response.data.accessToken;
         }
         throw new Error('Failed to authenticate');
