@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Col, DatePicker, Form, Input, Radio, Row, Select, Space, Spin, Upload } from 'antd';
+import { Button, Col, DatePicker, Form, Radio, Row, Select, Space, Spin, Input } from 'antd';
 import { FormType } from 'utils/types/molecules/forms.interface';
-import { UploadOutlined } from '@ant-design/icons';
 import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
 import { FileUploader } from '@components/atoms/fileUploder/fileUpload';
 
@@ -19,6 +18,7 @@ interface DynamicFormType {
 
 const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText, handleSubmit, disabledFields = [], defaultValues = {}, handleSearch, selectedValue}) => {
   const [form] = Form.useForm();
+  const { TextArea } = Input;
 
   const handleFormSubmit = (values: any) => {
     handleSubmit(values);
@@ -43,6 +43,18 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({ formProps, buttonText
             initialValue={defaultValue}
           >
             <Input placeholder={formItem.label} disabled={disableField} />
+          </Form.Item>
+        );
+      case 'description':
+        return (
+          <Form.Item
+            key={formItem.name}
+            label={formItem.label}
+            name={formItem.name}
+            rules={[{ pattern: formItem.pattern, required: formItem.required }]}
+            initialValue={defaultValue}
+          >
+            <TextArea placeholder={formItem.label} disabled={disableField} />
           </Form.Item>
         );
       case 'phoneNumber':

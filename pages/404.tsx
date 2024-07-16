@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function ErrorComp() {
   return (
-    <UserLayout tabDescription='Error' tabName="Admin Omerald | 404">
+    <UserLayout tabDescription='Error' tabName="Admin Diagnostic | 404">
       <section className="max-w-[100%] h-auto my-32 sm:my-20 my-8 2xl:my-4 xl:min-h-[60vh] text-center">
           <img src={notFound} className="w-[80vw] sm:w-[60vw] md:w-[30vw] mb-20 mt-20 m-auto" alt="" />
               <Link href={"/"}>

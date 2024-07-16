@@ -22,4 +22,5 @@ export const uploadDiagnosticReportApi = diagBackendApiPath + `s3/diagnostic/rep
 // External API path to get all admin report types
 export const getAdminReportTypesApi = adminBackendApiPath+"/api/v1/reports/getAllReports";
 export const getDiagnosticLandingData = adminBackendApiPath+"/api/v1/diagnosticLanding/getDiagLanding"
+export const getDiagnosticSetting = adminBackendApiPath+"/api/v1/diagSettings/getDiagnosticSetting"
 export const getAdminApiGetToken = adminBackendApiPath+"/api/v1/auth/getAuthToken"
