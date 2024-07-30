@@ -26,7 +26,7 @@ const DashboardLogo: React.FC = () => {
     <div className="pt-5 pb-4 overflow-y-auto">
       <Link href="/">
         <div className="flex items-center flex-shrink-0 px-4">
-          <Logo src={logo} alt="Omerald" width="50px" />
+          <Logo src={logo} alt="Omerald" width="50px"  />
           <span className="text-white font-semibold text-xl ml-4 tracking-wider">
             Omerald
           </span>
@@ -37,7 +37,7 @@ const DashboardLogo: React.FC = () => {
 };
 
 const Logo: React.FC<LogoProps> = ({ src, alt, width = '50px' }) => (
-  <img src={src} alt={alt} className={`w-${width} sm:w-[70px]`} />
+  <img src={src} alt={alt} className={`w-${width} sm:w-[70px] rounded-full`} />
 );
 
 const LogoRound: React.FC<LogoProps> = ({ src, alt, width = '50px' }) => (
