@@ -32,13 +32,7 @@ export function Navbar({}: NavbarProps) {
   const localProfile = JSON.parse(localStorage.getItem('diagnosticCenter'));
 
   const handleDashboard = () => {
-    if (localProfile && localProfile._id) {
-      setDiagnosticCenter(localProfile);
-      successAlert("Login to " + localProfile.centerName);
-      router.push("/dashboard");
-    } else {
       router.push("/verifyUser");
-    }
   };
 
   return (

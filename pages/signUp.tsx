@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { SignUp, useUser } from '@clerk/nextjs';
 import { ClerkLoading } from "@clerk/nextjs";
 import { UserLayout } from '@components/templates/pageTemplate'
-import { warningAlert } from '@components/atoms/alerts/alert';
 
 // Component to handle user sign-up
 const SignUpComp = () => {
@@ -21,7 +20,7 @@ const SignUpComp = () => {
       <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
         <section className="my-10">
           {/* SignUp component from Clerk for user registration */}
-          <SignUp signInUrl="/signIn" redirectUrl="/dashboard" />
+          <SignUp signInUrl="/signIn" redirectUrl="/verifyUser" />
           <ClerkLoading>
             <p>Loading...</p>
           </ClerkLoading>
