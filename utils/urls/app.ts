@@ -16,7 +16,7 @@ export const getDiagReportsApi = diagBackendApiPath + `reports/getReports/`; // 
 export const createDiagReportsApi = diagBackendApiPath + `reports/createReport/`; // Endpoint to create diagnostic report
 export const deleteDiagReportsApi = diagBackendApiPath + `reports/deleteReport/`; // Endpoint to create diagnostic report
 
-export const uploadDiagnosticLogoApi = diagBackendApiPath + `s3/omerald/logoUpload`; // Endpoint to upload diagnostic report
+export const uploadDiagnosticLogoApi = diagBackendApiPath + `s3/diagnostic/logoUpload`; // Endpoint to upload diagnostic report
 export const uploadDiagnosticReportApi = diagBackendApiPath + `s3/diagnostic/reportUpload`; // Endpoint to upload diagnostic logo
 
 // External API path to get all admin report types
