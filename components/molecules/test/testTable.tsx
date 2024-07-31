@@ -33,13 +33,13 @@ export const TestTable: React.FC<TestTableProps> = () => {
 
   const tests = currentBranch?.tests;
   const setCurrentBranch = useSetRecoilState(branchState)
-  const {updateCurrentBranch} = useCurrentBranch()
+  // const {updateCurrentBranch} = useCurrentBranch()
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert("Profile updated successfully");
       setProfile(data?.data);
-      updateCurrentBranch(data?.data)
+      // updateCurrentBranch(data?.data)
       setLoading(false)
     },
     onError: (error) => {

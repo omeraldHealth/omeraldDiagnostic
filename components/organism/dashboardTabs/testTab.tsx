@@ -20,11 +20,7 @@ export default function TestTab() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(getAdminReportTypesApi, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(getAdminReportTypesApi, {});
         if(response.status ===200){
           successAlert("Fetched reports succesfully")
           setReportData(response?.data)

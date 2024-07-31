@@ -27,9 +27,9 @@ export default function BranchComp() {
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data)=>{
-        successAlert("Added Branch succesfully")
+        successAlert("Updated Branch succesfully")
         setShowTest(false)
-        setCurrentBranch(data?.data?.branches?.filter(branch=> branch?._id === currentBranch?._id)[0])
+        // setCurrentBranch(data?.data?.branches?.filter(branch=> branch?._id === currentBranch?._id)[0])
         setDiagnosticProfile(data?.data)
         setLoading(false)
     },
@@ -42,9 +42,9 @@ export default function BranchComp() {
 
   const handleEdit = async (data) => {
     let finaleData = { ...data, branchOperator: [user?._id] };
-    logActivity("Added Branch `"+ finaleData?.branchName+"`")
     // Create a new array of branches containing existing branches plus finaleData
-    let updatedBranches = [...(profile?.branches || []), finaleData];
+    logActivity("Added Branch `"+ finaleData?.branchName+"`")
+    let updatedBranches = [...(profile?.branches), finaleData];
     updateDiagnostic.mutate({data: {branches: updatedBranches}})
   };
   

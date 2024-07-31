@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { PencilIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useRecoilState } from "recoil";
-import { useCurrentBranchValue, useLogoValue, useManagerValue, useProfileValue } from "@components/common/constants/recoilValues";
+import { useCurrentBranchValue, useLogoValue, useManagerValue } from "@components/common/constants/recoilValues";
 import { profileForm } from "utils/types/molecules/forms.interface";
-import { useUpdateDiagnostic } from "utils/reactQuery";
-import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
-import LogoUploader from "@components/atoms/fileUploder/logoUploaders";
 import { profileState } from "@components/common/recoil/profile";
 import { logoStateData } from "@components/common/recoil/logo";
 import DynamicFormGenerator from '../../common/form/dynamicForm';
 import { Switch } from 'antd';
+import { useUpdateDiagnostic } from 'utils/reactQuery';
+import { errorAlert, successAlert, warningAlert2 } from '@components/atoms/alerts/alert';
+import { delay } from 'lodash';
 
 // Profile Summary Component
 export const ProfileSummaryComponent: React.FC<any> = ({ profile, style, summary }) => {
@@ -71,32 +70,35 @@ const ProfileSummary: React.FC<any> = ({ profile, style }) => {
 
 // Profile View Component
 const ProfileView: React.FC<any> = ({ style }) => {
-  const currentManager = useManagerValue();
-  const currentBranch = useCurrentBranchValue();
   const [edit, setEdit] = useState<boolean>(false);
   const [profile, setProfile] = useRecoilState(profileState);
   const selectedBranch = JSON.parse(localStorage.getItem("selectedBranch"))
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
-      successAlert("Profile updated successfully");
-      setProfile(data?.data);
-    },
-    onError: (error) => {
-      errorAlert("Error updating profile");
-    },
-  });
+      if(data?.status == 200){
+        warningAlert2('Profile updated successfully');
+        setProfile(data?.data);
+      }
 
-  const handleSubmit = (data: any) => {
-    updateDiagnostic.mutate({ data: { id: profile?._id, ...data } });
-    setEdit(false);
+      delay(()=>{setEdit(false)},500)
+    },
+    onError: () => {
+      errorAlert('Error updating profile');
+    },
+  }, profile?._id);
+
+  const handleSubmit = (values:any) => {
+    updateDiagnostic.mutate({
+      data: { ...values },
+    });
   }
 
   return (
       <div className={`p-8 bg-white h-[80vh] text-left ${style}`}>
         {/* {currentManager?.managerRole.toLowerCase() === ("admin" || "owner") && ( */}
           <>
-           {/* <span className='flex justify-end'>
+           <span className='flex justify-end'>
               <Switch
                 style={{ fontSize: '10px' }}
                 checkedChildren="Edit"
@@ -105,22 +107,18 @@ const ProfileView: React.FC<any> = ({ style }) => {
                 className='bg-black'
                 onChange={() => setEdit(!edit)}
               />
-            </span> */}
+            </span>
           </>
-        {/* )} */}
          {
                 !edit ? 
                 <>
                   <section>
-                  <img src={profile?.brandingInfo?.logoUrl} alt="logo" className='w-[18vw] h-[18vw] sm:w-[7vw] sm:h-[7vw] rounded-full border-2' />
+                  {profile?.brandingInfo?.logoUrl && <img src={profile?.brandingInfo?.logoUrl} alt="logo" className='w-[18vw] h-[18vw] sm:w-[7vw] sm:h-[7vw] rounded-full border-2' />}
                   <section className='grid sm:grid-cols-3 grid-cols-1 gap-0 lg:gap-[1vw] w-[100%]'> 
                               <aside>
                                 <p className='my-8 font-bold text-sm'>{"Diagnostic Center Name: "}<span className='text-black font-light'>{profile?.centerName}</span></p>
                                 <p className='my-8 font-bold text-sm'>{"Email: "}<span className='text-black font-light lowercase'>{profile?.email}</span></p>
                                 <p className='my-8 font-bold text-sm'>{"Contact: "}<span className='text-black font-light'>{profile?.phoneNumber}</span></p>
-    
-                                {/* <p className='my-8 font-bold text-sm'>{"Facebook Url "}<a href={profile?.brandDetails?.facebookUrl} className='text-black font-light'>{profile?.brandDetails?.facebookUrl}</a></p>
-                                <p className='my-8 font-bold text-sm'>{"Instagram Url: "}<a href={profile?.brandDetails?.instaUrl} className='text-black font-light lowercase'>{profile?.brandDetails?.instaUrl}</a></p> */}
                               </aside>
                               <aside>
                                 <p className='my-8 font-bold text-sm'>{"Branch Name: "}<span className='text-black font-light'>{selectedBranch?.branchName}</span></p>
