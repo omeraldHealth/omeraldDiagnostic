@@ -20,8 +20,6 @@ const Onboard: React.FC = (): JSX.Element => {
   let createDc = localStorage.getItem("createDC")
 
   useEffect(() => {
-    // Redirect to dashboard if user and profileValue exist
-    console.log(profileValue)
     if (user && profileValue?._id && createDc === "false") {
       router?.push('/dashboard');
     }
