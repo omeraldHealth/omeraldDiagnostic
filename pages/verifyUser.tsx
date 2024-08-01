@@ -32,6 +32,8 @@ const VerifyUser = () => {
   useEffect(()=>{
     if(isLoaded && user){
       fetchUser(user?.phoneNumbers[0].phoneNumber)
+    }else if (isLoaded && !user){
+      router.push("/signIn")
     }
   },[user])
 

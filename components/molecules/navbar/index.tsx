@@ -57,7 +57,7 @@ export function Navbar({}: NavbarProps) {
           </Link>
         ) : (
           <section className="flex gap-4 items-center">
-            <UserButton afterSignOutUrl="/" />
+            <UserButton afterSignOutUrl="/signIn" />
             <button onClick={handleDashboard} className="bg-violet-900 px-4 py-2 text-white rounded-md">Dashboard</button>
           </section>
         )}

@@ -34,7 +34,7 @@ const Onboard: React.FC = (): JSX.Element => {
           </Link>
           <section className="flex justify-center items-center h-full ">
            <p className='text-lg flex'><InformationCircleIcon className='w-[30px] text-blue-700 mx-2'/> Diagnostic Details</p>
-           <span className='mx-4'><UserButton afterSignOutUrl="/" /></span>
+           <span className='mx-4'><UserButton afterSignOutUrl="/signIn" /></span>
           </section>
         </section>
         <section className='w-[70%] pb-[5vh] my-[7vh] h-auto mx-auto flex flex-col justify-center '>
