@@ -36,7 +36,9 @@ function createMutation<TData, TVariables>(
 
 // Functions for different mutations
 export function useGetUser({userPhoneNumber}:any) {
-  return useQueryGetData('userData',getDiagnosticUserApi + userPhoneNumber);
+  return useQueryGetData('userData',getDiagnosticUserApi + userPhoneNumber,{
+    enabled: !!userPhoneNumber
+  });
 }
 
 export function useGetDcProfile({selectedCenterId}:any) {

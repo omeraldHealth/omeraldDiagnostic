@@ -8,6 +8,7 @@ const SelectedDC = () => {
 
   const toggleModal = () => {
     localStorage.setItem("diagnosticCenter", "null");
+    localStorage.setItem("selectedDc", "null")
     router.push("/chooseDc")
   };
 

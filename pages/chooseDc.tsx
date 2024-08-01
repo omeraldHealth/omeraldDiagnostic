@@ -1,40 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { UserLayout } from '@components/templates/pageTemplate';
-import { CheckIcon, HomeIcon, PlusCircleIcon, PlusIcon } from '@heroicons/react/20/solid';
-import { useQueryGetData } from '../utils/reactQuery';
+import { CheckIcon, PlusIcon } from '@heroicons/react/20/solid';
+import { useGetDcProfile, useGetUser, useQueryGetData } from '../utils/reactQuery';
 import { getDiagProfileByPhoneApi, getDiagnosticUserApi } from '../utils';
 import { useSetRecoilState } from 'recoil';
 import { profileState } from '../components/common/recoil/profile';
-import { errorAlert, successAlert, warningAlert2 } from '../components/atoms/alerts/alert';
+import { errorAlert, warningAlert2 } from '../components/atoms/alerts/alert';
 import { Loader } from '../components/atoms/loader/loader';
 import { useUser } from '@clerk/clerk-react';
-import { useActivityLogger, useCurrentBranch } from '@components/common/logger.tsx/activity';
 import { branchState } from '@components/common/recoil/branch/branch';
-
 
 const ChooseDc: React.FC = () => {
   const { user } = useUser();
   const router = useRouter();
+  const dcId = localStorage?.getItem("selectedDc")
   const [loading, setLoading] = useState<boolean>(false);
-  const setDiagnosticCenter = useSetRecoilState(profileState);
-  const setCurrentBranch = useSetRecoilState(branchState);
-  const [selectedCenterId, setSelectedCenterId] = useState<string | null>(null);
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
-  const { logActivity } = useActivityLogger();
+  const [selectedCenterId, setSelectedCenterId] = useState<string | null>(dcId);
+  const setCurrentBranch = useSetRecoilState(branchState);
+  const setDiagnosticCenter = useSetRecoilState(profileState);
 
-  const { data: userData, status: userStatus } = useQueryGetData(
-    'userData',
-    getDiagnosticUserApi + userPhoneNumber,
-    { enabled: !!userPhoneNumber }
-  );
+  const { data: userData, status: userStatus } = useGetUser({userPhoneNumber: userPhoneNumber})
+  const { data: diagnosticCenter, status: centerStatus, refetch } = useGetDcProfile({selectedCenterId: selectedCenterId})
+  
+  useEffect(() => { 
+    setLoading(true)
+    if (centerStatus === 'success' && diagnosticCenter?.data) {
+      setDiagnosticCenter(diagnosticCenter?.data)
+      setCurrentBranch(diagnosticCenter?.data.branches[0])
+      localStorage?.setItem("selectedBranch", JSON.stringify(diagnosticCenter?.data?.branches[0]))
+      router?.push("/dashboard")
+    }
 
-  const { data: diagnosticCenter, status: centerStatus, refetch } = useQueryGetData(
-    'diagnosticCenter',
-    getDiagProfileByPhoneApi + selectedCenterId,
-    { enabled: !!selectedCenterId }
-  );
-
+    setLoading(false)
+  }, [centerStatus, diagnosticCenter]);
 
   useEffect(() => {
     if (userStatus === 'success' && !userData?.data?.diagnosticCenters) {
@@ -42,14 +42,6 @@ const ChooseDc: React.FC = () => {
     }
     setLoading(false)
   }, [userStatus, userData, router]);
-
-  useEffect(() => {
-    if (centerStatus === 'success' && !diagnosticCenter?.data) {
-      setCurrentBranch(diagnosticCenter?.branches[0])
-      localStorage?.setItem("selectedBranch", JSON.stringify(diagnosticCenter?.branches[0]))
-    }
-    setLoading(false)
-  }, [centerStatus, diagnosticCenter]);
 
   useEffect(()=>{refetch()},[selectedCenterId])
 
@@ -83,14 +75,10 @@ const ChooseDc: React.FC = () => {
         <div className="min-h-[50vh] h-auto flex justify-center mt-20">
           <div>
             <section className="grid grid-cols-4  gap-6 text-center">
-              <AddDC handleCardClick={()=>{
-                localStorage.setItem("createDC", "true")
-                router.push("/onboard")}}/>
+              <AddDC handleCardClick={()=>{localStorage.setItem("createDC", "true"); router.push("/onboard")}}/>
               {userData?.data?.diagnosticCenters?.map((center) => (
                 <DiagnosticCard
-                  key={center?.diagnostic?._id}
-                  center={center}
-                  isSelected={center?.diagnostic?._id === selectedCenterId}
+                  key={center?.diagnostic?._id} center={center} isSelected={center?.diagnostic?._id === selectedCenterId}
                   handleCardClick={handleCardClick}
                 />
               ))}

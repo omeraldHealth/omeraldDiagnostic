@@ -4,15 +4,9 @@ import { useProfileValue } from '@components/common/constants/recoilValues';
 import { UserButton, useUser } from '@clerk/clerk-react';
 import PageHead from '@components/atoms/head/head';
 import Link from 'next/link';
-import { Logo } from '@components/atoms/nav/logo';
-import { logoUrl } from '@utils';
 import { InformationCircleIcon } from '@heroicons/react/20/solid';
 import OnboardNewComponents from '@components/molecules/onboard/onboard';
 
-/**
- * Onboard page component.
- * Redirects to the dashboard if the user and profileValue exist.
- */
 const Onboard: React.FC = (): JSX.Element => {
   const { user } = useUser();
   const router = useRouter();
@@ -35,7 +29,6 @@ const Onboard: React.FC = (): JSX.Element => {
         <section className='py-4 flex justify-between w-full px-[10vw] items-center border-b-2 border-gray-200'>
           <Link href="/">
             <span className="flex">
-              <Logo src={logoUrl} alt="Omerald Diagnostics Logo" />
               <p className="font-sans hidden sm:block sm:text-lg sm:font-bold self-center">OMERALD DIAGNOSTICS</p>
             </span>
           </Link>

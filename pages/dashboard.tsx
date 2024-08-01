@@ -37,7 +37,6 @@ export default function Dashboard() {
 
   return (
     <UserLayout tabName={`Admin Diagnostic | ${dashboard}`} tabDescription="Omerald is a health management platform to connect people and doctors with ease.">
-      {/* Render the selected dashboard tab inside DashboardLayout */}
       <DashboardLayout>{DashboardTabsMap[dashboard]}</DashboardLayout>
     </UserLayout>
   );
