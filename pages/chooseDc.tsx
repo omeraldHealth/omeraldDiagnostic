@@ -21,7 +21,7 @@ const ChooseDc: React.FC = () => {
   const setCurrentBranch = useSetRecoilState(branchState);
   const setDiagnosticCenter = useSetRecoilState(profileState);
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
-  const { data: userData, isLoading } = useGetUser({ userPhoneNumber });
+  const { data: userData , isLoading} = useGetUser({ userPhoneNumber });
   const [diagnosticCenter, setDiagnosticCenterState] = useState(null);
 
   const fetchProfile = async (selectedId: string | null) => {
@@ -34,31 +34,36 @@ const ChooseDc: React.FC = () => {
     }
   };
 
+  useEffect(()=>{
+    if(!isLoading && userData && diagnosticCenter){
+      setLoading(false)
+    }
+  },[diagnosticCenter, userData])
+
   useEffect(() => {
-    if(!isLoading && userData){
       if (dcId && dcId !== "null") {
         fetchProfile(dcId);
       }
-    }
   }, [dcId]);
 
   useEffect(() => {
     if (diagnosticCenter) {
       navigateDashboard(diagnosticCenter);
-    }
+    } 
   }, [diagnosticCenter]);
 
   const navigateDashboard = (diagnosticCenter: any) => {
     setCurrentBranch(diagnosticCenter?.branches[0]);
     localStorage.setItem("selectedBranch", JSON.stringify(diagnosticCenter?.branches[0]));
     localStorage.setItem("createDC", "false");
+    setLoading(false)
     router.push("/dashboard");
   };
 
   const handleCardClick = (centerId: string) => {
     const newCenterId = centerId === selectedCenterId ? null : centerId;
     setSelectedCenterId(newCenterId);
-
+    localStorage.setItem("selectedDc", centerId);
     if (newCenterId) {
       fetchProfile(newCenterId);
     }

@@ -31,14 +31,21 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
-      successAlert('Profile updated successfully');
+      successAlert('test updated successfully');
       setProfile(data?.data);
-      // updateCurrentBranch(data?.data)
+
+      const updatedBranches = data?.data?.branches.filter(branch => {
+        if (branch._id === currentBranch._id) {
+            return branch;
+        }
+      });
+
+      setCurrentBranch(updatedBranches[0])
       setTestDetail({})
       next()
     },
     onError: () => {
-      errorAlert('Error updating profile');
+      errorAlert('Error updating tests');
       // setLoading(false)
     },
   },profile?._id);
@@ -68,6 +75,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
         }
         return branch;
       });
+      //  setCurrentBranch(updatedBranch)
       try {
         const updatedProfile = { data: { branches: updatedBranches } };
         updateDiagnostic.mutate(updatedProfile);
@@ -255,11 +263,12 @@ const OmeraldTestDetails: React.FC<any> = ({next}:any) => {
           <Select
               showSearch
               style={{ width: 200 }}
+              disabled={!reportData}
               placeholder="Select a report type"
               optionFilterProp="children" // Tells Select component to filter on the children prop
               onChange={handleSelect}
               filterOption={filterOption} // Use custom filter function for search
-            >
+            >=
               {reportData?.map(item => (
                 <Option key={item._id} value={item?._id}>{item.name}</Option>
               ))}
