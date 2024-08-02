@@ -50,6 +50,7 @@ const ChooseDc: React.FC = () => {
 
   const navigateDashboard = (diagnosticCenter: any) => {
     setCurrentBranch(diagnosticCenter?.branches[0]);
+    localStorage.setItem("selectedBranch", JSON.stringify(diagnosticCenter?.branches[0]));
     localStorage.setItem("createDC", "false");
     router.push("/dashboard");
   };
@@ -57,7 +58,7 @@ const ChooseDc: React.FC = () => {
   const handleCardClick = (centerId: string) => {
     const newCenterId = centerId === selectedCenterId ? null : centerId;
     setSelectedCenterId(newCenterId);
-    localStorage.setItem("selectedDc", newCenterId);
+
     if (newCenterId) {
       fetchProfile(newCenterId);
     }

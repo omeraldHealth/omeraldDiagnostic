@@ -22,7 +22,7 @@ export default function TestTab() {
       try {
         const response = await axios.get(getAdminReportTypesApi, {});
         if(response.status ===200){
-          successAlert("Fetched reports succesfully")
+          // successAlert("Fetched reports succesfully")
           setReportData(response?.data)
         }
       } catch (error) {

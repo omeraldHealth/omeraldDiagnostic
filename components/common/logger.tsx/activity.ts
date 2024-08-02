@@ -9,7 +9,7 @@ export const useActivityLogger = () => {
 
     const updateProfile = useUpdateDiagnostic({
         onSuccess: () => {
-            successAlert("Activity logged successfully");
+            // successAlert("Activity logged successfully");
         },
         onError: (error) => {
             console.error("Error updating profile:", error);
