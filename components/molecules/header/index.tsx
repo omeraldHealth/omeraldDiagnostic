@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Bars3Icon } from '@heroicons/react/20/solid';
 import { Select } from 'antd';
 import { useSetRecoilState } from 'recoil';
-import { useCurrentBranchValue, useDashboardTabs, useProfileValue } from '@components/common/constants/recoilValues';
+import { useDashboardTabs, useProfileValue } from '@components/common/constants/recoilValues';
 import { branchState } from '@components/common/recoil/branch/branch';
 import { Loader } from '@components/atoms/loader/loader';
-import { successAlert, warningAlert } from '@components/atoms/alerts/alert';
-import { UserButton } from '@clerk/clerk-react';
+import { warningAlert } from '@components/atoms/alerts/alert';
+import { SignOutButton, UserButton } from '@clerk/clerk-react';
 import SelectDC from './selectDc';
 interface DashboardHeaderProps {
   // Add any additional props if needed
@@ -15,12 +15,9 @@ interface DashboardHeaderProps {
 export function DashboardHeader({}: DashboardHeaderProps) {
   const tabName = useDashboardTabs();
   const profile = useProfileValue();
-  const currentBranch = useCurrentBranchValue();
   const setCurrentBranch = useSetRecoilState(branchState);
   const selectedBranch = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
   const [loading, setLoading] = useState(false)
-
-  // @ts-ignore
   const branchList = profile && profile?.branches;
 
   const handleBranchChange = (value: any) => {
@@ -34,9 +31,9 @@ export function DashboardHeader({}: DashboardHeaderProps) {
       setLoading(false)
 
     }, 1000)
-
-
   };
+
+
 
   return (
     <div className={`flex justify-between items-center`}>
@@ -59,7 +56,7 @@ export function DashboardHeader({}: DashboardHeaderProps) {
                   options={branchList?.map((branch: any) => ({ label: branch?.branchName, value: branch?._id, key: branch?.branchName }))}
                 />
                  <section className="flex gap-4 items-center mx-4">
-                    <UserButton afterSignOutUrl="/" />
+                    <UserButton afterSignOutUrl="/signIn" />
                     <SelectDC/>
                   </section>
               </section>

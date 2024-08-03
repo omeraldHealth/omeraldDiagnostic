@@ -47,6 +47,11 @@ export function DashboardLayout({ children }: any) {
               <div className="py-2">
                 <div className="max-w-[98vw] mx-4 sm:mx-4 md:max-w-[95vw] m-auto md::max-w-[95%] lg:mx-12 mt-4">
                   <>{children}</>
+                  <div className="mt-12 border-t border-gray-200 pt-8 text-center">
+                    <p className="text-black text-md">
+                      &copy; 2024 <span href="https://omerald.com/" target="_blank" className="text-blue-700">Omerald.com</span>. All rights reserved to Avin Mednologies Private Limited and Omerald.
+                    </p>
+                  </div>
                 </div>
               </div>
             </main>

@@ -1,6 +1,5 @@
 
 import { PhoneFilled } from '@ant-design/icons';
-import { MailIcon } from '@heroicons/react/solid';
 import { Image } from "antd";
 import { EnvelopeIcon } from '@heroicons/react/20/solid';
 const logo = "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"

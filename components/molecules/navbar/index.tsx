@@ -32,20 +32,14 @@ export function Navbar({}: NavbarProps) {
   const localProfile = JSON.parse(localStorage.getItem('diagnosticCenter'));
 
   const handleDashboard = () => {
-    if (localProfile && localProfile._id) {
-      setDiagnosticCenter(localProfile);
-      successAlert("Login to " + localProfile.centerName);
-      router.push("/dashboard");
-    } else {
       router.push("/verifyUser");
-    }
   };
 
   return (
     <div className="navbar-container flex justify-between items-center px-[4%] xl:px-[10%]">
       <Link href="/">
         <span className="flex">
-          <Logo src={logo} alt="Omerald Diagnostics Logo" />
+        <Logo src={logo} alt="Omerald Diagnostics Logo" />
           <p className="font-sans hidden sm:block sm:text-lg sm:font-bold self-center">OMERALD DIAGNOSTICS</p>
         </span>
       </Link>
@@ -63,7 +57,7 @@ export function Navbar({}: NavbarProps) {
           </Link>
         ) : (
           <section className="flex gap-4 items-center">
-            <UserButton afterSignOutUrl="/" />
+            <UserButton afterSignOutUrl="/signIn" />
             <button onClick={handleDashboard} className="bg-violet-900 px-4 py-2 text-white rounded-md">Dashboard</button>
           </section>
         )}

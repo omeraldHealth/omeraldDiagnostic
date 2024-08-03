@@ -178,11 +178,11 @@ export default function SettingsTab() {
       children: <PathologistComp/>
       // children: <SettingsCommon columns={PathologistColumns(handleAdd, handleRemove)} data={filteredBranch ? filteredBranch.pathologistDetail : []} tabName="Pathologist" form={pathologistFormArray(handleImage)} {...settingProp} />,
     },
-    {
-      key: '6',
-      label: 'Support',
-      children: <Support />,
-    },
+    // {
+    //   key: '6',
+    //   label: 'Support',
+    //   children: <Support />,
+    // },
   ];
 
   return (

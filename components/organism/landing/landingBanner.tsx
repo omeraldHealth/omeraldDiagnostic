@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import {
   BodyText_1,

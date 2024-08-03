@@ -15,14 +15,13 @@ import { EditTestsProps, TestTableProps, ViewTestProps } from '../../../utils/ty
 import { Spinner } from '@components/atoms/loader';
 import { testDataState } from '@components/common/recoil/testDetails/test';
 import { branchState } from '@components/common/recoil/branch/branch';
-import { useCurrentBranch } from '@components/common/logger.tsx/activity';
 
 export const TestTable: React.FC<TestTableProps> = () => {
   const [editTest, setEditTest] = useState(false);
   const [profile, setProfile] = useRecoilState(profileState);
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
   const [booleanAtom, setBooleanAtom] = useRecoilState(booleanState);
-  const currentBranch = useCurrentBranchValue();
+
   const [defaultValues, setDefaultValue] = useState({});
   const [testEdited, setTestEdited] = useState({});
   const [loading, setLoading] = useState(false);
@@ -31,15 +30,23 @@ export const TestTable: React.FC<TestTableProps> = () => {
    let selectedCenterId = localStorage.getItem("selectedDc") ?? {};
   const { data: profileData } = useGetDcProfile(selectedCenterId);
 
+  const currentBranch = useCurrentBranchValue();
   const tests = currentBranch?.tests;
   const setCurrentBranch = useSetRecoilState(branchState)
-  const {updateCurrentBranch} = useCurrentBranch()
+  // const {updateCurrentBranch} = useCurrentBranch()
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert("Profile updated successfully");
       setProfile(data?.data);
-      updateCurrentBranch(data?.data)
+      // updateCurrentBranch(data?.data)
+      const updatedBranches = data?.data?.branches.filter(branch => {
+        if (branch._id === currentBranch._id) {
+            return branch;
+        }
+      });
+
+      setCurrentBranch(updatedBranches[0])
       setLoading(false)
     },
     onError: (error) => {

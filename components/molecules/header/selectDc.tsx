@@ -1,13 +1,17 @@
 
+import { profileState } from '@components/common/recoil/profile';
 import { useRouter } from 'next/router';
+import { useSetRecoilState } from 'recoil';
 
 const dcOptions = ['DC1', 'DC2', 'DC3'];
 
 const SelectedDC = () => {
   const router = useRouter()
+  const setProfileData = useSetRecoilState(profileState)
 
   const toggleModal = () => {
-    localStorage.setItem("diagnosticCenter", "null");
+    localStorage.setItem("selectedDc", "null")
+    setProfileData(null)
     router.push("/chooseDc")
   };
 

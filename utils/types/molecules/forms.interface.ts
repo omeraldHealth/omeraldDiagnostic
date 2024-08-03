@@ -52,7 +52,7 @@ export type FormType = {
 };
 
 export const profileForm: FormType[] = [
-    {"name":"brandLogo","type":"logo","label":"Logo","required":true},
+    // {"name":"brandLogo","type":"logo","label":"Logo","required":true},
     {"name":"centerName","type":"text","label":"Diagnostic Center Name","required":true},
     {"name":"email","type":"email","label":"Email","required":true,pattern:"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"},
     {"name":"branchName","type":"text","label":"Branch Name","required":true},

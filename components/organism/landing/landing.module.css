@@ -1,7 +1,8 @@
 /* Styles for landingBanner section */
 .landingBanner {
     width: 100%;
-    min-height: 100vh;
+    height: auto;
+    min-height: 80vh;
     background-image: url("../../../public/background.jpg");
     background-size: cover;
     background-position-y: 0.5%;

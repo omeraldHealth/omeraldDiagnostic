@@ -1,14 +1,14 @@
 import { useUser } from "@clerk/clerk-react";
 import { PlusCircleIcon } from "@heroicons/react/20/solid";
-import { getDiagnosticUserApi, uploadDiagnosticLogoApi, uploadDiagnosticReportApi } from "@utils";
+import { getDiagnosticUserApi, uploadDiagnosticLogoApi } from "@utils";
 import { Button, Form, Input, Select, Steps, Upload } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { LoaderIcon } from "react-hot-toast";
 import { toast } from "react-toastify";
 import { Row, Col } from 'antd';
-import { useCreateDiagnostic, useQueryGetData, useUpdateDiagnostic, useUpdateUser } from "utils/reactQuery";
-import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import { useCreateDiagnostic, useQueryGetData, useUpdateUser } from "utils/reactQuery";
+import { successAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import { userState } from "@components/common/recoil/user";
@@ -55,12 +55,10 @@ const OnboardNewComponents: React.FC = () => {
                     }
                 let updatedDC = [...userData?.data?.diagnosticCenters, newDiagnosticCenters];
                 updateUser.mutate({data: {diagnosticCenters: updatedDC}})
-            }else{
-                errorAlert("Error fetching alert")
             }
         },
         onError:(err)=>{
-          warningAlert("Error creating profile"+ err)
+          warningAlert("Error creating profile"+ err.message)
         }
     })  
 

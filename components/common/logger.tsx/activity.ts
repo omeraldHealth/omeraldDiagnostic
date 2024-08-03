@@ -1,12 +1,9 @@
 import { useGetDcProfile, useUpdateDiagnostic } from "utils/reactQuery";
-import { useCurrentBranchValue, useProfileValue, useUserValues } from "../constants/recoilValues";
+import { useUserValues } from "../constants/recoilValues";
 import { successAlert } from "@components/atoms/alerts/alert";
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { branchState } from "../recoil/branch/branch";
 
 export const useActivityLogger = () => {
-    let selectedCenterId = localStorage.getItem("selectedDc") ?? {};
+    const selectedCenterId = localStorage.getItem("selectedDc") ?? {};
     const userData = useUserValues();
     const { data: profileData } = useGetDcProfile(selectedCenterId);
 
@@ -17,7 +14,7 @@ export const useActivityLogger = () => {
         onError: (error) => {
             console.error("Error updating profile:", error);
         },
-    },selectedCenterId);
+    }, selectedCenterId);
 
     const logActivity = async (activity) => {
         const selectedBranch = JSON.parse(localStorage.getItem("selectedBranch"));
@@ -45,27 +42,11 @@ export const useActivityLogger = () => {
 
         try {
             const updatedProfile = { data: { branches: updatedBranches } };
-            updateProfile.mutate(updatedProfile);
+            await updateProfile.mutateAsync(updatedProfile);
         } catch (error) {
             console.error("Error logging activity:", error);
         }
     };
 
     return { logActivity };
-};
-
-export const useCurrentBranch = () => {
-    const currentBranch = useCurrentBranchValue()
-    const setCurrentBranch = useSetRecoilState(branchState)
-
-    const updateCurrentBranch = async (profileData) => {
-        let updatedBranch = profileData?.branches.find((branch) => branch?._id === currentBranch?._id); 
-        localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch))
-        console.log(updatedBranch)
-        setCurrentBranch(updatedBranch)
-        successAlert('Current Branch updated successfully');
-    };
-
-    return { updateCurrentBranch };
-
 };

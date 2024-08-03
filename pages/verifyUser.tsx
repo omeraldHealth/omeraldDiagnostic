@@ -1,117 +1,106 @@
-import { useUser } from '@clerk/clerk-react';
-import { errorAlert, successAlert, warningAlert } from '@components/atoms/alerts/alert';
-import { Loader } from '@components/atoms/loader/loader';
-import { UserLayout } from '@components/templates/pageTemplate';
-import { getDiagProfileByPhoneApi, getDiagnosticUserApi } from '@utils';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { useCreateUser, useGetDcProfile, useGetUser } from 'utils/reactQuery';
-import { userState } from '../components/common/recoil/user';
-import { profileState } from '@components/common/recoil/profile';
-import { Spinner } from '@components/atoms/loader';
+import { useUser } from "@clerk/clerk-react";
+import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import { Spinner } from "@components/atoms/loader";
+import { userState } from "@components/common/recoil/user";
+import { UserLayout } from "@components/templates/pageTemplate";
+import { getDiagnosticUserApi } from "@utils";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { useCreateUser } from "utils/reactQuery";
 
 const VerifyUser = () => {
-  let selectedCenterId = localStorage.getItem("selectedDc") ?? {};
-  const { user } = useUser();
-  const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const setUserData = useSetRecoilState(userState);
-  const setDiagnosticCenter = useSetRecoilState(profileState);
-  // const dcData = JSON.parse(localStorage.getItem('diagnosticCenter') || '{}');
-  const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
-  const userName = user?.fullName;
+  const { user, isLoaded } = useUser();
+  const router = useRouter()
+  const setUserData = useSetRecoilState(userState)
   
-  const { data: diagnosticCenter, status: centerStatus } = useGetDcProfile(selectedCenterId)
-  const { data: userData, status, refetch, isLoading } = useGetUser({userPhoneNumber})
-  
-  const localProfile = JSON.parse(localStorage.getItem('diagnosticCenter'));
-
-  useEffect(()=>{
-    if(localProfile){
-      setDiagnosticCenter(localProfile)
-      successAlert("Login to "+localProfile?.centerName)
-      router.push("/dashboard")
-      setLoading(false)
-    }
-  },[localProfile])
-
-  useEffect(() => {
-    if (centerStatus === 'success' && diagnosticCenter?.data) {
-      setDiagnosticCenter(diagnosticCenter?.data)
-    }
-  }, [centerStatus, diagnosticCenter]);
-  
-  const createUser = useCreateUser({
-    onSuccess: () => {
-      successAlert("Created User");
-      fetchUserData();
+  const createUserMutation = useCreateUser({
+    onSuccess: (resp) => {
+      if(resp.status === 201){
+        successAlert("User Created Succesfully")
+        user && fetchUser(user.phoneNumbers[0].phoneNumber)
+        setLoading(false)
+      }
     },
     onError: () => {
-      errorAlert("Error Creating User");
       setLoading(false);
-    }
+    },
   });
 
-  const fetchUserData = async () => {
-    const result = await refetch();
-    if (result.status === 'success' && result.data) {
-      handleUserData(result.data);
-    } else {
-      errorAlert("User Not Found");
-      setLoading(false);
+  useEffect(()=>{
+    if(isLoaded && user){
+      fetchUser(user?.phoneNumbers[0].phoneNumber)
+    }else if (isLoaded && !user){
+      router.push("/signIn")
     }
-  };
+  },[user])
 
-  const handleUserData = (data:any) => {
-    if (data && data.data && !isLoading) {
-      const diagnosticCenters = data.data?.diagnosticCenters || [];
-      setUserData(data.data);
-      if (diagnosticCenters.length > 0) {
-        successAlert("Diagnostic Centers Found");
-        setLoading(false);
-        router.push("/chooseDc");
-      } else {
-        warningAlert("No Diagnostic Centers found");
-        setLoading(false);
-        router.push("/onboard");
-      }
-    }
-  };
-
-  useEffect(() => {
-    const initialize = async () => {
-      if (diagnosticCenter?.data && userData?.data) {
-        setUserData(userData?.data);
-        successAlert("Logging into Diagnostic Profile");
-        router.push("/dashboard");
-      } else {
-        if (status === 'success' && userData) {
-          handleUserData(userData);
-        } else if (status === 'error') {
-          errorAlert("User Not Found");
-          if (userName && userPhoneNumber) {
-            createUser.mutate({ data: { userName, phoneNumber: userPhoneNumber } });
-          }
+  const fetchUser = async (phoneNumber: string) => {
+    if (phoneNumber) {
+      try {
+        const resp = await axios.get(`${getDiagnosticUserApi}${phoneNumber}`);
+        if (resp.status === 200) {
+          setUserData(resp.data);
+          checkDcProfile(resp.data);
+        }
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          // warningAlert('Diagnostic User not found for this contact')
+          createUser();
+        } else {
+          errorAlert('An error occurred while fetching user data.');
+          setLoading(false)
+          router.push("/")
         }
       }
-    };
+    }
+  };
 
-    initialize();
-  }, [status, userData, userName, userPhoneNumber, profileState]);
+  const checkDcProfile = (data : any) => {
+    if(data && data?.diagnosticCenters && data?.diagnosticCenters?.length>0){
+      // warningAlert('Diagnostic Profiles found for this contact')
+      router.push("/chooseDc")
+    }else{
+      warningAlert('Diagnostic Profiles not found, please onboard')
+      router.push("/onboard")
+    }
+  }
+
+  const createUser = async () => {
+    try {
+      createUserMutation.mutate({
+        data: {
+          userName: user?.fullName,
+          phoneNumber: user?.phoneNumbers?.[0]?.phoneNumber,
+          role: 'user',
+        },
+      });
+    } catch (error) {
+      if (error.response?.data.includes('duplicate')) {
+        errorAlert('Profile already created, please check with admin');
+        setLoading(false)
+      } else {
+        errorAlert('An error occurred while creating the profile.');
+        setLoading(false)
+      }
+      router.push("/")
+    }
+  };
 
   return (
-    <UserLayout tabDescription='Verify User' tabName="Admin Diagnostic | Verify User">
-      <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
-        <section className="my-10">
-          <div className="bg-container w-[75vw] m-auto">
-            {loading && <Spinner />}
-            <img src='/verifyProfile.gif' alt="Verification" />
+        <UserLayout tabDescription="Verify User" tabName="Admin Diagnostic | Verify User">
+          <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
+            <section className="my-10">
+              <div className="bg-container w-[75vw] m-auto">
+                {loading && <Spinner />}
+                <img src="/verifyProfile.gif" alt="Verification" />
+              </div>
+            </section>
           </div>
-        </section>
-      </div>
-    </UserLayout>
+        </UserLayout>
   );
-};
+}
 
-export default VerifyUser;
+export default VerifyUser
