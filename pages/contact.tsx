@@ -15,7 +15,7 @@ const Contact: React.FC<ContactProps> = () => {
 
   return (
     <UserLayout tabDescription='Contact' tabName="Admin Diagnostic | Contact">
-      <div className='min-h-[70vh]'>
+      <div className='min-h-[70vh] border-t-2'>
         <section className="max-w-[60%] border-2 m-auto my-20 text-center">
           {/* Render the Support component for contact details */}
           <section className='flex flex-col gap-20 lg:flex-row w-[100%] justify-start lg:justify-center my-10 py-2'>
@@ -36,7 +36,6 @@ const Contact: React.FC<ContactProps> = () => {
           </section>  
         </section>
       </div>
-
     </UserLayout>
   );
 };
