@@ -1,19 +1,43 @@
 import { UserLayout } from '@components/templates/pageTemplate';
 import { Support } from '@components/organism/dashboardTabs/settingsTabs/support';
+import DynamicFormGenerator from '@components/common/form/dynamicForm';
+import { mailImage } from '@utils';
 
 interface ContactProps {}
 
 // Contact component for handling contact information
 const Contact: React.FC<ContactProps> = () => {
+  const contactForm = [
+    {"name":"subject","type":"text","label":"Subject","required":true},
+    {"name":"message","type":"text","label":"message","required":true},
+    {"name":"description","type":"description","label":"description","required":true}
+  ]
+
   return (
     <UserLayout tabDescription='Contact' tabName="Admin Diagnostic | Contact">
-      {/* Section containing the contact information */}
-      <section className="max-w-[60%] m-auto h-auto my-40 sm:my-20 2xl:my-0 xl:h-[60vh] text-center">
-        {/* Render the Support component for contact details */}
-        <div className='my-10 mx-auto pt-16 border border-green '>
-          <Support />
-        </div>
-      </section>
+      <div className='min-h-[70vh]'>
+        <section className="max-w-[60%] border-2 m-auto my-20 text-center">
+          {/* Render the Support component for contact details */}
+          <section className='flex flex-col lg:flex-row w-[100%] justify-start lg:justify-center my-10 py-2'>
+              <section className='w-full md:w-[100%] lg:w-[40%] hidden md:flex'>
+                <section>
+                <span className='text-left'>
+                  <p>Avin Mednologies Private Limited</p>
+                  <address>3-1-325/2, 3rdFloor</address>
+                  <address>Near AK bhavan hall Kachiguda Nimboliadda, Hyderabad 500027 TELANGANA</address>
+                  <p>Contact: 9769105223</p>
+                  <p>Email: bod@omerald.com</p>
+                </span>
+                <img src={mailImage} className="w-[60%] lg:w-[65%] lg:m-auto"/>
+                </section>
+              </section>
+              <section className='w-full md:w-[60%] text-left lg:w-[40%] mr-20'>
+                <DynamicFormGenerator buttonText="Send Query" formProps={contactForm} handleSubmit={()=>{}}/>
+              </section>    
+          </section>  
+        </section>
+      </div>
+
     </UserLayout>
   );
 };
