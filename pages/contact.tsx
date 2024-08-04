@@ -18,15 +18,14 @@ const Contact: React.FC<ContactProps> = () => {
       <div className='min-h-[70vh]'>
         <section className="max-w-[60%] border-2 m-auto my-20 text-center">
           {/* Render the Support component for contact details */}
-          <section className='flex flex-col lg:flex-row w-[100%] justify-start lg:justify-center my-10 py-2'>
+          <section className='flex flex-col gap-20 lg:flex-row w-[100%] justify-start lg:justify-center my-10 py-2'>
               <section className='w-full md:w-[100%] lg:w-[40%] hidden md:flex'>
                 <section>
                 <span className='text-left'>
-                  <p>Avin Mednologies Private Limited</p>
-                  <address>3-1-325/2, 3rdFloor</address>
-                  <address>Near AK bhavan hall Kachiguda Nimboliadda, Hyderabad 500027 TELANGANA</address>
-                  <p>Contact: 9769105223</p>
-                  <p>Email: bod@omerald.com</p>
+                  <p className='font-bold'>Avin Mednologies Private Limited</p>
+                  <address><b>Address:</b> 3-1-325/2, 3rdFloor Near AK bhavan hall Kachiguda Nimboliadda, Hyderabad 500027 TELANGANA</address>
+                  <p><b>Contact:</b> 9769105223</p>
+                  <p><b>Email:</b> bod@omerald.com</p>
                 </span>
                 <img src={mailImage} className="w-[60%] lg:w-[65%] lg:m-auto"/>
                 </section>
