@@ -19,6 +19,10 @@ export default createGlobalStyle`
     display: none !important;
     visibility: hidden !important;  
   }
+  .description-container p {
+    color: #808080;
+    margin-bottom: 16px; /* Adjust the value as needed */
+  }
 
   /* Customize the toast container */
 .Toastify__toast-container {

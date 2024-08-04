@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styles from '@styles/signIn.module.css';
 import { getDiagnosticSetting } from '@utils';
 import axios from 'axios';
-import ReactHtmlParser from 'react-html-parser';
 import { Spinner } from '@components/atoms/loader';
-import { ColorRing } from 'react-loader-spinner';
 
 interface InfoPageProps {
   detail: string;
@@ -54,23 +51,19 @@ export const InfoPage: React.FC<InfoPageProps> = ({ detail }) => {
   }, [detail]);
 
   return (
-    <div className="py-[5vh] min-h-[70vh] bg-gray-100">
+    <div className="py-[5vh] min-h-[70vh] bg-white-100 border-t-2">
       <section className="max-w-[80%] m-auto h-auto my-40 sm:my-20 2xl:my-0">
         {loading ? (
           <div className="flex justify-center items-center h-full">
-            {/* <div className="spinner-border inline-block w-8 h-8 border-4 rounded-full" role="status">
-              <span className="visually-hidden">Loading...
-              </span>
-              <Spinner/>
-            </div> */}
             <div>
               <Spinner/> <span>Loading..</span>
             </div>
           </div>
         ) : (
-          <div className="text-sm font-light text-blue-900">
-            {ReactHtmlParser(formValues.description || 'No description available.')}
-          </div>
+          <>
+             <p className='capitalize font-bold text-orange-300 text-xl mb-8 underline'>{detail}</p>
+             <div className="description-container" dangerouslySetInnerHTML={{ __html: formValues.description || 'No description available.' }} />
+          </>
         )}
       </section>
     </div>
