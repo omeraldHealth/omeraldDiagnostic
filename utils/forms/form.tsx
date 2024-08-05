@@ -240,6 +240,13 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
     sorter: (a: any, b: any) => a.sampleType.testName.length - b.sampleType.testName.length,
   },
   {
+    key: 'sampleName',
+    title: 'Sample Name',
+    dataIndex: 'sampleName',
+    render: (text: any) => <a>{text}</a>,
+    sorter: (a: any, b: any) => a.sampleType.sampleName.length - b.sampleType.sampleName.length,
+  },
+  {
     key: 'parameter',
     title: 'Parameters',
     dataIndex: 'parameters',

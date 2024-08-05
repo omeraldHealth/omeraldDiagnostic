@@ -58,6 +58,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
         if (test?._id === testDetailState._id) {
             let SampleType = {
               testName: testDetailState?.testName,
+              sampleName: testDetailState?.sampleName,
               parameters: testDetailState?.parameters, // Use ParametersSchemas here
               isActive: testDetailState?.isActive
             };
@@ -86,6 +87,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
 
       let SampleType = {
         testName: testDetailState?.testName,
+        sampleName: testDetailState?.sampleName,
         parameters: testDetailState?.parameters, // Use ParametersSchemas here
         isActive: testDetailState?.isActive
       };
@@ -190,6 +192,15 @@ const CustomTestDetails: React.FC<any> = ({next}:any) => {
           name="testName"
           label="Enter Test Name"
           initialValue={testDetailState?.testName}
+          // rules={[{ required: true, message: 'Please input the test name!' }]} // Added rules for validation
+        >
+          {/* Ensure the input takes the full width of the form item */}
+          <Input className="w-[20vw]" />
+        </Form.Item>
+        <Form.Item
+          name="sampleName"
+          label="Enter Sample Name"
+          initialValue={testDetailState?.sampleName}
           // rules={[{ required: true, message: 'Please input the test name!' }]} // Added rules for validation
         >
           {/* Ensure the input takes the full width of the form item */}
