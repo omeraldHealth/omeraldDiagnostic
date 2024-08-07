@@ -847,6 +847,25 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
   };
   const isActiveValue = testDetailState?.isActive != undefined ? testDetailState?.isActive: true
 
+  const { Option } = Select;
+
+  const [tags, setTags] = useState([]);
+
+  // Handler for when tags are changed
+  const handleInputChange = (newTags) => {
+    const individualTags = convertCommaSeparatedValues(newTags);
+
+    setTags(individualTags);
+  };
+
+  const convertCommaSeparatedValues = (commaSeparatedValues) => {
+    // Flatten the array of comma-separated strings into individual tags
+    return commaSeparatedValues
+      .flatMap(value => value.split(',').map(tag => tag.trim()))
+      .filter(tag => tag.length > 0); // Remove empty tags, if any
+  };
+  
+
   return (
     <Modal    
       title="Create New Parameter" 
@@ -877,19 +896,30 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
                 <Switch className="mt-1" />
               </Form.Item>
               <Form.Item name="aliases" label="Aliases">
+              {/* <Space className="my-2">
+                  {tags?.map(alias => (
+                    <Tag color="geekblue" key={alias}>
+                      {alias}
+                    </Tag>
+                  ))}
+                </Space> */}
               <Select
                   mode="tags"
-                  // ref={ref}
                   name={'aliases'}
                   placeholder={"Enter Aliases"}
-                  // value={value}
+                  value={tags}
                   maxTagCount={15}
                   style={{
                     width: '100%',
                   }}
-                  // onChange={handleInputChange}
-                  // options={options}
-                />
+                  onChange={handleInputChange}
+                >
+                  {/* Optionally, you can provide predefined options here */}
+                  {/* <Option value="example">Example</Option> */}
+                </Select>
+                <div>
+               
+                </div>
               </Form.Item>
               <Form.Item name="description" label="Description">
                 <Input.TextArea placeholder="Enter description" className="w-full" />
