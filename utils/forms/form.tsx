@@ -251,17 +251,22 @@ export const TestTableColumns: (handleEdit: any, handleRemove: any, profile: any
     title: 'Parameters',
     dataIndex: 'parameters',
     render: (parameters: any, record: any) => (
-      <>
-        {parameters?.map((param: any, index: any) => (
-          <a  key={index} href='#'>
-            <Popover content={getPopOver(param)} title={"Parameter Aliases"}>
-              <Tag className='my-1' color='green' key={param}>
-                {param?.name}
-              </Tag>  
-            </Popover>
-          </a>
-        ))}
-      </>
+      <div style={{ maxWidth: '20vw', maxHeight: 'calc(3 * 20px + 2px)', overflowY: 'auto' }}>
+        <div style={{
+          display: 'grid',
+          gap: '20px',
+        }}>
+          {parameters?.map((param: any, index: any) => (
+            <a key={index} href="#">
+              <Popover content={getPopOver(param)} title="Parameter Aliases">
+                <Tag className="my-1" color="green" key={param}>
+                  {param?.name}
+                </Tag>
+              </Popover>
+            </a>
+          ))}
+        </div>
+      </div>
     ),
   },
   {

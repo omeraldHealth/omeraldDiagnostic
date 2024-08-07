@@ -509,7 +509,20 @@ const TestParams: React.FC<any> = ({data=[]}:any) => {
       dataIndex: 'remedy',
       key: 'remedy',
       width: 100,
-      render: text => <div style={{ width: 100,  wordWrap: 'break-word', whiteSpace: 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: text }}></div>,
+      render: text => (
+        <div
+          style={{
+            maxHeight: '20vh',
+            maxWidth: "30vw",
+            minWidth: '20vw',
+            overflowY: 'auto', // Enable vertical scrolling
+            wordWrap: 'break-word',
+            whiteSpace: 'pre-wrap',
+            padding: '4px' // Optional: adds padding inside the container
+          }}
+          dangerouslySetInnerHTML={{ __html: text }}
+        ></div>
+      ),
     },
     {
       title: 'Unit',
