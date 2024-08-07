@@ -678,32 +678,30 @@ const ParameterComponent = () => {
 
 const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
 
-  const [addRange, setAddRange] = useState(false)
+  const [addRange, setAddRange] = useState(false);
   const [sampleOptions, setSampleOptions] = useState();
   const [bioRange, setBioRange] = useState([]);
   const paramData = useParamValue();
 
-  // const title = isEdit ? updateParameterMeta.title : createParameterMeta.title;
-  // const { data: parameters = [], isLoading } = useGetParameters();
+  const [sampleType, setSampleType] = useState();
+  const [gender, setGender] = useState("male");
+  const [ageRange, setAgeRange] = useState([]);
 
-  const [sampleType,setSampleType] = useState();
-  const [gender,setGender] = useState("male");
-  const [ageRange,setAgeRange] = useState([]);
-
-  const [rangeType,setRangeType] = useState("basic");
-  const [basicRange,setBasicRange] = useState([]);
-  const [advanceRange,setAdvanceRange] = useState([]);
+  const [rangeType, setRangeType] = useState("basic");
+  const [basicRange, setBasicRange] = useState([]);
+  const [advanceRange, setAdvanceRange] = useState([]);
   const [form] = Form.useForm();
   const [testDetailState, setTestDetail] = useRecoilState(testDataState);
   const [profile, setProfile] = useRecoilState(profileState);
   const currentBranch = useCurrentBranchValue();
 
-  
-  useEffect(()=>{
-    if(edit){
+  const [tags, setTags] = useState([]);
+
+  useEffect(() => {
+    if (edit) {
       form.setFieldsValue(paramData);
-      setBasicRange(paramData?.bioRefRange?.basicRange)
-      let currentRanges = paramData?.bioRefRange?.advanceRange
+      setBasicRange(paramData?.bioRefRange?.basicRange);
+      let currentRanges = paramData?.bioRefRange?.advanceRange;
       setAdvanceRange((currentRanges) => {
         let updated = false; // Flag to check if the array was updated
       
@@ -727,34 +725,26 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
           return range; // Return the updated or unchanged range
         });
       
-        // if (!updated) {
-        //   // If no matching range found, append the new data
-        //   updatedRanges.push(data);
-        // }
         return updatedRanges;
       });
-    
     }
-  },[paramData])
-  
+  }, [paramData]);
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
       successAlert('Profile updated successfully');
       setProfile(data?.data);
       handleOk();
-      // setLoading(false)
     },
     onError: () => {
       errorAlert('Error updating profile');
-      // setLoading(false)
     },
   });
 
   const handleSubmitBioRange = data => {
     let object = {};
   
-    if(rangeType === "basic"){
+    if (rangeType === "basic") {
       object.rangeType = "basic";
       object.min = Number(basicRange.min);
       object.max = Number(basicRange.max);
@@ -768,32 +758,31 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
       }
     } else {
       // Handle advance range submission
-      // No changes required here since advance range is handled in separate components
     }
   
     setBioRange([...bioRange]);
     setAdvanceRange([]);
     setRangeType("basic");
     setAddRange(false);
-  };  
+  };
 
   const handleRemove = (data) => {
-    if(data?.ageRangeType || data?.genderRangeType) {
-      setAdvanceRange(advanceRange.filter(obj => JSON.stringify(obj) !== JSON.stringify(data)))
-    }else{
-      setBasicRange(basicRange.filter(obj => JSON.stringify(obj) !== JSON.stringify(data)))
+    if (data?.ageRangeType || data?.genderRangeType) {
+      setAdvanceRange(advanceRange.filter(obj => JSON.stringify(obj) !== JSON.stringify(data)));
+    } else {
+      setBasicRange(basicRange.filter(obj => JSON.stringify(obj) !== JSON.stringify(data)));
     }
-  } 
+  };
 
   const handleSubmit = () => {
-
+    // console.log(form.getFieldsValue("aliases"))
     const advanceRanges = {
       ageRange: [],
       genderRange: [],
     };
 
     form.validateFields().then(values => {
-        advanceRange?.forEach((item) => {
+      advanceRange?.forEach((item) => {
         if (item.ageRangeType) {
           advanceRanges.ageRange.push({
             ageRangeType: item.ageRangeType,
@@ -809,62 +798,56 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
             max: parseInt(item.max, 10),
           });
         }
+      });
+      values.bioRefRange = {
+        basicRange: basicRange,
+        advanceRange: advanceRanges,
+      };
+
+      if (edit) {
+        const updatedParameters = testDetailState.parameters.map(param => {
+          if (param._id === paramData._id) {
+            return values;
+          } else {
+            return param;
+          }
         });
-        values.bioRefRange = {
-          basicRange: basicRange,
-          advanceRange: advanceRanges
-        }
+        let updatedDetails = {
+          ...testDetailState,  // Spread the existing state to retain other properties
+          parameters: Array.isArray(updatedParameters) ? updatedParameters : [updatedParameters],
+        };
+        setTestDetail(updatedDetails);
+      } else {
+        let updatedDetails = {
+          ...testDetailState,  // Spread the existing state to retain other properties
+          parameters: [
+            ...(Array.isArray(testDetailState.parameters) ? testDetailState.parameters : []),
+            ...(Array.isArray(values) ? values : [values]),
+          ],
+        };
+        setTestDetail(updatedDetails);
+      }
 
-        if(edit){
-          const updatedParameters = testDetailState.parameters.map(param => {
-            if(param._id === paramData._id){
-              return values;
-            }else{
-              return param;
-            }
-          });
-          let updatedDetails = {
-            ...testDetailState,  // Spread the existing state to retain other properties
-            parameters: Array.isArray(updatedParameters) ? updatedParameters : [updatedParameters]
-          };
-           setTestDetail(updatedDetails)
-        }else{
-          let updatedDetails = {
-            ...testDetailState,  // Spread the existing state to retain other properties
-            parameters: [
-              // Spread existing parameters if it's an array, otherwise start with an empty array
-              ...(Array.isArray(testDetailState.parameters) ? testDetailState.parameters : []),
-              // Add new values, ensuring they are treated as an array
-              ...(Array.isArray(values) ? values : [values])
-            ]
-          };
-           setTestDetail(updatedDetails)
-        }
-
-        handleOk()
+      handleOk();
     }).catch(info => {
+      console.log('Validate Failed:', info);
     });
   };
-  const isActiveValue = testDetailState?.isActive != undefined ? testDetailState?.isActive: true
 
-  const { Option } = Select;
-
-  const [tags, setTags] = useState([]);
-
-  // Handler for when tags are changed
   const handleInputChange = (newTags) => {
     const individualTags = convertCommaSeparatedValues(newTags);
-
     setTags(individualTags);
+    form.setFieldsValue({ aliases: individualTags });
   };
 
   const convertCommaSeparatedValues = (commaSeparatedValues) => {
-    // Flatten the array of comma-separated strings into individual tags
     return commaSeparatedValues
       .flatMap(value => value.split(',').map(tag => tag.trim()))
       .filter(tag => tag.length > 0); // Remove empty tags, if any
   };
-  
+
+  const isActiveValue = testDetailState?.isActive !== undefined ? testDetailState?.isActive : true;
+  const { Option } = Select;
 
   return (
     <Modal    
@@ -884,89 +867,72 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
     >
       <Form form={form} layout="vertical" className="m-auto">
         <section className="flex gap-12">
-            <section className="min-w-[45%]">
-              <Form.Item 
-                name="name" 
-                label="Name" 
-                rules={[{ required: true, message: 'Please input the parameter name!' }]}
-              >
-                <Input placeholder="Enter Parameter Name" className="w-full" />
-              </Form.Item>
-              <Form.Item name="isActive" label="Is Active?" initialValue={isActiveValue} valuePropName="checked">
-                <Switch className="mt-1" />
-              </Form.Item>
-              <Form.Item name="aliases" label="Aliases">
-              {/* <Space className="my-2">
-                  {tags?.map(alias => (
-                    <Tag color="geekblue" key={alias}>
-                      {alias}
-                    </Tag>
-                  ))}
-                </Space> */}
+          <section className="min-w-[45%]">
+            <Form.Item 
+              name="name" 
+              label="Name" 
+              rules={[{ required: true, message: 'Please input the parameter name!' }]}
+            >
+              <Input placeholder="Enter Parameter Name" className="w-full" />
+            </Form.Item>
+            <Form.Item name="isActive" label="Is Active?" initialValue={isActiveValue} valuePropName="checked">
+              <Switch className="mt-1" />
+            </Form.Item>
+            <Form.Item name="aliases" label="Aliases" initialValue={tags}>
               <Select
-                  mode="tags"
-                  name={'aliases'}
-                  placeholder={"Enter Aliases"}
-                  value={tags}
-                  maxTagCount={15}
-                  style={{
-                    width: '100%',
-                  }}
-                  onChange={handleInputChange}
-                >
-                  {/* Optionally, you can provide predefined options here */}
-                  {/* <Option value="example">Example</Option> */}
-                </Select>
-                <div>
-               
-                </div>
-              </Form.Item>
-              <Form.Item name="description" label="Description">
-                <Input.TextArea placeholder="Enter description" className="w-full" />
-              </Form.Item>
-              <Form.Item name="remedy" label="Remedy">
-                <Input.TextArea placeholder="Enter Remedy" className="w-full" />
-              </Form.Item>
-            </section>
-            <section>
-              <Form.Item name={"unit"} label="">
-                <Row>
-                  <Col span={24}>
+                mode="tags"
+                placeholder={"Enter Aliases"}
+                maxTagCount={15}
+                onChange={handleInputChange}
+              >
+              </Select>
+            </Form.Item>
+            <Form.Item name="description" label="Description">
+              <Input.TextArea placeholder="Enter description" className="w-full" />
+            </Form.Item>
+            <Form.Item name="remedy" label="Remedy">
+              <Input.TextArea placeholder="Enter Remedy" className="w-full" />
+            </Form.Item>
+          </section>
+          <section>
+            <Form.Item name={"unit"} label="">
+              <Row>
+                <Col span={24}>
                   <section className='flex justify-between items-center mx-3'>
                     <p level={5} className='p-0 m-0' style={{ fontWeight: 'normal' }}>Add Bio Ref Ranges</p>
                     <a href="#"><PlusIcon className="w-6 bg-blue-900 text-white rounded-full" onClick={() => setAddRange(!addRange)} /></a>
                   </section>
-
-                  </Col>
-                  {addRange && <section className='p-3'>    
-                    <InputForm
-                      formHook={{}} 
-                      sampleOptions={sampleOptions}
-                      rangeType={rangeType}
-                      setRangeType={setRangeType}
-                      setSampleType={setSampleType}
-                      setGender={setGender}
-                      submitRange={handleSubmitBioRange}
-                      setAgeRange={setAgeRange}
-                      setAddRange={setAddRange}
-                      setBasicRange={setBasicRange}
-                      basicRange={basicRange}
-                      setAdvanceRange={setAdvanceRange}
-                      advanceRange={advanceRange}
-                      index={0}
-                    />
-                  </section>}
-                  <section className='px-3'>
-                      <DisplayValues basicRange={basicRange} advanceRange={advanceRange} handleRemove={handleRemove} />
-                  </section>
-                </Row>
-              </Form.Item>
-            </section>
+                </Col>
+                {addRange && <section className='p-3'>    
+                  <InputForm
+                    formHook={{}} 
+                    sampleOptions={sampleOptions}
+                    rangeType={rangeType}
+                    setRangeType={setRangeType}
+                    setSampleType={setSampleType}
+                    setGender={setGender}
+                    submitRange={handleSubmitBioRange}
+                    setAgeRange={setAgeRange}
+                    setAddRange={setAddRange}
+                    setBasicRange={setBasicRange}
+                    basicRange={basicRange}
+                    setAdvanceRange={setAdvanceRange}
+                    advanceRange={advanceRange}
+                    index={0}
+                  />
+                </section>}
+                <section className='px-3'>
+                  <DisplayValues basicRange={basicRange} advanceRange={advanceRange} handleRemove={handleRemove} />
+                </section>
+              </Row>
+            </Form.Item>
           </section>
+        </section>
       </Form>
     </Modal>
   );
 };
+
 
 const InputForm = ({formHook,sampleOptions,setSampleType,setGender,rangeType,setBasicRange,basicRange,
   setRangeType,setAgeRange, submitRange,setAddRange,setAdvanceRange,advanceRange}) => {
