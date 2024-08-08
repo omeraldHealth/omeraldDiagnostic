@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { RecoilRoot } from 'recoil';
 import { AppProps } from 'next/app';
 import '@styles/tailwind.css';
+import ErrorBoundary from '../components/common/footer/error';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,7 +38,9 @@ export default function App({ Component, pageProps }: AppProps) {
           <ClerkProvider publishableKey={clerkFrontendApi} {...pageProps}>
             <ToastContainer />
             <GlobalStyle />
-            <Component {...pageProps} />
+            <ErrorBoundary>
+              <Component {...pageProps} />
+            </ErrorBoundary>
           </ClerkProvider>
         </RecoilRoot>
       </QueryClientProvider>
