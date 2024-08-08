@@ -310,9 +310,9 @@ export const getContent = (bioRefRange) => {
 
   // Determine if there's data for the advanced range to decide on displaying the section
   const hasAdvancedData = bioRefRange.advanceRange && (
-    bioRefRange.advanceRange.ageRange?.length > 0 ||
-    bioRefRange.advanceRange.genderRange?.length > 0 ||
-    bioRefRange.advanceRange.customCategory?.length > 0
+    bioRefRange.advanceRange?.ageRange?.length > 0 ||
+    bioRefRange.advanceRange?.genderRange?.length > 0 ||
+    bioRefRange.advanceRange?.customCategory?.length > 0
   );
 
   return (
@@ -331,19 +331,19 @@ export const getContent = (bioRefRange) => {
           <p className="font-bold">Advanced Range:</p>
           <div className="ml-2">
             {/* Age Range */}
-            {bioRefRange.advanceRange.ageRange && bioRefRange.advanceRange.ageRange.map((age, ageIndex) => (
+            {bioRefRange.advanceRange?.ageRange && bioRefRange.advanceRange?.ageRange.map((age, ageIndex) => (
               <div key={ageIndex}>
                 <p>Age Range:</p>
-                <p className="ml-4">{`${age.ageRangeType}: ${formatRange(age.min, age.max, age.unit)}`}</p>
+                <p className="ml-4">{`${age?.ageRangeType}: ${formatRange(age.min, age.max, age.unit)}`}</p>
               </div>
             ))}
 
             {/* Gender Range */}
-            {bioRefRange.advanceRange.genderRange && bioRefRange.advanceRange.genderRange.map((gender, genderIndex) => (
+            {bioRefRange.advanceRange?.genderRange && bioRefRange.advanceRange?.genderRange.map((gender, genderIndex) => (
               <div key={genderIndex}>
                 <p>Gender Range:</p>
-                <p className="ml-4">{`${gender.genderRangeType} Range: ${formatRange(gender.min, gender.max, gender.unit)}`}</p>
-                {gender.genderRangeType === 'female' && gender.details && (
+                <p className="ml-4">{`${gender?.genderRangeType} Range: ${formatRange(gender.min, gender.max, gender.unit)}`}</p>
+                {gender?.genderRangeType === 'female' && gender.details && (
                   <div className="ml-6">
                     <p>Details:</p>
                     <div className="ml-6">
@@ -364,7 +364,7 @@ export const getContent = (bioRefRange) => {
             ))}
 
             {/* Custom Category */}
-            {bioRefRange.advanceRange.customCategory && bioRefRange.advanceRange.customCategory.map((category, catIndex) => (
+            {bioRefRange.advanceRange?.customCategory && bioRefRange.advanceRange?.customCategory.map((category, catIndex) => (
               <div key={catIndex}>
                 <p className="font-bold">Custom Range:</p>
                 <p>{category.categoryName}</p>
@@ -715,10 +715,10 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
   
     // Helper function to format the range data
     const formatRangeData = (range, keyType) => {
-      return range.map(item => ({
-        min: item.min,
-        max: item.max,
-        unit: item.unit,
+      return range?.map(item => ({
+        min: item?.min,
+        max: item?.max,
+        unit: item?.unit,
         key: item[keyType] || '' // Use the keyType (ageRangeType or genderRangeType) for the key
       }));
     };
@@ -745,27 +745,6 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
       const convertedArr = convertToRangeArray(currentRanges)
       console.log(convertedArr)
       setAdvanceRange(convertedArr);
-      // const updatedRanges = currentRanges.map(range => {
-      //   // Determine the type (ageRange or genderRange) and the key (ageRangeType or genderRangeType)
-      //   const type = data?.ageRange ? "ageRange" : "genderRange";
-      //   const keyType = data?.ageRange ? "ageRangeType" : "genderRangeType";
-    
-      //   // Check if the range and data[type] are defined
-      //   if (range[type] && data[type]) {
-      //     // Check if any range in the currentRanges matches the incoming data's type and key
-      //     const matchingRangeIndex = range[type]?.findIndex(item => item[keyType] === data[type][0][keyType]);
-    
-      //     if (matchingRangeIndex !== -1) {
-      //       // If a matching range is found, update it
-      //       updated = true;
-      //       range[type][matchingRangeIndex] = data[type][0];
-      //     }
-      //   }
-    
-      //   return range; // Return the updated or unchanged range
-      // });
-
-      // setAdvanceRange(updatedRanges || []);
     }
   }, [paramData]);
 
@@ -822,15 +801,15 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
 
     form.validateFields().then(values => {
       advanceRange?.forEach((item) => {
-        if (item.ageRangeType) {
-          advanceRanges.ageRange.push({
-            ageRangeType: item.ageRangeType,
+        if (item?.ageRangeType) {
+          advanceRanges?.ageRange.push({
+            ageRangeType: item?.ageRangeType,
             unit: item.unit,
             min: parseInt(item.min, 10), // Ensure base 10 for parsing
             max: parseInt(item.max, 10),
           });
-        } else if (item.genderRangeType) {
-          advanceRanges.genderRange.push({
+        } else if (item?.genderRangeType) {
+          advanceRanges?.genderRange.push({
             genderRangeType: item.genderRangeType,
             unit: item.unit,
             min: parseInt(item.min, 10),
@@ -1172,32 +1151,32 @@ return (
     />
     <strong style={{ display: 'block', marginBottom: '8px', marginTop: '16px' }}>Advance Range</strong>
     <List
-      dataSource={advanceRange}
+      dataSource={advanceRange || []}
       renderItem={item => (
         <List.Item> 
-  <section className="flex justify-between items-baseline">
-    <div className="flex flex-col w-full">
-      <p className="capitalize font-bold text-green-900">{item?.key}</p> {/* Key as header */}
-      <div className="grid grid-cols-4 gap-12 mt-2"> {/* Grid with 3 columns */}
-        <div className="w-auto col-span-2  ">
-          <p className="font-semibold">Unit:</p>
-          <p className="w-auto">{item.unit}</p>
-        </div>
-        <div>
-          <p className="font-semibold">Min:</p>
-          <p>{item.min}</p>
-        </div>
-        <div>
-          <p className="font-semibold">Max:</p>
-          <p>{item.max}</p>
-        </div>
-      </div>
-    </div>
-    <div className="ml-2">
-      <MinusCircleIcon className="text-red-500 cursor-pointer" onClick={() => { handleRemove(item) }} />
-    </div>
-  </section>
-</List.Item>
+        <section className="flex justify-between items-baseline">
+          <div className="flex flex-col w-full">
+            <p className="capitalize font-bold text-green-900">{item?.key}</p> {/* Key as header */}
+            <div className="grid grid-cols-4 gap-12 mt-2"> {/* Grid with 3 columns */}
+              <div className="w-auto col-span-2  ">
+                <p className="font-semibold">Unit:</p>
+                <p className="w-auto">{item?.unit}</p>
+              </div>
+              <div>
+                <p className="font-semibold">Min:</p>
+                <p>{item?.min}</p>
+              </div>
+              <div>
+                <p className="font-semibold">Max:</p>
+                <p>{item?.max}</p>
+              </div>
+            </div>
+          </div>
+          <div className="ml-2">
+            <MinusCircleIcon className="text-red-500 cursor-pointer" onClick={() => { handleRemove(item) }} />
+          </div>
+        </section>
+      </List.Item>
 
       )}
     />
@@ -1366,7 +1345,7 @@ const GenderRangeForm = ({ onFinish, genderRangeType }) => {
   const [selectedDetails, setSelectedDetails] = useState("");
 
   const handleSubmit = (values) => {
-    let submittedValues = { ...values.genderRange, genderRangeType, details: {} };
+    let submittedValues = { ...values?.genderRange, genderRangeType, details: {} };
     if (genderRangeType === "female") {
       submittedValues.details[selectedDetails] = true;
       if (selectedDetails === "pregnant") {
