@@ -1,19 +1,61 @@
+// {
+//   "compilerOptions": {
+//     "target": "es5",
+//     "lib": ["dom", "dom.iterable", "esnext"],
+//     "allowJs": true,
+//     "skipLibCheck": true,
+//     "strict": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "noEmit": true,
+//     "esModuleInterop": true,
+//     "module": "esnext",
+//     "moduleResolution": "node",
+//     "resolveJsonModule": true,
+//     "isolatedModules": true,
+//     "jsx": "preserve",
+//     "incremental": true,
+//     "baseUrl": ".",
+//     "paths": {
+// 			"@components/*": ["components/*"],
+// 			"@atoms": ["components/atoms/*"],
+// 			"@molecules": ["components/molecules/*"],
+// 			"@organisms": ["components/organisms/index"],
+// 			"@templates": ["components/templates/*"],
+// 			"@context": ["context/index.ts"],
+// 			"@hooks": ["hooks/index.ts"],
+// 			"@services": ["services/index.ts"],
+// 			"@app-types": ["types.d.ts"],
+// 			"@app-types/styled": ["styled.d.ts"],
+// 			"@utils": ["utils/index.ts"],
+//       "@styles/*": ["styles/*"]
+// 		}
+//   },
+//   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+//   "exclude": ["node_modules"]
+// }
+
+
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "target": "es2016",
+    "lib": ["dom", "dom.iterable", "esnext", "es2015.iterable"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noEmit": true,
     "jsx": "preserve",
-    "incremental": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "strictNullChecks": false,
+    "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
 			"@components/*": ["components/*"],
@@ -28,8 +70,22 @@
 			"@app-types/styled": ["styled.d.ts"],
 			"@utils": ["utils/index.ts"],
       "@styles/*": ["styles/*"]
-		}
+		},
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strict": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": [
+    "./src",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.js",
+    ".next/types/**/*.ts"
+  ]
 }

@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+        setIsMounted(true);
   }, []);
 
   if (!isMounted) {
