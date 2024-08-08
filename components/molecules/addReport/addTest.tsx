@@ -710,36 +710,62 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
 
   const [tags, setTags] = useState([]);
 
+  const convertToRangeArray = (paramData) => {
+    const { ageRange = [], genderRange = [] } = paramData;
+  
+    // Helper function to format the range data
+    const formatRangeData = (range, keyType) => {
+      return range.map(item => ({
+        min: item.min,
+        max: item.max,
+        unit: item.unit,
+        key: item[keyType] || '' // Use the keyType (ageRangeType or genderRangeType) for the key
+      }));
+    };
+  
+    // Format the ageRange data
+    const ageRangesFormatted = formatRangeData(ageRange, 'ageRangeType');
+  
+    // Format the genderRange data
+    const genderRangesFormatted = formatRangeData(genderRange, 'genderRangeType');
+  
+    // Combine both arrays
+    const combinedRanges = [...ageRangesFormatted, ...genderRangesFormatted];
+  
+    return combinedRanges;
+  };
+
   useEffect(() => {
     if (edit) {
       form.setFieldsValue(paramData);
       setBasicRange(paramData?.bioRefRange?.basicRange);
       let currentRanges = paramData?.bioRefRange?.advanceRange;
-      setAdvanceRange((currentRanges) => {
-        let updated = false; // Flag to check if the array was updated
       
-        const updatedRanges = currentRanges.map(range => {
-          // Determine the type (ageRange or genderRange) and the key (ageRangeType or genderRangeType)
-          const type = data?.ageRange ? "ageRange" : "genderRange";
-          const keyType = data?.ageRange ? "ageRangeType" : "genderRangeType";
-      
-          // Check if the range and data[type] are defined
-          if (range[type] && data[type]) {
-            // Check if any range in the currentRanges matches the incoming data's type and key
-            const matchingRangeIndex = range[type]?.findIndex(item => item[keyType] === data[type][0][keyType]);
-      
-            if (matchingRangeIndex !== -1) {
-              // If a matching range is found, update it
-              updated = true;
-              range[type][matchingRangeIndex] = data[type][0];
-            }
-          }
-      
-          return range; // Return the updated or unchanged range
-        });
-      
-        return updatedRanges;
-      });
+      let updated = false;
+      const convertedArr = convertToRangeArray(currentRanges)
+      console.log(convertedArr)
+      setAdvanceRange(convertedArr);
+      // const updatedRanges = currentRanges.map(range => {
+      //   // Determine the type (ageRange or genderRange) and the key (ageRangeType or genderRangeType)
+      //   const type = data?.ageRange ? "ageRange" : "genderRange";
+      //   const keyType = data?.ageRange ? "ageRangeType" : "genderRangeType";
+    
+      //   // Check if the range and data[type] are defined
+      //   if (range[type] && data[type]) {
+      //     // Check if any range in the currentRanges matches the incoming data's type and key
+      //     const matchingRangeIndex = range[type]?.findIndex(item => item[keyType] === data[type][0][keyType]);
+    
+      //     if (matchingRangeIndex !== -1) {
+      //       // If a matching range is found, update it
+      //       updated = true;
+      //       range[type][matchingRangeIndex] = data[type][0];
+      //     }
+      //   }
+    
+      //   return range; // Return the updated or unchanged range
+      // });
+
+      // setAdvanceRange(updatedRanges || []);
     }
   }, [paramData]);
 
@@ -1148,19 +1174,31 @@ return (
     <List
       dataSource={advanceRange}
       renderItem={item => (
-        <List.Item > 
-            <section className='flex justify-between items-baseline'>
-            <div className="flex items-center">
-              <p className="capitalize text-green-900">{item?.ageRangeType} {item.genderRangeType} - </p>
-              <p className='mx-2' >Unit: {item.unit}</p>
-              <p className="ml-2">Min: {item?.min}</p>
-              <p className="ml-2">Max: {item?.max}</p>
-            </div>
-            <div className="ml-2">
-              <MinusCircleIcon className="text-red-500" onClick={()=>{handleRemove(item)}} />
-            </div>
-          </section>
-        </List.Item>
+        <List.Item> 
+  <section className="flex justify-between items-baseline">
+    <div className="flex flex-col w-full">
+      <p className="capitalize font-bold text-green-900">{item?.key}</p> {/* Key as header */}
+      <div className="grid grid-cols-4 gap-12 mt-2"> {/* Grid with 3 columns */}
+        <div className="w-auto col-span-2  ">
+          <p className="font-semibold">Unit:</p>
+          <p className="w-auto">{item.unit}</p>
+        </div>
+        <div>
+          <p className="font-semibold">Min:</p>
+          <p>{item.min}</p>
+        </div>
+        <div>
+          <p className="font-semibold">Max:</p>
+          <p>{item.max}</p>
+        </div>
+      </div>
+    </div>
+    <div className="ml-2">
+      <MinusCircleIcon className="text-red-500 cursor-pointer" onClick={() => { handleRemove(item) }} />
+    </div>
+  </section>
+</List.Item>
+
       )}
     />
   </div>
