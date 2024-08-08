@@ -13,7 +13,7 @@ const LogoImage: React.FC = () => {
     <Link href="/">
       <span className="flex justify-center">
         <Logo src={logo} alt="Omerald Diagnostics" width="70px" />
-        <p className="font-sans hidden sm:block sm:text-lg sm:font-bold self-center">
+        <p className="font-sans hidden sm:block sm:text-md sm:font-bold self-center">
           OMERALD DIAGNOSTICS
         </p>
       </span>

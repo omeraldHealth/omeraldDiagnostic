@@ -4,13 +4,13 @@ import { navigation } from "src/utils/static/static";
 
 export function Footer() {
   return (
-    <footer className="bg-gray-100 " aria-labelledby="footer-heading">
+    <footer className=" max-w-[90%] m-auto" aria-labelledby="footer-heading">
       <div className="container mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-4 text-center">
           {/* Column 1: Logo and Description */}
-          <div className="space-y-8 md:col-span-1">
-            <LogoImage className="mx-auto" />
-            <p className="text-black text-md">
+          <div className="space-y-8 md:col-span-1 text-left">
+            <LogoImage/>
+            <p className="text-black text-md ml-8">
               Omerald is a personalized health report service, which enables
               users to obtain detailed information and reports based on their
               previous reports.

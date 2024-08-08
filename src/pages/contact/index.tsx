@@ -1,23 +1,16 @@
+'use client'
+
 import { UserLayout } from '@components/templates/pageTemplate';
-import { Support } from '@components/organism/dashboardTabs/settingsTabs/support';
-import DynamicFormGenerator from '@components/common/form/dynamicForm';
 import { mailImage } from '@utils/urls/files';
+import ContactPageForm from './form';
 
 interface ContactProps {}
 
-// Contact component for handling contact information
 const Contact: React.FC<ContactProps> = () => {
-  const contactForm = [
-    {"name":"subject","type":"text","label":"Subject","required":true},
-    {"name":"message","type":"text","label":"message","required":true},
-    {"name":"description","type":"description","label":"description","required":true}
-  ]
-
   return (
     <UserLayout tabDescription='Contact' tabName="Admin Diagnostic | Contact">
-      <div className='min-h-[70vh] border-t-2'>
-        <section className="max-w-[60%] border-2 m-auto my-20 text-center">
-          {/* Render the Support component for contact details */}
+      <div className='min-h-[60vh] border-t-2'>
+        <section className="max-w-[60%] border-2 m-auto my-4 text-center">
           <section className='flex flex-col gap-20 lg:flex-row w-[100%] justify-start lg:justify-center my-10 py-2'>
               <section className='w-full md:w-[100%] lg:w-[40%] hidden md:flex'>
                 <section>
@@ -31,7 +24,7 @@ const Contact: React.FC<ContactProps> = () => {
                 </section>
               </section>
               <section className='w-full md:w-[60%] text-left lg:w-[40%] mr-20'>
-                <DynamicFormGenerator buttonText="Send Query" formProps={contactForm} handleSubmit={()=>{}}/>
+                <ContactPageForm handleSubmit={(e)=>{e.preventDefault()}}/>
               </section>    
           </section>  
         </section>

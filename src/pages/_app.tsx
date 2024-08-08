@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ToastContainer } from 'react-toastify';
 import { ClerkProvider } from '@clerk/nextjs';
+import { ChakraProvider } from '@chakra-ui/react';
 import { GlobalStyle } from '@styles/index';
 import { useEffect, useState } from 'react';
 import { RecoilRoot } from 'recoil';
@@ -38,9 +39,11 @@ export default function App({ Component, pageProps }: AppProps) {
           <ClerkProvider publishableKey={clerkFrontendApi} {...pageProps}>
             <ToastContainer />
             <GlobalStyle />
-            <ErrorBoundary>
-              <Component {...pageProps} />
-            </ErrorBoundary>
+            <ChakraProvider>
+              <ErrorBoundary>
+                <Component {...pageProps} />
+              </ErrorBoundary>
+            </ChakraProvider>
           </ClerkProvider>
         </RecoilRoot>
       </QueryClientProvider>

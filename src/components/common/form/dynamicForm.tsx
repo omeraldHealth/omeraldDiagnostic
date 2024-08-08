@@ -4,7 +4,6 @@ import { FormType } from '@utils/types/molecules/forms.interface';
 import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
 import { FileUploader } from '@components/atoms/fileUploder/fileUpload';
 
-
 interface DynamicFormType {
   formProps: Array<FormType>;
   buttonText: string;

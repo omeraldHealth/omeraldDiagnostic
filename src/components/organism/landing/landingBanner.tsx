@@ -8,16 +8,11 @@ import {
 } from "@components/atoms/font";
 import styles from "./landing.module.css";
 
-interface LandingBannerProps {
-  // Define any props if needed
-}
-
-const LandingBanner: React.FC<LandingBannerProps> = () => {
+const LandingBanner: React.FC = () => {
   return (
     <div className={styles["landingBanner"]}>
       <section className="w-[96%] sm:w-[90%] xl:w-[70%] 2xl:w-[65%] px-6 sm:px-8 lg:px-[12%] my-[10%] lg:my-[5%]">
         <div className="my-4 lg:my-2">
-          {" "}
           <TitleText style={""}>Diagnostic Centre Solution in Single Platform.</TitleText>
         </div>
         <div className="my-4 lg:my-2">
