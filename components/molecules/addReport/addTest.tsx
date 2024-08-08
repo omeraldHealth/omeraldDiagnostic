@@ -711,7 +711,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
   const [tags, setTags] = useState([]);
 
   const convertToRangeArray = (paramData) => {
-    const { ageRange = [], genderRange = [] } = paramData;
+    const { ageRange = [], genderRange = [] } = paramData || {};
   
     // Helper function to format the range data
     const formatRangeData = (range, keyType) => {
