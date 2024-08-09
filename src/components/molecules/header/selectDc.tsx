@@ -1,20 +1,14 @@
-
-import { profileState } from '@components/common/recoil/profile';
+import { usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
 import { useRouter } from 'next/router';
-import { useSetRecoilState } from 'recoil';
-
-const dcOptions = ['DC1', 'DC2', 'DC3'];
 
 const SelectedDC = () => {
   const router = useRouter()
-  const setProfileData = useSetRecoilState(profileState)
+  const [selectedDc, setSelectedDC] = usePersistedDCState();
 
   const toggleModal = () => {
-    localStorage.setItem("selectedDc", "null")
-    setProfileData(null)
+    setSelectedDC("choose")
     router.push("/chooseDc")
   };
-
 
   return (
     <div className="flex items-center">

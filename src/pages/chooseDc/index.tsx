@@ -39,6 +39,7 @@ const ChooseDc: React.FC = () => {
 
   // Check user not empty and set default value
   useEffect(()=>{
+    console.log(selectedDc)
     if(!userValue || Object.keys(userValue).length === 0){router.push("/verifyUser")}
 
      // @ts-ignore
@@ -56,7 +57,7 @@ const ChooseDc: React.FC = () => {
   },[userValue])
 
   useEffect(()=>{
-    if(selectedDc && selectedDc != null){
+    if(selectedDc !== "choose" && selectedDc && selectedDc != null ){
       router.push("/dashboard")
     }
   },[selectedDc])

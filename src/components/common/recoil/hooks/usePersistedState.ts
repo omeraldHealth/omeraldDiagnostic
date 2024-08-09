@@ -28,7 +28,6 @@ export const usePersistedDCState = () => {
     const [selectedDc, setSelectedDc] = useRecoilState(selectedDcState);
   
     useEffect(() => {
-      // Load the initial state from localStorage if available
       const storedBranch = localStorage.getItem('selectedDC');
       if (storedBranch) {
         setSelectedDc(storedBranch);

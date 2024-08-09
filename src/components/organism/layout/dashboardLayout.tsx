@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useSession } from '@clerk/nextjs';
 import { useRouter } from 'next/router';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { profileState } from '@components/common/recoil/profile/index';
 import { DashboardHeader } from '../../molecules/header';
 import { DashboardSideBar } from '@components/molecules/sidebar/index';

@@ -32,6 +32,7 @@ export interface UserNavigationItem {
     branchAddress: string;
     branchContact: string;
     branchManager: string;
+    _id?: string
   };
   
   export interface ActivityDetailsInterface {
