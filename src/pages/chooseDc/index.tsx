@@ -44,8 +44,8 @@ const ChooseDc: React.FC = () => {
      // @ts-ignore
     if(userValue?.diagnosticCenters?.length === 1){
        // @ts-ignore
-      setSelectedDC(userValue?.diagnosticCenters?.[0]?._id)
-    }
+      setSelectedDC(userValue?.diagnosticCenters?.[0]?.diagnostic?._id)
+    } 
 
     // @ts-ignore
     if(!selectedDc && userValue && userValue?.diagnosticCenters){
@@ -60,7 +60,7 @@ const ChooseDc: React.FC = () => {
       router.push("/dashboard")
     }
   },[selectedDc])
-  console.log("verif",loading)
+
   return (
     <UserLayout tabDescription="Choose DC" tabName="Admin Diagnostic | Choose Diagnostic Center">
         {loading && <Spinner/>}

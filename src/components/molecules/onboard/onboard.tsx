@@ -14,7 +14,7 @@ const OnboardNewComponents: React.FC = () => {
     const { user } = useUser();
     const router = useRouter()
     const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
-    const { data: userData, status, refetch, isLoading } = useQueryGetData('userData', getDiagnosticUserApi + userPhoneNumber,{ enabled: !!userPhoneNumber });
+    const { data: userData, refetch, isLoading } = useQueryGetData('userData', getDiagnosticUserApi + userPhoneNumber,{ enabled: !!userPhoneNumber });
     const next = () => setCurrent(current + 1);
     const prev = () => setCurrent(current - 1);
 

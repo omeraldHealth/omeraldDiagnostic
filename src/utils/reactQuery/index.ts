@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation, useQuery, UseQueryOptions } from 'react-query';
-import { updateDiagProfileApi, createDiagReportsApi, uploadDiagnosticReportApi, uploadDiagnosticLogoApi, createDiagProfileApi, deleteDiagReportsApi, createDiagnosticUserApi, updateDiagnosticUserApi, getDiagnosticUserApi, getDiagProfileByPhoneApi, getDiagnosticSetting } from '@utils/urls/app';
+import { updateDiagProfileApi, createDiagReportsApi, uploadDiagnosticReportApi, uploadDiagnosticLogoApi, createDiagProfileApi, deleteDiagReportsApi, createDiagnosticUserApi, updateDiagnosticUserApi, getDiagnosticUserApi, getDiagProfileByPhoneApi, getDiagnosticSetting, getDiagProfileByIdApi } from '@utils/urls/app';
 
 // useQuery hook to get data
 export function useQueryGetData<T>(
@@ -42,7 +42,7 @@ export function useGetUser({userPhoneNumber}:any) {
 }
 
 export function useGetDcProfile({selectedCenterId}:any) {
-return useQueryGetData('diagnosticCenter',getDiagProfileByPhoneApi + selectedCenterId,{ enabled: !!selectedCenterId }); 
+return useQueryGetData('diagnosticCenter',getDiagProfileByIdApi + selectedCenterId,{ enabled: !!selectedCenterId }); 
 }
 
 export function useGetDcSettings() {
