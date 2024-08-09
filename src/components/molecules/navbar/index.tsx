@@ -5,6 +5,8 @@ import { Logo } from '@components/atoms/nav/logo';
 import { useRouter } from 'next/router';
 import NavFont from '@components/atoms/nav/navFont';
 import { logoUrl } from '@utils/constants';
+import PageHead from '@components/atoms/head/head';
+import { InformationCircleIcon } from '@heroicons/react/20/solid';
 
 const navLinks = [
   { navLink: '/info/about', navText: 'About Us' },
@@ -50,3 +52,25 @@ export function Navbar() {
     </div>
   );
 }
+
+export const OnboardNavbar = () => {
+  return <>
+      <PageHead
+        icon={'./favicon.png'}
+        title={"Onboard"}
+        description={"Onboarding Page"}
+      />
+      <section className='py-4 flex justify-between w-full px-[10vw] items-center border-b-2 border-gray-200'>
+      <Link href="/">
+      <span className="flex">
+        <p className="font-sans hidden sm:block sm:text-lg sm:font-bold self-center">OMERALD DIAGNOSTICS</p>
+      </span>
+      </Link>
+      <section className="flex justify-center items-center h-full ">
+      <p className='text-lg flex'><InformationCircleIcon className='w-[30px] text-blue-700 mx-2'/> Diagnostic Details</p>
+      <span className='mx-4'><UserButton afterSignOutUrl="/signIn" /></span>
+      </section>
+      </section>
+  </>
+}
+
