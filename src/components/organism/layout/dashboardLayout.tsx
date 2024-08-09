@@ -25,16 +25,16 @@ export function DashboardLayout({ children }: any) {
   }, []);
 
   // Redirect to verifyUser page if the profile is not available.
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+  // useEffect(() => {
+  //   if (isFirstRender.current) {
+  //     isFirstRender.current = false;
+  //     return;
+  //   }
 
-    if (!profile?._id) {
-      router.push('/verifyUser');
-    }
-  }, [profile]);
+  //   if (!profile?._id) {
+  //     router.push('/verifyUser');
+  //   }
+  // }, [profile]);
 
   return (
     <>

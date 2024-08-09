@@ -15,8 +15,6 @@ const PageHead: FC<PageHeadProps> = ({ title, description, icon }) => {
       <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
       <meta name="theme-color" content="#fff" />
       <link rel="icon" href={icon || 'https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png'} />
-      {/* Uncomment if you have a manifest file */}
-      {/* <link rel="manifest" href="/manifest.json" /> */}
       <link rel="apple-touch-icon" href="/favicon.png" />
     </Head>
   );

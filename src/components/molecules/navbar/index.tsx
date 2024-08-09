@@ -1,35 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { UserButton, useSession, useUser } from '@clerk/clerk-react';
+import { UserButton, useSession } from '@clerk/clerk-react';
 import { Logo } from '@components/atoms/nav/logo';
-import NavFont from '@components/atoms/nav/navFont';
-import { useAuthContext } from '@utils/context/auth.context';
-import { successAlert } from '@components/atoms/alerts/alert';
 import { useRouter } from 'next/router';
-import { profileState } from '@components/common/recoil/profile';
-import { useSetRecoilState } from 'recoil';
+import NavFont from '@components/atoms/nav/navFont';
+import { logoUrl } from '@utils/constants';
 
 const navLinks = [
-  // { navLink: '/info/features', navText: 'Features' },
-  // { navLink: '/info/knowledge', navText: 'Knowledge' },
-  // { navLink: '/info/pricing', navText: 'Pricing' },
   { navLink: '/info/about', navText: 'About Us' },
   { navLink: '/info/faq', navText: 'FAQ' },
   { navLink: '/info/privacy', navText: 'Privacy Policy' },
 ];
 
-interface NavbarProps {
-  // Add any additional props if needed
-}
-
-export function Navbar({}: NavbarProps) {
-  const { diagnosticDetails } = useAuthContext();
+export function Navbar() {
   const { session } = useSession();
-  const setDiagnosticCenter = useSetRecoilState(profileState);
-  const { user } = useUser();
   const router = useRouter();
-  const logo = "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png";
-  const localProfile = JSON.parse(localStorage.getItem('diagnosticCenter'));
 
   const handleDashboard = () => {
       router.push("/verifyUser");
@@ -39,7 +24,7 @@ export function Navbar({}: NavbarProps) {
     <div className="navbar-container flex justify-between items-center px-[4%] xl:px-[10%]">
       <Link href="/">
         <span className="flex">
-        <Logo src={logo} alt="Omerald Diagnostics Logo" />
+        <Logo src={logoUrl} alt="Omerald Diagnostics Logo" />
           <p className="font-sans hidden sm:block sm:text-lg sm:font-bold self-center">OMERALD DIAGNOSTICS</p>
         </span>
       </Link>

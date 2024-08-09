@@ -1,50 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { ColorRing } from "react-loader-spinner";
-import ErrorComp from "../alerts/error";
+import React from "react";
+import { ButtonSpinner } from "@chakra-ui/react";
 
-interface SpinnerProps {
-  // Add any props if needed
-}
-
-export const Spinner: React.FC<SpinnerProps> = () => {
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    // Wait for 10 seconds before showing the message
-    const timer = setTimeout(() => {
-      setError(true);
-    }, 30000);
-
-    // Clear the timer when the component unmounts or error occurs
-    return () => clearTimeout(timer);
-  }, []);
-
+export const Spinner: React.FC = () => {
   return (
-    <div className="fixed inset-0 flex justify-center items-center z-50">
-      <div className="absolute text-center">
-        {error ? (
-          <ErrorComp pageName="" />
-        ) : (
-          <>
-          <ColorRing
-            visible={true}
-            height={120}
-            width={120}
-            ariaLabel="dna-loading"
-            wrapperClass="dna-wrapper"
-            wrapperStyle={{
-              alignSelf: "center",
-            }}
-          />
-          {/* <div className="flex justify-center items-center h-full"> */}
-          {/* <div className="spinner-border inline-block w-8 h-8 border-4 rounded-full" role="status">
-            <span className="visually-hidden">Loading...
-            </span>
-          </div> */}
-        {/* </div> */}
-        </>
-        )}
-      </div>
+    <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-gray-500 bg-opacity-50">
+      <section className="w-auto flex justify-between gap-4">
+        <p><ButtonSpinner/></p>
+        <p className="mx-2">Loading...</p>
+      </section>
     </div>
   );
 };

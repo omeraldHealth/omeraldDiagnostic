@@ -46,7 +46,7 @@ return useQueryGetData('diagnosticCenter',getDiagProfileByPhoneApi + selectedCen
 }
 
 export function useGetDcSettings() {
-  return useQueryGetData('diagnosticSetting',getDiagnosticSetting); 
+  return useQueryGetData('diagnosticSettings',getDiagnosticSetting); 
 }
 
 export function useCreateUser<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {

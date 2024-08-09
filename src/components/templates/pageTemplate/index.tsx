@@ -20,22 +20,18 @@ export const UserLayout = ({ tabName, tabDescription, children }: { tabName: str
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Head component for SEO metadata */}
       <PageHead
         icon={'/favicon.png'}
         title={tabName}
         description={tabDescription}
       />
 
-      {/* Display Navbar only for routes without sidebar */}
       {ROUTES_WITHOUT_SIDEBAR.includes(pathname) && <Navbar />}
 
-      {/* Main content area */}
       <main className="flex-grow">
         {children}
       </main>
 
-      {/* Display Footer only for routes without sidebar */}
       {ROUTES_WITHOUT_SIDEBAR.includes(pathname) && <Footer />}
     </div>
   );

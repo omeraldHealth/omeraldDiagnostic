@@ -12,10 +12,12 @@ import ErrorBoundary from '../components/common/footer/error';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: false,
+      cacheTime: 0,
       staleTime: 10 * (60 * 1000), // 10 mins
+      refetchOnWindowFocus: false,
+      refetchIntervalInBackground: false,
+      refetchInterval: false, // Disable background refetch
+      refetchOnMount: true,
     },
   },
 });

@@ -9,3 +9,5 @@ export const initialContactFormData = {
     message: '',
     description: ''
 };
+
+export const logoUrl = "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png";

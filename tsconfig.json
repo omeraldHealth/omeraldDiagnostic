@@ -29,7 +29,8 @@
 			"@app-types/*": ["types.d.ts"],
 			"@app-types/styled": ["styled.d.ts"],
 			"@utils/*": ["src/utils/*"],
-      "@styles/*": ["src/styles/*"]
+      "@styles/*": ["src/styles/*"],
+      "@public/*": ["src/public/*"]
 		},
     "incremental": true,
     "plugins": [
