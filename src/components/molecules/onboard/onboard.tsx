@@ -33,8 +33,8 @@ const OnboardNewComponents: React.FC = () => {
 
     const createDiagProfile = useCreateDiagnostic({
         onSuccess:(data) => {
-            successAlert("Profile Created Succesfully")
             if(data?.status === 201 && data?.data?._id){
+                successAlert("Profile Created Succesfully")
                 let newDiagnosticCenters= 
                     {
                         "diagnostic": data?.data?._id,

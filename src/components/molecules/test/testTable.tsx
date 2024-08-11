@@ -27,8 +27,7 @@ export const TestTable: React.FC<TestTableProps> = () => {
   const [loading, setLoading] = useState(false);
   const { confirm } = Modal;
   const [testDetailState, setTestDetails] = useRecoilState(testDataState);
-   let selectedCenterId = localStorage.getItem("selectedDc") ?? {};
-  const { data: profileData } = useGetDcProfile(selectedCenterId);
+  // const { data: profileData } = useGetDcProfile(selectedCenterId);
 
   const currentBranch = useCurrentBranchValue();
   const tests = currentBranch?.tests;

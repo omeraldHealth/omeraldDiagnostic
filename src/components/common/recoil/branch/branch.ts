@@ -22,3 +22,8 @@ export const selectedDcState = atom<string | null>({
   key: 'selectedDcState',
   default: null, 
 });
+
+export const unselectDcState = atom<boolean | null>({
+  key: 'unSelectDc',
+  default: false, 
+});

@@ -1,12 +1,14 @@
+import { unselectDcState } from '@components/common/recoil/branch/branch';
 import { usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
 import { useRouter } from 'next/router';
+import { useSetRecoilState } from 'recoil';
 
 const SelectedDC = () => {
   const router = useRouter()
-  const [selectedDc, setSelectedDC] = usePersistedDCState();
+  const setUnselectDc = useSetRecoilState(unselectDcState)
 
   const toggleModal = () => {
-    setSelectedDC("choose")
+    setUnselectDc(true)
     router.push("/chooseDc")
   };
 

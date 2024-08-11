@@ -1,11 +1,7 @@
 import React from 'react';
 import { Bars3Icon } from '@heroicons/react/20/solid';
-import { Select } from 'antd';
-import { useRecoilValue } from 'recoil';
 import { useDashboardTabs } from '@components/common/constants/recoilValues';
 import { UserButton } from '@clerk/clerk-react';
-import { usePersistedBranchState } from '@components/common/recoil/hooks/usePersistedState';
-import { profileState } from '@components/common/recoil/profile';
 import SelectDC from './selectDc';
 import { BranchSelection } from './branchSelection';
 

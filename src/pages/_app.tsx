@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       refetchIntervalInBackground: false,
       refetchInterval: false, // Disable background refetch
-      refetchOnMount: true,
+      refetchOnMount: false,
     },
   },
 });

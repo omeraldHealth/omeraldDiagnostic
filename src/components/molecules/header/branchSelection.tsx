@@ -6,52 +6,54 @@ import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 interface Branch {
-    branchName: string;
-    _id: string;
+  branchName: string;
+  _id: string;
 }
-  
+
 export function BranchSelection() {
-    const profileRecoilState = useRecoilValue(profileState)
-    const [currentBranch, setCurrentBranch] = useState({});
-    const [selectedBranch, setSelectedBranch] = usePersistedBranchState();
-  
-    const handleBranchChange = (value: any) => {
-      setSelectedBranch(value)
-    };
+  const profileRecoilState = useRecoilValue(profileState);
+  const [selectedBranch, setSelectedBranch] = usePersistedBranchState();
+  const [defaultBranch, setDefaultBranch] = useState<string | undefined>(undefined);
 
-    const options = profileRecoilState?.branches?.map((branch: BranchDetailInterface) => {
-        return { label: branch?.branchName, value: branch?._id, key: branch?.branchName }
-    })
+  const options = profileRecoilState?.branches?.map((branch: BranchDetailInterface) => {
+    return { label: branch.branchName, value: branch.branchName, key: branch._id };
+  }) || [];
 
-    useEffect(() => {
-        let filteredBranch;
-      
-        if (selectedBranch) {
-          filteredBranch = profileRecoilState?.branches?.find(
-            (branch: BranchDetailInterface) => branch._id === selectedBranch
-          );
-        } else {
-          filteredBranch = profileRecoilState?.branches?.[0];
-        }
-      
-        setCurrentBranch(filteredBranch || null);
-      }, [selectedBranch, profileRecoilState?.branches]);
-      
-
-    return (
-      <section>
-        {profileRecoilState &&
-           <Select
-             placeholder="Select Branch"
-             onChange={handleBranchChange}
-             options={options}
-             value={{
-                label: currentBranch?.branchName,
-                key: currentBranch?._id,
-                value: currentBranch?._id
-            }}
-           />
-        }
-      </section>
+  const handleDefaultBranch = () => {
+    const branchExistsInProfile = profileRecoilState?.branches?.some(
+      (branch: Branch) => branch.branchName === selectedBranch
     );
+
+    if (branchExistsInProfile) {
+      setDefaultBranch(selectedBranch);
+    } else {
+      const firstBranch = profileRecoilState?.branches?.[0]?.branchName;
+      if (firstBranch) {
+        setDefaultBranch(firstBranch);
+        setSelectedBranch(firstBranch);
+      }
+    }
+  };
+
+  const handleBranchChange = (value: string) => {
+    setDefaultBranch(value);
+    setSelectedBranch(value);
+  };
+
+  useEffect(() => {
+    handleDefaultBranch();
+  }, [profileRecoilState]);
+
+  return (
+    <section>
+      {profileRecoilState && (
+        <Select
+          placeholder="Select Branch"
+          onChange={handleBranchChange}
+          options={options}
+          value={defaultBranch}
+        />
+      )}
+    </section>
+  );
 }

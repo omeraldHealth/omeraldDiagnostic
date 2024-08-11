@@ -25,21 +25,24 @@ export const usePersistedBranchState = () => {
 };
 
 export const usePersistedDCState = () => {
-    const [selectedDc, setSelectedDc] = useRecoilState(selectedDcState);
-  
-    useEffect(() => {
-      const storedBranch = localStorage.getItem('selectedDC');
-      if (storedBranch) {
-        setSelectedDc(storedBranch);
-      }
-    }, [setSelectedDc]);
-  
-    useEffect(() => {
-      // Save the state to localStorage whenever it changes
-      if (selectedDc !== null) {
-        localStorage.setItem('selectedDC', selectedDc);
-      }
-    }, [selectedDc]);
-    return [selectedDc, setSelectedDc] as const;
+  const [selectedDc, setSelectedDc] = useRecoilState(selectedDcState);
+
+  // Load the persisted state from localStorage when the component mounts
+  useEffect(() => {
+    const storedDc = localStorage.getItem('selectedDC');
+    if (storedDc) {
+      setSelectedDc(storedDc);
+    }
+  }, [setSelectedDc]);
+
+  // Persist the selected DC state to localStorage whenever it changes
+  useEffect(() => {
+    if (selectedDc !== null && selectedDc !== undefined) {
+      localStorage.setItem('selectedDC', selectedDc);
+    } else {
+      localStorage.removeItem('selectedDC'); // Clear localStorage if the state is null or undefined
+    }
+  }, [selectedDc]);
+
+  return [selectedDc, setSelectedDc] as const;
 };
-  

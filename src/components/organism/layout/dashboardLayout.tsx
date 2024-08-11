@@ -16,10 +16,10 @@ import { Spinner } from '@components/atoms/loader';
  */
 export function DashboardLayout({ children }: any) {
   const { session } = useSession();
+  const [selectedDc] = usePersistedDCState();
+  const {data: profileData, status, isLoading, refetch} = useGetDcProfile({selectedCenterId: selectedDc})
   const router = useRouter();
   const setProfileRecoil = useSetRecoilState(profileState);
-  const [selectedDc, setSelectedDC] = usePersistedDCState();
-  const {data: profileData, status, isLoading, refetch} = useGetDcProfile({selectedCenterId: selectedDc})
 
   useEffect(() => {
     if (session?.status !== 'active') {
@@ -28,18 +28,20 @@ export function DashboardLayout({ children }: any) {
   }, []);
 
   useEffect(()=>{
-    if(!isLoading && status === 'success' && profileData){
-      if (!profileData?.data?._id) {
-            router.push('/verifyUser');
-      }
-
-      else if(profileData?.data?._id){
+    if(!isLoading && profileData){
+      if(profileData?.data){
         setProfileRecoil(profileData?.data)
       }
     }
-  },[isLoading, profileData, status])
+  },[isLoading, profileData])
 
-  useEffect(()=>{refetch()},[])
+  useEffect(()=>{
+    if(selectedDc){
+      refetch()
+    }
+  },[selectedDc])
+
+  const isValidProfile = profileData?.data?._id
 
   return (
     <>
@@ -48,7 +50,7 @@ export function DashboardLayout({ children }: any) {
           <DashboardSideBar />
           <div className="xl:pl-64 flex flex-col flex-1">
             {/*@ts-ignore */}
-            {profileData?.data && profileData?.data?._id && <DashboardHeader />}
+            {isValidProfile && <DashboardHeader />}
             <main>
               <div className="py-2">
                 <div className="max-w-[98vw] mx-4 sm:mx-4 md:max-w-[95vw] m-auto md::max-w-[95%] lg:mx-12 mt-4">

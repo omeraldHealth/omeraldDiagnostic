@@ -23,7 +23,7 @@ const VerifyUser = () => {
       if (resp.status === 201) {
         successAlert("User Created Successfully");
         setUserRecoil(resp?.data);
-        refetch();
+        phone && refetch();
         //@ts-ignore
         handleVerifyUser(resp?.data);
       }
@@ -35,8 +35,10 @@ const VerifyUser = () => {
   });
 
   useEffect(() => {
-    refetch()
-  }, []);
+    if(phone){
+      refetch()
+    }
+  }, [phone]);
 
   const handleCreateUser = (userObj: USER_DATA): void => {
     createUserMutation.mutate({ data: userObj });

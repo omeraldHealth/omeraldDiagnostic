@@ -35,12 +35,12 @@ const DiagnosticCard: React.FC<DiagnosticCardProps> = ({ handleCardClick, userVa
     <div>
       <section>
         <Select
-          className="w-[20vw]"
+          className="w-[20vw] my-4"
           defaultValue={defaultValue}
           onChange={handleCardClick}
         >
           {userValue?.diagnosticCenters?.map((center) => (
-            <Option key={center._id} value={center._id}>
+            <Option key={center?.diagnostic?._id} value={center?.diagnostic?._id}>
               <div className="flex items-center">
                 <FaCheck className="mr-2" />
                 {center.diagnostic.centerName}
