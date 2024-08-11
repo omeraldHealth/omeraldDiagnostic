@@ -9,7 +9,7 @@ const ReportsTab = dynamic(() => import('@components/organism/dashboardTabs/repo
 const ProfileTab = dynamic(() => import('@components/organism/dashboardTabs/profileTab'), { loading:() => <Spinner /> });
 const DashboardTab = dynamic(() => import('@components/organism/dashboardTabs/dashboardTab'), { loading:() => <Spinner /> });
 const TestTab = dynamic(() => import('@components/organism/dashboardTabs/testTab').then((res) => res.default), { loading:() => <Spinner /> });
-const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsTab').then((res) => res.default), { loading:() => <Spinner /> });
+const SettingsTab = dynamic(() => import('@components/organism/dashboardTabs/settingsLayout').then((res) => res.default), { loading:() => <Spinner /> });
 
 const DashboardTabsMap: {
   [key: string]: JSX.Element; 

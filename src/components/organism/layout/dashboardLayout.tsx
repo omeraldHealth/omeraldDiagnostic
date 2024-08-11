@@ -54,7 +54,7 @@ export function DashboardLayout({ children }: any) {
         setCurrentBranch(branch)
       }
     }
-  },[])
+  },[selectedBranch, profileData])
 
   //@ts-ignore
   const isValidProfile = profileData?.data?._id
