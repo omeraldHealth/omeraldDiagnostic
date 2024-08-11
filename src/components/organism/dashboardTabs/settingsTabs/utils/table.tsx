@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 export const CommonSettingTable = ({data, columns}) => {
    const [pageSize, setPageSize] = useState(10);
 
-   const dataSourceWithKeys =
+   const dataSourceWithKeys = data
    data?.length > 0 &&
    data.map((record: any, index) => ({
      ...record,
-     key: record.key || record.id || index,
+     key: record.key || record._id || index,
    }));
 
   return (

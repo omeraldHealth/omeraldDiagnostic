@@ -43,7 +43,7 @@ const DiagnosticCard: React.FC<DiagnosticCardProps> = ({ handleCardClick, userVa
             <Option key={center?.diagnostic?._id} value={center?.diagnostic?._id}>
               <div className="flex items-center">
                 <FaCheck className="mr-2" />
-                {center.diagnostic.centerName}
+                {center?.diagnostic?.centerName}
               </div>
             </Option>
           ))}
