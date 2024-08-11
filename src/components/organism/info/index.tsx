@@ -17,7 +17,6 @@ export const InfoPage: React.FC<InfoPageProps> = ({ detail }) => {
     if(!isLoading && settingsData?.data){
       //@ts-ignore
       setFormValues({description: settingsData?.data?.[0][detail]})
-      console.log()
     }
   },[isLoading, ])
 

@@ -48,7 +48,6 @@ export default function PathologistComp() {
           ...currentBranch,
           pathologistDetail: [...currentBranch.pathologistDetail, updatedPath],
         };
-        console.log(updatedBranch)
         const updatedBranches = profile?.branches?.map((branch) => {
           if (branch?._id === currentBranch?._id) {
             return updatedBranch
@@ -56,7 +55,6 @@ export default function PathologistComp() {
             return branch; // Corrected return statement
           }
         })
-        console.log("update", updatedBranches)
         updateDiagnostic.mutate({ data: { branches: updatedBranches } })
       }
     } catch (error) {

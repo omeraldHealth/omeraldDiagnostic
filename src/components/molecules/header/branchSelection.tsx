@@ -15,19 +15,21 @@ export function BranchSelection() {
   const [selectedBranch, setSelectedBranch] = usePersistedBranchState();
   const [defaultBranch, setDefaultBranch] = useState<string | undefined>(undefined);
 
+  // @ts-ignore
   const options = profileRecoilState?.branches?.map((branch: BranchDetailInterface) => {
-    return { label: branch.branchName, value: branch.branchName, key: branch._id };
+    return { label: branch.branchName, value: branch._id, key: branch._id };
   }) || [];
 
   const handleDefaultBranch = () => {
+    //@ts-ignore
     const branchExistsInProfile = profileRecoilState?.branches?.some(
-      (branch: Branch) => branch.branchName === selectedBranch
+      (branch: Branch) => branch._id === selectedBranch
     );
 
     if (branchExistsInProfile) {
       setDefaultBranch(selectedBranch);
     } else {
-      const firstBranch = profileRecoilState?.branches?.[0]?.branchName;
+      const firstBranch = profileRecoilState?.branches?.[0]?._id;
       if (firstBranch) {
         setDefaultBranch(firstBranch);
         setSelectedBranch(firstBranch);

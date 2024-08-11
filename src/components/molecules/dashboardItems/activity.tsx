@@ -14,7 +14,6 @@ const DashActivity: React.FC<DashActivityProps> = () => {
   const currentBranch = useCurrentBranchValue()
   // const currentBranch = localStorage.getItem("selectedBranch")
   const activities = currentBranch?.activities?.length > 0 ? currentBranch?.activities : [];
-  console.log(currentBranch)
   return (
     <section className="w-[94vw] sm:w-[60vw] lg:w-[35vw] xl:w-[30vw] h-[100%] shadow-xl bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0">
       <section className="">

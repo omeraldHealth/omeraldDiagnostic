@@ -22,7 +22,6 @@ const ChooseDc: React.FC = () => {
   const [unselectDc, setUnselectDc] = useRecoilState(unselectDcState);
 
   const handleSetDefaultValue = () => {
-    console.log("selectedDc", selectedDc);
 
     // Redirect if user data is missing
     if (!userValue || Object.keys(userValue)?.length === 0) {

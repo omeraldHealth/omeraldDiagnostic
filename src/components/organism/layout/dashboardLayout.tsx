@@ -5,9 +5,10 @@ import { useSetRecoilState } from 'recoil';
 import { profileState } from '@components/common/recoil/profile/index';
 import { DashboardHeader } from '../../molecules/header';
 import { DashboardSideBar } from '@components/molecules/sidebar/index';
-import { usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
+import { usePersistedBranchState, usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
 import { useGetDcProfile } from '@utils/reactQuery';
 import { Spinner } from '@components/atoms/loader';
+import { branchState } from '@components/common/recoil/branch/branch';
 
 /**
  * Layout component for the dashboard.
@@ -16,10 +17,12 @@ import { Spinner } from '@components/atoms/loader';
  */
 export function DashboardLayout({ children }: any) {
   const { session } = useSession();
-  const [selectedDc] = usePersistedDCState();
-  const {data: profileData, status, isLoading, refetch} = useGetDcProfile({selectedCenterId: selectedDc})
+  const [ selectedDc ] = usePersistedDCState();
+  const [ selectedBranch ] = usePersistedBranchState();
+  const {data: profileData, isLoading, refetch} = useGetDcProfile({selectedCenterId: selectedDc})
   const router = useRouter();
   const setProfileRecoil = useSetRecoilState(profileState);
+  const setCurrentBranch = useSetRecoilState(branchState);
 
   useEffect(() => {
     if (session?.status !== 'active') {
@@ -29,7 +32,9 @@ export function DashboardLayout({ children }: any) {
 
   useEffect(()=>{
     if(!isLoading && profileData){
+      //@ts-ignore
       if(profileData?.data){
+        //@ts-ignore
         setProfileRecoil(profileData?.data)
       }
     }
@@ -41,6 +46,17 @@ export function DashboardLayout({ children }: any) {
     }
   },[selectedDc])
 
+  useEffect(()=>{
+    if(selectedBranch){
+      // @ts-ignore
+      const branch = profileData?.data?.branches.find((branch: any)=> branch._id === selectedBranch)
+      if(branch){
+        setCurrentBranch(branch)
+      }
+    }
+  },[])
+
+  //@ts-ignore
   const isValidProfile = profileData?.data?._id
 
   return (

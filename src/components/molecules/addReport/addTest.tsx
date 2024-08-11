@@ -743,7 +743,6 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
       
       let updated = false;
       const convertedArr = convertToRangeArray(currentRanges)
-      console.log(convertedArr)
       setAdvanceRange(convertedArr);
     }
   }, [paramData]);
@@ -793,7 +792,6 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
   };
 
   const handleSubmit = () => {
-    // console.log(form.getFieldsValue("aliases"))
     const advanceRanges = {
       ageRange: [],
       genderRange: [],

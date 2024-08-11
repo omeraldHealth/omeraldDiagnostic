@@ -21,7 +21,6 @@ export default function Sidebar() {
         const branchData: any = JSON.parse(localStorage.getItem('selectedBranch') || '{}');
         if (currentUser?._id) {
           const branch = fetchBranchByDiagnosticCenterId(currentUser?.diagnosticCenters, profileData?._id, branchData?._id);
-          console.log("branch", branch)
           setCurrentBranch(branch);
         }
       } catch (error) {
