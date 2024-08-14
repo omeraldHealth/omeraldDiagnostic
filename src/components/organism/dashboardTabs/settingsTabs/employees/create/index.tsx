@@ -105,7 +105,12 @@ const AddEmployee = ({ handleShowBranch }) => {
 
                 if(branchPresent){
                     const branches = getUpdatedBranch(resp?.data?._id);
-                    updateProfile.mutate({ data: { branches }, recordId: profileValue?._id });
+                    const userExists = currentBranch?.branchOperator?.find((op)=> op?._id == resp?.data?._id)
+                    if(!userExists){
+                        updateProfile.mutate({ data: { branches }, recordId: profileValue?._id });
+                    }else{
+                        errorAlert2("User already found")
+                    }
                 }
 
                 if (!diagPresent) {
