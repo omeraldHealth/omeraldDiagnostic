@@ -1,7 +1,6 @@
 import React from 'react';
 import { giftBoxImage } from "@utils/index";
 
-// Billing component for displaying a message about the free service
 export const Billing = () => {
   return (
     <div>

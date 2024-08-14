@@ -1,13 +1,14 @@
 import { FormControl, FormLabel,Select, Input, Stack } from "@chakra-ui/react";
-import { errorAlert2, successAlert, warningAlert } from "@components/atoms/alerts/alert";
-import { useCurrentBranchValue, useProfileValue, useUserValues } from "@components/common/constants/recoilValues";
+import { errorAlert2, successAlert, warningAlert, warningAlert2 } from "@components/atoms/alerts/alert";
+import { useCurrentBranchValue, useProfileValue } from "@components/common/constants/recoilValues";
 import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
 import { getDiagnosticUserApi } from "@utils/index";
 import { useCreateUser, useInvalidateQuery, useUpdateDiagnostic, useUpdateUser } from "@utils/reactQuery";
 import { phonePattern } from "@utils/types/molecules/forms.interface";
 import { Button } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { getRoleNameByBranchId } from "../../utils/functions";
 
 interface User {
     userName: String,
@@ -21,13 +22,30 @@ const initialFormData: User = {
     roleName: "admin"
 };
 
-const AddEmployee = ({ handleShowBranch }) => {
+const AddEmployee = ({ handleShowBranch, isEdit, operatorId }) => {
     const [selectedDc] = usePersistedDCState()
     const [selectedBranch] = usePersistedBranchState()
     const currentBranch = useCurrentBranchValue()
     const profileValue = useProfileValue()
     const [formData, setFormData] = useState(initialFormData);
     const invalidateQuery = useInvalidateQuery()
+
+    useEffect(()=>{
+        //@ts-ignore
+        const employeeToEdit = currentBranch?.branchOperator?.filter((operator) => operator?._id == operatorId)[0]
+        if(isEdit && employeeToEdit){
+            const updatedInitialValue = {
+                userName: employeeToEdit?.userName,
+                phoneNumber: employeeToEdit?.phoneNumber,
+                roleName:  getRoleNameByBranchId(currentBranch?.branchOperator, selectedBranch)
+            }
+            setFormData(updatedInitialValue)
+        }
+
+        if(!employeeToEdit){
+            handleCancel()
+        }
+    },[isEdit])
    
     const updateProfile = useUpdateDiagnostic({
         onSuccess: (resp) => {
@@ -102,6 +120,39 @@ const AddEmployee = ({ handleShowBranch }) => {
         handleShowBranch(false);
     };
 
+    const handleUpdateEmployee = (user: User) => {
+        const employeeToEdit = currentBranch?.branchOperator?.filter((operator) => operator?._id == operatorId)[0]
+        const updatedDiagCenter = employeeToEdit?.diagnosticCenters.map(center => {
+            // Map through each branch in the center
+            const updatedBranches = center.branches.map(branch => {
+                // If branchId matches, update the roleName
+                if (branch.branchId === selectedBranch) {
+                    return {
+                        ...branch,
+                        roleName: user?.roleName || formData?.roleName
+                    };
+                }
+                return branch;
+            });
+    
+            return {
+                ...center,
+                branches: updatedBranches
+            };
+        });
+
+        updateUser.mutate({data: {diagnosticCenters:updatedDiagCenter}, recordId: operatorId },
+            {
+                onSuccess:()=>{
+                    warningAlert2("User updated succesfully");
+                    handleShowBranch(false)
+                    invalidateQuery("userData")
+                    invalidateQuery("diagnosticCenter")
+                    invalidateQuery("diagnosticSettings")
+                }
+        })
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -114,6 +165,11 @@ const AddEmployee = ({ handleShowBranch }) => {
             errorAlert2("Invalid phone, please add country code")
             return
         }
+
+        if(isEdit){
+            handleUpdateEmployee(formData)
+        }
+
         checkUser(formData)
     }
     
@@ -128,7 +184,7 @@ const AddEmployee = ({ handleShowBranch }) => {
                 const branchPresent = userData?.diagnosticCenters?.some((data) =>
                     data.branches && data?.branches?.some((branch: any)=>checkBranchExistence(branch))
                 )
-                console.log(userData, diagPresent, branchPresent)
+
                 if(!diagPresent){
                     updateBranch(userData)
                 }else if(!branchPresent){
@@ -200,7 +256,7 @@ const AddEmployee = ({ handleShowBranch }) => {
         <div className="my-2 max-w-full bg-white">
         <section className="m-auto xl:w-[50%]">
             <p className="font-semi-bold text-md my-4 lg:text-xl lg:font-bold">
-            Add Branch
+            {!isEdit ? "Add Branch" : "Edit Branch"}
             </p>
             <form onSubmit={handleSubmit} className="space-y-4 ">
             <Stack spacing={4}>
@@ -212,6 +268,7 @@ const AddEmployee = ({ handleShowBranch }) => {
                     onChange={handleChange}
                     placeholder="Add Operator Name"
                     className="border-2 p-2"
+                    disabled={isEdit}
                     required
                 />
                 </FormControl>
@@ -220,6 +277,7 @@ const AddEmployee = ({ handleShowBranch }) => {
                 <Input
                     name="phoneNumber"
                     value={formData.phoneNumber}
+                    disabled={isEdit}
                     onChange={handleChange}
                     placeholder="Add Operator Contact"
                     className="border-2 p-2"
@@ -230,7 +288,7 @@ const AddEmployee = ({ handleShowBranch }) => {
                 <FormLabel>Role</FormLabel>
                 <Select
                     value={formData.roleName}
-                    placeholder="Add Operator Role"
+                    placeholder={isEdit ? "Edit Operator Role" :"Add Operator Role"}
                     className="border-2 p-2"
                     defaultValue={'sme'}
                     name={'roleName'}
@@ -244,7 +302,7 @@ const AddEmployee = ({ handleShowBranch }) => {
                 </FormControl>
             </Stack>
             <Button type="primary" htmlType="submit">
-                Add Operator
+                {isEdit ? "Edit Operator" :"Add Operator"}
             </Button>
             <Button type="default" className="ml-2" onClick={handleCancel}>
                 Cancel
