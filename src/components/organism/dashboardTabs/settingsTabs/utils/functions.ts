@@ -1,14 +1,15 @@
-export function removeBranchById(record, branchIdToRemove) {
+export function removeBranchById(record,selectedDc, branchIdToRemove) {
     // Iterate over each diagnostic center
-    const updatedUser = record.diagnosticCenters.map(center => {
-        const updatedBranches = center.branches.filter(branch => branch.branchId !== branchIdToRemove);
-        return {
-            ...center,
-            branches: updatedBranches
-        };
-    }).filter(center => center.branches.length > 0); 
+
+    const updatedDiagnosticCenters = record?.diagnosticCenters?.map((center) => {
+        if (center?.diagnostic === selectedDc) {
+            const updatedBranches = center?.branches?.filter((branch) => branch?.branchId !== branchIdToRemove);
+            return { ...center, branches: updatedBranches };
+        }
+        return center;
+    }).filter(center => center.branches.length > 0); ;
   
-    return updatedUser;
+    return updatedDiagnosticCenters;
 }
 
 export function getRoleNameByBranchId(users, branchIdToFind) {

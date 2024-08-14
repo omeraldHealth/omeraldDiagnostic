@@ -3,15 +3,17 @@ import { useCurrentBranchValue, useProfileValue, useUserValues } from '@componen
 import { CommonSettingTable } from '../utils/table';
 import { BRANCH_EMPLOYEE_COLUMNS } from '../utils/tabs';
 import { Switch } from 'antd';
-import { usePersistedBranchState } from '@components/common/recoil/hooks/usePersistedState';
+import { usePersistedBranchState, usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
 import { useInvalidateQuery, useUpdateDiagnostic, useUpdateUser } from '@utils/reactQuery';
 import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
 import AddEmployee from './create';
 import { removeBranchById } from '../utils/functions';
+import UpdateEmployee from './create/update';
 
 export const EmployeesTab = () => {
     const [addBranch, setAdd] = useState(false)
     const [selectedBranch] = usePersistedBranchState()
+    const [selectedDc] = usePersistedDCState()
     const [isEdit, setIsEdit] = useState(false)
     const [operatorId, setOperatorId] = useState("")
     const currentBranch = useCurrentBranchValue() 
@@ -23,13 +25,17 @@ export const EmployeesTab = () => {
     const handleSwitch = (checked: boolean) => {setAdd(checked)}
     const handleShowBranch = (value) => {
       setAdd(value);
-      setIsEdit(value)
+    }
+
+    const handleEditEmployee = (value) => {
+      setIsEdit(value);
+      setAdd(value);
     }
 
     const handleEdit = (record) => {
-      setAdd(true)
       setOperatorId(record?._id)
       setIsEdit(true)
+      setAdd(true);
     }
     
     const handleDelete = (record) => {
@@ -60,7 +66,7 @@ export const EmployeesTab = () => {
       },{
         onSuccess: (resp) => {
           if(resp.status == 200){
-            successAlert("Updated Employee succesfully")
+            successAlert("Deleted Employee succesfully")
           }
           removeBranchFromUser(record);
         }
@@ -69,11 +75,11 @@ export const EmployeesTab = () => {
     };
 
     const removeBranchFromUser = (record) => {
-      const updatedDaigCenters = removeBranchById(record, currentBranch?._id)
-      updateUser.mutate({data: {branches: updatedDaigCenters}, recordId: record?._id},{
+      const updatedDiagCenters = removeBranchById(record,selectedDc, currentBranch?._id)
+      updateUser.mutate({data: {diagnosticCenters: updatedDiagCenters}, recordId: record?._id},{
         onSuccess:(resp)=>{
           if(resp.status == 200){
-            successAlert("Updated User successfully")
+            // successAlert("Updated User successfully")
             invalidateQuery("userData")
             invalidateQuery("diagnosticCenter")
             invalidateQuery("diagnosticSettings")
@@ -95,7 +101,11 @@ export const EmployeesTab = () => {
           {!addBranch ?
           //@ts-ignore
           <CommonSettingTable data={currentBranch?.branchOperator} columns={columns}/>:
-          <AddEmployee handleShowBranch={handleShowBranch} isEdit={isEdit} operatorId={operatorId} />
+          <>
+            {isEdit? 
+            <UpdateEmployee handleEditEmployee={handleEditEmployee} operatorId={operatorId}/>
+            : <AddEmployee handleShowBranch={handleShowBranch}/>}
+          </>
           }
       </div>
     );

@@ -1,52 +1,33 @@
-import { useGetDcProfile, useUpdateDiagnostic } from "@utils/reactQuery/index";
-import { useUserValues } from "../constants/recoilValues";
+import { useUpdateDiagnostic } from '@utils/reactQuery';
+import { useCurrentBranchValue, useProfileValue } from '../constants/recoilValues';
 
-export const useActivityLogger = () => {
-    // // const selectedCenterId = localStorage.getItem("selectedDc") ?? {};
-    // const userData = useUserValues();
-    // // const { data: profileData } = useGetDcProfile(selectedCenterId);
+// Example activity logger hook
+export function useActivityLogger() {
+    const profileValue = useProfileValue()
+    const currentBranch = useCurrentBranchValue()
 
-    // const updateProfile = useUpdateDiagnostic({
-    //     onSuccess: () => {
-    //         // successAlert("Activity logged successfully");
-    //     },
-    //     onError: (error) => {
-    //         console.error("Error updating profile:", error);
-    //     },
-    // }, selectedCenterId);
+    const updateProfile = useUpdateDiagnostic({})
 
-    // const logActivity = async (activity) => {
-    //     const selectedBranch = JSON.parse(localStorage.getItem("selectedBranch"));
+    const logActivity = ({ activity, user }) => {
+            const activities = {
+                activity,
+                user,
+            }
+            const updatedActivities = {...currentBranch, activities: currentBranch?.activities.push(activities) }
+            const updatedBranches = {...profileValue, branches: 
+                profileValue?.branches((branch) => {
+                    if(branch?._id === updatedActivities?._id){
+                        return updatedActivities
+                    }
+                    return branch
+                })
+            }
 
-    //     if (!selectedBranch) {
-    //         console.error("No selectedBranch found in localStorage");
-    //         return;
-    //     }
+            updateProfile.mutate({data: {branches: updatedBranches, recordId: profileValue?._id}},{
+                onSuccess:(resp)=>{},
+                onError:(err)=>{},
+            })
+    };
 
-    //     const updatedActivity = {
-    //         user: { id: userData?._id, name: userData?.userName },
-    //         activity: activity,
-    //     };
-
-    //     selectedBranch.activities = selectedBranch.activities || [];
-    //     selectedBranch.activities.push(updatedActivity);
-    //     localStorage.setItem("selectedBranch", JSON.stringify(selectedBranch));
-
-    //     const updatedBranches = profileData?.data?.branches.map(branch => {
-    //         if (branch._id === selectedBranch._id) {
-    //             return selectedBranch;
-    //         }
-    //         return branch;
-    //     });
-
-    //     try {
-    //         const updatedProfile = { data: { branches: updatedBranches } };
-    //         await updateProfile.mutateAsync(updatedProfile);
-    //     } catch (error) {
-    //         console.error("Error logging activity:", error);
-    //     }
-    // };
-
-    // return { logActivity };
-    return null
-};
+  return logActivity;
+}

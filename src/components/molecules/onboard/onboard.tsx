@@ -1,12 +1,13 @@
 import { useUser } from "@clerk/clerk-react";
 import { getDiagnosticUserApi } from "@utils/index";
 import { Button,Steps } from "antd";
-import { useCreateDiagnostic, useQueryGetData, useUpdateUser } from "@utils/reactQuery";
+import { useCreateDiagnostic, useGetUser, useQueryGetData, useUpdateUser } from "@utils/reactQuery";
 import { successAlert, warningAlert } from "@components/atoms/alerts/alert";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { OnboardingForm } from "./onboardForm";
 import { OnboardingSummary } from "./summary";
+import { useUserValues } from "@components/common/constants/recoilValues";
 
 const OnboardNewComponents: React.FC = () => {
     const [formData, setFormData] = useState({});
@@ -14,9 +15,10 @@ const OnboardNewComponents: React.FC = () => {
     const { user } = useUser();
     const router = useRouter()
     const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
-    const { data: userData, refetch, isLoading } = useQueryGetData('userData', getDiagnosticUserApi + userPhoneNumber,{ enabled: !!userPhoneNumber });
+    const { data: userData, refetch, isLoading } = useGetUser({userPhoneNumber: userPhoneNumber})
     const next = () => setCurrent(current + 1);
     const prev = () => setCurrent(current - 1);
+    const userValue = useUserValues()
 
     const updateUser = useUpdateUser({
         onSuccess:(data) => {
@@ -29,7 +31,8 @@ const OnboardNewComponents: React.FC = () => {
         onError:(err)=>{
           warningAlert("Error updating user"+ err)
         }
-    }) 
+    })  
+    console.log(userValue)
 
     const createDiagProfile = useCreateDiagnostic({
         onSuccess:(data) => {
@@ -46,7 +49,7 @@ const OnboardNewComponents: React.FC = () => {
                         ]
                     }
                 let updatedDC = [...userData?.data?.diagnosticCenters, newDiagnosticCenters];
-                updateUser.mutate({data: {diagnosticCenters: updatedDC, recordId: userData?._id }})
+                updateUser.mutate({data: {diagnosticCenters: updatedDC }, recordId: userValue._id})
             }
         },
         onError:(err)=>{
