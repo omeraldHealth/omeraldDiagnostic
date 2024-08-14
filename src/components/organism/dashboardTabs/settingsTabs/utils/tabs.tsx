@@ -1,5 +1,5 @@
-import { Button } from "@chakra-ui/react";
 import { Space } from "antd";
+import moment from "moment";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 export const ADMIN_USER_ACTIVITES_COLUMNS = [
@@ -14,14 +14,43 @@ export const ADMIN_USER_ACTIVITES_COLUMNS = [
     key: 'user',
     title: 'Activity By',
     dataIndex: 'user',
-    // render: (text: any) => <a>{text?.name}</a>,
+    render: (text: any) => <a>{text?.userName}</a>,
     // sorter: (a: any, b: any) => a.user.length - b.user.length,
   },
   {
     key: 'updatedTime',
     title: 'Activity Time',
     dataIndex: 'updatedTime',
-    // render: (text: any) => <a>{moment(text).format("DD/MM/yyyy HH:mm:ss")}</a>,
+    render: (text: any) => <a>{moment(text).format("DD/MM/yyyy HH:mm:ss")}</a>,
+    sorter: (a: any, b: any) => moment(a.updatedTime).unix() - moment(b.updatedTime).unix(),
+  },
+];
+
+export const ADMIN_USER_COLUMNS = [
+  {
+    title: 'Name',
+    dataIndex: 'userName',
+    key: 'userName',
+    sorter: (a, b) => a.userName.localeCompare(b.userName),
+  },
+  {
+    title: 'PhoneNumber',
+    dataIndex: 'phoneNumber',
+    key: 'phoneNumber',
+  },
+  {
+    title: 'Role',
+    dataIndex: 'role',
+    key: 'role',
+    sorter: (a, b) => a.role.localeCompare(b.role),
+    render: (role, record) => {
+      return <p className="uppercase">{role}</p>;
+    },
+  },
+  {
+    title: 'Action',
+    dataIndex: 'action',
+    key: 'action',
   },
 ];
 
@@ -71,34 +100,6 @@ export const BRANCH_EMPLOYEE_COLUMNS = ({selectedBranch, handleDelete, handleEdi
     
   ];
 } 
-
-export const ADMIN_USER_COLUMNS = [
-  {
-    title: 'Name',
-    dataIndex: 'userName',
-    key: 'userName',
-    sorter: (a, b) => a.userName.localeCompare(b.userName),
-  },
-  {
-    title: 'PhoneNumber',
-    dataIndex: 'phoneNumber',
-    key: 'phoneNumber',
-  },
-  {
-    title: 'Role',
-    dataIndex: 'role',
-    key: 'role',
-    sorter: (a, b) => a.role.localeCompare(b.role),
-    render: (role, record) => {
-      return <p className="uppercase">{role}</p>;
-    },
-  },
-  {
-    title: 'Action',
-    dataIndex: 'action',
-    key: 'action',
-  },
-];
 
 function getRoleName(data, branchId) {
   const diagnostic = data.find(d => 

@@ -5,10 +5,11 @@ import { BRANCH_EMPLOYEE_COLUMNS } from '../utils/tabs';
 import { Switch } from 'antd';
 import { usePersistedBranchState, usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
 import { useInvalidateQuery, useUpdateDiagnostic, useUpdateUser } from '@utils/reactQuery';
-import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { errorAlert, successAlert, warningAlert2 } from '@components/atoms/alerts/alert';
 import AddEmployee from './create';
 import { removeBranchById } from '../utils/functions';
 import UpdateEmployee from './create/update';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
 
 export const EmployeesTab = () => {
     const [addBranch, setAdd] = useState(false)
@@ -21,9 +22,9 @@ export const EmployeesTab = () => {
     const updateProfile = useUpdateDiagnostic({})
     const updateUser = useUpdateUser({})
 
+    const logActivity = useActivityLogger();
     const invalidateQuery  = useInvalidateQuery()
     const handleSwitch = (checked: boolean) => {setAdd(checked)}
-
 
     useEffect(()=>{
       invalidateQuery("userData")
@@ -74,7 +75,7 @@ export const EmployeesTab = () => {
       },{
         onSuccess: (resp) => {
           if(resp.status == 200){
-            successAlert("Deleted Employee succesfully")
+            warningAlert2("Deleted Employee succesfully")
           }
           removeBranchFromUser(record);
         }
@@ -91,6 +92,7 @@ export const EmployeesTab = () => {
             invalidateQuery("userData")
             invalidateQuery("diagnosticCenter")
             invalidateQuery("diagnosticSettings")
+            logActivity({activity: 'Deleted Employee '+record?.userName})
           }
         },
         onError:()=>{

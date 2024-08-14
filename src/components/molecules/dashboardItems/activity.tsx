@@ -45,7 +45,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ activityList }) => {
               <UserCircleIcon className="w-8 h-8 self-center bg-blue-700 text-white rounded-full mr-2" />
               <span>
                 <p className="text-light text-gray-600 mt-1">
-                  <span className="font-bold">{activity.user.name} </span>
+                  <span className="font-bold">{activity?.user?.userName} </span>
                   {activity.activity}
                 </p>
                 {activity?.updatedTime ? (

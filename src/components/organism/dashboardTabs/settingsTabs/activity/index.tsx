@@ -7,6 +7,7 @@ export const Activity = () => {
   const currentBranch = useCurrentBranchValue()
   // @ts-ignore
   const activities = currentBranch && currentBranch?.activities;
+
   return (
     <div className='sdsa'>
         <CommonSettingTable data={activities} columns={ADMIN_USER_ACTIVITES_COLUMNS}/>

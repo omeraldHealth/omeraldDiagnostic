@@ -65,6 +65,7 @@ const AddEmployee = ({ handleShowBranch }) => {
             if (resp.status === 201) {
                 successAlert("Employee created successfully");
                 const branches = getUpdatedBranch(resp?.data?._id);
+                logActivity({activity: 'Created Employee '+resp?.data?.userName})
                 updateProfile.mutate({ data: { branches }, recordId: profileValue?._id });
             }
         },

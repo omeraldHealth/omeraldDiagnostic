@@ -42,7 +42,6 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
             warningAlert2("User updated successfully");
             invalidateQuery("userData");
             invalidateQuery("diagnosticCenter");
-            invalidateQuery("diagnosticSettings");
             handleEditEmployee(false);
             logActivity({activity: "Updated User role for "+resp?.data?.userName})
         },

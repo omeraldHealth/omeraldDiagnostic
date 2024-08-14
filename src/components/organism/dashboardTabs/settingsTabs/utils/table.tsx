@@ -15,9 +15,7 @@ export const CommonSettingTable = ({data, columns}) => {
     <div className='sdsa'>
         <Table
             //@ts-ignore
-            dataSource={
-              dataSourceWithKeys?.length > 0 ? dataSourceWithKeys : []
-            }
+            dataSource={dataSourceWithKeys?.length > 0 ? dataSourceWithKeys : []}
             columns={columns}
             pagination={{
               pageSize,
