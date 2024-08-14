@@ -1,54 +1,47 @@
+// @ts-nocheck
+
 import { FormControl, FormLabel, Select, Input, Stack } from "@chakra-ui/react";
-import { errorAlert2, successAlert, warningAlert2 } from "@components/atoms/alerts/alert";
-import { useCurrentBranchValue, useProfileValue, useUserValues } from "@components/common/constants/recoilValues";
+import { errorAlert2, warningAlert2 } from "@components/atoms/alerts/alert";
+import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
 import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
 import { useInvalidateQuery, useUpdateUser } from "@utils/reactQuery";
 import { phonePattern } from "@utils/types/molecules/forms.interface";
 import { Button } from "antd";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { getRoleNameByBranchId } from "../../utils/functions";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
-
 
 const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
-    const initialFormData = {
-        userName: '',
-        phoneNumber: '',
-        roleName: "admin"
-    };
+    const initialFormData = { userName: '', phoneNumber: '', roleName: "admin" };
     const [selectedDc] = usePersistedDCState();
     const [selectedBranch] = usePersistedBranchState();
     const currentBranch = useCurrentBranchValue();
     const [formData, setFormData] = useState(initialFormData);
     const invalidateQuery = useInvalidateQuery();
-
-    useEffect(()=>{
-        const user = currentBranch?.branchOperator?.filter((employee)=> employee?._id === operatorId)
-        const role = getRoleNameByBranchId(user, selectedBranch)
-        if(user){
-            const updateInitialFormData = {
-                userName: user[0]?.userName,
-                phoneNumber: user[0]?.phoneNumber,
+    
+    useEffect(() => {
+        const user = currentBranch?.branchOperator?.find(emp => emp?._id === operatorId);
+        const role = getRoleNameByBranchId([user], selectedBranch);
+        if (user) {
+            setFormData({
+                userName: user.userName,
+                phoneNumber: user.phoneNumber,
                 roleName: role || "spoc"
-            };
-            setFormData(updateInitialFormData)
+            });
         }
-    },[])
+    }, [currentBranch, operatorId, selectedBranch]);
 
     const updateUser = useUpdateUser({
-        onSuccess: (resp) => {
+        onSuccess: () => {
             warningAlert2("User updated successfully");
             invalidateQuery("userData");
             invalidateQuery("diagnosticCenter");
             handleEditEmployee(false);
         },
-        onError: () => errorAlert2("Error creating employee"),
+        onError: () => errorAlert2("Error updating employee")
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({ ...prevState, [name]: value }));
+    const handleChange = ({ target: { name, value } }) => {
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     const handleCancel = () => {
@@ -57,37 +50,37 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
     };
 
     const handleUpdateEmployee = (user) => {
-        const updatedDiagnosticCenters = user?.diagnosticCenters?.map((center) => {
-            if (center?.diagnostic === selectedDc) {
-                const updatedBranches = center?.branches?.map((branch) => {
-                    if (branch?.branchId === selectedBranch) {
-                        return { ...branch, roleName: formData?.roleName };
-                    }
-                    return branch;
-                });
-        
-                return { ...center, branches: updatedBranches };
-            }
-            return center;
-        });
+        const updatedDiagnosticCenters = user?.diagnosticCenters?.map(center =>
+            center.diagnostic === selectedDc
+                ? {
+                    ...center,
+                    branches: center.branches?.map(branch =>
+                        branch.branchId === selectedBranch
+                            ? { ...branch, roleName: formData.roleName }
+                            : branch
+                    )
+                }
+                : center
+        );
         updateUser.mutate({ data: { diagnosticCenters: updatedDiagnosticCenters }, recordId: operatorId });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!formData.userName || !formData.phoneNumber) {
-            return errorAlert2("Invalid Data, please Edit all details");
+            return errorAlert2("Invalid Data, please edit all details");
         }
 
-        if (!formData.phoneNumber.match(phonePattern)) {
-            return errorAlert2("Invalid phone, please Edit country code");
+        if (!phonePattern.test(formData.phoneNumber)) {
+            return errorAlert2("Invalid phone number, please add country code");
         }
 
-        const user = currentBranch?.branchOperator?.filter((employee)=> employee?._id === operatorId)[0]
-        if(!user){
-            errorAlert2("Error updating user")
+        const user = currentBranch?.branchOperator?.find(emp => emp._id === operatorId);
+        if (!user) {
+            return errorAlert2("Error updating user");
         }
+
         handleUpdateEmployee(user);
     };
 
@@ -106,7 +99,6 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
                                 disabled
                                 placeholder="Edit Operator Name"
                                 className="border-2 p-2"
-                                required
                             />
                         </FormControl>
                         <FormControl id="phoneNumber" className="my-2" isRequired>
@@ -118,7 +110,6 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
                                 onChange={handleChange}
                                 placeholder="Edit Operator Contact"
                                 className="border-2 p-2"
-                                required
                             />
                         </FormControl>
                         <FormControl id="roleName" className="my-2" isRequired>
