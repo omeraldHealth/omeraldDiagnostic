@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { useMutation, useQuery, UseQueryOptions } from 'react-query';
+import { useMutation, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
 import { updateDiagProfileApi, createDiagReportsApi, uploadDiagnosticReportApi, uploadDiagnosticLogoApi, createDiagProfileApi, deleteDiagReportsApi, createDiagnosticUserApi, updateDiagnosticUserApi, getDiagnosticUserApi, getDiagProfileByPhoneApi, getDiagnosticSetting, getDiagProfileByIdApi } from '@utils/urls/app';
 
 // useQuery hook to get data
@@ -53,16 +53,34 @@ export function useCreateUser<TData, TVariables>(props: UseMutationProps<TData, 
   return createMutation('post', createDiagnosticUserApi, props);
 }
 
-export function useUpdateUser<TData, TVariables>(props: UseMutationProps<TData, TVariables>, userId: String) {
-  return createMutation('put', updateDiagnosticUserApi+userId, props);
+// update
+function UpdateMutation<TData, TVariables>(
+  method: 'put',
+  url: string,
+  { onSuccess, onError }: UseMutationProps<TData, TVariables>,
+) {
+  return useMutation(
+    (data: any) =>
+      axios[method](url + data?.recordId, data?.data, {
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    {
+      onSuccess,
+      onError,
+    },
+  );
+}
+
+export function useUpdateUser<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {
+  return UpdateMutation('put', updateDiagnosticUserApi, props);
 }
 
 export function useCreateDiagnostic<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {
   return createMutation('post', createDiagProfileApi, props);
 }
 
-export function useUpdateDiagnostic<TData, TVariables>(props: UseMutationProps<TData, TVariables>,profileId: String) {
-  return createMutation('put', updateDiagProfileApi+ profileId, props);
+export function useUpdateDiagnostic<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {
+  return UpdateMutation('put', updateDiagProfileApi, props);
 }
 
 export function useDeleteReports<TData, TVariables>(id: string, props: UseMutationProps<TData, TVariables>) {
@@ -80,3 +98,14 @@ export function useUploadBranding<TData, TVariables>(props: UseMutationProps<TDa
 export function useCreateReport<TData, TVariables>(props: UseMutationProps<TData, TVariables>) {
   return createMutation('post', createDiagReportsApi, props);
 }
+
+export function useInvalidateQuery() {
+  const queryClient = useQueryClient();
+
+  const invalidateQuery = (queryKey: string) => {
+    queryClient.invalidateQueries(queryKey);
+  };
+
+  return invalidateQuery;
+}
+

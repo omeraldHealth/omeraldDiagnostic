@@ -34,7 +34,7 @@ export default function PathologistComp() {
         errorAlert2("Error adding pathologist")
         setLoading(false)
     }
-  },profile?._id)
+  })
 
 
   const handleAdd = async (data) => {

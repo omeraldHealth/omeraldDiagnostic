@@ -1,5 +1,6 @@
-import { PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { Button } from "@chakra-ui/react";
 import { Space } from "antd";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 export const ADMIN_USER_ACTIVITES_COLUMNS = [
   {
@@ -24,23 +25,52 @@ export const ADMIN_USER_ACTIVITES_COLUMNS = [
   },
 ];
 
-export const BRANCH_EMPLOYEE_COLUMNS =  [
-  {
-    title: 'Operator Name',
-    dataIndex: 'userName',
-    key: 'userName',  
-  },
-  {
-    title: 'Operator Contact',
-    dataIndex: 'phoneNumber',
-    key: 'phoneNumber'
-  },
-  {
-    title: 'Operator Role',
-    dataIndex: 'roleName',
-    key: 'roleName',
-  }
-];
+export const BRANCH_EMPLOYEE_COLUMNS = ({selectedBranch, handleDelete, handleEdit}) => {
+  return [
+    {
+      title: 'Operator Name',
+      dataIndex: 'userName',
+      key: 'userName',  
+    },
+    {
+      title: 'Operator Contact',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber'
+    },
+    {
+      title: 'Operator Role',
+      dataIndex: 'roleName',
+      key: 'roleName',
+      render: (_, record) => {
+        const x = getRoleName(record?.diagnosticCenters, selectedBranch);
+        return <p className='capitalize'>{x ? x: ""}</p>
+      }
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => {
+        return (
+          <Space size="middle">
+            <a href="#">
+              <FaEdit
+                className="text-red-gray"
+                onClick={() => handleEdit(record)}
+              />
+            </a>
+            <a href="#">
+              <FaTrash
+                className="text-red-500"
+                onClick={() => handleDelete(record)}
+              />
+            </a>
+          </Space>
+        );
+      },
+    },
+    
+  ];
+} 
 
 export const ADMIN_USER_COLUMNS = [
   {
@@ -69,3 +99,16 @@ export const ADMIN_USER_COLUMNS = [
     key: 'action',
   },
 ];
+
+function getRoleName(data, branchId) {
+  const diagnostic = data.find(d => 
+      d.branches.some(branch => branch.branchId === branchId)
+  );
+
+  if (diagnostic) {
+      const branch = diagnostic.branches.find(branch => branch.branchId === branchId);
+      return branch ? branch.roleName : null;
+  }
+
+  return null;
+}

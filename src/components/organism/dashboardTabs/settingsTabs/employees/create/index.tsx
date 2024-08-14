@@ -3,11 +3,11 @@ import { errorAlert2, successAlert, warningAlert } from "@components/atoms/alert
 import { useCurrentBranchValue, useProfileValue, useUserValues } from "@components/common/constants/recoilValues";
 import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
 import { getDiagnosticUserApi } from "@utils/index";
-import { useCreateUser, useUpdateDiagnostic, useUpdateUser } from "@utils/reactQuery";
+import { useCreateUser, useInvalidateQuery, useUpdateDiagnostic, useUpdateUser } from "@utils/reactQuery";
 import { phonePattern } from "@utils/types/molecules/forms.interface";
 import { Button } from "antd";
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
 
 interface User {
     userName: String,
@@ -26,13 +26,16 @@ const AddEmployee = ({ handleShowBranch }) => {
     const [selectedBranch] = usePersistedBranchState()
     const currentBranch = useCurrentBranchValue()
     const profileValue = useProfileValue()
-    const userValue = useUserValues()
     const [formData, setFormData] = useState(initialFormData);
+    const invalidateQuery = useInvalidateQuery()
    
     const updateProfile = useUpdateDiagnostic({
         onSuccess: (resp) => {
             if(resp.status == 200){
                 successAlert("DC updated succesfully");
+                invalidateQuery("userData")
+                invalidateQuery("diagnosticCenter")
+                invalidateQuery("diagnosticSettings")
                 handleShowBranch(false)
             }
         },
@@ -40,7 +43,7 @@ const AddEmployee = ({ handleShowBranch }) => {
            errorAlert2("Error creating employee")
            handleShowBranch(false)
         }
-    },selectedDc)
+    })
 
     const updateUser = useUpdateUser({
         onSuccess: (resp) => {
@@ -53,7 +56,8 @@ const AddEmployee = ({ handleShowBranch }) => {
            errorAlert2("Error creating employee")
            handleShowBranch(false)
         }
-    },userValue?._id)
+    //@ts-ignore
+    })
     
     const createUser = useCreateUser({
         onSuccess: (resp) => {
@@ -77,7 +81,7 @@ const AddEmployee = ({ handleShowBranch }) => {
                     );
                 }
     
-                updateProfile.mutate({ data: { branches } });
+                updateProfile.mutate({ data: { branches }, recordId:profileValue?._id });
             }
         },
         onError: (err) => {
@@ -176,10 +180,9 @@ const AddEmployee = ({ handleShowBranch }) => {
             return dc; // Return the original diagnostic center if it doesn't match
         });
     
-        updateUser.mutate({ data: { diagnosticCenters: updatedDiagnosticCenters } });
+        updateUser.mutate({ data: { diagnosticCenters: updatedDiagnosticCenters }, recordId: userData?._id },  );
     };
     
-
     const updateDcAndBranch = (userData) => {
         const newDc = {
             diagnostic: selectedDc,

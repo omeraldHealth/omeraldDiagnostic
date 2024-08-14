@@ -29,7 +29,7 @@ const OnboardNewComponents: React.FC = () => {
         onError:(err)=>{
           warningAlert("Error updating user"+ err)
         }
-    }, userData?.data?._id) 
+    }) 
 
     const createDiagProfile = useCreateDiagnostic({
         onSuccess:(data) => {
@@ -46,7 +46,7 @@ const OnboardNewComponents: React.FC = () => {
                         ]
                     }
                 let updatedDC = [...userData?.data?.diagnosticCenters, newDiagnosticCenters];
-                updateUser.mutate({data: {diagnosticCenters: updatedDC}})
+                updateUser.mutate({data: {diagnosticCenters: updatedDC, recordId: userData?._id }})
             }
         },
         onError:(err)=>{
