@@ -8,6 +8,7 @@ import { phonePattern } from "@utils/types/molecules/forms.interface";
 import { Button } from "antd";
 import { useState } from "react";
 import axios from "axios";
+import { useActivityLogger } from "@components/common/logger.tsx/activity";
 
 
 const AddEmployee = ({ handleShowBranch }) => {
@@ -22,6 +23,7 @@ const AddEmployee = ({ handleShowBranch }) => {
     const profileValue = useProfileValue();
     const [formData, setFormData] = useState(initialFormData);
     const invalidateQuery = useInvalidateQuery();
+    const logActivity = useActivityLogger();
 
     const updateProfile = useUpdateDiagnostic({
         onSuccess: (resp) => {
@@ -37,8 +39,9 @@ const AddEmployee = ({ handleShowBranch }) => {
     });
 
     const updateUser = useUpdateUser({
-        onSuccess: () => {
+        onSuccess: (resp) => {
             successAlert("User updated successfully");
+            logActivity({activity: "Created Employee "+ resp?.data?.userName})
             handleShowBranch(false);
         },
         onError: () => errorAlert2("Error creating employee"),
@@ -99,6 +102,11 @@ const AddEmployee = ({ handleShowBranch }) => {
                 const userData = resp.data;
                 const diagPresent = userData.diagnosticCenters.some(dc => dc.diagnostic?._id === selectedDc);
                 const branchPresent = userData.diagnosticCenters.some(dc => dc.branches.some(branch => branch.branchId === selectedBranch));
+
+                if(branchPresent){
+                    const branches = getUpdatedBranch(resp?.data?._id);
+                    updateProfile.mutate({ data: { branches }, recordId: profileValue?._id });
+                }
 
                 if (!diagPresent) {
                     updateDcAndBranch(userData);

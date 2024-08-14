@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCurrentBranchValue, useProfileValue, useUserValues } from '@components/common/constants/recoilValues';
 import { CommonSettingTable } from '../utils/table';
 import { BRANCH_EMPLOYEE_COLUMNS } from '../utils/tabs';
@@ -23,6 +23,14 @@ export const EmployeesTab = () => {
 
     const invalidateQuery  = useInvalidateQuery()
     const handleSwitch = (checked: boolean) => {setAdd(checked)}
+
+
+    useEffect(()=>{
+      invalidateQuery("userData")
+      invalidateQuery("diagnosticCenter")
+      invalidateQuery("diagnosticSettings")
+    },[])
+
     const handleShowBranch = (value) => {
       setAdd(value);
     }

@@ -1,6 +1,6 @@
 import { FormControl, FormLabel, Select, Input, Stack } from "@chakra-ui/react";
 import { errorAlert2, successAlert, warningAlert2 } from "@components/atoms/alerts/alert";
-import { useCurrentBranchValue, useProfileValue } from "@components/common/constants/recoilValues";
+import { useCurrentBranchValue, useProfileValue, useUserValues } from "@components/common/constants/recoilValues";
 import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
 import { useInvalidateQuery, useUpdateUser } from "@utils/reactQuery";
 import { phonePattern } from "@utils/types/molecules/forms.interface";
@@ -8,6 +8,7 @@ import { Button } from "antd";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getRoleNameByBranchId } from "../../utils/functions";
+import { useActivityLogger } from "@components/common/logger.tsx/activity";
 
 
 const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
@@ -21,6 +22,7 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
     const currentBranch = useCurrentBranchValue();
     const [formData, setFormData] = useState(initialFormData);
     const invalidateQuery = useInvalidateQuery();
+    const logActivity = useActivityLogger();
 
     useEffect(()=>{
         const user = currentBranch?.branchOperator?.filter((employee)=> employee?._id === operatorId)
@@ -36,12 +38,13 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
     },[])
 
     const updateUser = useUpdateUser({
-        onSuccess: () => {
+        onSuccess: (resp) => {
             warningAlert2("User updated successfully");
             invalidateQuery("userData");
             invalidateQuery("diagnosticCenter");
             invalidateQuery("diagnosticSettings");
             handleEditEmployee(false);
+            logActivity({activity: "Updated User role for "+resp?.data?.userName})
         },
         onError: () => errorAlert2("Error creating employee"),
     });
