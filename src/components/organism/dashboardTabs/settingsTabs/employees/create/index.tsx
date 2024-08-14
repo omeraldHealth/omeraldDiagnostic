@@ -23,7 +23,6 @@ const AddEmployee = ({ handleShowBranch }) => {
     const profileValue = useProfileValue();
     const [formData, setFormData] = useState(initialFormData);
     const invalidateQuery = useInvalidateQuery();
-    const logActivity = useActivityLogger();
 
     const updateProfile = useUpdateDiagnostic({
         onSuccess: (resp) => {
@@ -41,7 +40,6 @@ const AddEmployee = ({ handleShowBranch }) => {
     const updateUser = useUpdateUser({
         onSuccess: (resp) => {
             successAlert("User updated successfully");
-            logActivity({activity: "Created Employee "+ resp?.data?.userName})
             handleShowBranch(false);
         },
         onError: () => errorAlert2("Error creating employee"),
@@ -65,7 +63,6 @@ const AddEmployee = ({ handleShowBranch }) => {
             if (resp.status === 201) {
                 successAlert("Employee created successfully");
                 const branches = getUpdatedBranch(resp?.data?._id);
-                logActivity({activity: 'Created Employee '+resp?.data?.userName})
                 updateProfile.mutate({ data: { branches }, recordId: profileValue?._id });
             }
         },

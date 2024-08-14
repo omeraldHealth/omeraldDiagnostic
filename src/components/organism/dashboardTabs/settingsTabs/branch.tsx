@@ -21,7 +21,6 @@ export default function BranchComp() {
   const profile = useProfileValue()
   const [loading,setLoading] = useState(false)
   const user = useUserValues()
-  const {logActivity} = useActivityLogger()
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data)=>{

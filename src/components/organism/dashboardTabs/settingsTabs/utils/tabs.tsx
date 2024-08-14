@@ -102,13 +102,13 @@ export const BRANCH_EMPLOYEE_COLUMNS = ({selectedBranch, handleDelete, handleEdi
 } 
 
 function getRoleName(data, branchId) {
-  const diagnostic = data.find(d => 
+  const diagnostic = data?.find(d => 
       d.branches.some(branch => branch.branchId === branchId)
   );
 
   if (diagnostic) {
-      const branch = diagnostic.branches.find(branch => branch.branchId === branchId);
-      return branch ? branch.roleName : null;
+      const branch = diagnostic?.branches.find(branch => branch.branchId === branchId);
+      return branch ? branch?.roleName : null;
   }
 
   return null;

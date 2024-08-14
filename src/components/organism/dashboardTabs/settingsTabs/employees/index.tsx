@@ -22,7 +22,6 @@ export const EmployeesTab = () => {
     const updateProfile = useUpdateDiagnostic({})
     const updateUser = useUpdateUser({})
 
-    const logActivity = useActivityLogger();
     const invalidateQuery  = useInvalidateQuery()
     const handleSwitch = (checked: boolean) => {setAdd(checked)}
 
@@ -88,11 +87,8 @@ export const EmployeesTab = () => {
       updateUser.mutate({data: {diagnosticCenters: updatedDiagCenters}, recordId: record?._id},{
         onSuccess:(resp)=>{
           if(resp.status == 200){
-            // successAlert("Updated User successfully")
             invalidateQuery("userData")
             invalidateQuery("diagnosticCenter")
-            invalidateQuery("diagnosticSettings")
-            logActivity({activity: 'Deleted Employee '+record?.userName})
           }
         },
         onError:()=>{

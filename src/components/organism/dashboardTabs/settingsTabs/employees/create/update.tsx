@@ -22,7 +22,6 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
     const currentBranch = useCurrentBranchValue();
     const [formData, setFormData] = useState(initialFormData);
     const invalidateQuery = useInvalidateQuery();
-    const logActivity = useActivityLogger();
 
     useEffect(()=>{
         const user = currentBranch?.branchOperator?.filter((employee)=> employee?._id === operatorId)
@@ -43,7 +42,6 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
             invalidateQuery("userData");
             invalidateQuery("diagnosticCenter");
             handleEditEmployee(false);
-            logActivity({activity: "Updated User role for "+resp?.data?.userName})
         },
         onError: () => errorAlert2("Error creating employee"),
     });
