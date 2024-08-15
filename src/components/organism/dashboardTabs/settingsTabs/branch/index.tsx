@@ -48,7 +48,7 @@ function BranchTab() {
   const deleteBranch = useDeleteBranch({});
 
   useEffect(() => {
-    invalidateQuery("diagnosticCenter");
+     invalidateQuery("diagnosticCenter");
   }, []);
 
   const handleSwitch = (checked: boolean) => setAddBranch(checked);
@@ -59,7 +59,6 @@ function BranchTab() {
   };
 
   const handleEdit = (record: any) => {
-    console.log(record);
     setBranchId(record?._id);
     setIsEdit(true);
     setAddBranch(true);

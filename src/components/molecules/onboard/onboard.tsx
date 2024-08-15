@@ -5,6 +5,7 @@ import {
   useCreateDiagnostic,
   useCreateDiagnosticBranch,
   useGetUser,
+  useInvalidateQuery,
   useQueryGetData,
   useUpdateUser,
 } from "@utils/reactQuery";
@@ -14,6 +15,9 @@ import React, { useState } from "react";
 import { OnboardingForm } from "./onboardForm";
 import { OnboardingSummary } from "./summary";
 import { useUserValues } from "@components/common/constants/recoilValues";
+import { userState } from "@components/common/recoil/user";
+import { useSetRecoilState } from "recoil";
+import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
 
 const OnboardNewComponents: React.FC = () => {
   const [formData, setFormData] = useState({});
@@ -21,20 +25,29 @@ const OnboardNewComponents: React.FC = () => {
   const { user } = useUser();
   const router = useRouter();
   const userPhoneNumber = user?.phoneNumbers[0]?.phoneNumber;
+
   const {
     data: userData,
     refetch,
     isLoading,
   } = useGetUser({ userPhoneNumber: userPhoneNumber });
+
   const next = () => setCurrent(current + 1);
   const prev = () => setCurrent(current - 1);
+  const invalidateQuery = useInvalidateQuery()
+  const setUserRecoil = useSetRecoilState(userState);
+  const [selectedDc,setSelectedDc] = usePersistedDCState()
+  const [selectedBranch,setSelectedBranch] = usePersistedBranchState()
   const userValue = useUserValues();
 
   const updateUser = useUpdateUser({
-    onSuccess: (data) => {
+    onSuccess: (resp) => {
       successAlert("User Updated Succesfully");
       refetch();
-      if (!isLoading && userData?.data?._id) {
+      if (!isLoading && resp?.data?._id) {
+        setUserRecoil(resp?.data)
+        invalidateQuery("userData")
+        invalidateQuery("diagnosticCenter")
         router.push("/chooseDc");
       }
     },
@@ -74,6 +87,8 @@ const OnboardNewComponents: React.FC = () => {
   const createDiagBranch = useCreateDiagnosticBranch({});
 
   const handleSubmit = () => {
+    setSelectedDc(null)
+    setSelectedBranch(null)
     let branchDetails = {
       branchName: formData?.branchName,
       branchContact: formData?.branchContact,

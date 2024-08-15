@@ -1,9 +1,11 @@
 import { UploadOutlined } from "@ant-design/icons";
 import { FormControl, FormLabel, Input, Stack } from "@chakra-ui/react";
-import { errorAlert2, successAlert } from "@components/atoms/alerts/alert";
+import { errorAlert2, successAlert, warningAlert2 } from "@components/atoms/alerts/alert";
 import {
   useCurrentBranchValue,
 } from "@components/common/constants/recoilValues";
+import { useActivityLogger } from "@components/common/logger.tsx/activity";
+import { branchState } from "@components/common/recoil/branch/branch";
 import {
   usePersistedBranchState
 } from "@components/common/recoil/hooks/usePersistedState";
@@ -15,6 +17,7 @@ import {
 import { Button, Spin, Upload } from "antd";
 import axios from "axios";
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 const AddPathologist = ({ handleShowPathologist }) => {
   const [selectedBranch] = usePersistedBranchState();
@@ -22,6 +25,8 @@ const AddPathologist = ({ handleShowPathologist }) => {
   const updateBranch = useUpdateBranch({});
   const [loading, setLoading] = useState(false);
   const invalidateQuery = useInvalidateQuery();
+  const logActivity = useActivityLogger()
+  const setCurrentBranch = useSetRecoilState(branchState)
 
   const [formData, setFormData] = useState({
     name: "",
@@ -55,9 +60,11 @@ const AddPathologist = ({ handleShowPathologist }) => {
       { data: { pathologistDetail: pathList }, recordId: selectedBranch },
       {
         onSuccess: (resp) => {
-          successAlert("Path Added succesfully");
+          warningAlert2("Path Added succesfully");
+          invalidateQuery("diagnosticBranch");
+          setCurrentBranch(resp?.data)
+          logActivity({ activity: "Added Pathologist" });
           handleShowPathologist(false);
-          invalidateQuery("diangosticBranch");
         },
         onError: (resp) => {
           errorAlert2("Error adding Pathologist");

@@ -224,12 +224,12 @@ export const PATHOLOGIST_COLUMNS = ({ handleEdit, handleDelete }) => [
     render: (_, record) => {
       return (
         <Space size="middle">
-          <a href="#">
+          {/* <a href="#">
             <FaEdit
               className="text-red-gray"
               onClick={() => handleEdit(record)}
             />
-          </a>
+          </a> */}
           <a href="#">
             <FaTrash
               className="text-red-500"

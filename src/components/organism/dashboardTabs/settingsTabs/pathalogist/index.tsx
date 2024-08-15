@@ -33,6 +33,7 @@ import { useActivityLogger } from "@components/common/logger.tsx/activity";
 import { useSetRecoilState } from "recoil";
 import { profileState } from "@components/common/recoil/profile";
 import AddPathologist from "./create";
+import { branchState } from "@components/common/recoil/branch/branch";
 
 function PathologistTab() {
   const [addPathologist, setAddPathologist] = useState(false);
@@ -47,6 +48,7 @@ function PathologistTab() {
   const invalidateQuery = useInvalidateQuery();
   const logActivity = useActivityLogger();
   const setProfileData = useSetRecoilState(profileState);
+  const setCurrentBranch = useSetRecoilState(branchState)
 
   const updateBranch = useUpdateBranch({});
 
@@ -62,7 +64,6 @@ function PathologistTab() {
   };
 
   const handleEdit = (record: any) => {
-    console.log(record);
     setPathologistId(record?._id);
     setIsEdit(true);
     setAddPathologist(true);
@@ -79,6 +80,7 @@ function PathologistTab() {
           successAlert("Deleted path succesfully");
           invalidateQuery("diagnosticBranch");
           logActivity({ activity: "Deleted Pathologist " + record?.name });
+          setCurrentBranch(resp?.data)
         },
         onError: (err) => {
           errorAlert2("Error deleting pathologist");
