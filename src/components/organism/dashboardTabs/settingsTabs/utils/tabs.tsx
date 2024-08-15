@@ -1,5 +1,6 @@
 import { Space } from "antd";
 import moment from "moment";
+import Image from "next/image";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 export const ADMIN_USER_ACTIVITES_COLUMNS = [
@@ -120,7 +121,11 @@ function getRoleName(data, branchId) {
   return null;
 }
 
-export const BRANCH_DETAILS_COLUMNS = ({ handleEdit, handleDelete, currentBranch }) => [
+export const BRANCH_DETAILS_COLUMNS = ({
+  handleEdit,
+  handleDelete,
+  currentBranch,
+}) => [
   {
     title: "Branch Name",
     dataIndex: "branchName",
@@ -153,15 +158,70 @@ export const BRANCH_DETAILS_COLUMNS = ({ handleEdit, handleDelete, currentBranch
     title: "Action",
     key: "action",
     render: (_, record) => {
-
-      if (record?.branchContact === currentBranch?.branchContact 
-        && record?.branchName === currentBranch?.branchName
-        && record?.branchEmail === currentBranch?.branchEmail
-
-      ) { 
+      if (
+        record?.branchContact === currentBranch?.branchContact &&
+        record?.branchName === currentBranch?.branchName &&
+        record?.branchEmail === currentBranch?.branchEmail
+      ) {
         return null;
       }
 
+      return (
+        <Space size="middle">
+          <a href="#">
+            <FaEdit
+              className="text-red-gray"
+              onClick={() => handleEdit(record)}
+            />
+          </a>
+          <a href="#">
+            <FaTrash
+              className="text-red-500"
+              onClick={() => handleDelete(record)}
+            />
+          </a>
+        </Space>
+      );
+    },
+  },
+];
+
+export const PATHOLOGIST_COLUMNS = ({ handleEdit, handleDelete }) => [
+  {
+    title: "Pathologist Name",
+    dataIndex: "name",
+    key: "name",
+    render: (text: any) => <a className="text-blue-800 font-medium">{text}</a>,
+    sorter: (a: any, b: any) => a.name.length - b.name.length,
+  },
+  {
+    title: "Pathologist Designation",
+    dataIndex: "designation",
+    key: "designation",
+    render: (text: any) => <a>{text}</a>,
+    sorter: (a: any, b: any) => a.designation.length - b.designation.length,
+  },
+  {
+    title: "Pathologist Signature",
+    dataIndex: "signature",
+    key: "signature",
+    sorter: (a: any, b: any) => a.signature.length - b.signature.length,
+    render: (text: any) => (
+      <span className="w-[20px] h-[20px]">
+        {text ? (
+          <span className="object-cover border rounded">
+            <Image alt="" width={150} height={40} src={text} />
+          </span>
+        ) : (
+          <p className="font-light text-sm text-red-600">Not found</p>
+        )}
+      </span>
+    ),
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (_, record) => {
       return (
         <Space size="middle">
           <a href="#">

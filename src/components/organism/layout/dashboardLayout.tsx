@@ -47,7 +47,6 @@ export function DashboardLayout({ children }: any) {
     }
   }, [selectedDc]);
 
-
   //@ts-ignore
   const isValidProfile = profileData?.data?._id;
 

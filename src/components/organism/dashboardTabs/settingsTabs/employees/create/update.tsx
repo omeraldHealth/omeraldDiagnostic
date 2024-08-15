@@ -40,8 +40,8 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
   const updateUser = useUpdateUser({
     onSuccess: (resp) => {
       warningAlert2("User updated successfully");
-      invalidateQuery("diagnosticBranch")
-      logActivity({activity: 'Updated Role For: '+resp?.data?.userName})
+      invalidateQuery("diagnosticBranch");
+      logActivity({ activity: "Updated Role For: " + resp?.data?.userName });
       handleEditEmployee(false);
     },
     onError: () => errorAlert2("Error updating employee"),

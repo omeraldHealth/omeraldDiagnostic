@@ -3,7 +3,11 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["omerald.s3.ap-northeast-1.amazonaws.com"],
+    domains: [
+      "omerald.s3.ap-northeast-1.amazonaws.com",
+      "omerald-diag-preprod.s3.amazonaws.com",
+      "omerald-*.s3.amazonaws.com",
+    ],
   },
   eslint: {
     ignoreDuringBuilds: true,

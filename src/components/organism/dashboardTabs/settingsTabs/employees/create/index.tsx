@@ -41,8 +41,8 @@ const AddEmployee = ({ handleShowBranch }) => {
   const updateBranchMut = useUpdateBranch({
     onSuccess: (resp) => {
       handleShowBranch(false);
-      invalidateQuery("diagnosticBranch")
-      logActivity({activity: 'Added New Employee'})
+      invalidateQuery("diagnosticBranch");
+      logActivity({ activity: "Added New Employee" });
     },
     onError: () => errorAlert2("Error updating diagnostic center"),
   });
@@ -59,15 +59,15 @@ const AddEmployee = ({ handleShowBranch }) => {
   const createUser = useCreateUser({
     onSuccess: async (resp) => {
       successAlert("Employee created successfully");
-  
+
       // Check if currentBranch exists and resp.data._id is available
       if (currentBranch && resp?.data?._id) {
         const branchOperator = [...currentBranch.branchOperator, resp.data._id];
         try {
           // Assuming `updateBranchMut` is a mutation hook or function that handles the update
-          await updateBranchMut.mutateAsync({ 
-            data: { branchOperator }, 
-            recordId: selectedBranch 
+          await updateBranchMut.mutateAsync({
+            data: { branchOperator },
+            recordId: selectedBranch,
           });
         } catch (error) {
           errorAlert2("Error updating branch: " + error.message);
@@ -79,7 +79,6 @@ const AddEmployee = ({ handleShowBranch }) => {
     },
     onError: (err) => errorAlert2("Error creating employee: " + err.message),
   });
-  
 
   const getUpdatedBranch = (userId) => ({
     ...currentBranch,
@@ -185,7 +184,10 @@ const AddEmployee = ({ handleShowBranch }) => {
       },
       {
         onSuccess: () => {
-          const branchOperator = [...currentBranch.branchOperator, userData._id];
+          const branchOperator = [
+            ...currentBranch.branchOperator,
+            userData._id,
+          ];
 
           updateBranchMut.mutate({
             data: { branchOperator },
@@ -208,7 +210,10 @@ const AddEmployee = ({ handleShowBranch }) => {
       },
       {
         onSuccess: () => {
-          const branchOperator = [...currentBranch.branchOperator, userData._id];
+          const branchOperator = [
+            ...currentBranch.branchOperator,
+            userData._id,
+          ];
 
           updateBranchMut.mutate({
             data: { branches },

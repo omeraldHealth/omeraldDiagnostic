@@ -7,16 +7,23 @@ import {
   useUpdateBranch,
   useUpdateDiagnostic,
 } from "@utils/reactQuery";
-import { useCurrentBranchValue, useUserValues } from "../constants/recoilValues";
+import {
+  useCurrentBranchValue,
+  useUserValues,
+} from "../constants/recoilValues";
 import {
   usePersistedBranchState,
   usePersistedDCState,
 } from "../recoil/hooks/usePersistedState";
 
 export function useActivityLogger() {
-  const user = useUserValues()
+  const user = useUserValues();
   const [selectedBranch] = usePersistedBranchState();
-  const { data: branchData, isLoading, refetch } = useGetDcBranch({ selectedBranchId: selectedBranch });
+  const {
+    data: branchData,
+    isLoading,
+    refetch,
+  } = useGetDcBranch({ selectedBranchId: selectedBranch });
   const updateBranch = useUpdateBranch({});
 
   useEffect(() => {
@@ -29,7 +36,7 @@ export function useActivityLogger() {
       console.warn("Branch data is still loading. Please wait.");
       return;
     }
-    
+
     try {
       const newActivity = { activity, user: user?._id };
       const activities = [...(branchData?.data?.activities || []), newActivity];

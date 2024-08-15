@@ -26,7 +26,7 @@ import { useActivityLogger } from "@components/common/logger.tsx/activity";
 
 export const EmployeesTab = () => {
   const [addBranch, setAddBranch] = useState(false);
-  const [selectedDc] = usePersistedDCState()
+  const [selectedDc] = usePersistedDCState();
   const [selectedBranch] = usePersistedBranchState();
   const [isEdit, setIsEdit] = useState(false);
   const [operatorId, setOperatorId] = useState("");
@@ -35,9 +35,11 @@ export const EmployeesTab = () => {
   const updateBranch = useUpdateBranch({});
   const updateUser = useUpdateUser({});
   const invalidateQuery = useInvalidateQuery();
-  const logActivity = useActivityLogger()
+  const logActivity = useActivityLogger();
 
-  useEffect(() => { invalidateQuery("diagnosticBranch")},[])
+  useEffect(() => {
+    invalidateQuery("diagnosticBranch");
+  }, []);
 
   const handleSwitch = (checked: boolean) => setAddBranch(checked);
 
@@ -55,7 +57,9 @@ export const EmployeesTab = () => {
   const handleDelete = (record: any) => removeUserFromBranch(record);
 
   const removeUserFromBranch = (record: any) => {
-    const branchOperator = currentBranch?.branchOperator?.filter((op) => op?._id !== record?._id)
+    const branchOperator = currentBranch?.branchOperator?.filter(
+      (op) => op?._id !== record?._id,
+    );
     updateBranch.mutate(
       {
         data: { branchOperator },
@@ -65,8 +69,8 @@ export const EmployeesTab = () => {
         onSuccess: (resp) => {
           if (resp.status === 200) {
             warningAlert2("Deleted Employee successfully");
-            logActivity({activity: "Delete Employee "+record?.userName})
-            invalidateQuery("diagnosticBranch")
+            logActivity({ activity: "Delete Employee " + record?.userName });
+            invalidateQuery("diagnosticBranch");
           }
           removeBranchFromUser(record);
         },

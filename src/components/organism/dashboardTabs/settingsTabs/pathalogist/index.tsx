@@ -2,41 +2,44 @@
 
 import {
   errorAlert,
+  errorAlert2,
   successAlert,
   warningAlert2,
 } from "@components/atoms/alerts/alert";
 import {
   useCurrentBranchValue,
+  useCurrentPathologistValue,
   useProfileValue,
 } from "@components/common/constants/recoilValues";
 import {
-  usePersistedBranchState,
+  usePersistedPathologistState,
   usePersistedDCState,
+  usePersistedBranchState,
 } from "@components/common/recoil/hooks/usePersistedState";
 import {
-  useDeleteBranch,
+  useDeletePathologist,
   useDeleteReports,
   useInvalidateQuery,
+  useUpdateBranch,
   useUpdateDiagnostic,
   useUpdateUser,
 } from "@utils/reactQuery";
 import { Switch } from "antd";
 import { useEffect, useState } from "react";
-import { removeBranchById } from "../utils/functions";
+import { removePathologistById } from "../utils/functions";
 import { CommonSettingTable } from "../utils/table";
-import { BRANCH_DETAILS_COLUMNS } from "../utils/tabs";
-import AddBranch from "./create";
+import { PATHOLOGIST_COLUMNS } from "../utils/tabs";
 import { useActivityLogger } from "@components/common/logger.tsx/activity";
 import { useSetRecoilState } from "recoil";
 import { profileState } from "@components/common/recoil/profile";
-import UpdateBranch from "./create/update";
+import AddPathologist from "./create";
 
-function BranchTab() {
-  const [addBranch, setAddBranch] = useState(false);
+function PathologistTab() {
+  const [addPathologist, setAddPathologist] = useState(false);
   const [selectedBranch] = usePersistedBranchState();
   const [selectedDc] = usePersistedDCState();
   const [isEdit, setIsEdit] = useState(false);
-  const [branchId, setBranchId] = useState("");
+  const [PathologistId, setPathologistId] = useState("");
   const currentBranch = useCurrentBranchValue();
   const profileValue = useProfileValue();
   const updateProfile = useUpdateDiagnostic({});
@@ -45,58 +48,46 @@ function BranchTab() {
   const logActivity = useActivityLogger();
   const setProfileData = useSetRecoilState(profileState);
 
-  const deleteBranch = useDeleteBranch({});
+  const updateBranch = useUpdateBranch({});
 
   useEffect(() => {
-    invalidateQuery("diagnosticCenter");
+    invalidateQuery("diagnosticBranch");
   }, []);
 
-  const handleSwitch = (checked: boolean) => setAddBranch(checked);
+  const handleSwitch = (checked: boolean) => setAddPathologist(checked);
 
-  const handleEditBranch = (value: boolean) => {
+  const handleEditPathologist = (value: boolean) => {
     setIsEdit(value);
-    setAddBranch(value);
+    setAddPathologist(value);
   };
 
   const handleEdit = (record: any) => {
     console.log(record);
-    setBranchId(record?._id);
+    setPathologistId(record?._id);
     setIsEdit(true);
-    setAddBranch(true);
-  };
-
-  const handleUpdateProfile = (record) => {
-    const branches = profileValue?.branches.filter(
-      (profil) => profil?._id !== record?._id,
-    );
-    updateProfile?.mutate(
-      { data: { branches }, recordId: selectedDc },
-      {
-        onSuccess: (resp) => {
-          invalidateQuery("diagnosticCenter");
-          setProfileData(resp?.data);
-          successAlert("Branch Deleted Successfully");
-          logActivity({ activity: "Delete Branch " + record?.branchName });
-        },
-      },
-    );
+    setAddPathologist(true);
   };
 
   const handleDelete = (record: any) => {
-    deleteBranch.mutate(
-      { recordId: record?._id },
+    const filteredPaths = currentBranch?.pathologistDetail?.filter(
+      (path) => path?._id !== record?._id,
+    );
+    updateBranch?.mutate(
+      { data: { pathologistDetail: filteredPaths }, recordId: selectedBranch },
       {
         onSuccess: (resp) => {
-          handleUpdateProfile(record);
+          successAlert("Deleted path succesfully");
+          invalidateQuery("diagnosticBranch");
+          logActivity({ activity: "Deleted Pathologist " + record?.name });
         },
-        onError: (resp) => {},
+        onError: (err) => {
+          errorAlert2("Error deleting pathologist");
+        },
       },
     );
   };
 
-  const columns = BRANCH_DETAILS_COLUMNS({
-    selectedBranch,
-    currentBranch,
+  const columns = PATHOLOGIST_COLUMNS({
     handleEdit,
     handleDelete,
   });
@@ -105,22 +96,28 @@ function BranchTab() {
     <div className="sdsa">
       <section className="my-2 py-2 flex justify-end">
         <Switch
-          checked={addBranch}
+          checked={addPathologist}
           style={{ backgroundColor: "orange" }}
           onChange={handleSwitch}
           checkedChildren="Add"
           unCheckedChildren="View"
         />
       </section>
-      {!addBranch ? (
-        <CommonSettingTable data={profileValue?.branches} columns={columns} />
+      {!addPathologist ? (
+        <CommonSettingTable
+          data={currentBranch?.pathologistDetail}
+          columns={columns}
+        />
       ) : isEdit ? (
-        <UpdateBranch handleEditBranch={handleEditBranch} branchId={branchId} />
+        <UpdatePathologist
+          handleEditPathologist={handleEditPathologist}
+          PathologistId={PathologistId}
+        />
       ) : (
-        <AddBranch handleShowBranch={setAddBranch} />
+        <AddPathologist handleShowPathologist={setAddPathologist} />
       )}
     </div>
   );
 }
 
-export default BranchTab;
+export default PathologistTab;

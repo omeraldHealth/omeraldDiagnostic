@@ -9,25 +9,32 @@ import { Activity } from "../dashboardTabs/settingsTabs/activity";
 import { Billing } from "../dashboardTabs/settingsTabs/billing/billing";
 import BranchTab from "../dashboardTabs/settingsTabs/branch";
 import { EmployeesTab } from "../dashboardTabs/settingsTabs/employees";
+import { Support } from "../dashboardTabs/settingsTabs/support";
+import PathalogistTab from "../dashboardTabs/settingsTabs/pathalogist";
+import PathologistTab from "../dashboardTabs/settingsTabs/pathalogist";
 
 export default function SettingsTabLayout() {
   const [activeKey, setActiveKey] = useRecoilState(settingTabState);
   const [selectedBranch] = usePersistedBranchState();
   const setCurrentBranch = useSetRecoilState(branchState);
-  const { data: branchData, isLoading, refetch } = useGetDcBranch({ selectedBranchId: selectedBranch })
+  const {
+    data: branchData,
+    isLoading,
+    refetch,
+  } = useGetDcBranch({ selectedBranchId: selectedBranch });
   const handleTabChange = (key: string) => {
     setActiveKey(key);
   };
 
   useEffect(() => {
-    if (branchData && !isLoading) { 
-      setCurrentBranch(branchData?.data)
+    if (branchData && !isLoading) {
+      setCurrentBranch(branchData?.data);
     }
-  }, [branchData])
+  }, [branchData]);
 
   useEffect(() => {
-    refetch()
-  }, [])
+    refetch();
+  }, []);
 
   const items = [
     {
@@ -50,15 +57,11 @@ export default function SettingsTabLayout() {
       label: "Branch Management",
       children: <BranchTab />,
     },
-    // {
-    //   key: '5',
-    //   label: "Pathologist Management",
-    // },
-    // {
-    //   key: '6',
-    //   label: 'Support',
-    //   Children: <Support/>
-    // },
+    {
+      key: "5",
+      label: "Pathologist Management",
+      children: <PathologistTab />,
+    },
   ];
 
   return (

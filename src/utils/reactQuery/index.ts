@@ -21,6 +21,7 @@ import {
   getDiagBranchByIdApi,
   updateDiagBranchApi,
   deleteDiagBranchApi,
+  uploadPathSignature,
 } from "@utils/urls/app";
 
 // useQuery hook to get data
@@ -147,6 +148,12 @@ export function useDeleteReports<TData, TVariables>(
   return createMutation("delete", deleteDiagReportsApi + id, props);
 }
 
+export function useCreatePathSignature<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return createMutation("post", uploadPathSignature, props);
+}
+
 // Delete
 
 function deleteMutation<TData, TVariables>(
@@ -154,14 +161,10 @@ function deleteMutation<TData, TVariables>(
   url: string,
   { onSuccess, onError }: UseMutationProps<TData, TVariables>,
 ) {
-  return useMutation(
-    (data: any) =>
-      axios[method](url+data?.recordId),
-    {
-      onSuccess,
-      onError,
-    },
-  );
+  return useMutation((data: any) => axios[method](url + data?.recordId), {
+    onSuccess,
+    onError,
+  });
 }
 
 export function useDeleteBranch<TData, TVariables>(

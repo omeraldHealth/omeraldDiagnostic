@@ -183,11 +183,6 @@ const FileUploader = ({ handleImage }) => {
         className="hidden"
         id="file-upload"
       />
-      {/* <label htmlFor="file-upload" className="cursor-pointer">
-<div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
-<span className="text-gray-400">Upload Logo</span>
-</div>
-</label> */}
     </div>
   );
 };
@@ -209,5 +204,3 @@ const uploadImage = async (file) => {
   } catch (error) {
     errorAlert2("Error uploading file:", error);
     throw new Error("File upload failed.");
-  }
-};

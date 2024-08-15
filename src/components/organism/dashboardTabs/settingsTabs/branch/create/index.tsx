@@ -3,13 +3,18 @@ import { errorAlert2, successAlert } from "@components/atoms/alerts/alert";
 import { useProfileValue } from "@components/common/constants/recoilValues";
 import { useActivityLogger } from "@components/common/logger.tsx/activity";
 import { usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
-import { useCreateDiagnosticBranch, useInvalidateQuery, useUpdateBranch, useUpdateDiagnostic } from "@utils/reactQuery";
+import {
+  useCreateDiagnosticBranch,
+  useInvalidateQuery,
+  useUpdateBranch,
+  useUpdateDiagnostic,
+} from "@utils/reactQuery";
 import { Button } from "antd";
 import { useState } from "react";
 
 const AddBranch = ({ handleShowBranch }) => {
-    const profileValue = useProfileValue()
-    const [selectedDc] = usePersistedDCState()
+  const profileValue = useProfileValue();
+  const [selectedDc] = usePersistedDCState();
   const [formData, setFormData] = useState({
     branchName: "",
     branchEmail: "",
@@ -17,24 +22,24 @@ const AddBranch = ({ handleShowBranch }) => {
     branchAddress: "",
   });
 
-const invalidateQuery = useInvalidateQuery();
-const logActivity = useActivityLogger()
-    
+  const invalidateQuery = useInvalidateQuery();
+  const logActivity = useActivityLogger();
+
   const updateProfile = useUpdateDiagnostic({
     onSuccess: () => {
-        successAlert("Branch added successfully");
-        logActivity({activity: "Branch added"})
-        handleShowBranch(false);
-        invalidateQuery("diagnosticCenter");
+      successAlert("Branch added successfully");
+      logActivity({ activity: "Created New Branch" });
+      handleShowBranch(false);
+      invalidateQuery("diagnosticCenter");
     },
     onError: (err) => errorAlert2("Error updating branch: " + err.message),
   });
-    
+
   const createBranch = useCreateDiagnosticBranch({
     onSuccess: (resp) => {
-          //@ts-ignore
-          const branches = [...profileValue?.branches, resp?.data?._id]
-          updateProfile.mutate({ data: { branches }, recordId: selectedDc })
+      //@ts-ignore
+      const branches = [...profileValue?.branches, resp?.data?._id];
+      updateProfile.mutate({ data: { branches }, recordId: selectedDc });
     },
     onError: (err) => errorAlert2("Error creating branch: " + err.message),
   });
@@ -56,7 +61,12 @@ const logActivity = useActivityLogger()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.branchName || !formData.branchEmail || !formData.branchContact || !formData.branchAddress) {
+    if (
+      !formData.branchName ||
+      !formData.branchEmail ||
+      !formData.branchContact ||
+      !formData.branchAddress
+    ) {
       return errorAlert2("Please fill in all required fields");
     }
 

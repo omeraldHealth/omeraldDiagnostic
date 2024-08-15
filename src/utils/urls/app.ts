@@ -33,6 +33,8 @@ export const uploadDiagnosticLogoApi =
   diagBackendApiPath + `s3/diagnostic/logoUpload`; // Endpoint to upload diagnostic report
 export const uploadDiagnosticReportApi =
   diagBackendApiPath + `s3/diagnostic/reportUpload`; // Endpoint to upload diagnostic logo
+export const uploadPathSignature =
+  diagBackendApiPath + "s3/diagnostic/signatureUpload";
 
 // External API path to get all admin report types
 export const getAdminReportTypesApi =
