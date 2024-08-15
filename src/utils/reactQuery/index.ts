@@ -15,9 +15,11 @@ import {
   createDiagnosticUserApi,
   updateDiagnosticUserApi,
   getDiagnosticUserApi,
-  getDiagProfileByPhoneApi,
   getDiagnosticSetting,
   getDiagProfileByIdApi,
+  createDiagBranchApi,
+  getDiagBranchByIdApi,
+  updateDiagBranchApi,
 } from "@utils/urls/app";
 
 // useQuery hook to get data
@@ -71,6 +73,14 @@ export function useGetDcProfile({ selectedCenterId }: any) {
   );
 }
 
+export function useGetDcBranch({ selectedBranchId }: any) {
+  return useQueryGetData(
+    "diagnosticBranch",
+    getDiagBranchByIdApi + selectedBranchId,
+    { enabled: !!selectedBranchId },
+  );
+}
+
 export function useGetDcSettings() {
   return useQueryGetData("diagnosticSettings", getDiagnosticSetting);
 }
@@ -111,10 +121,22 @@ export function useCreateDiagnostic<TData, TVariables>(
   return createMutation("post", createDiagProfileApi, props);
 }
 
+export function useCreateDiagnosticBranch<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return createMutation("post", createDiagBranchApi, props);
+}
+
 export function useUpdateDiagnostic<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
   return UpdateMutation("put", updateDiagProfileApi, props);
+}
+
+export function useUpdateBranch<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return UpdateMutation("put", updateDiagBranchApi, props);
 }
 
 export function useDeleteReports<TData, TVariables>(

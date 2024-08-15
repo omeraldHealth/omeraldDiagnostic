@@ -15,11 +15,10 @@ import {
   useUpdateUser,
 } from "@utils/reactQuery";
 import { Switch } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { removeBranchById } from "../utils/functions";
 import { CommonSettingTable } from "../utils/table";
 import { BRANCH_DETAILS_COLUMNS } from "../utils/tabs";
-
 
 function BranchTab() {
   const [addBranch, setAddBranch] = useState(false);
@@ -32,6 +31,8 @@ function BranchTab() {
   const updateProfile = useUpdateDiagnostic({});
   const updateUser = useUpdateUser({});
   const invalidateQuery = useInvalidateQuery();
+
+  useEffect(() => { invalidateQuery("diagnosticBranch")},[])
 
   const handleSwitch = (checked: boolean) => setAddBranch(checked);
 
@@ -65,10 +66,7 @@ function BranchTab() {
         />
       </section>
       {!addBranch ? (
-        <CommonSettingTable
-          data={profileValue?.branches}
-          columns={columns}
-        />
+        <CommonSettingTable data={profileValue?.branches} columns={columns} />
       ) : isEdit ? (
         <UpdateEmployee
           handleEditEmployee={handleEditEmployee}
@@ -79,6 +77,6 @@ function BranchTab() {
       )}
     </div>
   );
-};
+}
 
-export default BranchTab
+export default BranchTab;

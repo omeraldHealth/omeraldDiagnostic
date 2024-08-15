@@ -7,8 +7,9 @@ export const Activity = () => {
   const currentBranch = useCurrentBranchValue();
   // @ts-ignore
   const activities = currentBranch && currentBranch?.activities;
-  // @ts-ignore
+
   const sortedActivities = [...activities].sort(
+    // @ts-ignore
     (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
   );
 

@@ -1,58 +1,45 @@
+// @ts-nocheck
 import { useEffect } from "react";
 import {
+  useGetDcBranch,
   useGetDcProfile,
   useInvalidateQuery,
+  useUpdateBranch,
   useUpdateDiagnostic,
 } from "@utils/reactQuery";
-import { useUserValues } from "../constants/recoilValues";
+import { useCurrentBranchValue, useUserValues } from "../constants/recoilValues";
 import {
   usePersistedBranchState,
   usePersistedDCState,
 } from "../recoil/hooks/usePersistedState";
-import { useUpdatedBranch } from "@components/organism/dashboardTabs/utils";
 
 export function useActivityLogger() {
-  const user = useUserValues();
-  const updateProfile = useUpdateDiagnostic({});
+  const user = useUserValues()
   const [selectedBranch] = usePersistedBranchState();
-  const [selectedDc] = usePersistedDCState();
-  const { data: profileData, refetch } = useGetDcProfile({
-    selectedCenterId: selectedDc,
-  });
-  const invalidateQuery = useInvalidateQuery();
-  const updateCurrentBranch = useUpdatedBranch();
+  const { data: branchData, isLoading, refetch } = useGetDcBranch({ selectedBranchId: selectedBranch });
+  const updateBranch = useUpdateBranch({});
 
   useEffect(() => {
+    // Refetch branch data when component mounts
     refetch();
   }, [refetch]);
 
-  const logActivity = ({ activity }) => {
+  const logActivity = async ({ activity }) => {
+    if (isLoading) {
+      console.warn("Branch data is still loading. Please wait.");
+      return;
+    }
+    
     try {
-      const currentBranch = profileData?.data?.branches.find(
-        (branch) => branch._id === selectedBranch,
-      );
-      if (!currentBranch) return;
-
       const newActivity = { activity, user: user?._id };
-      const updatedBranch = {
-        ...currentBranch,
-        activities: [...(currentBranch?.activities || []), newActivity],
-      };
-      const updatedBranches = profileData?.data?.branches?.map((branch) =>
-        branch._id === selectedBranch ? updatedBranch : branch,
-      );
-      console.log(activity);
-      console.log(updatedBranches);
-      updateProfile.mutate(
-        { data: { branches: updatedBranches }, recordId: selectedDc },
-        {
-          onSuccess: (resp) => {
-            console.log(resp);
-            updateCurrentBranch(resp?.data);
-          },
-          onError: (err) => console.error("Failed to log activity:", err),
-        },
-      );
+      const activities = [...(branchData?.data?.activities || []), newActivity];
+
+      await updateBranch.mutateAsync({
+        data: { activities },
+        recordId: selectedBranch,
+      });
+
+      console.log("Activity logged successfully");
     } catch (error) {
       console.error("Error logging activity:", error);
     }

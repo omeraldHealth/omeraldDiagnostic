@@ -14,6 +14,14 @@ export const createDiagProfileApi =
 export const updateDiagProfileApi =
   diagBackendApiPath + `profiles/updateProfile/`; // Endpoint to update diagnostic profile
 
+export const getDiagBranchByIdApi = diagBackendApiPath + `branches/getBranch/`; // Endpoint to get diagnostic profile by phone
+export const createDiagBranchApi =
+  diagBackendApiPath + `branches/createBranch/`; // Endpoint to create diagnostic profile
+export const updateDiagBranchApi =
+  diagBackendApiPath + `branches/updateBranch/`; // Endpoint to update diagnostic profile
+export const deleteDiagBranchApi =
+  diagBackendApiPath + `branches/deleteBranch/`;
+
 // API paths for diagnostic reports
 export const getDiagReportsApi = diagBackendApiPath + `reports/getReports/`; // Endpoint to get diagnostic reports
 export const createDiagReportsApi =

@@ -3,6 +3,7 @@ import { getDiagnosticUserApi } from "@utils/index";
 import { Button, Steps } from "antd";
 import {
   useCreateDiagnostic,
+  useCreateDiagnosticBranch,
   useGetUser,
   useQueryGetData,
   useUpdateUser,
@@ -41,7 +42,6 @@ const OnboardNewComponents: React.FC = () => {
       warningAlert("Error updating user" + err);
     },
   });
-  console.log(userValue);
 
   const createDiagProfile = useCreateDiagnostic({
     onSuccess: (data) => {
@@ -71,27 +71,38 @@ const OnboardNewComponents: React.FC = () => {
     },
   });
 
+  const createDiagBranch = useCreateDiagnosticBranch({});
+
   const handleSubmit = () => {
-    let finalData = {
-      centerName: formData?.centerName,
-      email: formData?.email,
-      phoneNumber: formData?.phoneNumber,
-      ownerId: userData?.data?._id,
-      brandingInfo: {
-        logoUrl: formData?.brandLogo || null,
-      },
-      branches: [
-        {
-          branchName: formData?.branchName,
-          branchContact: formData?.branchContact,
-          branchAddress: formData?.branchAddress,
-          branchEmail: formData?.branchEmail,
-        },
-      ],
+    let branchDetails = {
+      branchName: formData?.branchName,
+      branchContact: formData?.branchContact,
+      branchAddress: formData?.branchAddress,
+      branchEmail: formData?.branchEmail,
     };
 
-    if (finalData) {
-      createDiagProfile.mutate({ data: finalData });
+    if (branchDetails) {
+      createDiagBranch?.mutate(
+        { data: branchDetails },
+        {
+          onSuccess: (resp) => {
+            if (resp?.status === 201) {
+              let centerDetails = {
+                branches: [resp?.data?._id],
+                centerName: formData?.centerName,
+                email: formData?.email,
+                phoneNumber: formData?.phoneNumber,
+                ownerId: userData?.data?._id,
+                brandingInfo: {
+                  logoUrl: formData?.brandLogo || null,
+                },
+              };
+
+              createDiagProfile.mutate({ data: centerDetails });
+            }
+          },
+        },
+      );
     }
   };
 

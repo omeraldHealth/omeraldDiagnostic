@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
+import { sideBarAtom } from "@components/common/recoil/sidebar";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import React, { Fragment } from "react";
 import { useRecoilState } from "recoil";
-import { sideBarAtom } from "@components/common/recoil/sidebar";
 import Sidebar from "./sidebar";
 
 export const DashboardSideBar: React.FC<any> = () => {

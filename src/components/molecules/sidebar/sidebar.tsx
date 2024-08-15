@@ -49,7 +49,11 @@ export default function Sidebar() {
       </div>
       <p className="text-sm text-center text-green-900 font-semi-bold absolute bottom-10">
         Copyright{" "}
-        <a href="https://omerald.com/" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://omerald.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           @Omerald
         </a>{" "}
         2023. <br />

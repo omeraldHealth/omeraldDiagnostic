@@ -11,29 +11,33 @@ import {
 } from "@components/common/recoil/hooks/usePersistedState";
 import {
   useInvalidateQuery,
+  useUpdateBranch,
   useUpdateDiagnostic,
   useUpdateUser,
 } from "@utils/reactQuery";
 import { Switch } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { removeBranchById } from "../utils/functions";
 import { CommonSettingTable } from "../utils/table";
 import { BRANCH_EMPLOYEE_COLUMNS } from "../utils/tabs";
 import AddEmployee from "./create";
 import UpdateEmployee from "./create/update";
+import { useActivityLogger } from "@components/common/logger.tsx/activity";
 
 export const EmployeesTab = () => {
   const [addBranch, setAddBranch] = useState(false);
+  const [selectedDc] = usePersistedDCState()
   const [selectedBranch] = usePersistedBranchState();
-  const [selectedDc] = usePersistedDCState();
   const [isEdit, setIsEdit] = useState(false);
   const [operatorId, setOperatorId] = useState("");
   const currentBranch = useCurrentBranchValue();
   const profileValue = useProfileValue();
-  const updateProfile = useUpdateDiagnostic({});
+  const updateBranch = useUpdateBranch({});
   const updateUser = useUpdateUser({});
   const invalidateQuery = useInvalidateQuery();
-  // const logActivity = useActivityLogger()
+  const logActivity = useActivityLogger()
+
+  useEffect(() => { invalidateQuery("diagnosticBranch")},[])
 
   const handleSwitch = (checked: boolean) => setAddBranch(checked);
 
@@ -51,26 +55,18 @@ export const EmployeesTab = () => {
   const handleDelete = (record: any) => removeUserFromBranch(record);
 
   const removeUserFromBranch = (record: any) => {
-    const updatedBranch = {
-      ...currentBranch,
-      branchOperator: currentBranch?.branchOperator?.filter(
-        (op) => op?._id !== record?._id,
-      ),
-    };
-
-    const updatedBranches = profileValue?.branches?.map((branch) =>
-      branch?._id === updatedBranch?._id ? updatedBranch : branch,
-    );
-
-    updateProfile.mutate(
+    const branchOperator = currentBranch?.branchOperator?.filter((op) => op?._id !== record?._id)
+    updateBranch.mutate(
       {
-        data: { branches: updatedBranches },
-        recordId: profileValue?._id,
+        data: { branchOperator },
+        recordId: selectedBranch,
       },
       {
         onSuccess: (resp) => {
           if (resp.status === 200) {
             warningAlert2("Deleted Employee successfully");
+            logActivity({activity: "Delete Employee "+record?.userName})
+            invalidateQuery("diagnosticBranch")
           }
           removeBranchFromUser(record);
         },

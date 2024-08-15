@@ -26,7 +26,7 @@ const TestTab = dynamic(
 );
 const SettingsTab = dynamic(
   () =>
-    import("@components/organism/dashboardTabs/settingsLayout").then(
+    import("@components/organism/layout/settingsLayout").then(
       (res) => res.default,
     ),
   { loading: () => <Spinner /> },
@@ -38,7 +38,7 @@ const DashboardTabsMap: {
   Dashboard: <DashboardTab />,
   "Tests Offered": <TestTab />,
   "View Reports": <ReportsTab />,
-  "Profile": <ProfileTab />,
+  Profile: <ProfileTab />,
   Settings: <SettingsTab />,
 };
 

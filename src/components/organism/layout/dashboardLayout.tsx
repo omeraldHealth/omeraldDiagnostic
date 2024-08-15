@@ -1,17 +1,13 @@
-import { useEffect } from "react";
 import { useSession } from "@clerk/nextjs";
-import { useRouter } from "next/router";
-import { useSetRecoilState } from "recoil";
-import { profileState } from "@components/common/recoil/profile/index";
-import { DashboardHeader } from "../../molecules/header";
-import { DashboardSideBar } from "@components/molecules/sidebar/index";
-import {
-  usePersistedBranchState,
-  usePersistedDCState,
-} from "@components/common/recoil/hooks/usePersistedState";
-import { useGetDcProfile } from "@utils/reactQuery";
 import { Spinner } from "@components/atoms/loader";
-import { branchState } from "@components/common/recoil/branch/branch";
+import { usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
+import { profileState } from "@components/common/recoil/profile/index";
+import { DashboardSideBar } from "@components/molecules/sidebar/index";
+import { useGetDcProfile } from "@utils/reactQuery";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { DashboardHeader } from "../../molecules/header";
 
 /**
  * Layout component for the dashboard.
@@ -21,7 +17,6 @@ import { branchState } from "@components/common/recoil/branch/branch";
 export function DashboardLayout({ children }: any) {
   const { session } = useSession();
   const [selectedDc] = usePersistedDCState();
-  const [selectedBranch] = usePersistedBranchState();
   const {
     data: profileData,
     isLoading,
@@ -29,7 +24,6 @@ export function DashboardLayout({ children }: any) {
   } = useGetDcProfile({ selectedCenterId: selectedDc });
   const router = useRouter();
   const setProfileRecoil = useSetRecoilState(profileState);
-  const setCurrentBranch = useSetRecoilState(branchState);
 
   useEffect(() => {
     if (session?.status !== "active") {
@@ -52,18 +46,6 @@ export function DashboardLayout({ children }: any) {
       refetch();
     }
   }, [selectedDc]);
-
-  useEffect(() => {
-    if (selectedBranch) {
-      // @ts-ignore
-      const branch = profileData?.data?.branches.find(
-        (branch: any) => branch._id === selectedBranch,
-      );
-      if (branch) {
-        setCurrentBranch(branch);
-      }
-    }
-  }, [selectedBranch, profileData]);
 
   //@ts-ignore
   const isValidProfile = profileData?.data?._id;

@@ -120,10 +120,7 @@ function getRoleName(data, branchId) {
   return null;
 }
 
-export const BRANCH_DETAILS_COLUMNS = (
-  handleEdit: any,
-  handleDelete: any,
-) => [
+export const BRANCH_DETAILS_COLUMNS = (handleEdit: any, handleDelete: any) => [
   {
     title: "Branch Name",
     dataIndex: "branchName",
@@ -153,25 +150,25 @@ export const BRANCH_DETAILS_COLUMNS = (
     sorter: (a: any, b: any) => a.branchAddress.length - b.branchAddress.length,
   },
   {
-      title: "Action",
-      key: "action",
-      render: (_, record) => {
-        return (
-          <Space size="middle">
-            <a href="#">
-              <FaEdit
-                className="text-red-gray"
-                onClick={() => handleEdit(record)}
-              />
-            </a>
-            <a href="#">
-              <FaTrash
-                className="text-red-500"
-                onClick={() => handleDelete(record)}
-              />
-            </a>
-          </Space>
-        );
-      },
+    title: "Action",
+    key: "action",
+    render: (_, record) => {
+      return (
+        <Space size="middle">
+          <a href="#">
+            <FaEdit
+              className="text-red-gray"
+              onClick={() => handleEdit(record)}
+            />
+          </a>
+          <a href="#">
+            <FaTrash
+              className="text-red-500"
+              onClick={() => handleDelete(record)}
+            />
+          </a>
+        </Space>
+      );
+    },
   },
 ];

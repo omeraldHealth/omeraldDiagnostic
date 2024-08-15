@@ -1,10 +1,7 @@
 // @ts-nocheck
 
 import { FormControl, FormLabel, Input, Select, Stack } from "@chakra-ui/react";
-import {
-  errorAlert2,
-  successAlert
-} from "@components/atoms/alerts/alert";
+import { errorAlert2, successAlert } from "@components/atoms/alerts/alert";
 import {
   useCurrentBranchValue,
   useProfileValue,
@@ -18,6 +15,7 @@ import { getDiagnosticUserApi } from "@utils/index";
 import {
   useCreateUser,
   useInvalidateQuery,
+  useUpdateBranch,
   useUpdateDiagnostic,
   useUpdateUser,
 } from "@utils/reactQuery";
@@ -40,13 +38,11 @@ const AddEmployee = ({ handleShowBranch }) => {
   const invalidateQuery = useInvalidateQuery();
   const logActivity = useActivityLogger();
 
-  const updateProfile = useUpdateDiagnostic({
+  const updateBranchMut = useUpdateBranch({
     onSuccess: (resp) => {
-      invalidateQuery("userData");
-      invalidateQuery("diagnosticCenter");
-      invalidateQuery("diagnosticSettings");
-      // logActivity({activity: "Updated User to branch "})
       handleShowBranch(false);
+      invalidateQuery("diagnosticBranch")
+      logActivity({activity: 'Added New Employee'})
     },
     onError: () => errorAlert2("Error updating diagnostic center"),
   });
@@ -61,13 +57,29 @@ const AddEmployee = ({ handleShowBranch }) => {
   });
 
   const createUser = useCreateUser({
-    onSuccess: (resp) => {
+    onSuccess: async (resp) => {
       successAlert("Employee created successfully");
-      const branches = getUpdatedBranch(resp.data._id);
-      updateProfile.mutate({ data: { branches }, recordId: profileValue?._id });
+  
+      // Check if currentBranch exists and resp.data._id is available
+      if (currentBranch && resp?.data?._id) {
+        const branchOperator = [...currentBranch.branchOperator, resp.data._id];
+        try {
+          // Assuming `updateBranchMut` is a mutation hook or function that handles the update
+          await updateBranchMut.mutateAsync({ 
+            data: { branchOperator }, 
+            recordId: selectedBranch 
+          });
+        } catch (error) {
+          errorAlert2("Error updating branch: " + error.message);
+        }
+      } else {
+        console.error("Current branch or new operator ID is not available");
+        errorAlert2("Failed to update branch due to missing data");
+      }
     },
-    onError: () => errorAlert2("Error creating employee"),
+    onError: (err) => errorAlert2("Error creating employee: " + err.message),
   });
+  
 
   const getUpdatedBranch = (userId) => ({
     ...currentBranch,
@@ -115,13 +127,13 @@ const AddEmployee = ({ handleShowBranch }) => {
         );
 
         if (branchPresent) {
-          const branches = getUpdatedBranch(data._id);
+          const branchOperator = [...currentBranch.branchOperator, data._id];
           if (
             !currentBranch.branchOperator?.find((op) => op._id === data._id)
           ) {
-            updateProfile.mutate({
-              data: { branches },
-              recordId: profileValue._id,
+            updateBranchMut.mutate({
+              data: { branchOperator },
+              recordId: selectedBranch,
             });
           } else {
             errorAlert2("User already exists in the current branch");
@@ -173,10 +185,11 @@ const AddEmployee = ({ handleShowBranch }) => {
       },
       {
         onSuccess: () => {
-          const branches = getUpdatedBranch(userData._id);
-          updateProfile.mutate({
-            data: { branches },
-            recordId: profileValue._id,
+          const branchOperator = [...currentBranch.branchOperator, userData._id];
+
+          updateBranchMut.mutate({
+            data: { branchOperator },
+            recordId: selectedBranch,
           });
         },
       },
@@ -195,8 +208,9 @@ const AddEmployee = ({ handleShowBranch }) => {
       },
       {
         onSuccess: () => {
-          const branches = getUpdatedBranch(userData._id);
-          updateProfile.mutate({
+          const branchOperator = [...currentBranch.branchOperator, userData._id];
+
+          updateBranchMut.mutate({
             data: { branches },
             recordId: profileValue._id,
           });
