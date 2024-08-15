@@ -13,7 +13,7 @@ const ProfileView = () => {
   }, [invalidateQuery]);
 
   return (
-    <div>
+    <div className="w-[100%]">
       <section className="gap-20 mx-20 mt-20 mb-10">
         <p className="font-bold my-2 underline">Diagnostic Center</p>
         <section className="bg-white p-4">
@@ -44,9 +44,9 @@ const OwnerDetails = ({ owner }) => (
 );
 
 const BranchList = ({ branches }) => (
-  <section className="w-full gap-20 mx-20">
+  <section className="w-[95%] gap-20 mx-20">
     <p className="font-bold my-2 underline">Branches</p>
-    <section className="grid grid-cols-4 gap-y-4 w-[80%]">
+    <section className="grid grid-cols-3 gap-8 w-[80%]">
       {branches?.map((branch) => (
         <BranchCard key={branch._id} branch={branch} />
       ))}
@@ -59,7 +59,7 @@ const BranchCard = ({ branch }) => {
   const isCurrentBranch = branch?._id === selectedBranch;
 
   return (
-    <section className="w-[15vw] h-[15vh] bg-white border-2 border-round-full p-4">
+    <section className="w-[20vw] h-[20vh] bg-white border-2 border-round-full p-4">
       <p className="text-sm my-2 font-bold flex">
         {branch?.branchName}
         {isCurrentBranch && <FaCheckCircle className="mx-2 w-4 h-4 text-green-700" />}
