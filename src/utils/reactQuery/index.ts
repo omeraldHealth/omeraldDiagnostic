@@ -20,6 +20,7 @@ import {
   createDiagBranchApi,
   getDiagBranchByIdApi,
   updateDiagBranchApi,
+  deleteDiagBranchApi,
 } from "@utils/urls/app";
 
 // useQuery hook to get data
@@ -144,6 +145,29 @@ export function useDeleteReports<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
   return createMutation("delete", deleteDiagReportsApi + id, props);
+}
+
+// Delete
+
+function deleteMutation<TData, TVariables>(
+  method: "delete",
+  url: string,
+  { onSuccess, onError }: UseMutationProps<TData, TVariables>,
+) {
+  return useMutation(
+    (data: any) =>
+      axios[method](url+data?.recordId),
+    {
+      onSuccess,
+      onError,
+    },
+  );
+}
+
+export function useDeleteBranch<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return deleteMutation("delete", deleteDiagBranchApi, props);
 }
 
 export function useUploadReportFile<TData, TVariables>(

@@ -120,7 +120,7 @@ function getRoleName(data, branchId) {
   return null;
 }
 
-export const BRANCH_DETAILS_COLUMNS = (handleEdit: any, handleDelete: any) => [
+export const BRANCH_DETAILS_COLUMNS = ({ handleEdit, handleDelete, currentBranch }) => [
   {
     title: "Branch Name",
     dataIndex: "branchName",
@@ -153,6 +153,15 @@ export const BRANCH_DETAILS_COLUMNS = (handleEdit: any, handleDelete: any) => [
     title: "Action",
     key: "action",
     render: (_, record) => {
+
+      if (record?.branchContact === currentBranch?.branchContact 
+        && record?.branchName === currentBranch?.branchName
+        && record?.branchEmail === currentBranch?.branchEmail
+
+      ) { 
+        return null;
+      }
+
       return (
         <Space size="middle">
           <a href="#">
