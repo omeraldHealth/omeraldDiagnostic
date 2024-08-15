@@ -5,6 +5,7 @@ import { settingTabState } from "@components/common/recoil/settings/index";
 import { Billing } from "./settingsTabs/billing/billing";
 import { Activity } from "./settingsTabs/activity";
 import { EmployeesTab } from "./settingsTabs/employees";
+import BranchTab from "./settingsTabs/branch";
 
 export default function SettingsTabLayout() {
   const [activeKey, setActiveKey] = useRecoilState(settingTabState);
@@ -29,10 +30,11 @@ export default function SettingsTabLayout() {
       label: "Employee Management",
       children: <EmployeesTab />,
     },
-    // {
-    //   key: '4',
-    //   label: "Branch Management",
-    // },
+    {
+      key: '4',
+      label: "Branch Management",
+      children: <BranchTab />,
+    },
     // {
     //   key: '5',
     //   label: "Pathologist Management",

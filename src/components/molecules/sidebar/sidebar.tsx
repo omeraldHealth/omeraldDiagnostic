@@ -1,59 +1,23 @@
-import { Fragment, useState, useEffect } from "react";
+import { useState, Fragment } from "react";
 import { useRecoilState } from "recoil";
-import { dashTabs } from "@components/common/recoil/dashboard/index";
+import { dashTabs } from "@components/common/recoil/dashboard";
 import { classNames, privateRoutes } from "../../../utils/static/static";
 import Image from "next/image";
-import {
-  useProfileValue,
-  useUserValues,
-} from "@components/common/constants/recoilValues";
-import { useRouter } from "next/router";
 
 export default function Sidebar() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [dashTab, setDashTab] = useRecoilState(dashTabs);
-  const currentUser = useUserValues();
-  const profileData = useProfileValue();
 
-  const [currentBranch, setCurrentBranch] = useState<any | null>(null);
-  const router = useRouter();
+  const handleSidebarToggle = () => setShowSidebar(!showSidebar);
 
-  useEffect(() => {
-    if (currentUser) {
-      try {
-        const branchData: any = JSON.parse(
-          localStorage.getItem("selectedBranch") || "{}",
-        );
-        if (currentUser?._id) {
-          const branch = fetchBranchByDiagnosticCenterId(
-            currentUser?.diagnosticCenters,
-            profileData?._id,
-            branchData?._id,
-          );
-          setCurrentBranch(branch);
-        }
-      } catch (error) {
-        console.error("Error parsing localStorage", error);
-      }
-    } else {
-      router.push("/verifyUser");
-    }
-  }, [currentUser, router]);
-
-  const handleSidebarToggle = () => {
-    setShowSidebar(!showSidebar);
-  };
-
-  const handleClick = (item: any) => {
+  const handleClick = (item) => {
     setDashTab(item.name);
     handleSidebarToggle();
   };
 
   return (
     <aside
-      className={`side-bar lg:block min-h-screen w-[70%] sm:w-[40%] md:w-[40%] xl:w-[100%] bg-blue-900 relative p-4 sm:pl-8 pr-0 shrink-0 ${
-        showSidebar ? "" : "hidden"
-      }`}
+      className={`side-bar lg:block min-h-screen w-[70%] sm:w-[40%] md:w-[40%] xl:w-[100%] bg-blue-900 relative p-4 sm:pl-8 pr-0 shrink-0 ${showSidebar ? "" : "hidden"}`}
       aria-label="Sidebar"
     >
       <div className="mb-4">
@@ -64,9 +28,7 @@ export default function Sidebar() {
       <div className="mb-8">
         {privateRoutes.map((item) => (
           <Fragment key={item.name}>
-            {/* {item?.allowedRoles?.includes(currentBranch?.roleName?.toLowerCase() || '') && ( */}
             <a
-              key={item.name}
               href="#"
               onClick={() => handleClick(item)}
               className={classNames(
@@ -82,19 +44,13 @@ export default function Sidebar() {
               />
               {item.name}
             </a>
-            {/* )} */}
           </Fragment>
         ))}
       </div>
       <p className="text-sm text-center text-green-900 font-semi-bold absolute bottom-10">
         Copyright{" "}
-        <a
-          href="https://omerald.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {" "}
-          @Omerald{" "}
+        <a href="https://omerald.com/" target="_blank" rel="noopener noreferrer">
+          @Omerald
         </a>{" "}
         2023. <br />
         All Rights Reserved.
@@ -102,21 +58,3 @@ export default function Sidebar() {
     </aside>
   );
 }
-
-const fetchBranchByDiagnosticCenterId = (
-  diagnosticCenters: any[],
-  dcId: string,
-  branchId: string,
-): any | null => {
-  for (const center of diagnosticCenters) {
-    if (center?.diagnostic?._id === dcId) {
-      const branch = center.branches.find(
-        (branch: any) => branch?.branchId === branchId,
-      );
-      if (branch) {
-        return branch;
-      }
-    }
-  }
-  return null; // Return null if no matching branch is found
-};

@@ -36,9 +36,9 @@ const DashboardTabsMap: {
   [key: string]: JSX.Element;
 } = {
   Dashboard: <DashboardTab />,
-  // "Tests Offered": <TestTab />,
-  // "View Reports": <ReportsTab />,
-  // "Profile": <ProfileTab />,
+  "Tests Offered": <TestTab />,
+  "View Reports": <ReportsTab />,
+  "Profile": <ProfileTab />,
   Settings: <SettingsTab />,
 };
 

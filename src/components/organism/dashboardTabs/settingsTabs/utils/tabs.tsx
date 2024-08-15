@@ -119,3 +119,59 @@ function getRoleName(data, branchId) {
 
   return null;
 }
+
+export const BRANCH_DETAILS_COLUMNS = (
+  handleEdit: any,
+  handleDelete: any,
+) => [
+  {
+    title: "Branch Name",
+    dataIndex: "branchName",
+    key: "branchName",
+    render: (text: any) => <a className="text-blue-800 font-medium">{text}</a>,
+    sorter: (a: any, b: any) => a.branchName.length - b.branchName.length,
+  },
+  {
+    title: "Branch Email",
+    dataIndex: "branchEmail",
+    key: "branchEmail",
+    render: (text: any) => <a>{text}</a>,
+    sorter: (a: any, b: any) => a.branchEmail.length - b.branchEmail.length,
+  },
+  {
+    title: "Branch Contact",
+    dataIndex: "branchContact",
+    key: "branchContact",
+    render: (text: any) => <a>{text}</a>,
+    sorter: (a: any, b: any) => a.branchContact.length - b.branchContact.length,
+  },
+  {
+    title: "Branch Address",
+    dataIndex: "branchAddress",
+    key: "branchAddress",
+    render: (text: any) => <a>{text}</a>,
+    sorter: (a: any, b: any) => a.branchAddress.length - b.branchAddress.length,
+  },
+  {
+      title: "Action",
+      key: "action",
+      render: (_, record) => {
+        return (
+          <Space size="middle">
+            <a href="#">
+              <FaEdit
+                className="text-red-gray"
+                onClick={() => handleEdit(record)}
+              />
+            </a>
+            <a href="#">
+              <FaTrash
+                className="text-red-500"
+                onClick={() => handleDelete(record)}
+              />
+            </a>
+          </Space>
+        );
+      },
+  },
+];
