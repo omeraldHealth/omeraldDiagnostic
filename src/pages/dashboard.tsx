@@ -10,7 +10,7 @@ const ReportsTab = dynamic(
   { loading: () => <Spinner /> },
 );
 const ProfileTab = dynamic(
-  () => import("@components/organism/dashboardTabs/profileTab"),
+  () => import("@components/organism/dashboardTabs/profile/index"),
   { loading: () => <Spinner /> },
 );
 const DashboardTab = dynamic(

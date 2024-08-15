@@ -47,13 +47,13 @@ export const privateRoutes: any[] = [
   //   current: false,
   //   allowedRoles: ["admin", "operator","owner","spoc","manager"]
   // },
-  // {
-  //   name: "Profile",
-  //   href: "/profile",
-  //   icon: UserCircleIcon,
-  //   current: false,
-  //   allowedRoles: ["admin", "operator","owner","spoc","manager"]
-  // },
+  {
+    name: "Profile",
+    href: "/profile",
+    icon: UserCircleIcon,
+    current: false,
+    allowedRoles: ["admin", "operator","owner","spoc","manager"]
+  },
   {
     name: "Settings",
     href: "/settings",
