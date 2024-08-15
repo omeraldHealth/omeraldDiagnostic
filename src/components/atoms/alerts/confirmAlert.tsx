@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button, Modal, Space } from 'antd';
+import React from "react";
+import { Button, Modal, Space } from "antd";
 
 /**
  * ConfirmAlert component for displaying a confirmation modal.
@@ -8,8 +8,8 @@ import { Button, Modal, Space } from 'antd';
 const ConfirmAlert: React.FC = () => {
   const handleConfirm = () => {
     Modal.confirm({
-      title: 'Do you want to delete this item?',
-      content: 'This action cannot be undone.',
+      title: "Do you want to delete this item?",
+      content: "This action cannot be undone.",
       onOk() {
         // Handle the user's confirmation
       },

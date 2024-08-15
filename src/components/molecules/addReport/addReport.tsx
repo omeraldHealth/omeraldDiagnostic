@@ -1,187 +1,238 @@
-import { Button, Steps } from 'antd';
-import React, { useState } from 'react';
-import { PatientDetails } from './patientDetails';
-import { UploadReport } from './uploadReport';
-import { ReportSummary } from './reportSummary';
-import { reportDataState } from '@components/common/recoil/report/reportData';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { useCreateReport, useUpdateDiagnostic, useUploadReportFile } from '@utils/reactQuery';
-import axios from 'axios';
-import { uploadDiagnosticReportApi } from '@utils/urls/app';
-import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
-import { SuccessReport } from './successReport';
-import { useCurrentBranchValue, useProfileValue } from '@components/common/constants/recoilValues';
-import { ManualReport } from './ManualReport';
-import { branchState } from '@components/common/recoil/branch/branch';
+import { Button, Steps } from "antd";
+import React, { useState } from "react";
+import { PatientDetails } from "./patientDetails";
+import { UploadReport } from "./uploadReport";
+import { ReportSummary } from "./reportSummary";
+import { reportDataState } from "@components/common/recoil/report/reportData";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  useCreateReport,
+  useUpdateDiagnostic,
+  useUploadReportFile,
+} from "@utils/reactQuery";
+import axios from "axios";
+import { uploadDiagnosticReportApi } from "@utils/urls/app";
+import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
+import { SuccessReport } from "./successReport";
+import {
+  useCurrentBranchValue,
+  useProfileValue,
+} from "@components/common/constants/recoilValues";
+import { ManualReport } from "./ManualReport";
+import { branchState } from "@components/common/recoil/branch/branch";
 interface AddReportComponentProps {
   setAddReports: React.Dispatch<React.SetStateAction<boolean>>;
-  refetch:()=>{}
+  refetch: () => {};
 }
 
-export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddReports,refetch }) => {
+export const AddReportComponent: React.FC<AddReportComponentProps> = ({
+  setAddReports,
+  refetch,
+}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [fileUrl, setFileUrl] = useState("");
   const [manualReport, setManualReport] = useState(false);
-  const currentBranch = useCurrentBranchValue()
-  const setCurrentBranch = useSetRecoilState(branchState)
-  const prev = () => {setCurrentStep(currentStep-1)}
-  const next = () => {setCurrentStep(currentStep+1)}
-  const [reportData,setReportData] = useRecoilState(reportDataState)
-  const profile = useProfileValue()
+  const currentBranch = useCurrentBranchValue();
+  const setCurrentBranch = useSetRecoilState(branchState);
+  const prev = () => {
+    setCurrentStep(currentStep - 1);
+  };
+  const next = () => {
+    setCurrentStep(currentStep + 1);
+  };
+  const [reportData, setReportData] = useRecoilState(reportDataState);
+  const profile = useProfileValue();
   const steps = [
     {
-      title: 'Report Details',
-      content: <PatientDetails next={next} />
+      title: "Report Details",
+      content: <PatientDetails next={next} />,
     },
     {
-      title: 'Upload / Generate Report',
-      content:  <UploadReport manualReport={manualReport} setManualReport={setManualReport}  handleSteps={()=>{}} next={next} />
+      title: "Upload / Generate Report",
+      content: (
+        <UploadReport
+          manualReport={manualReport}
+          setManualReport={setManualReport}
+          handleSteps={() => {}}
+          next={next}
+        />
+      ),
     },
     ...(manualReport
       ? [
           {
-            title: 'Manual Report Step',
-            content: <ManualReport next={next} />
-          }
+            title: "Manual Report Step",
+            content: <ManualReport next={next} />,
+          },
         ]
       : []),
     {
-      title: 'Report Summary',
-      content:<ReportSummary isManual={manualReport} style='' handleSuccess={() => next()} />
+      title: "Report Summary",
+      content: (
+        <ReportSummary
+          isManual={manualReport}
+          style=""
+          handleSuccess={() => next()}
+        />
+      ),
     },
     {
-      title: 'Report Success',
-      content: <SuccessReport refetch={refetch} setAddReports={()=>{
-        setReportData([]);
-        setAddReports(false)}} />
+      title: "Report Success",
+      content: (
+        <SuccessReport
+          refetch={refetch}
+          setAddReports={() => {
+            setReportData([]);
+            setAddReports(false);
+          }}
+        />
+      ),
     },
   ];
 
-  const updateDiagnosticProfile = useUpdateDiagnostic({
-    onSuccess: ()=>{  
-        successAlert('Report updated to profile successfully')
-        next()
-    ;},
-    onError: ()=>{}
-  },profile?._id)
+  const updateDiagnosticProfile = useUpdateDiagnostic(
+    {
+      onSuccess: () => {
+        successAlert("Report updated to profile successfully");
+        next();
+      },
+      onError: () => {},
+    },
+    profile?._id,
+  );
 
   const updateDiagnosticReport = useCreateReport({
     onSuccess: (data) => {
-      successAlert('Report added successfully');
-      const updatedReports = [...(currentBranch?.reports || []), data?.data?._id];
+      successAlert("Report added successfully");
+      const updatedReports = [
+        ...(currentBranch?.reports || []),
+        data?.data?._id,
+      ];
 
       const updatedBranch = {
         ...currentBranch,
         reports: updatedReports,
       };
-      setCurrentBranch(updatedBranch)
-      localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch))
-      const updatedBranches = profile?.branches?.map((branch)=> {
-          if(branch?._id === updatedBranch?._id){
-              return updatedBranch
-          }else{
-              branch
-          }
-      })
-      updateDiagnosticProfile.mutate({data: {branches: updatedBranches}})
+      setCurrentBranch(updatedBranch);
+      localStorage.setItem("selectedBranch", JSON.stringify(updatedBranch));
+      const updatedBranches = profile?.branches?.map((branch) => {
+        if (branch?._id === updatedBranch?._id) {
+          return updatedBranch;
+        } else {
+          branch;
+        }
+      });
+      updateDiagnosticProfile.mutate({ data: { branches: updatedBranches } });
     },
     onError: () => {
-      errorAlert('Error updating report');
+      errorAlert("Error updating report");
       // setLoading(false)
     },
   });
 
   const handleSubmitTest = async () => {
-    if(!manualReport){
-      let url = await customRequest({endpoint: uploadDiagnosticReportApi, file: reportData?.reportData?.file, header:{
-        'Content-Type': 'multipart/form-data',
-      }})
-      if(url?.status === 200){
-        successAlert("File uploaded succesfully")
+    if (!manualReport) {
+      let url = await customRequest({
+        endpoint: uploadDiagnosticReportApi,
+        file: reportData?.reportData?.file,
+        header: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (url?.status === 200) {
+        successAlert("File uploaded succesfully");
         // update reportData
         const updatedReportData = {
           ...reportData,
           reportData: {
             ...reportData.reportData,
             url: url?.data?.url,
-            isManual: false
+            isManual: false,
           },
           diagnosticCenter: {
             ...reportData.diagnosticCenter,
             diagnostic: profile?._id,
             branch: {
               ...reportData.diagnosticCenter.branch,
-              id: currentBranch?._id
-            }
-          }
+              id: currentBranch?._id,
+            },
+          },
         };
 
-        setReportData(updatedReportData)
-        updateDiagnosticReport.mutate({data:updatedReportData})
+        setReportData(updatedReportData);
+        updateDiagnosticReport.mutate({ data: updatedReportData });
       }
-    }
-    else{
+    } else {
       const updatedReportData = {
         ...reportData,
         diagnosticCenter: {
-            ...reportData.diagnosticCenter,
-            diagnostic: profile?._id,
-            branch: {
-                ...reportData.diagnosticCenter.branch,
-                id: currentBranch?._id // assuming currentBranch might be undefined
-            }
+          ...reportData.diagnosticCenter,
+          diagnostic: profile?._id,
+          branch: {
+            ...reportData.diagnosticCenter.branch,
+            id: currentBranch?._id, // assuming currentBranch might be undefined
+          },
         },
         reportData: {
-            ...reportData.reportData,
-            parsedData: {
-                ...reportData.reportData?.parsedData,
-                name: reportData.reportData?.parsedData?.testName,
-                isManual: true
-            },
+          ...reportData.reportData,
+          parsedData: {
+            ...reportData.reportData?.parsedData,
+            name: reportData.reportData?.parsedData?.testName,
+            isManual: true,
           },
+        },
       };
 
-      setReportData(updatedReportData)
-      updateDiagnosticReport.mutate({data:updatedReportData})
+      setReportData(updatedReportData);
+      updateDiagnosticReport.mutate({ data: updatedReportData });
     }
-  }
+  };
 
   const customRequest = async ({ endpoint, file, headers }: any) => {
     try {
       if (file && file.fileList && file.fileList.length > 0) {
         const formData = new FormData();
-        formData.append('file', file.fileList[0].originFileObj);
+        formData.append("file", file.fileList[0].originFileObj);
         // Make the request with axios including the token in the headers and form data
         const response = await axios.post(endpoint, formData, { headers });
-        setFileUrl(response.data?.url)
-  
+        setFileUrl(response.data?.url);
+
         // Return the response if needed
         return response;
       } else {
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      throw new Error('File upload failed.');
+      throw new Error("File upload failed.");
     }
   };
-  
-  const submitStep = manualReport? 3 : 2
-  return <div className="container mx-auto p-8 h-auto">
-      <div className="w-[100%] h-auto min-h-[60vh]">
-            <Steps current={currentStep}>
-                {steps.map(item => (
-                    <Steps key={item.title} title={item.title} />
-                ))}
-            </Steps>
-            <div className="mt-5">{steps[currentStep].content}</div>
-            <div className='flex justify-end'>
-               {(currentStep === 1 || currentStep === 2 || currentStep === 3) && <Button type="primary" onClick={prev} className="ml-5" >Previous</Button>}
-               {currentStep === (submitStep) && <Button type="dashed" onClick={handleSubmitTest} className="ml-5" >Submit</Button>}
-            </div>
-      </div>
-  </div>
-}
 
+  const submitStep = manualReport ? 3 : 2;
+  return (
+    <div className="container mx-auto p-8 h-auto">
+      <div className="w-[100%] h-auto min-h-[60vh]">
+        <Steps current={currentStep}>
+          {steps.map((item) => (
+            <Steps key={item.title} title={item.title} />
+          ))}
+        </Steps>
+        <div className="mt-5">{steps[currentStep].content}</div>
+        <div className="flex justify-end">
+          {(currentStep === 1 || currentStep === 2 || currentStep === 3) && (
+            <Button type="primary" onClick={prev} className="ml-5">
+              Previous
+            </Button>
+          )}
+          {currentStep === submitStep && (
+            <Button type="dashed" onClick={handleSubmitTest} className="ml-5">
+              Submit
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // import React, { useState } from 'react';
 // import { StepHeader } from '@components/atoms/fileUploder/stepHeader';
@@ -227,4 +278,3 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({ setAddRe
 //     </div>
 //   );
 // };
-

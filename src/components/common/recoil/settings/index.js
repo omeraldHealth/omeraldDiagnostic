@@ -1,7 +1,6 @@
-const { atom, selector } = require('recoil');
-
+const { atom, selector } = require("recoil");
 
 export const settingTabState = atom({
-  key: 'settingsTabState',
+  key: "settingsTabState",
   default: "Billing",
 });

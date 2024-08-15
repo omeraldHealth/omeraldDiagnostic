@@ -6,29 +6,29 @@ import { dashTabs } from "../recoil/dashboard";
 import { booleanState } from "../recoil/booleanAtom";
 import { testDetailsState } from "../recoil/testDetails";
 import { reportState } from "../recoil/report";
-import { logoStateData } from "../recoil/logo" 
-import {paramState} from "../recoil/testDetails/param"
-import {userState} from "../recoil/user"
+import { logoStateData } from "../recoil/logo";
+import { paramState } from "../recoil/testDetails/param";
+import { userState } from "../recoil/user";
 
 export const ROUTES_WITHOUT_SIDEBAR = [
-    '/',
-    '/404',
-    '/contact',
-    '/verifyUser',
-    '/signIn',
-    '/signUp',
-    '/onboard',
-    '/info/features',
-    '/info/knowledge',
-    '/info/pricing',
-    '/info/blog',
-    '/info/about',
-    '/info/faq',
-    '/info/consent',
-    '/info/disclaimer',
-    '/info/terms',
-    '/info/privacy',
-    '/chooseDc'
+  "/",
+  "/404",
+  "/contact",
+  "/verifyUser",
+  "/signIn",
+  "/signUp",
+  "/onboard",
+  "/info/features",
+  "/info/knowledge",
+  "/info/pricing",
+  "/info/blog",
+  "/info/about",
+  "/info/faq",
+  "/info/consent",
+  "/info/disclaimer",
+  "/info/terms",
+  "/info/privacy",
+  "/chooseDc",
 ];
 
 export const useProfileValue = () => useRecoilValue(profileState);

@@ -16,7 +16,6 @@
 
 // const LabReportTable = ({report}) => {
 
-
 //   return (
 //     <div className="overflow-x-auto p-5">
 //       <table className="min-w-full border-collapse text-sm">
@@ -44,7 +43,7 @@
 //                   </tr>
 //                   })
 //                 }
-              
+
 //             </section>
 //           ))}
 //         </tbody>
@@ -55,9 +54,8 @@
 
 // export default LabReportTable;
 
-
 // components/LabReportTable.js
-import React, { Fragment } from 'react';
+import React, { Fragment } from "react";
 
 // const labData = [
 //   { label: "Primary Sample Type:", result: "Blood", reference: "", unit: "" },
@@ -97,15 +95,19 @@ const LabReportTable = ({ report }) => {
           {report?.reportData?.parsedData?.map((data, index) => (
             <React.Fragment key={index}>
               <tr className="border-b text-left">
-                <td colSpan="4" className="p-2 font-semibold text-md">{data.testName}</td>
+                <td colSpan="4" className="p-2 font-semibold text-md">
+                  {data.testName}
+                </td>
               </tr>
               {data?.parameters?.map((param, paramIndex) => {
                 // Check if the value is out of range to apply red text style
                 const outOfRangeStyle = isOutOfRange(
                   param?.bioRefRange?.value?.value,
                   param?.bioRefRange?.basicRange[0]?.min,
-                  param?.bioRefRange?.basicRange[0]?.max
-                ) ? 'text-red-500 font-bold' : '';
+                  param?.bioRefRange?.basicRange[0]?.max,
+                )
+                  ? "text-red-500 font-bold"
+                  : "";
 
                 return (
                   <tr key={paramIndex} className="border-b text-left">
@@ -113,10 +115,13 @@ const LabReportTable = ({ report }) => {
                     <td className={`p-2 text-md ${outOfRangeStyle}`}>
                       {param?.bioRefRange?.value?.value}
                     </td>
-                    <td className="p-2 text-md"> 
-                      {param?.bioRefRange?.basicRange[0]?.min} - {param?.bioRefRange?.basicRange[0]?.max}
+                    <td className="p-2 text-md">
+                      {param?.bioRefRange?.basicRange[0]?.min} -{" "}
+                      {param?.bioRefRange?.basicRange[0]?.max}
                     </td>
-                    <td className="p-2 text-md">{param?.bioRefRange?.basicRange[0]?.unit}</td>
+                    <td className="p-2 text-md">
+                      {param?.bioRefRange?.basicRange[0]?.unit}
+                    </td>
                   </tr>
                 );
               })}
@@ -127,6 +132,5 @@ const LabReportTable = ({ report }) => {
     </div>
   );
 };
-
 
 export default LabReportTable;

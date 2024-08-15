@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 export interface BranchDetailInterface {
   branchName: string;
@@ -9,21 +9,21 @@ export interface BranchDetailInterface {
 }
 
 export const branchState = atom<BranchDetailInterface[]>({
-  key: 'branchState',
+  key: "branchState",
   default: [],
 });
 
 export const selectedBranchState = atom<string | null>({
-  key: 'selectedBranchState',
-  default: null, 
+  key: "selectedBranchState",
+  default: null,
 });
 
 export const selectedDcState = atom<string | null>({
-  key: 'selectedDcState',
-  default: null, 
+  key: "selectedDcState",
+  default: null,
 });
 
 export const unselectDcState = atom<boolean | null>({
-  key: 'unSelectDc',
-  default: false, 
+  key: "unSelectDc",
+  default: false,
 });

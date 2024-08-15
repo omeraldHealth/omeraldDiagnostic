@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-import LandingBanner from '@components/organism/landing/landingBanner';
-import { useUser } from '@clerk/clerk-react';
-import { useGetUser } from '@utils/reactQuery';
-import { useRouter } from 'next/router';
+import LandingBanner from "@components/organism/landing/landingBanner";
+import { useUser } from "@clerk/clerk-react";
+import { useGetUser } from "@utils/reactQuery";
+import { useRouter } from "next/router";
 // import Partners from '@components/organism/landing/partners';
 // import { HelpYourBusiness } from '@components/organism/landing/helpYourBusiness';
 // import { Advertisement } from '@components/organism/landing/advertisement';
@@ -13,9 +13,8 @@ import { useRouter } from 'next/router';
 // import { Loader } from '@components/atoms/loader/loader';
 // import { Spinner } from '@components/atoms/loader';
 
-
 const LandingPage = () => {
-  const {user} = useUser()
+  const { user } = useUser();
 
   return (
     <div>

@@ -1,6 +1,5 @@
-
-import { createGlobalStyle } from 'styled-components'
-import 'react-toastify/dist/ReactToastify.css';
+import { createGlobalStyle } from "styled-components";
+import "react-toastify/dist/ReactToastify.css";
 
 export default createGlobalStyle`
   .ant-upload-list-picture-circle{
@@ -47,5 +46,4 @@ export default createGlobalStyle`
   height: 100%;
 }
 
-`
-
+`;

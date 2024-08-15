@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
 import DynamicFormGenerator from "@components/common/form/dynamicForm";
 
@@ -28,7 +28,7 @@ export function SettingsCommon({
   editElement,
   setEditElement,
   defaultValues,
-  hideButton
+  hideButton,
 }: any) {
   return (
     <section>
@@ -49,7 +49,7 @@ export function SettingsCommon({
           </section>
         )}
       </section>
-      
+
       {/* Conditionally render the button section based on hideButton flag */}
       {!hideButton && (
         <section className="sm:w-[100%] w-screen flex justify-start">

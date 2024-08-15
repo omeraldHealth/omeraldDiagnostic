@@ -1,5 +1,5 @@
-import { Table, TablePaginationConfig } from 'antd';
-import React, { useState, ChangeEvent } from 'react';
+import { Table, TablePaginationConfig } from "antd";
+import React, { useState, ChangeEvent } from "react";
 
 interface DashboardTableProps {
   columns: any[];
@@ -7,7 +7,11 @@ interface DashboardTableProps {
   pageSize?: number;
 }
 
-export const DashboardTable: React.FC<DashboardTableProps> = ({ columns, data, pageSize = 6 }:DashboardTableProps) => {
+export const DashboardTable: React.FC<DashboardTableProps> = ({
+  columns,
+  data,
+  pageSize = 6,
+}: DashboardTableProps) => {
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     current: 1,
     pageSize: pageSize,
@@ -15,14 +19,19 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({ columns, data, p
   });
 
   // Handle changes in the table (pagination, filters, sorter, extra)
-  const handleTableChange = (pagination: TablePaginationConfig, filters: any, sorter: any, extra: any) => {
+  const handleTableChange = (
+    pagination: TablePaginationConfig,
+    filters: any,
+    sorter: any,
+    extra: any,
+  ) => {
     setPagination({
       ...pagination,
     });
   };
 
   return (
-    <div style={{ width: '100%', overflowX: 'auto' }}>
+    <div style={{ width: "100%", overflowX: "auto" }}>
       <Table
         dataSource={data || []}
         columns={columns}
@@ -30,7 +39,7 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({ columns, data, p
         onChange={handleTableChange}
         className="my-pagination-class"
         rowKey={(data) => data?._id || generateUniqueKey()}
-        scroll={{ x: 'max-content' }}
+        scroll={{ x: "max-content" }}
       />
     </div>
   );

@@ -7,9 +7,8 @@ export function Footer() {
     <footer className=" max-w-[90%] m-auto" aria-labelledby="footer-heading">
       <div className="container mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-4 text-center">
-
           <div className="space-y-8 md:col-span-1 text-left">
-            <LogoImage/>
+            <LogoImage />
             <p className="text-black text-md ml-8">
               Omerald is a personalized health report service, which enables
               users to obtain detailed information and reports based on their
@@ -27,7 +26,9 @@ export function Footer() {
                 {navigation.support.map((item) => (
                   <li key={item.name}>
                     <Link href={item.href}>
-                      <span className="text-gray-600 hover:text-gray-800">{item.name}</span>
+                      <span className="text-gray-600 hover:text-gray-800">
+                        {item.name}
+                      </span>
                     </Link>
                   </li>
                 ))}
@@ -43,7 +44,9 @@ export function Footer() {
                 {navigation.company.map((item) => (
                   <li key={item.name}>
                     <Link href={item.href}>
-                      <span className="text-gray-600 hover:text-gray-800">{item.name}</span>
+                      <span className="text-gray-600 hover:text-gray-800">
+                        {item.name}
+                      </span>
                     </Link>
                   </li>
                 ))}
@@ -59,7 +62,9 @@ export function Footer() {
                 {navigation.legal.map((item) => (
                   <li key={item.name}>
                     <Link href={item.href}>
-                      <span className="text-gray-600 hover:text-gray-800">{item.name}</span>
+                      <span className="text-gray-600 hover:text-gray-800">
+                        {item.name}
+                      </span>
                     </Link>
                   </li>
                 ))}
@@ -70,7 +75,16 @@ export function Footer() {
 
         <div className="mt-12 border-t border-gray-200 pt-8 text-center">
           <p className="text-black text-md">
-            &copy; 2024 <span href="https://omerald.com/" target="_blank" className="text-blue-700">Omerald.com</span>. All rights reserved to Avin Mednologies Private Limited and Omerald.
+            &copy; 2024{" "}
+            <span
+              href="https://omerald.com/"
+              target="_blank"
+              className="text-blue-700"
+            >
+              Omerald.com
+            </span>
+            . All rights reserved to Avin Mednologies Private Limited and
+            Omerald.
           </p>
         </div>
       </div>

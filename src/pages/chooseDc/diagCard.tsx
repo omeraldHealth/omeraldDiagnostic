@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Button, Select } from 'antd';
-import { FaCheck } from 'react-icons/fa';
+import React, { useState } from "react";
+import { Button, Select } from "antd";
+import { FaCheck } from "react-icons/fa";
 
 const { Option } = Select;
 
@@ -27,10 +27,14 @@ interface UserValues {
 interface DiagnosticCardProps {
   handleCardClick?: (value: string) => void; // Adjust if needed
   userValue?: UserValues;
-  defaultValue? : string;
+  defaultValue?: string;
 }
 
-const DiagnosticCard: React.FC<DiagnosticCardProps> = ({ handleCardClick, userValue, defaultValue }) => {
+const DiagnosticCard: React.FC<DiagnosticCardProps> = ({
+  handleCardClick,
+  userValue,
+  defaultValue,
+}) => {
   return (
     <div>
       <section>
@@ -40,7 +44,10 @@ const DiagnosticCard: React.FC<DiagnosticCardProps> = ({ handleCardClick, userVa
           onChange={handleCardClick}
         >
           {userValue?.diagnosticCenters?.map((center) => (
-            <Option key={center?.diagnostic?._id} value={center?.diagnostic?._id}>
+            <Option
+              key={center?.diagnostic?._id}
+              value={center?.diagnostic?._id}
+            >
               <div className="flex items-center">
                 <FaCheck className="mr-2" />
                 {center?.diagnostic?.centerName}

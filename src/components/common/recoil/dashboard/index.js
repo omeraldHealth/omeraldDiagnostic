@@ -1,6 +1,6 @@
-const { atom } = require('recoil');
+const { atom } = require("recoil");
 
 export const dashTabs = atom({
-  key: 'dashboardTab',
-  default: 'Dashboard',
+  key: "dashboardTab",
+  default: "Dashboard",
 });

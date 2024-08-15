@@ -70,7 +70,10 @@ const styles = StyleSheet.create({
 });
 
 // Component for rendering the PDF
-const PdfTesting: React.FC<PdfTestingProps> = ({ report, diagnosticDetails }) => {
+const PdfTesting: React.FC<PdfTestingProps> = ({
+  report,
+  diagnosticDetails,
+}) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>

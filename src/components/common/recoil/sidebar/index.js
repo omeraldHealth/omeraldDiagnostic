@@ -1,6 +1,6 @@
-const { atom } = require('recoil');
+const { atom } = require("recoil");
 
 export const sideBarAtom = atom({
-  key: 'sidebar',
+  key: "sidebar",
   default: false,
 });

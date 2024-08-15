@@ -13,14 +13,19 @@ const LandingBanner: React.FC = () => {
     <div className={styles["landingBanner"]}>
       <section className="w-[96%] sm:w-[90%] xl:w-[70%] 2xl:w-[65%] px-6 sm:px-8 lg:px-[12%] my-[10%] lg:my-[5%]">
         <div className="my-4 lg:my-2">
-          <TitleText style={""}>Diagnostic Centre Solution in Single Platform.</TitleText>
+          <TitleText style={""}>
+            Diagnostic Centre Solution in Single Platform.
+          </TitleText>
         </div>
         <div className="my-4 lg:my-2">
           {" "}
-          <HeaderText_1 style={"my-2"}>Managing Diagnostic Centre has never been easier</HeaderText_1>
+          <HeaderText_1 style={"my-2"}>
+            Managing Diagnostic Centre has never been easier
+          </HeaderText_1>
         </div>
         <BodyText_1 style="xl:w-[80%]">
-          Omerald digitalizes diagnostic centre's, offering website creation, test selection, report generation, and branding updates.
+          Omerald digitalizes diagnostic centre's, offering website creation,
+          test selection, report generation, and branding updates.
         </BodyText_1>
         <span className="flex my-8">
           <span className="flex mr-4">

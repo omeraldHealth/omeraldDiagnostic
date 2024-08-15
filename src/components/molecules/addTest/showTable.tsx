@@ -1,5 +1,5 @@
-import React from 'react';
-import { AddKeyword } from './createdKeyword';
+import React from "react";
+import { AddKeyword } from "./createdKeyword";
 
 interface ShowTableProps {
   selectedTest: {
@@ -17,4 +17,3 @@ export const ShowTable: React.FC<ShowTableProps> = ({ selectedTest }) => {
     </div>
   );
 };
-

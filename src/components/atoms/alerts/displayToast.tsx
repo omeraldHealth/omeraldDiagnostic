@@ -1,5 +1,5 @@
-import React from 'react';
-import { Toaster } from 'react-hot-toast';
+import React from "react";
+import { Toaster } from "react-hot-toast";
 
 /**
  * DisplayToaster component for rendering toast notifications.
@@ -10,11 +10,11 @@ const DisplayToaster: React.FC = () => {
     <Toaster
       position="top-right"
       toastOptions={{
-        className: '',
+        className: "",
         duration: 5000,
         style: {
-          background: '#19222f',
-          color: '#fff',
+          background: "#19222f",
+          color: "#fff",
         },
         success: {
           duration: 3000,

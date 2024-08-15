@@ -1,5 +1,9 @@
 import { useSession, useUser } from "@clerk/clerk-react";
-import { errorAlert, successAlert, warningAlert } from "@components/atoms/alerts/alert";
+import {
+  errorAlert,
+  successAlert,
+  warningAlert,
+} from "@components/atoms/alerts/alert";
 import { userState } from "@components/common/recoil/user";
 import { UserLayout } from "@components/templates/pageTemplate";
 import { useRouter } from "next/router";
@@ -8,7 +12,7 @@ import { useSetRecoilState } from "recoil";
 import { useCreateUser, useGetUser } from "@utils/reactQuery";
 import { USER_DATA } from "@utils/constants/interface";
 import { Spinner } from "@components/atoms/loader";
-import verifyUser from "@public/verifyUser.gif"
+import verifyUser from "@public/verifyUser.gif";
 
 const VerifyUser = () => {
   const { session } = useSession();
@@ -17,7 +21,11 @@ const VerifyUser = () => {
   const phone = user?.phoneNumbers?.[0]?.phoneNumber || "";
   const setUserRecoil = useSetRecoilState(userState);
   const [loading, setLoading] = useState(true);
-  const { data: userData, refetch, isLoading } = useGetUser({ userPhoneNumber: phone });
+  const {
+    data: userData,
+    refetch,
+    isLoading,
+  } = useGetUser({ userPhoneNumber: phone });
   const createUserMutation = useCreateUser({
     onSuccess: (resp) => {
       if (resp.status === 201) {
@@ -30,13 +38,13 @@ const VerifyUser = () => {
     },
     onError: () => {
       errorAlert("Error creating user");
-      router.push("/")
+      router.push("/");
     },
   });
 
   useEffect(() => {
-    if(phone){
-      refetch()
+    if (phone) {
+      refetch();
     }
   }, [phone]);
 
@@ -59,7 +67,7 @@ const VerifyUser = () => {
       const newUser: USER_DATA = {
         userName: user?.fullName || "",
         phoneNumber: phone || "",
-        diagnosticCenters: []
+        diagnosticCenters: [],
       };
       handleCreateUser(newUser);
       return;
@@ -72,7 +80,7 @@ const VerifyUser = () => {
 
   useEffect(() => {
     if (
-      session?.status === 'active' &&
+      session?.status === "active" &&
       !isLoading &&
       userData &&
       // @ts-ignore
@@ -82,19 +90,17 @@ const VerifyUser = () => {
       handleVerifyUser(userData.data);
     }
 
-    if (
-      session?.status === 'active' &&
-      !isLoading &&
-      !userData
-    ) {
+    if (session?.status === "active" && !isLoading && !userData) {
       //@ts-ignore
       handleVerifyUser(userData?.data);
     }
-
-  }, [session?.status, isLoading, userData]);  
+  }, [session?.status, isLoading, userData]);
 
   return (
-    <UserLayout tabDescription="Verify User" tabName="Admin Diagnostic | Verify User">
+    <UserLayout
+      tabDescription="Verify User"
+      tabName="Admin Diagnostic | Verify User"
+    >
       {(loading || isLoading || !isLoaded) && <Spinner />}
       <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
         <section className="my-10">

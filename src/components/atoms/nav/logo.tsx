@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 interface LogoProps {
   src: string;
@@ -6,7 +6,8 @@ interface LogoProps {
   width?: string;
 }
 
-const logo = "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"
+const logo =
+  "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png";
 
 const LogoImage: React.FC = () => {
   return (
@@ -26,7 +27,7 @@ const DashboardLogo: React.FC = () => {
     <div className="pt-5 pb-4 overflow-y-auto">
       <Link href="/">
         <div className="flex items-center flex-shrink-0 px-4">
-          <Logo src={logo} alt="Omerald" width="50px"  />
+          <Logo src={logo} alt="Omerald" width="50px" />
           <span className="text-white font-semibold text-xl ml-4 tracking-wider">
             Omerald
           </span>
@@ -36,11 +37,11 @@ const DashboardLogo: React.FC = () => {
   );
 };
 
-const Logo: React.FC<LogoProps> = ({ src, alt, width = '50px' }) => (
+const Logo: React.FC<LogoProps> = ({ src, alt, width = "50px" }) => (
   <img src={src} alt={alt} className={`w-${width} sm:w-[70px] rounded-full`} />
 );
 
-const LogoRound: React.FC<LogoProps> = ({ src, alt, width = '50px' }) => (
+const LogoRound: React.FC<LogoProps> = ({ src, alt, width = "50px" }) => (
   <img src={src} alt={alt} className={`w-${width} sm:w-[70px] rounded-full`} />
 );
 

@@ -1,7 +1,7 @@
 export type getUserDetailType = {
-    "phoneNumber": String
-}
+  phoneNumber: String;
+};
 
 export type setSessionType = {
-    "phoneNumber": String
-}
+  phoneNumber: String;
+};

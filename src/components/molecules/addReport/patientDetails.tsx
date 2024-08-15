@@ -1,55 +1,53 @@
 // pages/index.js or wherever your form should live
 
-import { useCurrentBranchValue, useProfileValue } from '@components/common/constants/recoilValues';
-import { reportState } from '@components/common/recoil/report';
-import { Form, Input, Button, Select, Row, Col } from 'antd';
-import { profile } from 'console';
-import { useRecoilState } from 'recoil';
+import {
+  useCurrentBranchValue,
+  useProfileValue,
+} from "@components/common/constants/recoilValues";
+import { reportState } from "@components/common/recoil/report";
+import { Form, Input, Button, Select, Row, Col } from "antd";
+import { profile } from "console";
+import { useRecoilState } from "recoil";
 const { Option } = Select;
-import {reportDataState} from "../../common/recoil/report/reportData"
-import { ManualReport } from './ManualReport';
+import { reportDataState } from "../../common/recoil/report/reportData";
+import { ManualReport } from "./ManualReport";
 
-export function PatientDetails({next}:any) {
+export function PatientDetails({ next }: any) {
   const profile = useProfileValue();
   const branchList = profile?.branchDetails;
-  const currentBranch = useCurrentBranchValue()
+  const currentBranch = useCurrentBranchValue();
 
-  const [reportData,setReportData] = useRecoilState(reportDataState)
+  const [reportData, setReportData] = useRecoilState(reportDataState);
 
-  const onFinish = (values:any) => {
-    if(values){
-      setReportData({...values})
+  const onFinish = (values: any) => {
+    if (values) {
+      setReportData({ ...values });
     }
 
-    if(reportData){
-      next() 
+    if (reportData) {
+      next();
     }
-
   };
 
   return (
     <div className="container mx-auto">
-      <Form
-        onFinish={onFinish}
-        layout="vertical"
-        className="m-4"
-      >
+      <Form onFinish={onFinish} layout="vertical" className="m-4">
         <div className="grid grid-cols-2 gap-8 ">
           {/* Patient Information */}
           <div>
             <h2 className="text-xl font-bold mb-4">Patient Information</h2>
             <Form.Item
-              name={['patient', 'name']}
+              name={["patient", "name"]}
               label="Name"
               initialValue={reportData?.patient?.name}
               rules={[{ required: true }]}
             >
               <Input />
             </Form.Item>
-            <Row className='grid grid-cols-2 gap-8 '>
+            <Row className="grid grid-cols-2 gap-8 ">
               <Col>
                 <Form.Item
-                  name={['patient', 'dob']}
+                  name={["patient", "dob"]}
                   label="Date of Birth"
                   initialValue={reportData?.patient?.dob}
                   rules={[{ required: true }]}
@@ -58,8 +56,8 @@ export function PatientDetails({next}:any) {
                 </Form.Item>
               </Col>
               <Col>
-              <Form.Item
-                  name={['patient', 'gender']}
+                <Form.Item
+                  name={["patient", "gender"]}
                   label="Gender"
                   rules={[{ required: true }]}
                   initialValue={reportData?.patient?.gender}
@@ -73,7 +71,7 @@ export function PatientDetails({next}:any) {
               </Col>
             </Row>
             <Form.Item
-              name={['patient', 'contact', 'phone']}
+              name={["patient", "contact", "phone"]}
               label="Phone"
               rules={[{ required: true }]}
               initialValue={reportData?.patient?.contact?.phone}
@@ -81,7 +79,7 @@ export function PatientDetails({next}:any) {
               <Input />
             </Form.Item>
             <Form.Item
-              name={['patient', 'contact', 'email']}
+              name={["patient", "contact", "email"]}
               label="Email"
               initialValue={reportData?.patient?.contact?.email}
               rules={[{ required: true }]}
@@ -89,12 +87,14 @@ export function PatientDetails({next}:any) {
               <Input />
             </Form.Item>
           </div>
-          
+
           {/* Diagnostic Center Information */}
           <div className="">
-            <h2 className="text-xl font-bold mb-4">Diagnostic Center Information</h2>
+            <h2 className="text-xl font-bold mb-4">
+              Diagnostic Center Information
+            </h2>
             <Form.Item
-              name={['diagnosticCenter', 'name']}
+              name={["diagnosticCenter", "name"]}
               label="Center Name"
               initialValue={profile?.centerName || ""}
               rules={[{ required: true }]}
@@ -102,12 +102,12 @@ export function PatientDetails({next}:any) {
               <Input disabled={!!profile?.centerName} />
             </Form.Item>
             <Form.Item
-              name={['diagnosticCenter', 'branch', 'name']}
+              name={["diagnosticCenter", "branch", "name"]}
               label="Branch Name"
               initialValue={currentBranch.branchName}
               rules={[{ required: true }]}
             >
-                <Input disabled={!!currentBranch?.branchName} />
+              <Input disabled={!!currentBranch?.branchName} />
               {/* <Select
                 showSearch
                 placeholder="Select a branch"
@@ -126,9 +126,7 @@ export function PatientDetails({next}:any) {
               <Input />
             </Form.Item> */}
             {/* <h2 className="text-xl font-bold mb-4">Pathologist Information</h2> */}
-
           </div>
-
         </div>
 
         <Form.Item>
@@ -140,8 +138,6 @@ export function PatientDetails({next}:any) {
     </div>
   );
 }
-
-
 
 // import { patientDetailsForm } from "@utils/types/molecules/forms.interface";
 // import { useProfileValue, useReportValue } from "@components/common/constants/recoilValues";
@@ -204,14 +200,13 @@ export function PatientDetails({next}:any) {
 //     // Additional useEffect to handle cleanup of debounce function
 //     useEffect(() => {
 //       return () => handleSearch.cancel();
-//     }, [handleSearch]);  
-  
+//     }, [handleSearch]);
 
 //   return (
 //     <div className="p-8 h-auto">
 //       <section className="w-[70vh] h-auto xl:min-h-[40vh] xl:mt-4">
-//         <DynamicFormGenerator 
-//           formProps={patientDetailsForm(profileValue)} 
+//         <DynamicFormGenerator
+//           formProps={patientDetailsForm(profileValue)}
 //           handleSearch={handleSearch}
 //           selectedValue={selectedValue}
 //           buttonText="Continue" handleSubmit={handleSubmit} />

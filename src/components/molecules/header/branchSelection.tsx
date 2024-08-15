@@ -13,17 +13,20 @@ interface Branch {
 export function BranchSelection() {
   const profileRecoilState = useRecoilValue(profileState);
   const [selectedBranch, setSelectedBranch] = usePersistedBranchState();
-  const [defaultBranch, setDefaultBranch] = useState<string | undefined>(undefined);
+  const [defaultBranch, setDefaultBranch] = useState<string | undefined>(
+    undefined,
+  );
 
   // @ts-ignore
-  const options = profileRecoilState?.branches?.map((branch: BranchDetailInterface) => {
-    return { label: branch.branchName, value: branch._id, key: branch._id };
-  }) || [];
+  const options =
+    profileRecoilState?.branches?.map((branch: BranchDetailInterface) => {
+      return { label: branch.branchName, value: branch._id, key: branch._id };
+    }) || [];
 
   const handleDefaultBranch = () => {
     //@ts-ignore
     const branchExistsInProfile = profileRecoilState?.branches?.some(
-      (branch: Branch) => branch._id === selectedBranch
+      (branch: Branch) => branch._id === selectedBranch,
     );
 
     if (branchExistsInProfile) {

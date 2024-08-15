@@ -21,17 +21,17 @@
     "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
-			"@components/*": ["src/components/*"],
-			"@atoms/*": ["src/components/atoms/*"],
-			"@molecules/*": ["src/components/molecules/*"],
-			"@organisms/*": ["src/components/organisms/*"],
-			"@templates/*": ["src/components/templates/*"],
-			"@app-types/*": ["types.d.ts"],
-			"@app-types/styled": ["styled.d.ts"],
-			"@utils/*": ["src/utils/*"],
+      "@components/*": ["src/components/*"],
+      "@atoms/*": ["src/components/atoms/*"],
+      "@molecules/*": ["src/components/molecules/*"],
+      "@organisms/*": ["src/components/organisms/*"],
+      "@templates/*": ["src/components/templates/*"],
+      "@app-types/*": ["types.d.ts"],
+      "@app-types/styled": ["styled.d.ts"],
+      "@utils/*": ["src/utils/*"],
       "@styles/*": ["src/styles/*"],
       "@public/*": ["src/public/*"]
-		},
+    },
     "incremental": true,
     "plugins": [
       {
@@ -86,5 +86,3 @@
 //   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
 //   "exclude": ["node_modules"]
 // }
-
-
