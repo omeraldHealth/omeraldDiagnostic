@@ -33,7 +33,7 @@ export const ROUTES_WITHOUT_SIDEBAR = [
 
 export const useProfileValue = () => useRecoilValue(profileState);
 export const useLogoValue = () => useRecoilValue(logoStateData);
-export const useTestDataValue = () => useRecoilValue(testDetailsState);
+export const useTestDetailValue = () => useRecoilValue(testDetailsState);
 export const useReportValue = () => useRecoilValue(reportState);
 export const useBooleanValue = () => useRecoilValue(booleanState);
 export const useManagerValue = () => useRecoilValue(operatorState);

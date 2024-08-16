@@ -2,6 +2,7 @@ import { usePersistedBranchState } from "@components/common/recoil/hooks/usePers
 import { profileState } from "@components/common/recoil/profile";
 import { BranchDetailInterface } from "@utils/types";
 import { Select } from "antd";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -16,6 +17,7 @@ export function BranchSelection() {
   const [defaultBranch, setDefaultBranch] = useState<string | undefined>(
     undefined,
   );
+  const router = useRouter();
 
   // @ts-ignore
   const options =
@@ -43,6 +45,7 @@ export function BranchSelection() {
   const handleBranchChange = (value: string) => {
     setDefaultBranch(value);
     setSelectedBranch(value);
+    router.reload()
   };
 
   useEffect(() => {

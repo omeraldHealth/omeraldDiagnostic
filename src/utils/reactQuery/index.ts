@@ -22,6 +22,8 @@ import {
   updateDiagBranchApi,
   deleteDiagBranchApi,
   uploadPathSignature,
+  deleteDiagTestApi,
+  getAdminReportTypesApi,
 } from "@utils/urls/app";
 
 // useQuery hook to get data
@@ -65,6 +67,10 @@ export function useGetUser({ userPhoneNumber }: any) {
   return useQueryGetData("userData", getDiagnosticUserApi + userPhoneNumber, {
     enabled: !!userPhoneNumber,
   });
+}
+
+export function useGetAdminReports() {
+  return useQueryGetData("adminReports", getAdminReportTypesApi);
 }
 
 export function useGetDcProfile({ selectedCenterId }: any) {
@@ -172,6 +178,13 @@ export function useDeleteBranch<TData, TVariables>(
 ) {
   return deleteMutation("delete", deleteDiagBranchApi, props);
 }
+
+export function useDeleteTest<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return deleteMutation("delete", deleteDiagTestApi, props);
+}
+
 
 export function useUploadReportFile<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
