@@ -29,17 +29,27 @@ const ProfileView = () => {
 const CenterDetails = ({ profileValue }) => (
   <section>
     <p className="font-bold text-orange-400 underline">Center Details</p>
-    <p className="my-4">Name: <b>{profileValue?.centerName}</b></p>
-    <p className="my-4">Contact: <b>{profileValue?.phoneNumber}</b></p>
-    <p className="my-4">Email: <b className="lowercase">{profileValue?.email}</b></p>
+    <p className="my-4">
+      Name: <b>{profileValue?.centerName}</b>
+    </p>
+    <p className="my-4">
+      Contact: <b>{profileValue?.phoneNumber}</b>
+    </p>
+    <p className="my-4">
+      Email: <b className="lowercase">{profileValue?.email}</b>
+    </p>
   </section>
 );
 
 const OwnerDetails = ({ owner }) => (
   <section>
     <p className="font-bold text-green-800 underline">Branch Owner</p>
-    <p className="my-4">Name: <b className="lowercase">{owner?.userName}</b></p>
-    <p className="my-4">Contact: <b className="lowercase">{owner?.phoneNumber}</b></p>
+    <p className="my-4">
+      Name: <b className="lowercase">{owner?.userName}</b>
+    </p>
+    <p className="my-4">
+      Contact: <b className="lowercase">{owner?.phoneNumber}</b>
+    </p>
   </section>
 );
 
@@ -62,11 +72,15 @@ const BranchCard = ({ branch }) => {
     <section className="w-[20vw] h-[20vh] bg-white border-2 border-round-full p-4">
       <p className="text-sm my-2 font-bold flex">
         {branch?.branchName}
-        {isCurrentBranch && <FaCheckCircle className="mx-2 w-4 h-4 text-green-700" />}
+        {isCurrentBranch && (
+          <FaCheckCircle className="mx-2 w-4 h-4 text-green-700" />
+        )}
       </p>
       <p className="text-sm my-2">{branch?.branchContact}</p>
       <p className="text-sm my-2">{branch?.branchEmail}</p>
-      <p className="text-sm my-2 truncate overflow-hidden whitespace-nowrap">{branch?.branchAddress}</p>
+      <p className="text-sm my-2 truncate overflow-hidden whitespace-nowrap">
+        {branch?.branchAddress}
+      </p>
     </section>
   );
 };

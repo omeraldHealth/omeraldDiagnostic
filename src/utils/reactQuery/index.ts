@@ -101,7 +101,6 @@ export function useCreateUser<TData, TVariables>(
   return createMutation("post", createDiagnosticUserApi, props);
 }
 
-
 export function useCreateTest<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
@@ -137,7 +136,6 @@ export function useUpdateTest<TData, TVariables>(
 ) {
   return UpdateMutation("put", updateDiagTestApi, props);
 }
-
 
 export function useCreateDiagnostic<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
@@ -200,7 +198,6 @@ export function useDeleteTest<TData, TVariables>(
 ) {
   return deleteMutation("delete", deleteDiagTestApi, props);
 }
-
 
 export function useUploadReportFile<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,

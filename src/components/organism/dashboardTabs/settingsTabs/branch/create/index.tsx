@@ -70,10 +70,12 @@ const AddBranch = ({ handleShowBranch }) => {
       return errorAlert2("Please fill in all required fields");
     }
 
-    const branchExists = profileValue?.branches?.find((branch) => branch?.branchName == formData.branchName)
-    if (branchExists) { 
-      errorAlert2("Branch already exisits")
-      return
+    const branchExists = profileValue?.branches?.find(
+      (branch) => branch?.branchName == formData.branchName,
+    );
+    if (branchExists) {
+      errorAlert2("Branch already exisits");
+      return;
     }
 
     createBranch.mutate({ data: formData });

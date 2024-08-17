@@ -45,7 +45,7 @@ export function BranchSelection() {
   const handleBranchChange = (value: string) => {
     setDefaultBranch(value);
     setSelectedBranch(value);
-    router.reload()
+    router.reload();
   };
 
   useEffect(() => {

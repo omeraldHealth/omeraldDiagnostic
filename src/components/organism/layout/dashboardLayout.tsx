@@ -1,6 +1,9 @@
 import { useSession } from "@clerk/nextjs";
 import { Spinner } from "@components/atoms/loader";
-import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
+import {
+  usePersistedBranchState,
+  usePersistedDCState,
+} from "@components/common/recoil/hooks/usePersistedState";
 import { profileState } from "@components/common/recoil/profile/index";
 import { DashboardSideBar } from "@components/molecules/sidebar/index";
 import { useGetDcBranch, useGetDcProfile } from "@utils/reactQuery";
@@ -29,11 +32,10 @@ export function DashboardLayout({ children }: any) {
     isLoading: branchLoading,
     refetch: refBranch,
   } = useGetDcBranch({ selectedBranchId: selectedBranch });
-  
+
   const router = useRouter();
   const setProfileRecoil = useSetRecoilState(profileState);
   const setCurrentBranch = useSetRecoilState(branchState);
-
 
   useEffect(() => {
     if (session?.status !== "active") {

@@ -48,7 +48,7 @@ function BranchTab() {
   const deleteBranch = useDeleteBranch({});
 
   useEffect(() => {
-     invalidateQuery("diagnosticCenter");
+    invalidateQuery("diagnosticCenter");
   }, []);
 
   const handleSwitch = (checked: boolean) => setAddBranch(checked);

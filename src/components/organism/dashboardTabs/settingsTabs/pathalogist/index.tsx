@@ -48,7 +48,7 @@ function PathologistTab() {
   const invalidateQuery = useInvalidateQuery();
   const logActivity = useActivityLogger();
   const setProfileData = useSetRecoilState(profileState);
-  const setCurrentBranch = useSetRecoilState(branchState)
+  const setCurrentBranch = useSetRecoilState(branchState);
 
   const updateBranch = useUpdateBranch({});
 
@@ -80,7 +80,7 @@ function PathologistTab() {
           successAlert("Deleted path succesfully");
           invalidateQuery("diagnosticBranch");
           logActivity({ activity: "Deleted Pathologist " + record?.name });
-          setCurrentBranch(resp?.data)
+          setCurrentBranch(resp?.data);
         },
         onError: (err) => {
           errorAlert2("Error deleting pathologist");

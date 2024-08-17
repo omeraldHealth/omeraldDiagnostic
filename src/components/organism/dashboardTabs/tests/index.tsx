@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { Switch } from "antd";
 import { ViewTest } from "./view";
 import { AddTest } from "./create";
@@ -6,9 +6,9 @@ import { AddTest } from "./create";
 export default function TestTab() {
   const [showTest, setShowTest] = useState(false);
 
-  const handleShowTest = (value) => { 
-    setShowTest(value)
-  }
+  const handleShowTest = (value) => {
+    setShowTest(value);
+  };
 
   return (
     <div className="p-0 h-auto bg-signBanner">

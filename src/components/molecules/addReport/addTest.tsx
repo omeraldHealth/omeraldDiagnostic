@@ -995,9 +995,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
 
         handleOk();
       })
-      .catch((info) => {
-        console.log("Validate Failed:", info);
-      });
+      .catch((info) => {});
   };
 
   const handleInputChange = (newTags) => {

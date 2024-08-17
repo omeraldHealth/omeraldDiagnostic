@@ -4,7 +4,11 @@ import { operatorState } from "../recoil/operator";
 import { branchState } from "../recoil/branch/branch";
 import { dashTabs } from "../recoil/dashboard";
 import { booleanState } from "../recoil/booleanAtom";
-import { editTestIdState, editTestState, testDetailsState } from "../recoil/testDetails";
+import {
+  editTestIdState,
+  editTestState,
+  testDetailsState,
+} from "../recoil/testDetails";
 import { reportState } from "../recoil/report";
 import { logoStateData } from "../recoil/logo";
 import { paramState } from "../recoil/testDetails/param";

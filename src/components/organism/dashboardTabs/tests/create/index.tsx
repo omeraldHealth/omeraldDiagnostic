@@ -4,7 +4,7 @@ import TestDetailTab from "./testDetail";
 import { ParameterComp } from "../parameters";
 import TestSummary from "../summary";
 
-export const AddTest = ({handleShowTest}) => {
+export const AddTest = ({ handleShowTest }) => {
   const [currentStep, setStep] = useState(0);
 
   const handleNext = () => setStep(currentStep + 1);
@@ -17,11 +17,21 @@ export const AddTest = ({handleShowTest}) => {
     },
     {
       title: "Add Parameters",
-      content: <ParameterComp handleNext={handleNext} handlePrevious={handlePrevious} />,
+      content: (
+        <ParameterComp
+          handleNext={handleNext}
+          handlePrevious={handlePrevious}
+        />
+      ),
     },
     {
       title: "Test Summary",
-      content: <TestSummary handlePrevious={handlePrevious} handleShowTest={handleShowTest} />
+      content: (
+        <TestSummary
+          handlePrevious={handlePrevious}
+          handleShowTest={handleShowTest}
+        />
+      ),
     },
   ];
 

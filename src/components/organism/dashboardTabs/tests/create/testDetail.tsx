@@ -1,17 +1,20 @@
 import { FormControl, FormLabel, Input, Stack, Switch } from "@chakra-ui/react";
 import { errorAlert2 } from "@components/atoms/alerts/alert";
 import { Loader } from "@components/atoms/loader/loader";
-import { useEditTestValues, useTestDetailValue } from "@components/common/constants/recoilValues";
+import {
+  useEditTestValues,
+  useTestDetailValue,
+} from "@components/common/constants/recoilValues";
 import { testDetailsState } from "@components/common/recoil/testDetails";
 import { useGetAdminReports } from "@utils/reactQuery";
 import { Button, Radio, Select } from "antd";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-function TestDetailTab({ handleNext }) { 
-  const testDetail = useTestDetailValue()
-  
-  const handleSubmit = () => {  
+function TestDetailTab({ handleNext }) {
+  const testDetail = useTestDetailValue();
+
+  const handleSubmit = () => {
     if (!testDetail?.testName?.trim() || !testDetail?.sampleName?.trim()) {
       errorAlert2("Please add a valid test and sample name");
       return;
@@ -20,90 +23,98 @@ function TestDetailTab({ handleNext }) {
   };
 
   return (
-      <div>
+    <div>
       <TestDetail handleNext={handleSubmit} />
-      </div>
-  )
+    </div>
+  );
 }
 
-const TestDetail = ({handleNext}) => {
-    const [selectedValue, setSelectedValue] = useState(false);
-    return (
-      <div>
-        <TestDetailHeader
-          selectedValue={selectedValue}
-          setSelectedValue={setSelectedValue}
-        />
-        {selectedValue ? (
-          <OmeraldTestReports handleNext={handleNext} />
-        ) : (
-            <CustomTestDetails handleNext={handleNext} />
-        )}
-      </div>
-    );
-};
-  
-const TestDetailHeader: React.FC<any> = ({
-    selectedValue,
-    setSelectedValue,
-  }) => {
-    return (
-      <section>
-        <section className="my-6">
-          <p className="my-4 text-sm">
-            You want to choose from existing reports?
-          </p>
-          <Radio.Group
-            onChange={(event) => setSelectedValue(event.target.value)}
-            value={selectedValue}
-          >
-            <Radio value={true}>Yes</Radio>
-            <Radio value={false}>No</Radio>
-          </Radio.Group>
-        </section>
-      </section>
-    );
+const TestDetail = ({ handleNext }) => {
+  const [selectedValue, setSelectedValue] = useState(false);
+  return (
+    <div>
+      <TestDetailHeader
+        selectedValue={selectedValue}
+        setSelectedValue={setSelectedValue}
+      />
+      {selectedValue ? (
+        <OmeraldTestReports handleNext={handleNext} />
+      ) : (
+        <CustomTestDetails handleNext={handleNext} />
+      )}
+    </div>
+  );
 };
 
-const CustomTestDetails: React.FC<any> = ({handleNext}) => {
-  const [formData, setFormData] = useState({ testName: "", sampleName: "", isActive: true });
+const TestDetailHeader: React.FC<any> = ({
+  selectedValue,
+  setSelectedValue,
+}) => {
+  return (
+    <section>
+      <section className="my-6">
+        <p className="my-4 text-sm">
+          You want to choose from existing reports?
+        </p>
+        <Radio.Group
+          onChange={(event) => setSelectedValue(event.target.value)}
+          value={selectedValue}
+        >
+          <Radio value={true}>Yes</Radio>
+          <Radio value={false}>No</Radio>
+        </Radio.Group>
+      </section>
+    </section>
+  );
+};
+
+const CustomTestDetails: React.FC<any> = ({ handleNext }) => {
+  const [formData, setFormData] = useState({
+    testName: "",
+    sampleName: "",
+    isActive: true,
+  });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
-  const editTestState = useEditTestValues()
-  const isEditTest = useEditTestValues()
+  const editTestState = useEditTestValues();
+  const isEditTest = useEditTestValues();
 
   useEffect(() => {
     if (editTestState) {
       setFormData({
         testName: testDetail?.testName,
         sampleName: testDetail?.sampleName,
-        isActive: testDetail?.isActive
-      })
-    } else { 
+        isActive: testDetail?.isActive,
+      });
+    } else {
       setTestDetail({});
     }
   }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const { name, type, checked, value } = event.target;
-    
-    const inputValue = type === 'checkbox' ? checked : value;
-  
+
+    const inputValue = type === "checkbox" ? checked : value;
+
     setFormData((prevFormData) => {
       const updatedFormData = {
         ...prevFormData,
         [name]: inputValue,
       };
 
-      if (isEditTest) { 
+      if (isEditTest) {
         setTestDetail({ ...testDetail, ...updatedFormData });
       }
-        setTestDetail(updatedFormData);
+      setTestDetail(updatedFormData);
       return updatedFormData;
     });
   };
 
   const handleSubmit = () => {
-    handleNext()
+    handleNext();
   };
 
   return (
@@ -129,13 +140,13 @@ const CustomTestDetails: React.FC<any> = ({handleNext}) => {
             />
           </FormControl>
           <FormControl className="my-1" id="isActive">
-                <FormLabel>IsActive</FormLabel>
-                <Switch
-                  name="isActive" 
-                  isChecked={formData?.isActive} 
-                  onChange={handleChange} 
-                />
-            </FormControl>
+            <FormLabel>IsActive</FormLabel>
+            <Switch
+              name="isActive"
+              isChecked={formData?.isActive}
+              onChange={handleChange}
+            />
+          </FormControl>
         </Stack>
         <Button className="mt-4" onClick={handleSubmit} type="primary">
           Next
@@ -146,7 +157,12 @@ const CustomTestDetails: React.FC<any> = ({handleNext}) => {
 };
 
 const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
-  const [formData, setFormData] = useState({ testName: "", sampleName: "", parameters: [], isActive: true });
+  const [formData, setFormData] = useState({
+    testName: "",
+    sampleName: "",
+    parameters: [],
+    isActive: true,
+  });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
 
   const { data: adminReports, isLoading } = useGetAdminReports();
@@ -168,7 +184,9 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
   }, [isLoading, adminReports]);
 
   const handleDropChange = (value: string) => {
-    const selectedOption = adminReports?.data.find((report) => report?.name === value);
+    const selectedOption = adminReports?.data.find(
+      (report) => report?.name === value,
+    );
     const updatedFormData = {
       ...formData,
       sampleName: value,
@@ -179,11 +197,15 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
     setTestDetail(updatedFormData);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const { name, type, checked, value } = event.target;
-    
-    const inputValue = type === 'checkbox' ? checked : value;
-  
+
+    const inputValue = type === "checkbox" ? checked : value;
+
     setFormData((prevFormData) => {
       const updatedFormData = {
         ...prevFormData,
@@ -195,7 +217,7 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
   };
 
   const handleSubmit = () => {
-    console.log(testDetail);
+    //console.logtestDetail);
     handleNext();
   };
 
@@ -236,14 +258,13 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
               </Select>
             </FormControl>
             <FormControl className="my-1" id="isActive">
-                <FormLabel>IsActive</FormLabel>
-                <Switch
-                  name="isActive" 
-                  isChecked={formData?.isActive} 
-                  onChange={handleChange} 
-                />
+              <FormLabel>IsActive</FormLabel>
+              <Switch
+                name="isActive"
+                isChecked={formData?.isActive}
+                onChange={handleChange}
+              />
             </FormControl>
-              
           </Stack>
           <Button className="mt-4" onClick={handleSubmit} type="primary">
             Next
@@ -254,4 +275,4 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
   );
 };
 
-export default TestDetailTab
+export default TestDetailTab;
