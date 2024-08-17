@@ -45,8 +45,6 @@ export function useActivityLogger() {
         data: { activities },
         recordId: selectedBranch,
       });
-
-      console.log("Activity logged successfully");
     } catch (error) {
       console.error("Error logging activity:", error);
     }

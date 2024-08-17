@@ -35,6 +35,7 @@ export const TestTable: React.FC<TestTableProps> = () => {
 
   const currentBranch = useCurrentBranchValue();
   const tests = currentBranch?.tests;
+  //console.logcurrentBranch, tests)
   const setCurrentBranch = useSetRecoilState(branchState);
   // const {updateCurrentBranch} = useCurrentBranch()
 

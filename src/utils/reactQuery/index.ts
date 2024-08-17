@@ -22,6 +22,10 @@ import {
   updateDiagBranchApi,
   deleteDiagBranchApi,
   uploadPathSignature,
+  deleteDiagTestApi,
+  getAdminReportTypesApi,
+  createDiagTestApi,
+  updateDiagTestApi,
 } from "@utils/urls/app";
 
 // useQuery hook to get data
@@ -67,6 +71,10 @@ export function useGetUser({ userPhoneNumber }: any) {
   });
 }
 
+export function useGetAdminReports() {
+  return useQueryGetData("adminReports", getAdminReportTypesApi);
+}
+
 export function useGetDcProfile({ selectedCenterId }: any) {
   return useQueryGetData(
     "diagnosticCenter",
@@ -93,6 +101,12 @@ export function useCreateUser<TData, TVariables>(
   return createMutation("post", createDiagnosticUserApi, props);
 }
 
+export function useCreateTest<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return createMutation("post", createDiagTestApi, props);
+}
+
 // update
 function UpdateMutation<TData, TVariables>(
   method: "put",
@@ -115,6 +129,12 @@ export function useUpdateUser<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
   return UpdateMutation("put", updateDiagnosticUserApi, props);
+}
+
+export function useUpdateTest<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return UpdateMutation("put", updateDiagTestApi, props);
 }
 
 export function useCreateDiagnostic<TData, TVariables>(
@@ -171,6 +191,12 @@ export function useDeleteBranch<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
   return deleteMutation("delete", deleteDiagBranchApi, props);
+}
+
+export function useDeleteTest<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return deleteMutation("delete", deleteDiagTestApi, props);
 }
 
 export function useUploadReportFile<TData, TVariables>(

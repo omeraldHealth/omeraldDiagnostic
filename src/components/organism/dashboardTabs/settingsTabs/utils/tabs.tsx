@@ -1,6 +1,7 @@
-import { Space } from "antd";
+import { Popover, Space, Tag } from "antd";
 import moment from "moment";
 import Image from "next/image";
+import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 export const ADMIN_USER_ACTIVITES_COLUMNS = [
@@ -224,6 +225,92 @@ export const PATHOLOGIST_COLUMNS = ({ handleEdit, handleDelete }) => [
     render: (_, record) => {
       return (
         <Space size="middle">
+          {/* <a href="#">
+            <FaEdit
+              className="text-red-gray"
+              onClick={() => handleEdit(record)}
+            />
+          </a> */}
+          <a href="#">
+            <FaTrash
+              className="text-red-500"
+              onClick={() => handleDelete(record)}
+            />
+          </a>
+        </Space>
+      );
+    },
+  },
+];
+
+export const TEST_DETAILS_COLUMNS = ({ handleEdit, handleDelete }) => [
+  {
+    key: "testName",
+    title: "Test Name",
+    dataIndex: "testName",
+    render: (text: any) => <a>{text}</a>,
+    sorter: (a: any, b: any) =>
+      a.sampleType?.testName?.length - b.sampleType?.testName?.length,
+  },
+  {
+    key: "sampleName",
+    title: "Sample Name",
+    dataIndex: "sampleName",
+    render: (text: any) => <a>{text}</a>,
+    sorter: (a: any, b: any) =>
+      a.sampleType?.sampleName?.length - b.sampleType?.sampleName?.length,
+  },
+  {
+    key: "parameter",
+    title: "Parameters",
+    dataIndex: "parameters",
+    render: (parameters: any, record: any) => (
+      <div
+        style={{
+          maxWidth: "20vw",
+          maxHeight: "calc(3 * 20px + 2px)",
+          overflowY: "auto",
+        }}
+      >
+        <div
+          style={{
+            display: "grid",
+            gap: "20px",
+          }}
+        >
+          {parameters?.map((param: any, index: any) => (
+            <a key={index} href="#">
+              <Popover content={getPopOver(param)} title="Parameter Aliases">
+                <Tag className="my-1" color="green" key={param}>
+                  {param?.name}
+                </Tag>
+              </Popover>
+            </a>
+          ))}
+        </div>
+      </div>
+    ),
+  },
+  {
+    key: "isActive",
+    title: "Status",
+    dataIndex: "isActive",
+    sorter: (a: any, b: any) =>
+      a.sampleType?.keywords.length - b.sampleType?.keywords.length,
+    render: (text: any) => {
+      if (text) {
+        return <Tag color="green">Active</Tag>;
+      } else {
+        return <Tag color="red">Inactive</Tag>;
+      }
+    },
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (_, record) => {
+      return (
+        <Space size="middle">
           <a href="#">
             <FaEdit
               className="text-red-gray"
@@ -241,3 +328,353 @@ export const PATHOLOGIST_COLUMNS = ({ handleEdit, handleDelete }) => [
     },
   },
 ];
+
+export const PARAMETER_COLUMNS = ({ handleEdit, handleDelete }) => [
+  {
+    title: "Parameter",
+    dataIndex: "name",
+    key: "name",
+    ellipsis: true,
+    sorter: (a, b) => a.name.localeCompare(b.name),
+    render: (text) => (
+      <div
+        style={{
+          maxWidth: 100,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+        title={text}
+      >
+        {text}
+      </div>
+    ),
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    key: "description",
+    render: (text) => (
+      <div
+        style={{
+          maxWidth: 100,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+        title={text}
+      >
+        {text}
+      </div>
+    ),
+  },
+  {
+    title: "Remedy",
+    dataIndex: "remedy",
+    key: "remedy",
+    render: (text) => (
+      <div
+        style={{
+          maxWidth: 100,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+        title={text}
+      >
+        {text}
+      </div>
+    ),
+  },
+  // {
+  //   title: "Unit",
+  //   dataIndex: "units",
+  //   key: "units",
+  //   width: 100,
+  //   render: (_, record) => (
+  //     <Popover title="Units" trigger="hover">
+  //       <div >
+  //         <ParameterUnitsColumn data={record} />
+  //       </div>
+  //     </Popover>
+  //   ),
+  // },
+  {
+    title: "Alias",
+    dataIndex: "aliases",
+    key: "aliases",
+    render: (aliases = []) => {
+      const displayAliases = aliases.slice(0, 3);
+      const moreDots = aliases.length > 3;
+
+      return (
+        <Popover content={aliases.join(", ")} title="Aliases" trigger="hover">
+          <Space size={[0, 1]} wrap>
+            {displayAliases.map((alias) => (
+              <Tag color="geekblue" key={alias}>
+                {alias}
+              </Tag>
+            ))}
+            {moreDots && <Tag color="geekblue">...</Tag>}
+          </Space>
+        </Popover>
+      );
+    },
+  },
+  {
+    title: "Bio Ref",
+    dataIndex: "bioRefRange",
+    key: "bioRefRange",
+    width: 100,
+    render: (bioRefRange = []) => {
+      // const displayBioRefRange = bioRefRange?.length>0 && bioRefRange?.slice(0, 3);
+      return (
+        <Popover
+          content={getContent(bioRefRange)}
+          title="Bio Ref Range Details"
+          trigger="hover"
+        >
+          <div
+            style={{
+              maxWidth: 130,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            <Tag color="blue">Reference value</Tag>
+          </div>
+        </Popover>
+      );
+    },
+  },
+  {
+    title: "Status",
+    dataIndex: "isActive",
+    key: "isActive",
+    filters: [
+      { text: "Active", value: true },
+      { text: "Inactive", value: false },
+    ],
+    onFilter: (value, record) => record.isActive === value,
+    render: (isActive) => (
+      <Tag color={isActive ? "green" : "red"}>
+        {isActive ? "Active" : "Inactive"}
+      </Tag>
+    ),
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (_, record) => (
+      <Space size="middle">
+        <a>
+          <FaEdit
+            className="text-red-gray"
+            onClick={() => handleEdit(record)}
+          />
+        </a>
+        <a>
+          <FaTrash
+            className="text-red-500"
+            onClick={() => handleDelete(record)}
+          />
+        </a>
+      </Space>
+    ),
+  },
+];
+
+const getPopOver = (param: any) => (
+  <div className="max-w-[25vw]">
+    <p>
+      <strong>Name</strong>: {param?.name}
+    </p>
+    <p
+    // style={{ width: "30vw", wordWrap: "break-word", whiteSpace: "pre-wrap" }}
+    // className="overflow-hidden whitespace-nowrap w-[30vw]"
+    >
+      <strong>Description</strong>: {param?.description}
+    </p>
+    <p>
+      <strong>Aliases</strong>: {param?.aliases?.join(", ")}
+    </p>
+    <p>
+      <strong>IsActive</strong>: {param?.isActive ? "Yes" : "No"}
+    </p>
+    <p>
+      <strong>BioRefRange</strong>:{getContent(param?.bioRefRange)}
+    </p>
+  </div>
+);
+
+const extractAllUnits = (data: any) => {
+  const basicRangeUnits =
+    data?.bioRefRange?.basicRange?.map((range: any) => range.unit) || [];
+
+  const ageRangeUnits =
+    data?.bioRefRange?.advanceRange?.ageRange?.map(
+      (range: any) => range.unit,
+    ) || [];
+
+  const genderRangeUnits =
+    data?.bioRefRange?.advanceRange?.genderRange?.map(
+      (range: any) => range.unit,
+    ) || [];
+
+  const customCategoryUnits =
+    data?.bioRefRange?.advanceRange?.customCategory?.flatMap(
+      (category: any) =>
+        category.categoryOptions?.map((option: any) => option.unit) || [],
+    ) || [];
+
+  // Combine all units and remove duplicates
+  const allUnits = [
+    ...basicRangeUnits,
+    ...ageRangeUnits,
+    ...genderRangeUnits,
+    ...customCategoryUnits,
+  ];
+
+  // Remove duplicates
+  const uniqueUnits = Array.from(new Set(allUnits));
+
+  return uniqueUnits;
+};
+
+const ParameterUnitsColumn = ({ data }) => {
+  const [visibleUnits, setVisibleUnits] = useState<string[]>([]);
+  const allUnits = extractAllUnits(data);
+
+  const handlePopoverVisibleChange = (visible: boolean) => {
+    setVisibleUnits(visible ? allUnits : []);
+  };
+
+  const renderContent = () => (
+    <Space wrap>
+      {allUnits.map((unit, index) => (
+        <Tag color="green" key={index}>
+          {unit}
+        </Tag>
+      ))}
+    </Space>
+  );
+
+  return (
+    <Popover
+      content={renderContent()}
+      title="All Units"
+      trigger="click"
+      visible={visibleUnits.length > 0}
+      onVisibleChange={handlePopoverVisibleChange}
+    >
+      <Tag color="green" style={{ cursor: "pointer" }}>
+        Show Units
+      </Tag>
+    </Popover>
+  );
+};
+
+const getContent = (bioRefRange: any) => {
+  //console.log"bioref", bioRefRange)
+  const formatRange = (min: any, max: any, unit: any) => {
+    if (min && max) return `${min} > and < ${max} ${unit || ""}`;
+    if (min) return `> ${min} ${unit || ""}`;
+    if (max) return `< ${max} ${unit || ""}`;
+    return null;
+  };
+
+  const hasAdvancedData =
+    bioRefRange?.advanceRange &&
+    (bioRefRange.advanceRange.ageRange?.length > 0 ||
+      bioRefRange.advanceRange.genderRange?.length > 0 ||
+      bioRefRange.advanceRange.customCategory?.length > 0);
+
+  return (
+    <div style={{ maxHeight: "50vh", overflowY: "auto", padding: "0 10px" }}>
+      {/* Basic Range */}
+      {bioRefRange?.basicRange?.map((basic: any, basicIndex: number) => (
+        <div key={basicIndex} className="mb-4">
+          <p className="font-bold">Basic Range:</p>
+          <p>{formatRange(basic.min, basic.max, basic.unit)}</p>
+        </div>
+      ))}
+
+      {/* Advanced Range */}
+      {hasAdvancedData && (
+        <div>
+          <p className="font-bold">Advanced Range:</p>
+          <div className="ml-2">
+            {/* Age Range */}
+            {bioRefRange.advanceRange?.ageRange?.map(
+              (age: any, ageIndex: number) => (
+                <div key={ageIndex}>
+                  <p>Age Range:</p>
+                  <p className="ml-4">{`${age.ageRangeType}: ${formatRange(age.min, age.max, age.unit)}`}</p>
+                </div>
+              ),
+            )}
+
+            {/* Gender Range */}
+            {bioRefRange.advanceRange?.genderRange?.map(
+              (gender: any, genderIndex: number) => (
+                <div key={genderIndex}>
+                  <p>Gender Range:</p>
+                  <p className="ml-4">{`${gender.genderRangeType} Range: ${formatRange(gender.min, gender.max, gender.unit)}`}</p>
+                  {gender.genderRangeType === "female" && gender.details && (
+                    <div className="ml-6">
+                      <p>Details:</p>
+                      <div className="ml-6">
+                        {gender.details.menopause && <p>Menopause: Yes</p>}
+                        {gender.details.prePuberty && <p>Pre-Puberty: Yes</p>}
+                        {gender.details.pregnant && (
+                          <>
+                            <p>Pregnant: Yes</p>
+                            {gender.details.trimester?.type !== "none" && (
+                              <p className="ml-6">
+                                Trimester: {gender.details.trimester.type}
+                              </p>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ),
+            )}
+
+            {/* Custom Category */}
+            {bioRefRange.advanceRange?.customCategory?.map(
+              (category: any, catIndex: number) => (
+                <div key={catIndex}>
+                  <p className="font-bold">Custom Range:</p>
+                  <p>{category.categoryName}</p>
+                  {category.categoryOptions?.map(
+                    (option: any, optIndex: number) => (
+                      <p key={optIndex} className="ml-4">
+                        {`${option.categoryType}: ${formatRange(option.min, option.max, option.unit)}`}
+                      </p>
+                    ),
+                  )}
+                  {category.subCategory && (
+                    <div className="ml-4">
+                      <p>{category.subCategory.categoryName}</p>
+                      {category.subCategory.categoryOptions?.map(
+                        (subOpt: any, subOptIndex: number) => (
+                          <p key={subOptIndex} className="ml-4">
+                            {`${subOpt.categoryType}: ${formatRange(subOpt.min, subOpt.max, subOpt.unit)}`}
+                          </p>
+                        ),
+                      )}
+                    </div>
+                  )}
+                </div>
+              ),
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

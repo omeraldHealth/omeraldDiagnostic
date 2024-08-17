@@ -59,7 +59,6 @@ function BranchTab() {
   };
 
   const handleEdit = (record: any) => {
-    console.log(record);
     setBranchId(record?._id);
     setIsEdit(true);
     setAddBranch(true);

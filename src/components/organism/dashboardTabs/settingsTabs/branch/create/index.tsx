@@ -70,7 +70,14 @@ const AddBranch = ({ handleShowBranch }) => {
       return errorAlert2("Please fill in all required fields");
     }
 
-    // Assuming you want to create a new branch by default
+    const branchExists = profileValue?.branches?.find(
+      (branch) => branch?.branchName == formData.branchName,
+    );
+    if (branchExists) {
+      errorAlert2("Branch already exisits");
+      return;
+    }
+
     createBranch.mutate({ data: formData });
   };
 

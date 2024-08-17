@@ -22,6 +22,10 @@ export const updateDiagBranchApi =
 export const deleteDiagBranchApi =
   diagBackendApiPath + `branches/deleteBranch/`;
 
+export const createDiagTestApi = diagBackendApiPath + `tests/createTest/`; // Endpoint to create diagnostic profile
+export const updateDiagTestApi = diagBackendApiPath + `tests/updateTest/`; // Endpoint to update diagnostic profile
+export const deleteDiagTestApi = diagBackendApiPath + `tests/deleteTest/`;
+
 // API paths for diagnostic reports
 export const getDiagReportsApi = diagBackendApiPath + `reports/getReports/`; // Endpoint to get diagnostic reports
 export const createDiagReportsApi =

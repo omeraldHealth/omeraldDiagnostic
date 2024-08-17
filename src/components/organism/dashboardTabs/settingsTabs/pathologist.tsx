@@ -204,3 +204,5 @@ const uploadImage = async (file) => {
   } catch (error) {
     errorAlert2("Error uploading file:", error);
     throw new Error("File upload failed.");
+  }
+};

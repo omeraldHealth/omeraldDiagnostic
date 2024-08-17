@@ -4,11 +4,16 @@ import { operatorState } from "../recoil/operator";
 import { branchState } from "../recoil/branch/branch";
 import { dashTabs } from "../recoil/dashboard";
 import { booleanState } from "../recoil/booleanAtom";
-import { testDetailsState } from "../recoil/testDetails";
+import {
+  editTestIdState,
+  editTestState,
+  testDetailsState,
+} from "../recoil/testDetails";
 import { reportState } from "../recoil/report";
 import { logoStateData } from "../recoil/logo";
 import { paramState } from "../recoil/testDetails/param";
 import { userState } from "../recoil/user";
+import { bioRefState } from "../recoil/testDetails/test";
 
 export const ROUTES_WITHOUT_SIDEBAR = [
   "/",
@@ -33,11 +38,14 @@ export const ROUTES_WITHOUT_SIDEBAR = [
 
 export const useProfileValue = () => useRecoilValue(profileState);
 export const useLogoValue = () => useRecoilValue(logoStateData);
-export const useTestDataValue = () => useRecoilValue(testDetailsState);
+export const useTestDetailValue = () => useRecoilValue(testDetailsState);
 export const useReportValue = () => useRecoilValue(reportState);
+export const useBioRefValue = () => useRecoilValue(bioRefState);
 export const useBooleanValue = () => useRecoilValue(booleanState);
 export const useManagerValue = () => useRecoilValue(operatorState);
 export const useCurrentBranchValue = () => useRecoilValue(branchState);
 export const useDashboardTabs = () => useRecoilValue(dashTabs);
 export const useParamValue = () => useRecoilValue(paramState);
 export const useUserValues = () => useRecoilValue(userState);
+export const useEditTestValues = () => useRecoilValue(editTestState);
+export const useEditTestIdValues = () => useRecoilValue(editTestIdState);

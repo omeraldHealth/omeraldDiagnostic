@@ -1,13 +1,17 @@
 import { useSession } from "@clerk/nextjs";
 import { Spinner } from "@components/atoms/loader";
-import { usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
+import {
+  usePersistedBranchState,
+  usePersistedDCState,
+} from "@components/common/recoil/hooks/usePersistedState";
 import { profileState } from "@components/common/recoil/profile/index";
 import { DashboardSideBar } from "@components/molecules/sidebar/index";
-import { useGetDcProfile } from "@utils/reactQuery";
+import { useGetDcBranch, useGetDcProfile } from "@utils/reactQuery";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { DashboardHeader } from "../../molecules/header";
+import { branchState } from "@components/common/recoil/branch/branch";
 
 /**
  * Layout component for the dashboard.
@@ -17,13 +21,21 @@ import { DashboardHeader } from "../../molecules/header";
 export function DashboardLayout({ children }: any) {
   const { session } = useSession();
   const [selectedDc] = usePersistedDCState();
+  const [selectedBranch] = usePersistedBranchState();
   const {
     data: profileData,
     isLoading,
     refetch,
   } = useGetDcProfile({ selectedCenterId: selectedDc });
+  const {
+    data: currentBranch,
+    isLoading: branchLoading,
+    refetch: refBranch,
+  } = useGetDcBranch({ selectedBranchId: selectedBranch });
+
   const router = useRouter();
   const setProfileRecoil = useSetRecoilState(profileState);
+  const setCurrentBranch = useSetRecoilState(branchState);
 
   useEffect(() => {
     if (session?.status !== "active") {
@@ -42,10 +54,26 @@ export function DashboardLayout({ children }: any) {
   }, [isLoading, profileData]);
 
   useEffect(() => {
+    if (!branchLoading && currentBranch) {
+      //@ts-ignore
+      if (currentBranch?.data) {
+        //@ts-ignore
+        setCurrentBranch(currentBranch?.data);
+      }
+    }
+  }, [branchLoading, currentBranch]);
+
+  useEffect(() => {
     if (selectedDc) {
       refetch();
     }
   }, [selectedDc]);
+
+  useEffect(() => {
+    if (selectedBranch) {
+      refBranch();
+    }
+  }, [selectedBranch]);
 
   //@ts-ignore
   const isValidProfile = profileData?.data?._id;
