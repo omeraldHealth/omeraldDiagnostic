@@ -15,7 +15,7 @@ export const ParameterComp = ({handleNext, handlePrevious}) => {
                     Previous
                 </Button>
                 </section>
-                <AddParameters/>
+                <AddParameters edit={false}/>
             </section>
         </section>
     );

@@ -1,5 +1,5 @@
 import { testDetailsState } from '@components/common/recoil/testDetails';
-import { Button, Form, Input, Modal, Select, Switch } from 'antd';
+import { Form, Input, Modal, Select, Switch } from 'antd';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import InputForm from './bioRef';
@@ -7,86 +7,92 @@ import { paramState } from '@components/common/recoil/testDetails/param';
 import { errorAlert2 } from '@components/atoms/alerts/alert';
 import { bioRefState } from '@components/common/recoil/testDetails/test';
 
-const AddParameters = ({edit}) => {
-    const [isModalVisible, setIsModalVisible] = useState(edit || false);
+const UpdateParam = ({handleHide}) => {
+    const [isModalVisible, setIsModalVisible] = useState(true);
     const [form] = Form.useForm();
     const [testDetail, setTestDetail] = useRecoilState(testDetailsState)
     const [bioRefValue, setBioRefValue] = useRecoilState(bioRefState)
     const [parmValue, setParmValue] = useRecoilState(paramState)
+    
+    const handleOk = () => {
+            form
+            .validateFields()
+                .then((values) => {
+                console.log(parmValue)
+                const parameters = {
+                    ...parmValue,
+                    bioRefRange: {...bioRefValue}
+                }
+        
+                if (!parameters?.name) {
+                    errorAlert2("Please add valid param name")
+                    return
+                }
+                const updatedTest = {
+                    ...testDetail,
+                    parameters: testDetail?.parameters?.map(param => 
+                        param.name === parameters.name 
+                        ? { ...param, ...parameters } 
+                        : param
+                    ) || [],
+                };
+                
+                // If no matching parameter was found, add the new parameter
+                if (!updatedTest.parameters.some(param => param.name === parameters.name)) {
+                    updatedTest.parameters.push(parameters);
+                }
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-    
-  const handleOk = () => {
-        form
-        .validateFields()
-            .then((values) => {
-                console.log(values)
-                console.log(testDetail)
-            const parameters = {
-                ...parmValue,
-                bioRefRange: {...bioRefValue}
-            }
-    
-            if (!parameters?.name) { 
-                errorAlert2("Please add valid param name")
-                return 
-            }
-    
-            const updatedTest = { 
-                ...testDetail, 
-                parameters: [...(testDetail?.parameters || []), ...(Array.isArray(parameters) ? parameters : [parameters])]
-            };
-
-            setTestDetail(updatedTest)
-            setIsModalVisible(false);
-            setBioRefValue({})
-            setParmValue({})
-            form.resetFields();
-        })
-        .catch((info) => {
-            console.log('Validate Failed:', info);
+                setTestDetail(updatedTest)
+                setBioRefValue({})
+                setParmValue({})
+                form.resetFields();
+            })
+            .catch((info) => {
+                console.log('Validate Failed:', info);
         });
-  };
+        handleHide()
+    };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+    const handleCancel = () => {
+        handleHide()
   };
 
   return (
     <div>
-          {!edit && <Button type="primary" onClick={showModal}>
-              Add Parameters
-          </Button>}
       <Modal
         title="Add Parameters"
-        visible={isModalVisible}
+        visible={true}
         onOk={handleOk}
         width={"50vw"}
         onCancel={handleCancel}
           >
             <section className='grid grid-cols-2'>
                 <ParamForm />
-                  <InputForm edit={false} />      
+                <InputForm edit={true} />      
             </section>
       </Modal>
     </div>
   );
 };
 
-export default AddParameters;
+export default UpdateParam;
 
 const { TextArea } = Input;
 
 const ParamForm = () => {
-    const [formData, setFormData] = useState({});
+   
     const [param, setParam] = useRecoilState(paramState);
+    const [formData, setFormData] = useState(param);
 
-    useEffect(() => {setParam(formData) },[formData])
+    useEffect(() => {
+        setFormData(param);
+    }, []);
 
     const handleFormChange = (changedValues, allValues) => {
+        console.log(changedValues);
         setFormData(allValues);
+        console.log(allValues); // Logs the updated form values
+        setParam(allValues); // Uncomment if you want to update param with the new formData
     };
 
     const handleAliasesChange = (value) => {
@@ -99,14 +105,18 @@ const ParamForm = () => {
             ...prevData,
             aliases: formattedValues,
         }));
+
+        setParam((prevData) => ({
+            ...prevData,
+            aliases: formattedValues,
+        }));
     };
 
     return (
         <Form
             layout="vertical"
             onValuesChange={handleFormChange}
-            // onFinish={handleSubmit}
-            initialValues={{ isActive: true }}
+            initialValues={formData}
             className="w-[70%] space-y-4"
         >
             <Form.Item

@@ -6,7 +6,7 @@ import { useRecoilState } from 'recoil';
 import RenderRanges from './showRefRange';
 import { bioRefState } from '@components/common/recoil/testDetails/test';
 
-const InputForm = () => {
+const InputForm = ({edit}) => {
   const [rangeType, setRangeType] = useState('basic');
   const [bioRef, setBioRef]= useRecoilState(bioRefState)
   const [form] = Form.useForm();
@@ -21,8 +21,12 @@ const InputForm = () => {
   });
 
   useEffect(() => {
-    setBioRef(data)
-  },[])
+    if (!edit) { 
+      console.log("bio",bioRef)
+      setBioRef(data)
+    }
+  }, [])
+
 
   const handleRangeTypeChange = (e) => {
     setRangeType(e.target.value);
@@ -76,10 +80,6 @@ const InputForm = () => {
       form.resetFields(); 
     }
   };
-
-  useEffect(() => {
-    setBioRef(data);
-  }, [data]);
   
   const handleRemove = (type, index) => {
     setData(prevData => {
@@ -109,6 +109,36 @@ const InputForm = () => {
         advanceRange: updatedAdvanceRange
       };
     });
+
+    if (edit) { 
+      setBioRef(prevData => {
+        // Copy the current state
+        let updatedBasicRange = [...prevData.basicRange];
+        let updatedAdvanceRange = { ...prevData.advanceRange };
+    
+        // Update based on type
+        if (type === 'basicRange') {
+          // Ensure we are modifying the right property
+          updatedBasicRange.splice(index, 1);
+    
+        } else if (type === 'ageRange') {
+          updatedAdvanceRange.ageRange = updatedAdvanceRange.ageRange.filter((_, i) => i !== index);
+    
+        } else if (type === 'genderRange') {
+          updatedAdvanceRange.genderRange = updatedAdvanceRange.genderRange.filter((_, i) => i !== index);
+    
+        } else if (type === 'customCategory') {
+          updatedAdvanceRange.customCategory = updatedAdvanceRange.customCategory.filter((_, i) => i !== index);
+        }
+    
+        // Return updated state
+        return {
+          ...prevData,
+          basicRange: updatedBasicRange,
+          advanceRange: updatedAdvanceRange
+        };
+      });
+    }
   };
   
   return (<section>
@@ -140,7 +170,7 @@ export default InputForm;
 
 const transformData = (incomingData) => {
   const { rangeOption, ageRangeType, ageRanges, genderRanges, basicRange } = incomingData;
-
+  console.log("incomingData", incomingData)
   // Initialize the base structure
   const transformedData = {
     basicRange: [], // Placeholder if basic ranges are needed in the future
@@ -167,7 +197,7 @@ const transformData = (incomingData) => {
     case 'gender':
       if (genderRanges) {
         transformedData.advanceRange.genderRange = genderRanges.map(range => ({
-          genderRangeType: range.genderRangeType, // Assuming this field is part of the gender range data
+          genderRangeType: genderRanges?.[0]?.gender, // Assuming this field is part of the gender range data
           unit: range.unit,
           min: range.min,
           max: range.max,

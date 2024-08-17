@@ -446,13 +446,13 @@ export const PARAMETER_COLUMNS = ({ handleEdit, handleDelete }) => [
 
 
 const getPopOver = (param: any) => (
-  <div className="max-w-[5vw]">
+  <div className="max-w-[25vw]">
     <p>
       <strong>Name</strong>: {param?.name}
     </p>
     <p
-      style={{ width: 300, wordWrap: "break-word", whiteSpace: "pre-wrap" }}
-      className="overflow-hidden whitespace-nowrap"
+      // style={{ width: "30vw", wordWrap: "break-word", whiteSpace: "pre-wrap" }}
+      // className="overflow-hidden whitespace-nowrap w-[30vw]"
     >
       <strong>Description</strong>: {param?.description}
     </p>
@@ -464,16 +464,14 @@ const getPopOver = (param: any) => (
     </p>
     <p>
       <strong>BioRefRange</strong>:
-      <br />
-      {param?.bioRefRange?.basicRange?.map((basic: any, index: number) => (
-        <span key={index}>
-          Basic: unit: {basic.unit}, min: {basic.min}, max: {basic.max}
-          <br />
-        </span>
-      ))}
+      { 
+        getContent(param?.bioRefRange)
+      }
     </p>
   </div>
 );
+
+
 
 const extractAllUnits = (data: any) => {
   const basicRangeUnits = data?.bioRefRange?.basicRange?.map((range: any) => range.unit) || [];

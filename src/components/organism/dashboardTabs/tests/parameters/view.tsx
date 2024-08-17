@@ -7,6 +7,7 @@ import { paramState } from "@components/common/recoil/testDetails/param";
 import { bioRefState } from "@components/common/recoil/testDetails/test";
 import { useState } from "react";
 import AddParameters from "./create";
+import UpdateParam from "./create/update";
 
 export const ViewParameters = () => {
     const [testDetails, setTestDetail] = useRecoilState(testDetailsState);
@@ -14,11 +15,14 @@ export const ViewParameters = () => {
     const [bioRef, setBioRef] = useRecoilState(bioRefState);
     const [editParam, setEditParam] = useState(false);
     
+    const handleHide = () => { 
+        setEditParam(false)
+    }
     
     const handleEdit = (record) => {
         setEditParam(true)
-        // setParam(record)
-        // setBioRef(record?.bioRefRange)
+        setParam(record)
+        setBioRef(record?.bioRefRange)
     }
 
     const handleDelete = (record) => { 
@@ -30,8 +34,8 @@ export const ViewParameters = () => {
 
     return (
         <section>
-            {!editParam ? <CommonSettingTable data={testDetails?.parameters} columns={columns} />:
-            <AddParameters />}
+            <CommonSettingTable data={testDetails?.parameters} columns={columns} />
+            {editParam && <UpdateParam handleHide={handleHide} />}
         </section>
     );
 };
