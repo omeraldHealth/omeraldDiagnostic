@@ -6,6 +6,10 @@ import { AddTest } from "./create";
 export default function TestTab() {
   const [showTest, setShowTest] = useState(false);
 
+  const handleShowTest = (value) => { 
+    setShowTest(value)
+  }
+
   return (
     <div className="p-0 h-auto bg-signBanner">
       <span className="flex justify-end">
@@ -22,7 +26,7 @@ export default function TestTab() {
       </span>
 
       <div className="h-auto bg-white my-4 sm:mt-4  min-h-[70vh] ">
-        {!showTest ? <ViewTest /> : <AddTest />}
+        {!showTest ? <ViewTest /> : <AddTest handleShowTest={handleShowTest} />}
       </div>
     </div>
   );

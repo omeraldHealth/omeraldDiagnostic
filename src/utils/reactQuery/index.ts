@@ -24,6 +24,8 @@ import {
   uploadPathSignature,
   deleteDiagTestApi,
   getAdminReportTypesApi,
+  createDiagTestApi,
+  updateDiagTestApi,
 } from "@utils/urls/app";
 
 // useQuery hook to get data
@@ -99,6 +101,13 @@ export function useCreateUser<TData, TVariables>(
   return createMutation("post", createDiagnosticUserApi, props);
 }
 
+
+export function useCreateTest<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return createMutation("post", createDiagTestApi, props);
+}
+
 // update
 function UpdateMutation<TData, TVariables>(
   method: "put",
@@ -122,6 +131,13 @@ export function useUpdateUser<TData, TVariables>(
 ) {
   return UpdateMutation("put", updateDiagnosticUserApi, props);
 }
+
+export function useUpdateTest<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return UpdateMutation("put", updateDiagTestApi, props);
+}
+
 
 export function useCreateDiagnostic<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,

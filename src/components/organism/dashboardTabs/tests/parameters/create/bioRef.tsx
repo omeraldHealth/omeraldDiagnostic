@@ -3,12 +3,12 @@ import { Form, Button, Radio } from 'antd';
 import BasicRangeInput from './basicRange';
 import AdvanceRangeInput from './advance';
 import { useRecoilState } from 'recoil';
-import { paramState } from '@components/common/recoil/testDetails/param';
 import RenderRanges from './showRefRange';
+import { bioRefState } from '@components/common/recoil/testDetails/test';
 
 const InputForm = () => {
   const [rangeType, setRangeType] = useState('basic');
-  const [param, setParam]= useRecoilState(paramState)
+  const [bioRef, setBioRef]= useRecoilState(bioRefState)
   const [form] = Form.useForm();
 
   const [data, setData] = useState({
@@ -21,7 +21,7 @@ const InputForm = () => {
   });
 
   useEffect(() => {
-    setParam(data)
+    setBioRef(data)
   },[])
 
   const handleRangeTypeChange = (e) => {
@@ -61,7 +61,7 @@ const InputForm = () => {
       });
   
       // Update param with the latest data
-      setParam(prevData => ({
+      setBioRef(prevData => ({
         ...prevData,
         basicRange: [...(prevData?.basicRange || []), ...(newData.basicRange || [])],
         advanceRange: {
@@ -78,7 +78,7 @@ const InputForm = () => {
   };
 
   useEffect(() => {
-    setParam(data);
+    setBioRef(data);
   }, [data]);
   
   const handleRemove = (type, index) => {
@@ -112,7 +112,7 @@ const InputForm = () => {
   };
   
   return (<section>
-          <Form form={form} onFinish={handleSubmit} layout="vertical">
+    <Form form={form} onFinish={handleSubmit} layout="vertical">
       <Form.Item label="Select Range Type" name="rangeType">
         <Radio.Group onChange={handleRangeTypeChange} value={rangeType}>
           <Radio.Button value="basic">Basic Range</Radio.Button>
@@ -130,7 +130,7 @@ const InputForm = () => {
         </Button>
       </Form.Item>
     </Form>
-    <RenderRanges data={param} onRemove={handleRemove} />
+    <RenderRanges data={bioRef} onRemove={handleRemove} />
 
     </section>
   );

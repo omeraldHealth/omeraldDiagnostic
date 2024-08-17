@@ -1,6 +1,6 @@
 const { atom } = require("recoil");
 
-export const testDataState = atom({
-  key: "testDataState",
+export const bioRefState = atom({
+  key: "bioRefState",
   default: {},
 });

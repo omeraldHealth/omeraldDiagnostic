@@ -1,35 +1,53 @@
 import { testDetailsState } from '@components/common/recoil/testDetails';
 import { Button, Form, Input, Modal, Select, Switch } from 'antd';
-import { useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import InputForm from './bioRef';
-import { useParamValue, useTestDetailValue } from '@components/common/constants/recoilValues';
 import { paramState } from '@components/common/recoil/testDetails/param';
+import { errorAlert2 } from '@components/atoms/alerts/alert';
+import { bioRefState } from '@components/common/recoil/testDetails/test';
 
 const AddParameters = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
-    const parmValue = useParamValue()
-    const testDetail = useTestDetailValue()
-    const testDetails = useSetRecoilState(testDetailsState)
+    const [testDetail, setTestDetail] = useRecoilState(testDetailsState)
+    const [bioRefValue, setBioRefValue] = useRecoilState(bioRefState)
+    const [parmValue, setParmValue] = useRecoilState(paramState)
 
   const showModal = () => {
     setIsModalVisible(true);
   };
     
-    const handleOk = () => {
-        // const paramObj = { ...testDetail, parameters: { parmValue } }
-        // testDetails(paramObj)
-        // console.log(testDetail)    
-        // form
-        // .validateFields()
-        // .then((values) => {
-        //     form.resetFields();
-        //     setIsModalVisible(false);
-        // })
-        // .catch((info) => {
-        //     console.log('Validate Failed:', info);
-        // });
+  const handleOk = () => {
+        form
+        .validateFields()
+            .then((values) => {
+                console.log(values)
+                console.log(testDetail)
+            const parameters = {
+                ...parmValue,
+                bioRefRange: {...bioRefValue}
+            }
+    
+            if (!parameters?.name) { 
+                errorAlert2("Please add valid param name")
+                return 
+            }
+    
+            const updatedTest = { 
+                ...testDetail, 
+                parameters: [...(testDetail?.parameters || []), ...(Array.isArray(parameters) ? parameters : [parameters])]
+            };
+
+            setTestDetail(updatedTest)
+            setIsModalVisible(false);
+            setBioRefValue({})
+            setParmValue({})
+            form.resetFields();
+        })
+        .catch((info) => {
+            console.log('Validate Failed:', info);
+        });
   };
 
   const handleCancel = () => {
@@ -38,9 +56,9 @@ const AddParameters = () => {
 
   return (
     <div>
-      <Button type="primary" onClick={showModal}>
-        Add Parameters
-      </Button>
+        {!edit && <Button type="primary" onClick={showModal}>
+              Add Parameters
+        </Button>}
       <Modal
         title="Add Parameters"
         visible={isModalVisible}
@@ -59,20 +77,16 @@ const AddParameters = () => {
 
 export default AddParameters;
 
-
 const { TextArea } = Input;
 
 const ParamForm = () => {
     const [formData, setFormData] = useState({});
-    const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
     const [param, setParam] = useRecoilState(paramState);
+
+    useEffect(() => {setParam(formData) },[formData])
 
     const handleFormChange = (changedValues, allValues) => {
         setFormData(allValues);
-    };
-
-    const handleSubmit = () => {
-        setParam(formData); // Assuming you want to update testDetail with form data
     };
 
     const handleAliasesChange = (value) => {
@@ -91,7 +105,7 @@ const ParamForm = () => {
         <Form
             layout="vertical"
             onValuesChange={handleFormChange}
-            onFinish={handleSubmit}
+            // onFinish={handleSubmit}
             initialValues={{ isActive: true }}
             className="w-[70%] space-y-4"
         >
@@ -138,11 +152,11 @@ const ParamForm = () => {
                 <Switch />
             </Form.Item>
 
-            <Form.Item>
+            {/* <Form.Item>
                 <Button type="primary" htmlType="submit">
                     Submit
                 </Button>
-            </Form.Item>
+            </Form.Item> */}
         </Form>
     );
 };

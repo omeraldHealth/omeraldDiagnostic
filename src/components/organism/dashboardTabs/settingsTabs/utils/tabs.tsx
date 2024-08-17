@@ -403,10 +403,10 @@ export const PARAMETER_COLUMNS = ({ handleEdit, handleDelete }) => [
     key: "bioRefRange",
     width: 100,
     render: (bioRefRange = []) => {
-      const displayBioRefRange = bioRefRange?.length>0 && bioRefRange?.slice(0, 3);
+      // const displayBioRefRange = bioRefRange?.length>0 && bioRefRange?.slice(0, 3);
       return (
         <Popover
-          content={getContent(displayBioRefRange)}
+          content={getContent(bioRefRange)}
           title="Bio Ref Range Details"
           trigger="hover"
         >
@@ -535,6 +535,7 @@ const ParameterUnitsColumn = ({ data }) => {
 };
 
 const getContent = (bioRefRange: any) => {
+  console.log("bioref", bioRefRange)
   const formatRange = (min: any, max: any, unit: any) => {
     if (min && max) return `${min} > and < ${max} ${unit || ""}`;
     if (min) return `> ${min} ${unit || ""}`;

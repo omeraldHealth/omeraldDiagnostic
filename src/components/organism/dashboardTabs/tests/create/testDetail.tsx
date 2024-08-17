@@ -1,12 +1,12 @@
-import { FormControl, FormLabel, Input, Stack } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Stack, Switch } from "@chakra-ui/react";
 import { errorAlert2 } from "@components/atoms/alerts/alert";
 import { Loader } from "@components/atoms/loader/loader";
-import { useTestDetailValue } from "@components/common/constants/recoilValues";
+import { useEditTestValues, useTestDetailValue } from "@components/common/constants/recoilValues";
 import { testDetailsState } from "@components/common/recoil/testDetails";
 import { useGetAdminReports } from "@utils/reactQuery";
 import { Button, Radio, Select } from "antd";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 function TestDetailTab({ handleNext }) { 
   const testDetail = useTestDetailValue()
@@ -18,7 +18,6 @@ function TestDetailTab({ handleNext }) {
     }
     handleNext();
   };
-  
 
   return (
       <div>
@@ -67,21 +66,38 @@ const TestDetailHeader: React.FC<any> = ({
 };
 
 const CustomTestDetails: React.FC<any> = ({handleNext}) => {
-  const [formData, setFormData] = useState({ testName: "", sampleName: "" });
+  const [formData, setFormData] = useState({ testName: "", sampleName: "", isActive: true });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
+  const editTestState = useEditTestValues()
+  const isEditTest = useEditTestValues()
 
   useEffect(() => {
-    setTestDetail({});
+    if (editTestState) {
+      setFormData({
+        testName: testDetail?.testName,
+        sampleName: testDetail?.sampleName,
+        isActive: testDetail?.isActive
+      })
+    } else { 
+      setTestDetail({});
+    }
   }, []);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => {
+    const { name, type, checked, value } = event.target;
+    
+    const inputValue = type === 'checkbox' ? checked : value;
+  
     setFormData((prevFormData) => {
       const updatedFormData = {
         ...prevFormData,
-        [name]: value,
+        [name]: inputValue,
       };
-      setTestDetail(updatedFormData);
+
+      if (isEditTest) { 
+        setTestDetail({ ...testDetail, ...updatedFormData });
+      }
+        setTestDetail(updatedFormData);
       return updatedFormData;
     });
   };
@@ -112,6 +128,14 @@ const CustomTestDetails: React.FC<any> = ({handleNext}) => {
               placeholder="Add Sample Name"
             />
           </FormControl>
+          <FormControl className="my-1" id="isActive">
+                <FormLabel>IsActive</FormLabel>
+                <Switch
+                  name="isActive" 
+                  isChecked={formData?.isActive} 
+                  onChange={handleChange} 
+                />
+            </FormControl>
         </Stack>
         <Button className="mt-4" onClick={handleSubmit} type="primary">
           Next
@@ -122,7 +146,7 @@ const CustomTestDetails: React.FC<any> = ({handleNext}) => {
 };
 
 const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
-  const [formData, setFormData] = useState({ testName: "", sampleName: "", parameters: [] });
+  const [formData, setFormData] = useState({ testName: "", sampleName: "", parameters: [], isActive: true });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
 
   const { data: adminReports, isLoading } = useGetAdminReports();
@@ -155,14 +179,19 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
     setTestDetail(updatedFormData);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    const updatedFormData = {
-      ...formData,
-      [name]: value,
-    };
-    setFormData(updatedFormData);
-    setTestDetail(updatedFormData);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLInputElement>) => {
+    const { name, type, checked, value } = event.target;
+    
+    const inputValue = type === 'checkbox' ? checked : value;
+  
+    setFormData((prevFormData) => {
+      const updatedFormData = {
+        ...prevFormData,
+        [name]: inputValue,
+      };
+      setTestDetail(updatedFormData);
+      return updatedFormData;
+    });
   };
 
   const handleSubmit = () => {
@@ -206,6 +235,15 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
                 ))}
               </Select>
             </FormControl>
+            <FormControl className="my-1" id="isActive">
+                <FormLabel>IsActive</FormLabel>
+                <Switch
+                  name="isActive" 
+                  isChecked={formData?.isActive} 
+                  onChange={handleChange} 
+                />
+            </FormControl>
+              
           </Stack>
           <Button className="mt-4" onClick={handleSubmit} type="primary">
             Next

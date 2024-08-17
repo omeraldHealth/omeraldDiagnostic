@@ -1,10 +1,10 @@
 import { Steps } from "antd";
 import { useState } from "react";
-import TestDetailTab from "./testDetail";
 import { ParameterComp } from "../parameters";
 import TestSummary from "../summary";
+import TestDetailTab from "../create/testDetail";
 
-export const AddTest = ({handleShowTest}) => {
+export const UpdateTest = ({handleShowTest}) => {
   const [currentStep, setStep] = useState(0);
 
   const handleNext = () => setStep(currentStep + 1);
