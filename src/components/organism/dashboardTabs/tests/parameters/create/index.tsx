@@ -46,8 +46,7 @@ const AddParameters = ({ edit }) => {
         setParmValue({});
         form.resetFields();
       })
-      .catch((info) => {
-      });
+      .catch((info) => {});
   };
 
   const handleCancel = () => {

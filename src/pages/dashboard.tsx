@@ -6,7 +6,7 @@ import { Spinner } from "@components/atoms/loader";
 import dynamic from "next/dynamic";
 
 const ReportsTab = dynamic(
-  () => import("@components/organism/dashboardTabs/reportsTab"),
+  () => import("@components/organism/dashboardTabs/reports/index"),
   { loading: () => <Spinner /> },
 );
 const ProfileTab = dynamic(

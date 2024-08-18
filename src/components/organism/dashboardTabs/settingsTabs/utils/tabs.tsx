@@ -1,4 +1,7 @@
+import { warningAlert2 } from "@components/atoms/alerts/alert";
+import { EyeIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { Popover, Space, Tag } from "antd";
+import { ColumnsType } from "antd/es/table";
 import moment from "moment";
 import Image from "next/image";
 import { useState } from "react";
@@ -678,3 +681,94 @@ const getContent = (bioRefRange: any) => {
     </div>
   );
 };
+
+interface ReportColumnProps {
+  handleRemove: (record: any) => void;
+  handlePreview: (record: any) => void;
+}
+
+export const REPORTS_COLUMNS = ({
+  handleRemove,
+  handlePreview,
+}: ReportColumnProps): ColumnsType<any> => [
+  {
+    key: "patientName",
+    title: "Patient Name",
+    dataIndex: ["patient", "name"],
+    className: "w-[10vw]",
+    sorter: (a, b) => a.patient.name.localeCompare(b.patient.name),
+    render: (_, record) => <p>{record?.patient?.name}</p>,
+  },
+  {
+    key: "email",
+    title: "Email",
+    dataIndex: ["patient", "contact", "email"],
+    sorter: (a, b) =>
+      a.patient.contact.email.localeCompare(b.patient.contact.email),
+    render: (_, record) => <p>{record?.patient?.contact?.email}</p>,
+  },
+  {
+    key: "contact",
+    title: "Contact",
+    dataIndex: ["patient", "contact", "phone"],
+    sorter: (a, b) =>
+      a.patient.contact.phone.localeCompare(b.patient.contact.phone),
+    render: (_, record) => <p>{record?.patient?.contact?.phone}</p>,
+  },
+  {
+    key: "reportName",
+    title: "Report Name",
+    dataIndex: ["reportData", "reportName"],
+    sorter: (a, b) =>
+      a.reportData.reportName.localeCompare(b.reportData.reportName),
+    render: (_, record) => <p>{record?.reportData?.reportName}</p>,
+  },
+  {
+    key: "reportDate",
+    title: "Report Date",
+    dataIndex: "reportDate",
+    sorter: (a, b) => moment(a.reportDate).unix() - moment(b.reportDate).unix(),
+    render: (date: string) => moment(date).format("MMM D, YYYY"),
+    defaultSortOrder: "ascend",
+  },
+  {
+    key: "click",
+    title: "View",
+    dataIndex: "isManualReport",
+    render: (stat: string, report: any) => (
+      <>
+        {report?.reportData.url ? (
+          <a
+            href={report?.reportData.url}
+            target="_blank"
+            className="text-orange-700"
+          >
+            <EyeIcon className="w-4 text-orange-500" />
+          </a>
+        ) : (
+          <a
+            onClick={() => {
+              handlePreview(report);
+            }}
+            className="text-orange-700"
+          >
+            <EyeIcon className="w-4 text-green-900" />
+          </a>
+        )}
+      </>
+    ),
+  },
+  {
+    key: "delete",
+    title: "Delete",
+    render: (_, record) => (
+      <div className="flex justify-between items-center h-[1vh]">
+        <section className="self-center">
+          <a onClick={() => handleRemove(record)}>
+            <TrashIcon className="w-6 text-red-700" />
+          </a>
+        </section>
+      </div>
+    ),
+  },
+];

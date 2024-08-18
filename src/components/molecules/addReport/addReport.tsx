@@ -8,7 +8,6 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   useCreateReport,
   useUpdateDiagnostic,
-  useUploadReportFile,
 } from "@utils/reactQuery";
 import axios from "axios";
 import { uploadDiagnosticReportApi } from "@utils/urls/app";
@@ -20,6 +19,7 @@ import {
 } from "@components/common/constants/recoilValues";
 import { ManualReport } from "./ManualReport";
 import { branchState } from "@components/common/recoil/branch/branch";
+import { updateWith } from "lodash";
 interface AddReportComponentProps {
   setAddReports: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => {};
@@ -160,7 +160,8 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({
         };
 
         setReportData(updatedReportData);
-        updateDiagnosticReport.mutate({ data: updatedReportData });
+        console.log(updatedReportData);
+        // updateDiagnosticReport.mutate({ data: updatedReportData });
       }
     } else {
       const updatedReportData = {
@@ -184,7 +185,8 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({
       };
 
       setReportData(updatedReportData);
-      updateDiagnosticReport.mutate({ data: updatedReportData });
+      console.log(updatedReportData);
+      // updateDiagnosticReport.mutate({ data: updatedReportData });
     }
   };
 
