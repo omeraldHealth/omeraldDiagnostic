@@ -4,7 +4,7 @@ import { Tooltip } from "antd";
 import { useSetRecoilState } from "recoil";
 import { dashTabs } from "../../common/recoil/dashboard";
 import { settingTabState } from "../../common/recoil/settings";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
+import { useCurrentBranchValue, useProfileValue } from "@components/common/constants/recoilValues";
 
 interface TooltipProps {
   tipInfo: string;
@@ -21,6 +21,8 @@ const CustomTooltip: React.FC<TooltipProps> = ({ tipInfo, icon }) => {
 
 export const DashCard = () => {
   const currentBranch = useCurrentBranchValue();
+  const currentProfile = useProfileValue();
+  
   const setDashTab = useSetRecoilState(dashTabs);
   const setActiveKey = useSetRecoilState(settingTabState);
 
@@ -31,7 +33,7 @@ export const DashCard = () => {
       icon: <BeakerIcon className="w-10 h-10" />,
       tipInfo: "The number of tests your laboratory offers.",
       title: "Tests Offered",
-      value: currentBranch?.tests?.length,
+      value: currentProfile?.tests?.length,
     },
     {
       href: "/reports",
