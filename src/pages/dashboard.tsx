@@ -50,7 +50,7 @@ export default function Dashboard() {
       tabName={`Admin Diagnostic | ${dashboard}`}
       tabDescription="Omerald is a health management platform to connect people and doctors with ease."
     >
-      <DashboardLayout>{DashboardTabsMap[dashboard]}</DashboardLayout>
+    <DashboardLayout>{DashboardTabsMap[dashboard]}</DashboardLayout>
     </UserLayout>
   );
 }

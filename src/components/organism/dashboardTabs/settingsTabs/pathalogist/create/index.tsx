@@ -126,38 +126,33 @@ const AddPathologist = ({ handleShowPathologist }) => {
               />
             </FormControl>
             <FormControl id="signature" isRequired>
-              <FormLabel>Signature</FormLabel>
+            <FormLabel>Signature</FormLabel>
+            {formData?.signature ? (
+              // Show the uploaded image if available
+              <img src={formData?.signature} alt="avatar" className="my-2 w-[10vw] border-2 border" />
+            ) : (
+              // Show the upload button only if no image is uploaded
               <Upload
                 name="file"
                 action={uploadPathSignature}
                 customRequest={customRequest}
                 listType="picture-card"
-                showUploadList={true}
+                showUploadList={false} // Disable showing the upload list
                 onChange={handleUpload}
                 accept="image/*"
               >
-                {formData?.signature ? (
-                  <img
-                    src={formData?.signature}
-                    alt="avatar"
-                    className="my-2 w-full"
-                  />
-                ) : (
-                  <div>
-                    {loading ? (
-                      <Spin />
-                    ) : (
-                      <div>
-                        <div className="mt-2">Upload</div>
-                        {/* <Button icon={<UploadOutlined />}>
-                          Upload Signature
-                        </Button> */}
-                      </div>
-                    )}
-                  </div>
-                )}
+                <div>
+                  {loading ? (
+                    <Spin />
+                  ) : (
+                    <div>
+                      <div className="mt-2">Upload</div>
+                    </div>
+                  )}
+                </div>
               </Upload>
-            </FormControl>
+            )}
+          </FormControl>
           </Stack>
           <Button type="primary" htmlType="submit">
             Add Pathologist

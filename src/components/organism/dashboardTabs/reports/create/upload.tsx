@@ -210,11 +210,20 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handleP
   );
 };
 
+
+
 const GenerateReport: React.FC<{ next: () => void, form: any, handlePrevious:any }> = ({ next, form,handlePrevious }) => {
   const [reportData, setReportData] = useRecoilState(reportDataState);
   const [testId, setTestId] = useRecoilState(reportState);
   const currentBranch = useCurrentBranchValue();
   const currentProfile = useProfileValue()
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Filter pathologists based on the search term
+  const filteredPathologists = currentBranch?.pathologistDetail?.filter((path) =>
+    path.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const onFinish = (values: any) => {
     if (!values?.pathologist?.name)
@@ -254,7 +263,19 @@ const GenerateReport: React.FC<{ next: () => void, form: any, handlePrevious:any
               { required: true, message: "Please select a report type!" },
             ]}
           >
-            <Select showSearch placeholder="Select a report type">
+            <Select
+               showSearch
+               placeholder="Select pathologist"
+               optionFilterProp="children" // Filters based on the visible text in the dropdown
+               filterOption={(input, option) =>
+                 (option?.children as string).toLowerCase().includes(input.toLowerCase())
+               }
+               filterSort={(optionA, optionB) =>
+                 (optionA?.children as string)
+                   .toLowerCase()
+                   .localeCompare((optionB?.children as string).toLowerCase())
+               }
+            >
               {currentProfile?.tests?.map((item) => (
                 <Select.Option key={item._id} value={item._id}>
                   {item.testName}
@@ -264,15 +285,26 @@ const GenerateReport: React.FC<{ next: () => void, form: any, handlePrevious:any
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item name={["pathologist", "name"]} label="Pathologist">
-        <Select showSearch placeholder="Select pathologist">
-          {currentBranch?.pathologistDetail?.map((path) => (
-            <Select.Option key={path._id} value={path.name}>
-              {path.name}
-            </Select.Option>
-          ))}
-        </Select>
-      </Form.Item>
+      <Form.Item
+          name={["pathologist", "name"]}
+          label="Pathologist"
+          rules={[{ required: true, message: "Please select a pathologist!" }]}
+        >
+          <Select
+            showSearch
+            placeholder="Select pathologist"
+            optionFilterProp="children" // Enables searching based on the children (text content)
+            filterOption={(input, option) =>
+              option?.children.toLowerCase().includes(input.toLowerCase())
+            }
+          >
+            {currentBranch?.pathologistDetail?.map((path) => (
+              <Select.Option key={path._id} value={path.name}>
+                {path.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit
