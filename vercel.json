@@ -15,14 +15,5 @@
         }
       ]
     }
-  ],
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ],
-  "env": {
-    "NODE_VERSION": "20.x"
-  }
+  ]
 }
