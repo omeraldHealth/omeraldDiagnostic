@@ -20,6 +20,8 @@ import {
 } from "@components/common/recoil/testDetails";
 import { Loader } from "@components/atoms/loader/loader";
 import PreviewComponent from "../previewReport";
+import { useTestDetailValue } from "@components/common/constants/recoilValues";
+import { useActivityLogger } from "@components/common/logger.tsx/activity";
 
 export const ViewTest: React.FC = () => {
   const [showTest, setShowTest] = useState(false);
@@ -34,6 +36,7 @@ export const ViewTest: React.FC = () => {
   });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
   const [testId, setTestId] = useRecoilState(editTestIdState);
+  const logActivity = useActivityLogger()
 
   const [previewRecord, setPreviewRecord] = useState({});
   const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
@@ -78,6 +81,7 @@ export const ViewTest: React.FC = () => {
                 },
               );
               invalidateQuery("diagnosticCenter");
+              logActivity({ activity: "Deleted Test " + record?.testName || "" });
               warningAlert2("Deleted Test Successfully");
               refetch();
             }

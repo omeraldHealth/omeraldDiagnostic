@@ -11,6 +11,7 @@ import { usePersistedBranchState } from "@components/common/recoil/hooks/usePers
 import { warningAlert2 } from "@components/atoms/alerts/alert";
 import { AddReport } from "./create";
 import PreviewComponent from "../previewReport";
+import { useActivityLogger } from "@components/common/logger.tsx/activity";
 
 const ReportsTable: React.FC = () => {
   const [selectedBranch] = usePersistedBranchState();
@@ -22,6 +23,7 @@ const ReportsTable: React.FC = () => {
   const [previewRecord, setPreviewRecord] = useState({});
   const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
   const invalidateQuery = useInvalidateQuery();
+  const logActivity = useActivityLogger()
 
   const deleteReport = useDeleteReports({});
   const updateBranch = useUpdateBranch({});
@@ -41,7 +43,8 @@ const ReportsTable: React.FC = () => {
                 onSuccess: (resp) => {
                   invalidateQuery("diagnosticBranch");
                   refetch()
-                    warningAlert2("Deleted report");
+                   warningAlert2("Deleted report");
+                  logActivity({ activity: "Deleted Report " + report?.reportData?.reportName || "" });
                 },
                 onError: (err) => {
                   alert("Error deleting report");

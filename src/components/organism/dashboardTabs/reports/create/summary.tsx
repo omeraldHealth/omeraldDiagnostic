@@ -1,5 +1,6 @@
 import { errorAlert, successAlert, warningAlert2 } from "@components/atoms/alerts/alert";
 import { useCurrentBranchValue, useReportDetailsValue } from "@components/common/constants/recoilValues";
+import { useActivityLogger } from "@components/common/logger.tsx/activity";
 import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
 import { useCreateReport, useInvalidateQuery, useUpdateBranch } from "@utils/reactQuery";
 import { Button } from "antd";
@@ -14,6 +15,7 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
 
   const addReport = useCreateReport({})
   const updateBranch = useUpdateBranch({})
+  const logActivity = useActivityLogger()
 
   const transformedData = {
     pathologist: {
@@ -35,7 +37,7 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
     },
     reportData: {
       reportName: incomingData?.reportData?.reportName || "Unnamed Report",
-      isManual: incomingData?.reportData?.isManual || false,
+      isManual: incomingData?.reportData?.url ? true : false,
       parsedData: {
         test: incomingData?.reportData?.reportType,
         parameters: incomingData?.parsedData?.parameters || [],
@@ -64,6 +66,7 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
                       if (res.status === 200) {
                         warningAlert2("Report added successfully");
                         invalidateQuery("diagnosticBranch");
+                        logActivity({ activity: "Created Report " + transformedData?.reportData?.reportName || "" });
                         handleShowView(false)
                       }
                     },
