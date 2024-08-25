@@ -18,6 +18,7 @@ import {
   testDetailsState,
 } from "@components/common/recoil/testDetails";
 import { useTestDetailValue } from "@components/common/constants/recoilValues";
+import { useActivityLogger } from "@components/common/logger.tsx/activity";
 
 export const ViewTest: React.FC = () => {
   const [showTest, setShowTest] = useState(false);
@@ -32,6 +33,7 @@ export const ViewTest: React.FC = () => {
   });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
   const [testId, setTestId] = useRecoilState(editTestIdState);
+  const logActivity = useActivityLogger()
 
   // @ts-ignore
   const tests = currentBranch?.data?.tests;
@@ -72,6 +74,7 @@ export const ViewTest: React.FC = () => {
                 },
               );
               invalidateQuery("diagnosticCenter");
+              logActivity({ activity: "Deleted Test " + record?.testName || "" });
               warningAlert2("Deleted Test Successfully");
               refetch();
             }
