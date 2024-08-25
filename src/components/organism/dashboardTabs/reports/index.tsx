@@ -14,7 +14,7 @@ import PreviewComponent from "../previewReport";
 
 const ReportsTable: React.FC = () => {
   const [selectedBranch] = usePersistedBranchState();
-  const { data: currentBranch, isLoading } = useGetDcBranch({
+  const { data: currentBranch, isLoading, refetch } = useGetDcBranch({
     selectedBranchId: selectedBranch,
   });
   const [reports, setReports] = useState([]);
@@ -39,8 +39,9 @@ const ReportsTable: React.FC = () => {
               { data: { reports: updatedReports }, recordId: selectedBranch },
               {
                 onSuccess: (resp) => {
+                  invalidateQuery("diagnosticBranch");
+                  refetch()
                     warningAlert2("Deleted report");
-                    invalidateQuery("diagnosticBranch");
                 },
                 onError: (err) => {
                   alert("Error deleting report");
@@ -54,6 +55,7 @@ const ReportsTable: React.FC = () => {
         },
       },
     );
+    invalidateQuery("diagnosticBranch");
   };
 
   const handlePreview = (record) => {

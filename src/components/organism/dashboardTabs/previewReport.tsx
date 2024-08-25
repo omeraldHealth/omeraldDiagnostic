@@ -11,7 +11,7 @@ import {
 } from "@react-pdf/renderer";
 import DiagnosticReport from "./report/DiagnosticReport";
 
-const PreviewComponent = ({ showPreview, onClose, record }) => {
+const PreviewComponent = ({ showPreview, onClose, record, isTest }) => {
   const componentRef = useRef();
   const [pdfLoading, setPdfLoading] = useState(false);
 
@@ -81,7 +81,7 @@ const PreviewComponent = ({ showPreview, onClose, record }) => {
             </button>
           </div>
           <div className="preview-content" ref={componentRef}>
-            <DiagnosticReport report={record} />
+            <DiagnosticReport report={record} isTest={isTest} />
           </div>
           <div className="mt-6 flex justify-end">
             <button

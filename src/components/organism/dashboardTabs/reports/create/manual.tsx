@@ -6,7 +6,7 @@ import { useState, useMemo, useEffect } from "react";
 import { FaSave, FaEdit, FaSearchMinus } from "react-icons/fa";
 import { useRecoilState } from "recoil";
 
-const ManualReport = ({ next }) => {
+const ManualReport = ({ next, handlePrevious }) => {
   const [reportData, setReportData] = useRecoilState(reportDataState);
   const [testId, setTestId] = useRecoilState(reportState);
   const { data: testSelected, refetch } = useGetDcTest({ selectedTestId: testId });
@@ -141,10 +141,10 @@ const ManualReport = ({ next }) => {
     const { advanceRange, basicRange } = record.bioRefRange;
 
     return (
-      <div>
+      <div className="grid grid-cols-3">
         {advanceRange?.ageRange?.map((range) => (
-          <div key={range._id}>
-            <h4>Age Range ({range.ageRangeType}):</h4>
+          <div key={range._id} className="max-w-[10vw]">
+            <h4>Age: ({range.ageRangeType}):</h4>
             <Space>
               <Form.Item
                 name={[record._id, range._id, "value"]}
@@ -163,8 +163,8 @@ const ManualReport = ({ next }) => {
           </div>
         ))}
         {advanceRange?.genderRange?.map((range) => (
-          <div key={range._id}>
-            <h4>Gender Range ({range.genderRangeType}):</h4>
+          <div key={range._id} className="max-w-[10vw]">
+            <h4>Gender ({range.genderRangeType}):</h4>
             <Space>
               <Form.Item
                 name={[record._id, range._id, "value"]}
@@ -183,7 +183,7 @@ const ManualReport = ({ next }) => {
           </div>
         ))}
         {basicRange?.map((range) => (
-          <div key={range._id}>
+          <div key={range._id} className="max-w-[10vw]">
             <h4>Basic Range:</h4>
             <Space>
               <Form.Item
@@ -225,7 +225,7 @@ const ManualReport = ({ next }) => {
         title: "Alias",
         dataIndex: "aliases",
         key: "aliases",
-        width: 250,
+        width: 150,
         filterIcon: (filtered) => (
           <FaSearchMinus style={{ color: filtered ? "#1890ff" : undefined }} />
         ),
@@ -262,7 +262,7 @@ const ManualReport = ({ next }) => {
         ),
       },
       {
-        title: "Bio Reference Values",
+        title: "Bio Reference Values (Please Click Save to save values)",
         dataIndex: "bioRefRange",
         key: "bioRefRange",
         render: (text, record) => renderInputFields(record),
@@ -270,6 +270,7 @@ const ManualReport = ({ next }) => {
       {
         title: "Actions",
         key: "actions",
+        width: "50",
         render: (_, record) => (
           editMode[record._id] ? (
             <a onClick={() => saveData(record._id)}>
@@ -302,6 +303,9 @@ const ManualReport = ({ next }) => {
         />
         <Button type="primary" onClick={handleSubmit}>
           Next
+        </Button> 
+        <Button type="default" onClick={() => {handlePrevious() }} className="mx-4">
+          Previous
         </Button>
       </Form>
     </section>

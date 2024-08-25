@@ -19,6 +19,7 @@ import {
   testDetailsState,
 } from "@components/common/recoil/testDetails";
 import { Loader } from "@components/atoms/loader/loader";
+import PreviewComponent from "../previewReport";
 
 export const ViewTest: React.FC = () => {
   const [showTest, setShowTest] = useState(false);
@@ -33,6 +34,9 @@ export const ViewTest: React.FC = () => {
   });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
   const [testId, setTestId] = useRecoilState(editTestIdState);
+
+  const [previewRecord, setPreviewRecord] = useState({});
+  const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
 
   // @ts-ignore
   const tests = currentProfile?.data?.tests;
@@ -90,9 +94,15 @@ export const ViewTest: React.FC = () => {
     setShowTest(value);
   };
 
+  const handlePreview = (record) => {
+    setPreviewRecord(record);
+    setPreviewReportModalOpen(true);
+  };
+
   const columns = TEST_DETAILS_COLUMNS({
     handleEdit,
     handleDelete,
+    handlePreview
   });
 
   return (
@@ -105,6 +115,15 @@ export const ViewTest: React.FC = () => {
       ) : (
         <UpdateTest handleShowTest={handleShowTest} />
       )}
+
+      {previewReportModalOpen && (
+          <PreviewComponent
+          showPreview={previewReportModalOpen}
+          onClose={() => setPreviewReportModalOpen(false)}
+          record={previewRecord}
+          isTest={true}
+          />
+        )}
     </section>
   );
 };

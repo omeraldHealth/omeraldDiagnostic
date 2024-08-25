@@ -57,7 +57,8 @@ export function DashboardLayout({ children }: any) {
     if (!branchLoading && currentBranch) {
       //@ts-ignore
       if (currentBranch?.data) {
-        //@ts-ignore
+        //@ts-ignore  
+        console.log(currentBranch)
         setCurrentBranch(currentBranch?.data);
       }
     }

@@ -5,7 +5,7 @@ import { useCreateReport, useInvalidateQuery, useUpdateBranch } from "@utils/rea
 import { Button } from "antd";
 import { useEffect } from "react";
 
-export default function ReportSummary({handleShowView}) {
+export default function ReportSummary({handleShowView, handlePrevious}) {
   const incomingData = useReportDetailsValue();
   const [selectedBranch] = usePersistedBranchState();
   const [selectedDc] = usePersistedDCState();
@@ -36,15 +36,16 @@ export default function ReportSummary({handleShowView}) {
     reportData: {
       reportName: incomingData?.reportData?.reportName || "Unnamed Report",
       isManual: incomingData?.reportData?.isManual || false,
-      parsedDAta: {
+      parsedData: {
         test: incomingData?.reportData?.reportType,
-        parameters: incomingData?.parsedData || [],
+        parameters: incomingData?.parsedData?.parameters || [],
       },
       url: incomingData?.reportData?.url || "",
     },
   };
 
   const handleSubmit = () => {
+    console.log(transformedData)
     if (transformedData) {
       addReport.mutate(
         { data: transformedData },
@@ -189,7 +190,10 @@ export default function ReportSummary({handleShowView}) {
         
         <Button onClick={handleSubmit}>
             Submit
-          </Button>
+        </Button>
+        <Button type="default" onClick={() => {handlePrevious() }} className="mx-4">
+          Previous
+        </Button>
       </div>
     </div>
   );
