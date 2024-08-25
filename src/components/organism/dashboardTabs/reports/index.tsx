@@ -15,7 +15,7 @@ import { useActivityLogger } from "@components/common/logger.tsx/activity";
 
 const ReportsTable: React.FC = () => {
   const [selectedBranch] = usePersistedBranchState();
-  const { data: currentBranch, isLoading } = useGetDcBranch({
+  const { data: currentBranch, isLoading, refetch } = useGetDcBranch({
     selectedBranchId: selectedBranch,
   });
   const [reports, setReports] = useState([]);
@@ -41,8 +41,9 @@ const ReportsTable: React.FC = () => {
               { data: { reports: updatedReports }, recordId: selectedBranch },
               {
                 onSuccess: (resp) => {
-                  warningAlert2("Deleted report");
                   invalidateQuery("diagnosticBranch");
+                  refetch()
+                   warningAlert2("Deleted report");
                   logActivity({ activity: "Deleted Report " + report?.reportData?.reportName || "" });
                 },
                 onError: (err) => {
@@ -57,6 +58,7 @@ const ReportsTable: React.FC = () => {
         },
       },
     );
+    invalidateQuery("diagnosticBranch");
   };
 
   const handlePreview = (record) => {

@@ -1,13 +1,33 @@
 import React from "react";
 
-const LabReportTable = ({ report }) => {
+const LabReportTable = ({ report, isTest }) => {
+  console.log("LabReportTable", report);
+
   // Function to determine if value is out of range
   const isOutOfRange = (value, min, max) => {
-    // Convert value to number if it's not already, and check if it's outside the range
     const numericValue = Number(value);
     return numericValue < min || numericValue > max;
   };
-  console.log(report)
+
+  const renderSubRows = (rangeType, range, isFirstSubRow) => {
+    const outOfRangeStyle = isOutOfRange(range?.value, range?.min, range?.max)
+      ? "text-red-500 font-bold"
+      : "";
+
+    return (
+      <tr key={`${rangeType}-${range.min}-${range.max}`} className={isFirstSubRow ? "" : "border-t-0"}>
+        <td className="p-2 text-md"></td> {/* Empty cell for alignment */}
+        <td className={`p-2 text-md ${outOfRangeStyle}`}>
+          {range?.value || "N/A"}
+        </td>
+        <td className="p-2 text-md">
+          {range?.min} - {range?.max}
+        </td>
+        <td className="p-2 text-md">{range?.unit || "N/A"}</td>
+      </tr>
+    );
+  };
+
   return (
     <div className="overflow-x-auto p-5">
       <table className="min-w-full border-collapse text-sm">
@@ -20,41 +40,34 @@ const LabReportTable = ({ report }) => {
           </tr>
         </thead>
         <tbody>
-          {/* {report?.reportData?.parsedData?.map((data, index) => ( */}
-            <React.Fragment>
-              {/* <tr className="border-b text-left">
-                <td colSpan="4" className="p-2 font-semibold text-md">
-                  {data.testName}
-                </td>
-              </tr> */}
-              {report?.reportData?.parsedData?.parameters?.map((param, paramIndex) => {
-                // Check if the value is out of range to apply red text style
-                const outOfRangeStyle = isOutOfRange(
-                  param?.bioRefRange?.value?.value,
-                  param?.bioRefRange?.basicRange[0]?.min,
-                  param?.bioRefRange?.basicRange[0]?.max,
-                )
-                  ? "text-red-500 font-bold"
-                  : "";
+          {(isTest
+            ? report?.parameters
+            : report?.reportData?.parsedData?.parameters
+          )?.map((param, paramIndex) => (
+            <React.Fragment key={paramIndex}>
+              {/* Parameter Name Row */}
+              <tr className="border-b text-left">
+                <td className="p-2 font-semibold text-md">{param?.name}</td>
+                <td colSpan="3"></td> {/* Empty cells to align sub-rows */}
+              </tr>
 
-                return (
-                  <tr key={paramIndex} className="border-b text-left">
-                    <td className="p-2 text-md">{param?.name}</td>
-                    <td className={`p-2 text-md ${outOfRangeStyle}`}>
-                      {param?.bioRefRange?.value?.value}
-                    </td>
-                    <td className="p-2 text-md">
-                      {param?.bioRefRange?.basicRange[0]?.min} -{" "}
-                      {param?.bioRefRange?.basicRange[0]?.max}
-                    </td>
-                    <td className="p-2 text-md">
-                      {param?.bioRefRange?.basicRange[0]?.unit}
-                    </td>
-                  </tr>
-                );
-              })}
+              {/* Basic Range */}
+              {param?.bioRefRange?.basicRange?.map((range, index) =>
+                renderSubRows("Basic Range", range, index === 0)
+              )}
+
+              {/* Age Range */}
+              {param?.bioRefRange?.advanceRange?.ageRange?.map((range, index) =>
+                renderSubRows(`Age Range (${range.ageRangeType})`, range, index === 0)
+              )}
+
+              {/* Gender Range */}
+              {param?.bioRefRange?.advanceRange?.genderRange?.map(
+                (range, index) =>
+                  renderSubRows(`Gender Range (${range.genderRangeType})`, range, index === 0)
+              )}
             </React.Fragment>
-          {/* ))} */}
+          ))}
         </tbody>
       </table>
     </div>

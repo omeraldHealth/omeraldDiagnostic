@@ -10,7 +10,7 @@ import {
   Upload,
 } from "antd";
 import { useRecoilState } from "recoil";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
+import { useCurrentBranchValue, useProfileValue } from "@components/common/constants/recoilValues";
 import { reportDataState } from "@components/common/recoil/report/reportData";
 import {
   errorAlert,
@@ -28,6 +28,7 @@ import { report } from "process";
 interface UploadReportProps {
   next: () => void;
   setManualReport: (value: boolean) => void;
+  handlePrevious: any;
   manualReport: boolean;
   form: any;
 }
@@ -35,6 +36,7 @@ interface UploadReportProps {
 export const UploadReport: React.FC<UploadReportProps> = ({
   next,
   setManualReport,
+  handlePrevious,
   manualReport,
   form,
 }) => (
@@ -45,9 +47,9 @@ export const UploadReport: React.FC<UploadReportProps> = ({
         setManualReport={setManualReport}
       />
       {manualReport ? (
-        <GenerateReport next={next} form={form} />
+        <GenerateReport next={next} form={form} handlePrevious={handlePrevious} />
       ) : (
-        <UploadReportFile form={form} next={next} />
+          <UploadReportFile form={form} next={next} handlePrevious={handlePrevious} />
       )}
     </section>
   </div>
@@ -71,9 +73,10 @@ const ReportHeader: React.FC<{
 interface UploadReportFileProps {
   next: () => void;
   form: any;
+  handlePrevious: any
 }
 
-const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form }) => {
+const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handlePrevious }) => {
   const [fileList, setFileList] = useState<any[]>([]);
   const [loading, setLoading] = useState<Boolean>(false);
   const [reportData, setReportdata] = useRecoilState(reportDataState);
@@ -198,16 +201,20 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form }) => {
         <Button type="primary" htmlType="submit">
           Next
         </Button>
+        <Button type="default" onClick={() => {handlePrevious() }} className="mx-4">
+          Previous
+        </Button>
       </Form.Item>
       {loading && <Loader />}
     </Form>
   );
 };
 
-const GenerateReport: React.FC<{ next: () => void, form: any }> = ({ next, form }) => {
+const GenerateReport: React.FC<{ next: () => void, form: any, handlePrevious:any }> = ({ next, form,handlePrevious }) => {
   const [reportData, setReportData] = useRecoilState(reportDataState);
   const [testId, setTestId] = useRecoilState(reportState);
   const currentBranch = useCurrentBranchValue();
+  const currentProfile = useProfileValue()
 
   const onFinish = (values: any) => {
     if (!values?.pathologist?.name)
@@ -248,7 +255,7 @@ const GenerateReport: React.FC<{ next: () => void, form: any }> = ({ next, form 
             ]}
           >
             <Select showSearch placeholder="Select a report type">
-              {currentBranch?.tests?.map((item) => (
+              {currentProfile?.tests?.map((item) => (
                 <Select.Option key={item._id} value={item._id}>
                   {item.testName}
                 </Select.Option>
@@ -269,6 +276,9 @@ const GenerateReport: React.FC<{ next: () => void, form: any }> = ({ next, form 
       <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit
+        </Button>
+        <Button type="default" onClick={() => {handlePrevious() }} className="mx-4">
+          Previous
         </Button>
       </Form.Item>
     </Form>

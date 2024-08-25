@@ -246,7 +246,7 @@ export const PATHOLOGIST_COLUMNS = ({ handleEdit, handleDelete }) => [
   },
 ];
 
-export const TEST_DETAILS_COLUMNS = ({ handleEdit, handleDelete }) => [
+export const TEST_DETAILS_COLUMNS = ({ handleEdit, handleDelete, handlePreview }) => [
   {
     key: "testName",
     title: "Test Name",
@@ -314,6 +314,14 @@ export const TEST_DETAILS_COLUMNS = ({ handleEdit, handleDelete }) => [
     render: (_, record) => {
       return (
         <Space size="middle">
+           <a
+            onClick={() => {
+              handlePreview(record);
+            }}
+            className="text-orange-700"
+          >
+            <EyeIcon className="w-4 text-green-900" />
+          </a>
           <a href="#">
             <FaEdit
               className="text-red-gray"

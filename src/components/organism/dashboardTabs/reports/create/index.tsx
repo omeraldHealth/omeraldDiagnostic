@@ -26,6 +26,7 @@ export const AddReport = ({handleShowView}) => {
           setManualReport={setManualReport}
           form={form}
           next={handleNext}
+          handlePrevious={handlePrevious}
         />
       ),
     },
@@ -33,13 +34,13 @@ export const AddReport = ({handleShowView}) => {
       ? [
           {
             title: "Manual Report Step",
-            content: <ManualReport next={handleNext} form={form} />,
+          content: <ManualReport next={handleNext} form={form} handlePrevious={handlePrevious} />,
           },
         ]
       : []),
     {
       title: "Report Summary",
-      content: <ReportSummary handleShowView={handleShowView} />,
+      content: <ReportSummary handlePrevious={handlePrevious} handleShowView={handleShowView} />,
     },
   ];
 
