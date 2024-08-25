@@ -14,6 +14,7 @@ import { logoStateData } from "../recoil/logo";
 import { paramState } from "../recoil/testDetails/param";
 import { userState } from "../recoil/user";
 import { bioRefState } from "../recoil/testDetails/test";
+import { reportDataState } from "../recoil/report/reportData";
 
 export const ROUTES_WITHOUT_SIDEBAR = [
   "/",
@@ -40,6 +41,7 @@ export const useProfileValue = () => useRecoilValue(profileState);
 export const useLogoValue = () => useRecoilValue(logoStateData);
 export const useTestDetailValue = () => useRecoilValue(testDetailsState);
 export const useReportValue = () => useRecoilValue(reportState);
+export const useReportDetailsValue = () => useRecoilValue(reportDataState);
 export const useBioRefValue = () => useRecoilValue(bioRefState);
 export const useBooleanValue = () => useRecoilValue(booleanState);
 export const useManagerValue = () => useRecoilValue(operatorState);

@@ -26,6 +26,7 @@ import {
   editTestState,
   testDetailsState,
 } from "@components/common/recoil/testDetails";
+import { useActivityLogger } from "@components/common/logger.tsx/activity";
 
 export default function TestSummary({ handlePrevious, handleShowTest }) {
   const testDetails = useTestDetailValue();
@@ -46,6 +47,7 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
   const setEditTest = useSetRecoilState(editTestState);
   const setEditTestId = useSetRecoilState(editTestIdState);
   const testDetail = useSetRecoilState(testDetailsState);
+  const logActivity = useActivityLogger()
 
   useEffect(() => {
     refetch();
@@ -68,6 +70,7 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
                   onSuccess: (resp) => {
                     successAlert("Test added successfully");
                     invalidateQuery("diagnosticBranch");
+                    logActivity({ activity: "Created Test " + testDetails?.testName || "" });
                     handleShowTest(false);
                   },
                   onError: () => {

@@ -7,6 +7,7 @@ import TableComp from "./table";
 import LabReportTable from "./table";
 
 const DiagnosticReport = ({ report }) => {
+  console.log(report)
   return (
     <div className="container mx-auto bg-white shadow-lg border m-4 p-2">
       <div className="border-b pb-4 py-8 px-4 text-left">

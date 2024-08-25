@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { dashTabs } from "@components/common/recoil/dashboard";
 import { classNames, privateRoutes } from "../../../utils/static/static";
 import Image from "next/image";
-import logo from "../../../public/logo.png"
+import logo from "../../../public/logo.png";
 
 export default function Sidebar() {
   const [showSidebar, setShowSidebar] = useState(true);

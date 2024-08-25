@@ -22,16 +22,21 @@ export const updateDiagBranchApi =
 export const deleteDiagBranchApi =
   diagBackendApiPath + `branches/deleteBranch/`;
 
+  export const getDiagTestApi = diagBackendApiPath + `tests/getTest/`; 
 export const createDiagTestApi = diagBackendApiPath + `tests/createTest/`; // Endpoint to create diagnostic profile
 export const updateDiagTestApi = diagBackendApiPath + `tests/updateTest/`; // Endpoint to update diagnostic profile
 export const deleteDiagTestApi = diagBackendApiPath + `tests/deleteTest/`;
 
+export const createDiagReportApi = diagBackendApiPath + `reports/createReport/`; // Endpoint to create diagnostic profile
+export const updateDiagReportApi = diagBackendApiPath + `reports/updateReport/`; // Endpoint to update diagnostic profile
+export const deleteDiagReportApi = diagBackendApiPath + `reports/deleteReport/`;
+
 // API paths for diagnostic reports
 export const getDiagReportsApi = diagBackendApiPath + `reports/getReports/`; // Endpoint to get diagnostic reports
-export const createDiagReportsApi =
-  diagBackendApiPath + `reports/createReport/`; // Endpoint to create diagnostic report
-export const deleteDiagReportsApi =
-  diagBackendApiPath + `reports/deleteReport/`; // Endpoint to create diagnostic report
+// export const createDiagReportsApi =
+//   diagBackendApiPath + `reports/createReport/`; // Endpoint to create diagnostic report
+// export const deleteDiagReportsApi =
+//   diagBackendApiPath + `reports/deleteReport/`; // Endpoint to create diagnostic report
 
 export const uploadDiagnosticLogoApi =
   diagBackendApiPath + `s3/diagnostic/logoUpload`; // Endpoint to upload diagnostic report
