@@ -1,9 +1,9 @@
-import { usePersistedBranchState } from "@components/common/recoil/hooks/usePersistedState";
+import { usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
 import { TEST_DETAILS_COLUMNS } from "../settingsTabs/utils/tabs";
 import { CommonSettingTable } from "../settingsTabs/utils/table";
 import {
   useDeleteTest,
-  useGetDcBranch,
+  useGetDcProfile,
   useInvalidateQuery,
   useUpdateBranch,
 } from "@utils/reactQuery";
@@ -18,23 +18,24 @@ import {
   testDetailsState,
 } from "@components/common/recoil/testDetails";
 import { useTestDetailValue } from "@components/common/constants/recoilValues";
+import { Loader } from "@components/atoms/loader/loader";
 
 export const ViewTest: React.FC = () => {
   const [showTest, setShowTest] = useState(false);
-  const [selectedBranch] = usePersistedBranchState();
+  const [selectedDc] = usePersistedDCState();
   const updateBranch = useUpdateBranch({});
   const deleteTest = useDeleteTest({});
   const invalidateQuery = useInvalidateQuery();
   const setEditTest = useSetRecoilState(editTestState);
   const setCurrentBranch = useSetRecoilState(branchState);
-  const { data: currentBranch, refetch } = useGetDcBranch({
-    selectedBranchId: selectedBranch,
+  const { data: currentProfile, refetch, isLoading } = useGetDcProfile({
+    selectedCenterId: selectedDc,
   });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
   const [testId, setTestId] = useRecoilState(editTestIdState);
 
   // @ts-ignore
-  const tests = currentBranch?.data?.tests;
+  const tests = currentProfile?.data?.tests;
 
   useEffect(() => {
     refetch();
@@ -95,6 +96,9 @@ export const ViewTest: React.FC = () => {
 
   return (
     <section>
+
+      {isLoading && <Loader/>}
+
       {!showTest ? (
         <CommonSettingTable data={tests} columns={columns} />
       ) : (

@@ -1,5 +1,5 @@
 import moment from "moment";
-import QRCode from "qrcode.react";
+// import QRCode from "qrcode.react";
 
 const PatientInfo = ({ record }) => {
   return (
@@ -16,7 +16,7 @@ const PatientInfo = ({ record }) => {
             <p className="text-sm">PID: 2B2USUG5</p>
           </div>
           <div className="p-1 border-2 border-black rounded ml-8">
-            <QRCode value="https://www.example.com" size={64} />
+            {/* <QRCode value="https://www.example.com" size={64} /> */}
           </div>
         </div>
         <div className="flex flex-col justify-between border-r  pr-20 border-gray-400 px-4">
