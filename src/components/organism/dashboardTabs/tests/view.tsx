@@ -6,6 +6,7 @@ import {
   useGetDcProfile,
   useInvalidateQuery,
   useUpdateBranch,
+  useUpdateDiagnostic,
 } from "@utils/reactQuery";
 import { errorAlert, warningAlert2 } from "@components/atoms/alerts/alert";
 import { useEffect, useState } from "react";
@@ -17,13 +18,12 @@ import {
   editTestState,
   testDetailsState,
 } from "@components/common/recoil/testDetails";
-import { useTestDetailValue } from "@components/common/constants/recoilValues";
 import { Loader } from "@components/atoms/loader/loader";
 
 export const ViewTest: React.FC = () => {
   const [showTest, setShowTest] = useState(false);
   const [selectedDc] = usePersistedDCState();
-  const updateBranch = useUpdateBranch({});
+  const updatedDc = useUpdateDiagnostic({})
   const deleteTest = useDeleteTest({});
   const invalidateQuery = useInvalidateQuery();
   const setEditTest = useSetRecoilState(editTestState);
@@ -61,13 +61,14 @@ export const ViewTest: React.FC = () => {
         {
           onSuccess: (resp) => {
             if (resp.status === 200) {
-              const updatedTests = tests?.filter(
-                (test) => test?._id !== record?._id,
-              );
-              updateBranch.mutateAsync(
-                { data: updatedTests, recordId: selectedBranch },
+              const updatedTestIds = tests
+                ?.filter((test) => test?._id !== record?._id)
+                ?.map((test) => test._id);
+              updatedDc.mutateAsync(
+                { data: {tests: updatedTestIds}, recordId: selectedDc },
                 {
                   onSuccess: (resp) => {
+                    invalidateQuery("diagnosticCenter");
                     setCurrentBranch(resp?.data);
                   },
                 },

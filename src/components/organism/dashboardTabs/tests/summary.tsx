@@ -9,8 +9,10 @@ import { Button } from "antd";
 import {
   useCreateTest,
   useGetDcBranch,
+  useGetDcProfile,
   useInvalidateQuery,
   useUpdateBranch,
+  useUpdateDiagnostic,
   useUpdateTest,
 } from "@utils/reactQuery";
 import {
@@ -18,7 +20,7 @@ import {
   successAlert,
   warningAlert2,
 } from "@components/atoms/alerts/alert";
-import { usePersistedBranchState } from "@components/common/recoil/hooks/usePersistedState";
+import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
 import { useSetRecoilState } from "recoil";
 import { branchState } from "@components/common/recoil/branch/branch";
 import {
@@ -31,16 +33,16 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
   const testDetails = useTestDetailValue();
   const createTest = useCreateTest({});
   const updateTest = useUpdateTest({});
-  const updateBranch = useUpdateBranch({});
+  const updateDc = useUpdateDiagnostic({});
   // const currentBranch = useCurrentBranchValue()
   const invalidateQuery = useInvalidateQuery();
-  const [selectedBranch] = usePersistedBranchState();
+  const [selectedDc] = usePersistedDCState();
   const setCurrentBranch = useSetRecoilState(branchState);
   const {
-    data: currentBranch,
+    data: currenProfile,
     refetch,
     isLoading,
-  } = useGetDcBranch({ selectedBranchId: selectedBranch });
+  } = useGetDcProfile({ selectedCenterId: selectedDc });
   const editTest = useEditTestValues();
   const editTestId = useEditTestIdValues();
   const setEditTest = useSetRecoilState(editTestState);
@@ -58,16 +60,17 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
         {
           onSuccess: (res) => {
             if (res?.status === 201) {
-              const updatedTest = [
-                ...(currentBranch?.data?.tests || []),
+              const updatedTestIds = [
+                ...(currenProfile?.data?.tests?.map((test) => test._id) || []),
                 res?.data?._id,
               ];
-              updateBranch.mutate(
-                { data: { tests: updatedTest }, recordId: selectedBranch },
+              updateDc.mutate(
+                { data: { tests: updatedTestIds }, recordId: selectedDc },
                 {
                   onSuccess: (resp) => {
+
+                    invalidateQuery("diagnosticCenter");
                     successAlert("Test added successfully");
-                    invalidateQuery("diagnosticBranch");
                     handleShowTest(false);
                   },
                   onError: () => {
