@@ -27,6 +27,8 @@ export const createDiagTestApi = diagBackendApiPath + `tests/createTest/`; // En
 export const updateDiagTestApi = diagBackendApiPath + `tests/updateTest/`; // Endpoint to update diagnostic profile
 export const deleteDiagTestApi = diagBackendApiPath + `tests/deleteTest/`;
 
+export const bulkDiagTestApi = diagBackendApiPath + `tests/bulkUpdate/`; 
+
 export const createDiagReportApi = diagBackendApiPath + `reports/createReport/`; // Endpoint to create diagnostic profile
 export const updateDiagReportApi = diagBackendApiPath + `reports/updateReport/`; // Endpoint to update diagnostic profile
 export const deleteDiagReportApi = diagBackendApiPath + `reports/deleteReport/`;

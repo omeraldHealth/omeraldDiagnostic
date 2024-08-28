@@ -13,28 +13,32 @@ import { Loader } from "@components/atoms/loader/loader";
 interface DashActivityProps {}
 
 const DashActivity: React.FC<DashActivityProps> = () => {
-  // const [activities, setActivities] = useState();
-  // const [selectedBranch] = usePersistedBranchState()
-  // const { data: branchData, isLoading, refetch } = useGetDcBranch({ selectedBranchId: selectedBranch })
+  const [activities, setActivities] = useState();
+  const [selectedBranch] = usePersistedBranchState()
+  const { data: branchData, isLoading, refetch } = useGetDcBranch({ selectedBranchId: selectedBranch })
 
-  // useEffect(() => {
-  //   refetch()
-  // },[])
+  useEffect(() => {
+    refetch()
+  },[])
   
-  // useEffect(() => {
-  //   if (!isLoading && branchData?.data) {
-  //     setActivities(branchData?.data?.activities)
-  //   }
-  // }, [isLoading])
+  useEffect(() => {
+    if (!isLoading && branchData?.data) {
+       const sortedActivities = [...branchData?.data?.activities].sort(
+          // @ts-ignore
+          (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
+       );
+       setActivities(sortedActivities)
+    }
+  }, [isLoading])
   
-  const currentBranch = useCurrentBranchValue();
-  // @ts-ignore
-  const activities = currentBranch && currentBranch?.activities;
+  // const currentBranch = useCurrentBranchValue();
+  // // @ts-ignore
+  // const activities = currentBranch && currentBranch?.activities;
 
-  const sortedActivities = [...activities].sort(
-    // @ts-ignore
-    (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
-  );
+  // const sortedActivities = [...activities].sort(
+  //   // @ts-ignore
+  //   (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
+  // );
 
   
   return (
@@ -47,7 +51,7 @@ const DashActivity: React.FC<DashActivityProps> = () => {
       </section>
       <section className="max-h-[35vh] overflow-auto my-4 sm:my-2">
         {activities?.length  > 0 ? (
-          <ActivityItem activityList={sortedActivities} />
+          <ActivityItem activityList={activities} />
         ) : (
           <p className="text-light text-sm text-gray-600 mt-8">
             No Activities....
