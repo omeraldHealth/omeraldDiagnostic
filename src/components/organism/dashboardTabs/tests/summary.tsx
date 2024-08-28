@@ -96,10 +96,12 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
           onSuccess: (resp) => {
             if (resp.status == 200) {
               warningAlert2("Test updated successfully");
-              invalidateQuery("diagnosticCenter");
+              invalidateQuery("diagnosticCenter");  
+              invalidateQuery("diagnosticBranch");  
               handleShowTest(false);
               setEditTest(false);
               setEditTestId(null);
+              logActivity({ activity: "Updated Test " + testDetails?.testName || "" });
               testDetail({});
             }
           },

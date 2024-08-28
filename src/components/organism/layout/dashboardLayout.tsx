@@ -33,7 +33,6 @@ export function DashboardLayout({ children }: any) {
     refetch: refBranch,
   } = useGetDcBranch({ selectedBranchId: selectedBranch });
 
-
   const router = useRouter();
   const setProfileRecoil = useSetRecoilState(profileState);
   const setCurrentBranch = useSetRecoilState(branchState);
@@ -59,7 +58,6 @@ export function DashboardLayout({ children }: any) {
       //@ts-ignore
       if (currentBranch?.data) {
         //@ts-ignore  
-        console.log(currentBranch)
         setCurrentBranch(currentBranch?.data);
       }
     }

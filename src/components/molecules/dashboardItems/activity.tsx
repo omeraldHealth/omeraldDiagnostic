@@ -1,19 +1,42 @@
 import { UserCircleIcon } from "@heroicons/react/20/solid";
 import moment from "moment";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { profileState } from "../../common/recoil/profile";
 import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
 import { dashTabs } from "@components/common/recoil/dashboard";
 import { settingTabState } from "@components/common/recoil/settings";
+import { usePersistedBranchState } from "@components/common/recoil/hooks/usePersistedState";
+import { useGetDcBranch } from "@utils/reactQuery";
+import { Loader } from "@components/atoms/loader/loader";
 
 interface DashActivityProps {}
 
 const DashActivity: React.FC<DashActivityProps> = () => {
+  // const [activities, setActivities] = useState();
+  // const [selectedBranch] = usePersistedBranchState()
+  // const { data: branchData, isLoading, refetch } = useGetDcBranch({ selectedBranchId: selectedBranch })
+
+  // useEffect(() => {
+  //   refetch()
+  // },[])
+  
+  // useEffect(() => {
+  //   if (!isLoading && branchData?.data) {
+  //     setActivities(branchData?.data?.activities)
+  //   }
+  // }, [isLoading])
+  
   const currentBranch = useCurrentBranchValue();
-  // const currentBranch = localStorage.getItem("selectedBranch")
-  const activities =
-    currentBranch?.activities?.length > 0 ? currentBranch?.activities : [];
+  // @ts-ignore
+  const activities = currentBranch && currentBranch?.activities;
+
+  const sortedActivities = [...activities].sort(
+    // @ts-ignore
+    (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
+  );
+
+  
   return (
     <section className="w-[94vw] sm:w-[60vw] lg:w-[35vw] xl:w-[30vw] h-[100%] shadow-xl bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0">
       <section className="">
@@ -23,8 +46,8 @@ const DashActivity: React.FC<DashActivityProps> = () => {
         </p>
       </section>
       <section className="max-h-[35vh] overflow-auto my-4 sm:my-2">
-        {activities.length > 0 ? (
-          <ActivityItem activityList={activities} />
+        {activities?.length  > 0 ? (
+          <ActivityItem activityList={sortedActivities} />
         ) : (
           <p className="text-light text-sm text-gray-600 mt-8">
             No Activities....
@@ -43,10 +66,14 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ activityList }) => {
   const date = Date.now();
   const setDashTab = useSetRecoilState(dashTabs);
   const setActiveKey = useSetRecoilState(settingTabState);
+  const sortedActivities = [...activityList].sort(
+    // @ts-ignore
+    (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
+  );
 
   return (
     <section>
-      {activityList.map((activity, index) => {
+      {sortedActivities.map((activity, index) => {
         return (
           <section key={index} className="my-3 flex justify-between ">
             <span className="text-xs flex">
