@@ -84,6 +84,7 @@ const CustomTestDetails: React.FC<any> = ({ handleNext }) => {
         testName: testDetail?.testName,
         sampleName: testDetail?.sampleName,
         isActive: testDetail?.isActive,
+        parameters: testDetail?.parameters,
       });
     } else {
       setTestDetail({});

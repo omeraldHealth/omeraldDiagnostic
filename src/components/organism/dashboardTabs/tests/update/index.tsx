@@ -10,8 +10,6 @@ export const UpdateTest = ({ handleShowTest }) => {
   const [currentStep, setStep] = useState(0);
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
 
-  console.log("UpdateTest", testDetail)
-
   const handleNext = () => setStep(currentStep + 1);
   const handlePrevious = () => setStep(currentStep - 1);
 

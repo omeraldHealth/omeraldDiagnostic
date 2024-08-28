@@ -96,7 +96,7 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
           onSuccess: (resp) => {
             if (resp.status == 200) {
               warningAlert2("Test updated successfully");
-              invalidateQuery("diagnosticBranch");
+              invalidateQuery("diagnosticCenter");
               handleShowTest(false);
               setEditTest(false);
               setEditTestId(null);

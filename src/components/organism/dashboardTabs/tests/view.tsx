@@ -29,7 +29,7 @@ export const ViewTest: React.FC = () => {
   const updatedDc = useUpdateDiagnostic({})
   const deleteTest = useDeleteTest({});
   const invalidateQuery = useInvalidateQuery();
-  const setEditTest = useSetRecoilState(editTestState);
+  const setEditTestState = useSetRecoilState(editTestState);
   const setCurrentBranch = useSetRecoilState(branchState);
   const { data: currentProfile, refetch, isLoading } = useGetDcProfile({
     selectedCenterId: selectedDc,
@@ -53,12 +53,11 @@ export const ViewTest: React.FC = () => {
   }, []);
 
   const handleEdit = (record) => {
-    console.log(record)
     if (record) {
       setTestDetail(record);
       setTestId(record?._id);
       setShowTest(true);
-      setEditTest(true);
+      setEditTestState(true);
     }
   };
 
