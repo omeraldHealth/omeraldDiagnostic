@@ -226,50 +226,54 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
       {isLoading ? (
         <Loader />
       ) : (
-        <form className="space-y-4 w-[20%]">
-          <Stack spacing={4}>
-            <FormControl className="my-1" id="testName" isRequired>
-              <FormLabel>Test Name</FormLabel>
-              <Input
-                name="testName"
-                value={formData.testName}
-                onChange={handleChange}
-                placeholder="Add Pathologist Name"
-              />
-            </FormControl>
-            <FormControl className="my-1" id="sampleName" isRequired>
-              <FormLabel>Sample Name</FormLabel>
-              <Select
-                showSearch
-                value={selectedValue}
-                placeholder="Select an option"
-                style={{ width: "10vw" }}
-                onChange={handleDropChange}
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  option?.children.toLowerCase().includes(input.toLowerCase())
-                }
-              >
-                {adminReports?.data?.map((option) => (
-                  <Option key={option.name} value={option.name}>
-                    {option.name}
-                  </Option>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl className="my-1" id="isActive">
-              <FormLabel>IsActive</FormLabel>
-              <Switch
-                name="isActive"
-                isChecked={formData?.isActive}
-                onChange={handleChange}
-              />
-            </FormControl>
-          </Stack>
-          <Button className="mt-4" onClick={handleSubmit} type="primary">
-            Next
-          </Button>
-        </form>
+          <>
+             { adminReports.data?.length===0 ?<p>No Tests Found, Please create custom tests</p>:
+            <form className="space-y-4 w-[20%]">
+              <Stack spacing={4}>
+                <FormControl className="my-1" id="testName" isRequired>
+                  <FormLabel>Test Name</FormLabel>
+                  <Input
+                    name="testName"
+                    value={formData.testName}
+                    onChange={handleChange}
+                    placeholder="Add Pathologist Name"
+                  />
+                </FormControl>
+                <FormControl className="my-1" id="sampleName" isRequired>
+                  <FormLabel>Sample Name</FormLabel>
+                  <Select
+                    showSearch
+                    value={selectedValue}
+                    placeholder="Select an option"
+                    style={{ width: "10vw" }}
+                    onChange={handleDropChange}
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      option?.children.toLowerCase().includes(input.toLowerCase())
+                    }
+                  >
+                    {adminReports?.data?.map((option) => (
+                      <Option key={option.name} value={option.name}>
+                        {option.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl className="my-1" id="isActive">
+                  <FormLabel>IsActive</FormLabel>
+                  <Switch
+                    name="isActive"
+                    isChecked={formData?.isActive}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+              </Stack>
+              <Button className="mt-4" onClick={handleSubmit} type="primary">
+                Next
+              </Button>
+            </form>
+          }
+          </>
       )}
     </section>
   );

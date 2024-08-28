@@ -3,9 +3,14 @@ import { useState } from "react";
 import { ParameterComp } from "../parameters";
 import TestSummary from "../summary";
 import TestDetailTab from "../create/testDetail";
+import { testDetailsState } from "@components/common/recoil/testDetails";
+import { useRecoilState } from "recoil";
 
 export const UpdateTest = ({ handleShowTest }) => {
   const [currentStep, setStep] = useState(0);
+  const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
+
+  console.log("UpdateTest", testDetail)
 
   const handleNext = () => setStep(currentStep + 1);
   const handlePrevious = () => setStep(currentStep - 1);

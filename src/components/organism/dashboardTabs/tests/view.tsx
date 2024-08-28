@@ -53,6 +53,7 @@ export const ViewTest: React.FC = () => {
   }, []);
 
   const handleEdit = (record) => {
+    console.log(record)
     if (record) {
       setTestDetail(record);
       setTestId(record?._id);
