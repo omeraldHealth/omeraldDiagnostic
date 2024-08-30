@@ -59,3 +59,5 @@ export const getDiagnosticSetting =
   adminBackendApiPath + "/api/v1/diagSettings/getDiagnosticSetting";
 export const getAdminApiGetToken =
   adminBackendApiPath + "/api/v1/auth/getAuthToken";
+
+export const paramSearch = diagBackendApiPath + "tests/searchTestParams/"

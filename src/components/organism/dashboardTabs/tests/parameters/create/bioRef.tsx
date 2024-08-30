@@ -6,7 +6,7 @@ import AdvanceRangeInput from "./advance";
 import BasicRangeInput from "./basicRange";
 import RenderRanges from "./showRefRange";
 
-const InputForm = ({ edit }) => {
+const InputForm = ({ edit, isRangeTypeSectionVisible }) => {
   const [rangeType, setRangeType] = useState("basic");
   const [bioRef, setBioRef] = useRecoilState(bioRefState);
   const [form] = Form.useForm();
@@ -165,7 +165,7 @@ const InputForm = ({ edit }) => {
 
   return (
     <section>
-      <Form form={form} onFinish={handleSubmit} layout="vertical">
+      {isRangeTypeSectionVisible && <Form form={form} onFinish={handleSubmit} layout="vertical">
         <Form.Item label="Select Range Type" name="rangeType">
           <Radio.Group onChange={handleRangeTypeChange} value={rangeType}>
             <Radio.Button value="basic">Basic Range</Radio.Button>
@@ -182,7 +182,7 @@ const InputForm = ({ edit }) => {
             Submit
           </Button>
         </Form.Item>
-      </Form>
+      </Form>}
       <RenderRanges data={bioRef} onRemove={handleRemove} />
     </section>
   );
