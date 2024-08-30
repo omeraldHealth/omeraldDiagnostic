@@ -801,8 +801,9 @@ export const REPORTS_COLUMNS = ({
 
 const getPopOvers = (param) => {
   return (
-    <div className="popover-content">
+    <div className="w-[60vw]"  >
       <div
+        className="w-[60vw]"
         dangerouslySetInnerHTML={{
           __html: param.content || 'No content available',
         }}
@@ -813,7 +814,7 @@ const getPopOvers = (param) => {
 
 const ComponentsDisplay = ({ components }) => {
   return (
-    <div>
+    <div >
       {components?.map((param, index) => (
         <a key={index} href="#">
           <Popover content={getPopOvers(param)} title={param?.title}>

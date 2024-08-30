@@ -98,5 +98,63 @@ export default createGlobalStyle`
   padding-left: 20px;
 }
 
+.ck-content {
+  font-family: 'Inter', sans-serif; /* Ensure the font is consistent with your design */
+  font-size: 1rem; /* Base font size */
+  line-height: 1.6; /* Improve readability */
+
+  /* Style for tables */
+  table {
+    margin-left: 0;  /* Override centering */
+    margin-right: 0; /* Override centering */
+    text-align: left; /* Ensure text within the table is left-aligned */
+  }
+
+  th, td {
+    text-align: left; /* Ensure table cell content is left-aligned */
+  }
+
+  th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+  }
+
+  /* Style for images */
+  img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Style for file links */
+  a {
+    color: #1d4ed8; /* Tailwind's blue-600 */
+    text-decoration: underline;
+  }
+
+  /* Additional styles for block quotes, code, etc. */
+  blockquote {
+    border-left: 4px solid #ddd;
+    padding-left: 1rem;
+    color: #555;
+    margin: 1rem 0;
+  }
+
+  pre {
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+
+  code {
+    background-color: #f5f5f5;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem; /* Tailwind's text-sm */
+  }
+}
+
 
 `;

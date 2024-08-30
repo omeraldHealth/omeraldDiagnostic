@@ -36,7 +36,8 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
 
   useEffect(() => {
     setTestDetail({ ...testDetails, components: components });
-   },[components])
+  }, [components])
+  
   const handleCreateOrEdit = (values) => {
     if (isEditing && editIndex !== null) {
       const updatedComponents = [...components];

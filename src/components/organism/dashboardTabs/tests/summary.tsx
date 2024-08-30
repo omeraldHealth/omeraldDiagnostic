@@ -57,7 +57,6 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
   }, []);
 
   const handleSubmit = () => {
-    console.log(testDetails)
     if (!isLoading && !editTest) {
       createTest.mutate(
         { data: testDetails },

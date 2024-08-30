@@ -121,7 +121,7 @@ const ReportsTable: React.FC = () => {
       {viewMode ? (
         <Table
           columns={columns}
-          dataSource={currentBranch.data.reports || []} // Ensure it reflects the latest data
+          dataSource={currentBranch?.data.reports || []} // Ensure it reflects the latest data
           rowKey={(record) => record._id} // Use _id as the unique identifier
           pagination={{ pageSize: 5 }}
           locale={{ emptyText: "No data" }}

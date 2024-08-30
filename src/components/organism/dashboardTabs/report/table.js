@@ -70,6 +70,22 @@ const LabReportTable = ({ report, isTest }) => {
           ))}
         </tbody>
       </table>
+
+      {/* Display additional components below the table */}
+      {report.reportData?.parsedData.components?.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-xl font-bold mb-3">Additional Components</h2>
+            {report.reportData.parsedData.components.map((component, index) => (
+              <div key={index} className="border-t pt-4 mt-4">
+                <h3 className="text-lg font-bold">{component.title}</h3>
+                <div
+                  className="ck-content"
+                  dangerouslySetInnerHTML={{ __html: component.content }}
+                ></div>
+              </div>
+            ))}
+          </div>
+        )}
     </div>
   );
 };

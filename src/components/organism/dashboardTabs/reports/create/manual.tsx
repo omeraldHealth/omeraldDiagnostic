@@ -5,6 +5,7 @@ import { Button, Input, Space, Table, Tag, Form } from "antd";
 import { useState, useMemo, useEffect } from "react";
 import { FaSave, FaEdit, FaSearchMinus } from "react-icons/fa";
 import { useRecoilState } from "recoil";
+import EditComponents from "./compns";
 
 const ManualReport = ({ next, handlePrevious }) => {
   const [reportData, setReportData] = useRecoilState(reportDataState);
@@ -12,10 +13,29 @@ const ManualReport = ({ next, handlePrevious }) => {
   const { data: testSelected, refetch } = useGetDcTest({ selectedTestId: testId });
   const [form] = Form.useForm();
   const [editMode, setEditMode] = useState({}); // Track edit mode for each parameter
+  const [components, setComponents] = useState(testSelected?.data?.components || []);
+
+  useEffect(() => {
+    // Sync testSelected components with local state
+    if (testSelected?.data?.components) {
+      setComponents(testSelected.data.components);
+    }
+  }, [testSelected]);
+
+  useEffect(() => { 
+    // Update the report data state
+    setReportData((prevData) => ({
+      ...prevData,
+      parsedData: {
+        ...prevData.parsedData,
+        components: components,
+      },
+    }));
+  }, [components, setReportData]);
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [refetch]);
 
   const toggleEditMode = (parameterId) => {
     setEditMode((prev) => ({
@@ -82,7 +102,6 @@ const ManualReport = ({ next, handlePrevious }) => {
     // Get the current form values
     const formValues = form.getFieldsValue();
 
-    // Find the parameter in the state that matches the parameterId
     const updatedParameters = testSelected?.data?.parameters.map((parameter) => {
       if (parameter._id === parameterId) {
         const updatedAdvanceRange = {
@@ -130,8 +149,6 @@ const ManualReport = ({ next, handlePrevious }) => {
         parameters: updatedParameters,
       },
     }));
-
-    console.log('Updated Data:', updatedParameters);
 
     // Lock the fields after saving
     toggleEditMode(parameterId);
@@ -205,10 +222,11 @@ const ManualReport = ({ next, handlePrevious }) => {
       </div>
     );
   };
-    
-    const handleSubmit = () => { 
-        next()
-    }
+
+  const handleSubmit = () => { 
+    console.log(reportData)
+    next();
+  };
 
   const parameterColumns = useMemo(
     () => [
@@ -300,6 +318,11 @@ const ManualReport = ({ next, handlePrevious }) => {
             pageSizeOptions: ["10", "20", "50", "100"],
           }}
           scroll={{ x: "max-content" }}
+        />
+        <EditComponents 
+          edit={true} 
+          components={components} 
+          setComponents={setComponents} 
         />
         <Button type="primary" onClick={handleSubmit}>
           Next
