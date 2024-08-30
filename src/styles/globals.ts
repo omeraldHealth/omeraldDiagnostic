@@ -46,4 +46,57 @@ export default createGlobalStyle`
   height: 100%;
 }
 
+/* ComponentsDisplay.css */
+
+.popover-content {
+  max-width: 300px;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+.popover-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background-color: #f9f9f9;
+}
+
+.popover-content table th,
+.popover-content table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.popover-content table th {
+  background-color: #f1f1f1;
+  font-weight: bold;
+}
+
+.popover-content table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.popover-content table tr:hover {
+  background-color: #ddd;
+}
+
+.popover-content img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.popover-content p {
+  margin: 10px 0;
+  line-height: 1.5;
+}
+
+.popover-content ul, 
+.popover-content ol {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+
 `;

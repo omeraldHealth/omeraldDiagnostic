@@ -295,6 +295,22 @@ export const TEST_DETAILS_COLUMNS = ({ handleEdit, handleDelete, handlePreview }
     ),
   },
   {
+    key: "components",
+    title: "Components",
+    dataIndex: "components",
+    render: (components: any, record: any) => (
+      <div
+        style={{
+          maxWidth: "20vw",
+          maxHeight: "calc(3 * 20px + 2px)",
+          overflowY: "auto",
+        }}
+      >
+          <ComponentsDisplay components={components} /> 
+      </div>
+    ),
+  },
+  {
     key: "isActive",
     title: "Status",
     dataIndex: "isActive",
@@ -780,3 +796,33 @@ export const REPORTS_COLUMNS = ({
     ),
   },
 ];
+
+
+
+const getPopOvers = (param) => {
+  return (
+    <div className="popover-content">
+      <div
+        dangerouslySetInnerHTML={{
+          __html: param.content || 'No content available',
+        }}
+      ></div>
+    </div>
+  );
+};
+
+const ComponentsDisplay = ({ components }) => {
+  return (
+    <div>
+      {components?.map((param, index) => (
+        <a key={index} href="#">
+          <Popover content={getPopOvers(param)} title={param?.title}>
+            <Tag className="my-1" color="green" key={param._id}>
+              {param?.title || 'Untitled Component'}
+            </Tag>
+          </Popover>
+        </a>
+      ))}
+    </div>
+  );
+};

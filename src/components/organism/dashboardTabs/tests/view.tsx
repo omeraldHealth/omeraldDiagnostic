@@ -22,6 +22,7 @@ import { Loader } from "@components/atoms/loader/loader";
 import PreviewComponent from "../previewReport";
 import { useTestDetailValue } from "@components/common/constants/recoilValues";
 import { useActivityLogger } from "@components/common/logger.tsx/activity";
+import { CKEditor } from "ckeditor4-react";
 
 export const ViewTest: React.FC = () => {
   const [showTest, setShowTest] = useState(false);
@@ -127,7 +128,13 @@ export const ViewTest: React.FC = () => {
           record={previewRecord}
           isTest={true}
           />
-        )}
+      )}
+      
+      <CKEditor
+            onChange={(evt) => {
+              // form.setFieldsValue({ content: evt.editor.getData() });
+            }}
+          />
     </section>
   );
 };

@@ -2,20 +2,22 @@ import React, { useState } from 'react';
 import { Modal, Button, Upload, message, Alert } from 'antd';
 import { InboxOutlined, DownloadOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { bulkDiagTestApi } from '@utils/index';
+import { bulkDiagReportApi, bulkDiagTestApi } from '@utils/index';
 import { errorAlert2, successAlert } from '@components/atoms/alerts/alert';
-import { useProfileValue } from '@components/common/constants/recoilValues';
-import { usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
-import { useInvalidateQuery, useUpdateDiagnostic } from '@utils/reactQuery';
+import { useCurrentBranchValue, useProfileValue } from '@components/common/constants/recoilValues';
+import { usePersistedBranchState, usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
+import { useInvalidateQuery, useUpdateBranch, useUpdateDiagnostic } from '@utils/reactQuery';
 
 const { Dragger } = Upload;
 
 const BulkUploadModal = ({ visible, onClose }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const profileData = useProfileValue();
-  const [selectedDc] = usePersistedDCState()
-  const updateDc = useUpdateDiagnostic({})
+    const profileData = useProfileValue();
+    const currentBranch = useCurrentBranchValue()
+    const [selectedBranch] = usePersistedBranchState()
+    const [selectedDC] = usePersistedDCState()
+  const updateBranch = useUpdateBranch({})
   const invalidateQuery = useInvalidateQuery()
 
   const props = {
@@ -39,25 +41,31 @@ const BulkUploadModal = ({ visible, onClose }) => {
       message.error('Please upload a file before submitting.');
       return;
     }
-    setLoading(true);
+      setLoading(true);
+      const dcDetails = {
+          diagnosticId: selectedDC,
+          branchId: selectedBranch
+      }
     const formData = new FormData();
-    formData.append('file', file);
+      formData.append('file', file);
+      formData.append('jsonData', JSON.stringify(dcDetails));
+
 
     try {
-      const response = await axios.post(bulkDiagTestApi, formData, {
+      const response = await axios.post(bulkDiagReportApi, formData, {
         responseType: 'blob', // Expecting a blob (file) in response for errors
       });
 
       if (response.status === 201) {
         const insertedEntries = await response.data.text(); // Convert blob to text
         const insertedIds = JSON.parse(insertedEntries).map((entry) => entry._id);
-        const existingIds = profileData?.tests.map((test) => test._id);
+        const existingIds = currentBranch?.reports.map((report) => report._id);
+        const updatedReports = [...existingIds, ...insertedIds]
 
-        const updatedTest = [...existingIds, ...insertedIds]
-
-        updateDc?.mutate({ data: { tests: updatedTest}, recordId: selectedDc  }, {
+        updateBranch?.mutate({ data: { reports: updatedReports}, recordId: selectedBranch  }, {
           onSuccess: (res) => { 
             successAlert('Bulk upload successful!');
+            invalidateQuery("diagnosticBranch")
             invalidateQuery("diagnosticCenter")
           },
           onError: (res) => { 
@@ -94,7 +102,7 @@ const BulkUploadModal = ({ visible, onClose }) => {
         </Button>,
         <Button
           key="download"
-          href="https://res.cloudinary.com/drjut62wv/raw/upload/v1724871782/omerald/Production/BulkUpload/bulk_test_template.xlsx" // Update with your template URL
+          href="https://res.cloudinary.com/drjut62wv/raw/upload/v1725033175/omerald/Production/BulkUpload/bulk_reports_template.xlsx" // Update with your template URL
           icon={<DownloadOutlined />}
         >
           Download Template

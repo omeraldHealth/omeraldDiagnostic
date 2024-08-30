@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Switch } from "antd";
+import { Table, Switch, Button } from "antd";
 import { REPORTS_COLUMNS } from "../settingsTabs/utils/tabs";
 import {
   useDeleteReports,
@@ -12,6 +12,8 @@ import { warningAlert2 } from "@components/atoms/alerts/alert";
 import { AddReport } from "./create";
 import PreviewComponent from "../previewReport";
 import { useActivityLogger } from "@components/common/logger.tsx/activity";
+import { ArrowTurnRightUpIcon } from "@heroicons/react/20/solid";
+import BulkUploadModal from "./bulk";
 
 const ReportsTable: React.FC = () => {
   const [selectedBranch] = usePersistedBranchState();
@@ -23,42 +25,45 @@ const ReportsTable: React.FC = () => {
   const [previewRecord, setPreviewRecord] = useState({});
   const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
   const invalidateQuery = useInvalidateQuery();
-  const logActivity = useActivityLogger()
+  const logActivity = useActivityLogger();
 
   const deleteReport = useDeleteReports({});
   const updateBranch = useUpdateBranch({});
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleRemove = (report: any) => {
+    refetch();
+  
     deleteReport?.mutate(
       { recordId: report?._id },
       {
         onSuccess: (resp) => {
           if (resp?.data?._id) {
             const updatedReports = currentBranch?.data?.reports?.filter(
-              (report) => report?._id !== resp?.data?._id,
-            );
+              (r) => r._id !== resp?.data?._id
+            )?.map((r) => r._id);
+  
             updateBranch?.mutate(
               { data: { reports: updatedReports }, recordId: selectedBranch },
               {
                 onSuccess: (resp) => {
                   invalidateQuery("diagnosticBranch");
-                  refetch()
-                   warningAlert2("Deleted report");
-                  logActivity({ activity: "Deleted Report " + report?.reportData?.reportName || "" });
+                  refetch();
+                  warningAlert2("Deleted report");
+                  logActivity({ activity: "Deleted Report " + (report?.reportData?.reportName || "") });
                 },
                 onError: (err) => {
-                  alert("Error deleting report");
+                  alert("Error updating branch with deleted report");
                 },
-              },
+              }
             );
           }
         },
         onError: () => {
           alert("Error deleting report");
         },
-      },
+      }
     );
-    invalidateQuery("diagnosticBranch");
   };
 
   const handlePreview = (record) => {
@@ -67,16 +72,26 @@ const ReportsTable: React.FC = () => {
   };
 
   const handleShowView = (value) => { 
-    console.log(value)
-    setViewMode(!viewMode)
+    setViewMode(!viewMode);
   }
 
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const hideModal = () => {
+    invalidateQuery("diagnosticBranch");
+    refetch(); // Trigger refetch to reload the reports data
+    setModalVisible(false);
+  };
 
   useEffect(() => {
     if (currentBranch && !isLoading) {
       setReports(currentBranch.data.reports || []);
     }
   }, [currentBranch, isLoading]);
+
+  useEffect(() => { refetch() },[viewMode])
 
   const columns = REPORTS_COLUMNS({ handleRemove, handlePreview });
 
@@ -86,31 +101,41 @@ const ReportsTable: React.FC = () => {
         <h2 className="text-lg font-semibold">
           {viewMode ? "View Reports" : "Add Report"}
         </h2>
-        <Switch
-          checked={viewMode}
-          onChange={() => setViewMode(!viewMode)}
-          checkedChildren="View"
-          unCheckedChildren="Add"
-        />
+        <span className="flex">
+          <Switch
+            checked={viewMode}
+            onChange={() => setViewMode(!viewMode)}
+            checkedChildren="View"
+            unCheckedChildren="Add"
+          />
+          {!viewMode && (
+            <div className="ml-2">
+              <Button type="primary" onClick={showModal} icon={<ArrowTurnRightUpIcon className="w-4 h-4" />}>
+                Bulk Upload
+              </Button>
+              <BulkUploadModal visible={modalVisible} onClose={hideModal} />
+            </div>
+          )}
+        </span>
       </div>
       {viewMode ? (
         <Table
           columns={columns}
-          dataSource={reports}
-          rowKey={(record) => record.email || record.id} // Adjust based on your unique identifier
+          dataSource={currentBranch.data.reports || []} // Ensure it reflects the latest data
+          rowKey={(record) => record._id} // Use _id as the unique identifier
           pagination={{ pageSize: 5 }}
           locale={{ emptyText: "No data" }}
         />
       ) : (
-          <AddReport handleShowView={handleShowView} />
+        <AddReport handleShowView={handleShowView} />
       )}
-       {previewReportModalOpen && (
-          <PreviewComponent
-            showPreview={previewReportModalOpen}
-            onClose={() => setPreviewReportModalOpen(false)}
-            record={previewRecord}
-          />
-        )}
+      {previewReportModalOpen && (
+        <PreviewComponent
+          showPreview={previewReportModalOpen}
+          onClose={() => setPreviewReportModalOpen(false)}
+          record={previewRecord}
+        />
+      )}
     </div>
   );
 };

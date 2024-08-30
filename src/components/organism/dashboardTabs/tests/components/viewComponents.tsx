@@ -1,28 +1,18 @@
-import { Button } from "antd";
 import { useState, useEffect } from "react";
-import AddParameters from "./create";
-import { ViewParameters } from "./view";
-import ComponentForm from "../components";
 import styles from "./param.module.css";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useRecoilState } from "recoil";
 import { testDetailsState } from "@components/common/recoil/testDetails";
 
-export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
+export const ViewComponent = ({component}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [components, setComponents] = useState([]);
+  const [components, setComponents] = useState(component);
   const [currentComponent, setCurrentComponent] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [hoveredComponent, setHoveredComponent] = useState(null);
   const [isHovering, setIsHovering] = useState(false);
   const [testDetails, setTestDetail] = useRecoilState(testDetailsState);
-
-  useEffect(() => { 
-    if (edit) { 
-      setComponents(testDetails?.components)
-    }
-  },[edit])
 
   useEffect(() => {
     let timer;
@@ -36,45 +26,8 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
 
   useEffect(() => {
     setTestDetail({ ...testDetails, components: components });
-   },[components])
-  const handleCreateOrEdit = (values) => {
-    if (isEditing && editIndex !== null) {
-      const updatedComponents = [...components];
-      updatedComponents[editIndex] = {
-        ...updatedComponents[editIndex],
-        ...values,
-      };
-      setComponents(updatedComponents);
-
-      setIsEditing(false);
-      setEditIndex(null);
-    } else {
-      setComponents((prevComponents) => [
-        ...prevComponents,
-        {
-          title: values.title,
-          content: values.content,
-          isDynamic: values.isDynamic,
-          images: values.images || [],
-        },
-      ]);
-    }
-    setIsModalVisible(false);
-  };
-
-  const handleEdit = (index) => {
-    const component = components[index];
-    setCurrentComponent(component);
-    setEditIndex(index);
-    setIsEditing(true);
-    setIsModalVisible(true);
-  };
-
-  const handleDelete = (index) => {
-    const updatedComponents = components.filter((_, i) => i !== index);
-    setComponents(updatedComponents);
-  };
-
+  }, [components])
+    
   const handleMouseEnter = (component) => {
     setHoveredComponent(component);
     setIsHovering(true);
@@ -86,8 +39,7 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
 
   return (
     <section>
-      <ViewParameters />
-      <section className={`${styles.componentsList} mt-6`}>
+      <section className={`${styles.componentsList} my-6`}>
         <h2 className="text-lg font-bold mb-4">Created Components</h2>
         <section className={`${styles.componentGrid} mt-6`}>
           {components.length === 0 ? (
@@ -107,7 +59,7 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
                     <span className={styles.dynamicLabel}>Static</span>
                   )}
                 </div>
-                <div className={styles.componentActions}>
+                {/* <div className={styles.componentActions}>
                   <button
                     className={styles.iconButton}
                     onClick={() => handleEdit(index)}
@@ -120,7 +72,7 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
                   >
                     <FaTrash />
                   </button>
-                </div>
+                </div> */}
               </div>
             ))
           )}
@@ -143,36 +95,7 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
             </div>
           )}
       </section>
-      <section className="flex justify-between mt-6">
-        <section className="flex">
-          <Button className="mt-4" onClick={handleNext} type="primary">
-            Next
-          </Button>
-          <Button className="mt-4 mx-4" onClick={handlePrevious} type="default">
-            Previous
-          </Button>
-        </section>
-        <section className="flex gap-2">
-          <AddParameters edit={false} />
-          <div>
-            <Button type="default" onClick={() => setIsModalVisible(true)}>
-              Create New Component
-            </Button>
-            <ComponentForm
-              visible={isModalVisible}
-              onCreate={handleCreateOrEdit}
-              onCancel={() => {
-                setIsModalVisible(false);
-                setIsEditing(false);
-                setEditIndex(null);
-                setCurrentComponent(null);
-              }}
-              initialValues={currentComponent || {}}
-            />
-          </div>
-        </section>
-      </section>
-
+  
     </section>
   );
 };

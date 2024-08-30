@@ -93,7 +93,6 @@ export function useGetDcBranch({ selectedBranchId }: any) {
   );
 }
 
-
 export function useGetDcTest({ selectedTestId }: any) {
   return useQueryGetData(
     "diagnosticTest",

@@ -22,6 +22,7 @@ export const UpdateTest = ({ handleShowTest }) => {
       title: "Add Parameters",
       content: (
         <ParameterComp
+          edit={true}
           handleNext={handleNext}
           handlePrevious={handlePrevious}
         />

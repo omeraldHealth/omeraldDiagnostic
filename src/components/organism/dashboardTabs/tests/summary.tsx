@@ -29,6 +29,7 @@ import {
   testDetailsState,
 } from "@components/common/recoil/testDetails";
 import { useActivityLogger } from "@components/common/logger.tsx/activity";
+import { ViewComponent } from "./components/viewComponents";
 
 export default function TestSummary({ handlePrevious, handleShowTest }) {
   const testDetails = useTestDetailValue();
@@ -56,6 +57,7 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
   }, []);
 
   const handleSubmit = () => {
+    console.log(testDetails)
     if (!isLoading && !editTest) {
       createTest.mutate(
         { data: testDetails },
@@ -122,6 +124,7 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
         </p>
       </section>
       <ViewParameters />
+      <ViewComponent component={testDetails?.components}/>
       <Button className="mt-4" onClick={handleSubmit} type="primary">
         Submit
       </Button>
