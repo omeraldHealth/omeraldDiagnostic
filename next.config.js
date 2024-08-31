@@ -8,8 +8,7 @@ const nextConfig = {
       'omerald-diag-preprod.s3.amazonaws.com',
       'omerald-*.s3.amazonaws.com',
       'diagnostic.omerald.com',
-      'omerald-diag-prod.s3.amazonaws.com',
-      '*',
+      'omerald-diag-prod.s3.amazonaws.com'
     ],
   },
   eslint: {
@@ -21,7 +20,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // matching all API routes
+        // Matching all API routes
         source: '/api/:path*',
         headers: [
           { key: 'Access-Control-Allow-Credentials', value: 'true' },
@@ -52,11 +51,21 @@ const nextConfig = {
     // Will only be available on the server side
     SSR: false,
   },
-
   publicRuntimeConfig: {
     // Will be available on both server and client
     SSR: false,
   },
+  future: {
+    webpack5: true,
+  },
+  webpack(config) {
+    config.optimization.splitChunks.maxSize = 200000;
+    return config;
+  },
 };
 
-module.exports = nextConfig;
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+module.exports = withBundleAnalyzer(nextConfig);

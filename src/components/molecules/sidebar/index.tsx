@@ -1,9 +1,10 @@
-import { sideBarAtom } from '@components/common/recoil/sidebar';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import React, { Fragment } from 'react';
 import { useRecoilState } from 'recoil';
 import Sidebar from './sidebar';
+import { sideBarAtom } from '../../common/recoil/sidebar';
 
 export const DashboardSideBar: React.FC<any> = () => {
   const [sidebarOpen, setSidebarOpen] = useRecoilState<any>(sideBarAtom);
