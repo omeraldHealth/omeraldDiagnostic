@@ -137,7 +137,7 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
             {transformedData.reportData?.parsedData?.parameters?.map((param, index) => (
               <div key={index} className="border-t pt-4 mt-4 grid grid-cols-2">
                 <h3 className="text-lg font-semibold">{param.name}</h3>
-                <div className="grid grid-cols-3 md:grid-cols-3 gap-4 mt-2">
+                <div className="grid grid-cols-4 md:grid-cols-4 gap-4 mt-2">
                   <div>
                     <p className="font-semibold">Age Range:</p>
                     {param.bioRefRange.advanceRange.ageRange.map((range, i) => (
@@ -151,11 +151,18 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
                     ))}
                   </div>
                   <div>
+                    <p className="font-semibold">Custom Range:</p>
+                    {param.bioRefRange.advanceRange.customRange.map((range, i) => (
+                      <p key={i}>{`${range.categoryType} (${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
+                    ))}
+                  </div>
+                  <div>
                     <p className="font-semibold">Basic Range:</p>
                     {param.bioRefRange.basicRange.map((range, i) => (
                       <p key={i}>{`(${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
                     ))}
                   </div>
+                  
                 </div>
               </div>
             ))}

@@ -45,6 +45,9 @@ const ManualReport = ({ next, handlePrevious }) => {
   };
 
   const handleInputChange = (parameterId, rangeId, value) => {
+    console.log(testSelected?.data?.parameters)
+    console.log(parameterId, rangeId, value)
+    console.log(parameterId)
     const updatedParameters = testSelected?.data?.parameters.map((parameter) => {
       if (parameter._id === parameterId) {
         const updatedAdvanceRange = {
@@ -56,6 +59,12 @@ const ManualReport = ({ next, handlePrevious }) => {
             return range;
           }),
           genderRange: parameter.bioRefRange.advanceRange.genderRange.map((range) => {
+            if (range._id === rangeId) {
+              return { ...range, value };
+            }
+            return range;
+          }),
+          customRange: parameter.bioRefRange.advanceRange.customRange.map((range) => {
             if (range._id === rangeId) {
               return { ...range, value };
             }
@@ -80,7 +89,7 @@ const ManualReport = ({ next, handlePrevious }) => {
       }
       return parameter;
     });
-
+    console.log(updatedParameters)
     // Update the report data state
     setReportData((prevData) => ({
       ...prevData,
@@ -159,6 +168,26 @@ const ManualReport = ({ next, handlePrevious }) => {
 
     return (
       <div className="grid grid-cols-3">
+         {advanceRange?.customRange?.map((range) => (
+          <div key={range._id} className="max-w-[10vw]">
+            <h4>{range.categoryType}:</h4>
+            <Space>
+              <Form.Item
+                name={[record._id, range._id, "value"]}
+                initialValue={range.value || ''}
+              >
+                <Input
+                  placeholder="value"
+                  value={form.getFieldValue([record._id, range._id, "value"]) || ''}
+                  onChange={(e) =>
+                    handleInputChange(record._id, range._id, e.target.value)
+                  }
+                  disabled={!editMode[record._id]} // Disable when not in edit mode
+                />
+              </Form.Item>
+            </Space>
+          </div>
+        ))}
         {advanceRange?.ageRange?.map((range) => (
           <div key={range._id} className="max-w-[10vw]">
             <h4>Age: ({range.ageRangeType}):</h4>
