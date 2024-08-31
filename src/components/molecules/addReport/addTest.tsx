@@ -396,7 +396,7 @@ export const getContent = (bioRefRange) => {
     bioRefRange.advanceRange &&
     (bioRefRange.advanceRange?.ageRange?.length > 0 ||
       bioRefRange.advanceRange?.genderRange?.length > 0 ||
-      bioRefRange.advanceRange?.customCategory?.length > 0);
+      bioRefRange.advanceRange?.customRange?.length > 0);
 
   return (
     <div style={{ maxHeight: "50vh", overflowY: "auto", padding: "0 10px" }}>
@@ -455,8 +455,8 @@ export const getContent = (bioRefRange) => {
               )}
 
             {/* Custom Category */}
-            {bioRefRange.advanceRange?.customCategory &&
-              bioRefRange.advanceRange?.customCategory.map(
+            {bioRefRange.advanceRange?.customRange &&
+              bioRefRange.advanceRange?.customRange.map(
                 (category, catIndex) => (
                   <div key={catIndex}>
                     <p className="font-bold">Custom Range:</p>

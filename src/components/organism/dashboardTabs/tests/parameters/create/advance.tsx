@@ -22,12 +22,15 @@ const AdvanceRangeInput = ({ form }) => {
         >
           <Option value="age">Age Range</Option>
           <Option value="gender">Gender Range</Option>
+          <Option value="custom">Custom Range</Option>
         </Select>
       </Form.Item>
       {rangeOption === "age" ? (
         <AgeRangeForm form={form} />
-      ) : (
+      ) : rangeOption === "gender" ? (
         <GenderRangeForm form={form} />
+      ) : (
+        <CustomRangeForm form={form} />
       )}
     </>
   );
@@ -232,5 +235,89 @@ const AgeRangeForm = ({ form }) => {
         </Form.List>
       )}
     </>
+  );
+};
+
+
+const CustomRangeForm = ({ form }) => {
+  return (
+    <Form.List name="customRanges">
+      {(fields, { add, remove }) => (
+        <>
+          {fields.map(({ key, name, fieldKey, ...restField }) => (
+            <section
+              key={key}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "8px",
+              }}
+            >
+              <Form.Item
+                {...restField}
+                name={[name, "categoryType"]}
+                fieldKey={[fieldKey, "categoryType"]}
+                rules={[{ required: true, message: "Category Type is required" }]}
+                style={{ flex: 1, marginRight: "8px" }}
+              >
+                <Input placeholder="Category Type" style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item
+                {...restField}
+                name={[name, "unit"]}
+                fieldKey={[fieldKey, "unit"]}
+                rules={[{ required: true, message: "Unit is required" }]}
+                style={{ flex: 1, marginRight: "8px" }}
+              >
+                <Input placeholder="Unit" style={{ width: "100%" }} />
+              </Form.Item>
+              <Form.Item
+                {...restField}
+                name={[name, "min"]}
+                fieldKey={[fieldKey, "min"]}
+                rules={[
+                  { required: true, message: "Min Value is required" },
+                ]}
+                style={{ flex: 1, marginRight: "8px" }}
+              >
+                <InputNumber
+                  placeholder="Min Value"
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+              <Form.Item
+                {...restField}
+                name={[name, "max"]}
+                fieldKey={[fieldKey, "max"]}
+                rules={[
+                  { required: true, message: "Max Value is required" },
+                ]}
+                style={{ flex: 1, marginRight: "8px" }}
+              >
+                <InputNumber
+                  placeholder="Max Value"
+                  style={{ width: "100%" }}
+                />
+              </Form.Item>
+              <FaTrash
+                onClick={() => remove(name)}
+                style={{ cursor: "pointer", marginLeft: "8px" }}
+              />
+            </section>
+          ))}
+          <Form.Item>
+            <Button
+              type="dashed"
+              className="flex gap-5"
+              onClick={() => add()}
+              block
+              icon={<FaPlus className="mt-1" />}
+            >
+              Add Custom Range
+            </Button>
+          </Form.Item>
+        </>
+      )}
+    </Form.List>
   );
 };

@@ -550,7 +550,7 @@ const extractAllUnits = (data: any) => {
     ) || [];
 
   const customCategoryUnits =
-    data?.bioRefRange?.advanceRange?.customCategory?.flatMap(
+    data?.bioRefRange?.advanceRange?.customRange?.flatMap(
       (category: any) =>
         category.categoryOptions?.map((option: any) => option.unit) || [],
     ) || [];
@@ -615,7 +615,7 @@ const getContent = (bioRefRange: any) => {
     bioRefRange?.advanceRange &&
     (bioRefRange.advanceRange.ageRange?.length > 0 ||
       bioRefRange.advanceRange.genderRange?.length > 0 ||
-      bioRefRange.advanceRange.customCategory?.length > 0);
+      bioRefRange.advanceRange.customRange?.length > 0);
 
   return (
     <div style={{ maxHeight: "50vh", overflowY: "auto", padding: "0 10px" }}>
@@ -672,30 +672,11 @@ const getContent = (bioRefRange: any) => {
             )}
 
             {/* Custom Category */}
-            {bioRefRange.advanceRange?.customCategory?.map(
-              (category: any, catIndex: number) => (
+            {bioRefRange.advanceRange?.customRange?.map(
+              (customRange: any, catIndex: number) => (
                 <div key={catIndex}>
-                  <p className="font-bold">Custom Range:</p>
-                  <p>{category.categoryName}</p>
-                  {category.categoryOptions?.map(
-                    (option: any, optIndex: number) => (
-                      <p key={optIndex} className="ml-4">
-                        {`${option.categoryType}: ${formatRange(option.min, option.max, option.unit)}`}
-                      </p>
-                    ),
-                  )}
-                  {category.subCategory && (
-                    <div className="ml-4">
-                      <p>{category.subCategory.categoryName}</p>
-                      {category.subCategory.categoryOptions?.map(
-                        (subOpt: any, subOptIndex: number) => (
-                          <p key={subOptIndex} className="ml-4">
-                            {`${subOpt.categoryType}: ${formatRange(subOpt.min, subOpt.max, subOpt.unit)}`}
-                          </p>
-                        ),
-                      )}
-                    </div>
-                  )}
+                  {/* <p className="font-bold">Custom Range:</p> */}
+                  <p className="ml-4">{`${customRange.categoryType} Range: ${formatRange(customRange.min, customRange.max, customRange.unit)}`}</p>
                 </div>
               ),
             )}

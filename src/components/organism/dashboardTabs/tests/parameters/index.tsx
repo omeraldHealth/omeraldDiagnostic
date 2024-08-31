@@ -91,7 +91,7 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
       <section className={`${styles.componentsList} mt-6`}>
         <h2 className="text-lg font-bold mb-4">Created Components</h2>
         <section className={`${styles.componentGrid} mt-6`}>
-          {components.length === 0 ? (
+          {components?.length === 0 ? (
             <p>No components created yet.</p>
           ) : (
             components.map((component, index) => (

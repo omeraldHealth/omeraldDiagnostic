@@ -15,7 +15,7 @@ const sampleData = {
   advanceRange: {
     ageRange: [],
     genderRange: [],
-    customCategory: [],
+    customRange: [],
   },
 };
 
@@ -23,7 +23,7 @@ const RenderRanges = ({ data, onRemove }) => {
   if (!data || !data?.advanceRange) {
     return null;
   }
-
+  console.log(data?.advanceRange)
   return (
     <div>
       {/* Render Basic Range */}
@@ -125,32 +125,32 @@ const RenderRanges = ({ data, onRemove }) => {
       )}
 
       {/* Custom Category */}
-      {data.advanceRange.customCategory.length > 0 && (
+      {data.advanceRange.customRange.length > 0 && (
         <>
-          <Title level={5}>Custom Category</Title>
-          {/* Assuming customCategory has a similar structure for display */}
           <List
-            dataSource={data.advanceRange.customCategory}
+            dataSource={data.advanceRange.customRange}
             renderItem={(item, index) => (
               <List.Item
                 key={index}
                 actions={[
                   <FaTrash
-                    onClick={() => onRemove("customCategory", index)}
+                    onClick={() => onRemove("customRange", index)}
                     style={{ cursor: "pointer" }}
                   />,
                 ]}
               >
-                <Card>
-                  {/* Display fields from customCategory schema */}
-                  <Text>
-                    <strong>Category Name:</strong> {item.categoryName}
-                  </Text>
-                  <br />
-                  <Text>
-                    <strong>Description:</strong> {item.description}
-                  </Text>
-                </Card>
+                <Title level={5}>{item?.categoryType}</Title>
+                <section className="flex ">
+                  <p className="mr-2">
+                    <strong>Unit:</strong> {item.unit}
+                  </p>
+                  <p className="mr-2">
+                    <strong>Min:</strong> {item.min}
+                  </p>
+                  <p className="mr-2">
+                    <strong>Max:</strong> {item.max}
+                  </p>
+                </section>
               </List.Item>
             )}
           />
