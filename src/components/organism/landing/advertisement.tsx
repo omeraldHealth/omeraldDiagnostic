@@ -46,6 +46,7 @@ export function Advertisement({ advertisementBanner }: any): ReactElement {
                   ? advertisementBanner?.landing?.getStartedUrl
                   : advertisementBanner?.landing?.demoVideoUrl
               }
+              rel="noreferrer"
             >
               <SignInButton style="my-4">{ad?.button}</SignInButton>
             </a>

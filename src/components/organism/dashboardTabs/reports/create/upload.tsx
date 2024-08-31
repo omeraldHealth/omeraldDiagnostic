@@ -93,7 +93,7 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({
   handlePrevious,
 }) => {
   const [fileList, setFileList] = useState<any[]>([]);
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [reportData, setReportdata] = useRecoilState(reportDataState);
 
   const onFinish = async (values: any) => {

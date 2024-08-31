@@ -24,7 +24,7 @@ const LandingBanner: React.FC = () => {
           </HeaderText_1>
         </div>
         <BodyText_1 style="xl:w-[80%]">
-          Omerald digitalizes diagnostic centre's, offering website creation,
+          Omerald digitalizes diagnostic centres, offering website creation,
           test selection, report generation, and branding updates.
         </BodyText_1>
         <span className="flex my-8">

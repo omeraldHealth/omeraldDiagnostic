@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { classNames, privateRoutes } from '@utils/static/static';
 import { useAuthContext } from '@utils/context/auth.context';
-import { useMediaQuery } from 'react-responsive';
+import { useMediaQuery } from '@chakra-ui/react';
 
 interface NavLinksProps {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;

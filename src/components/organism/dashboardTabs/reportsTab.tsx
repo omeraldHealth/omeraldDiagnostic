@@ -20,7 +20,7 @@ export default function ReportsTab() {
   const [previewRecord, setPreviewRecord] = useState({});
   const currentBranch = useCurrentBranchValue();
   const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
-  let reportsList = reports?.data?.filter(
+  const reportsList = reports?.data?.filter(
     (report: any) => report?.diagnosticCenter?.branch.id === currentBranch?._id,
   );
 

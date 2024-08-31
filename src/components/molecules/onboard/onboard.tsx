@@ -63,7 +63,7 @@ const OnboardNewComponents: React.FC = () => {
     onSuccess: (data) => {
       if (data?.status === 201 && data?.data?._id) {
         successAlert('Profile Created Succesfully');
-        let newDiagnosticCenters = {
+        const newDiagnosticCenters = {
           diagnostic: data?.data?._id,
           branches: [
             {
@@ -72,7 +72,7 @@ const OnboardNewComponents: React.FC = () => {
             },
           ],
         };
-        let updatedDC = [
+        const updatedDC = [
           ...userData?.data?.diagnosticCenters,
           newDiagnosticCenters,
         ];
@@ -92,7 +92,7 @@ const OnboardNewComponents: React.FC = () => {
   const handleSubmit = () => {
     setSelectedDc(null);
     setSelectedBranch(null);
-    let branchDetails = {
+    const branchDetails = {
       branchName: formData?.branchName,
       branchContact: formData?.branchContact,
       branchAddress: formData?.branchAddress,
@@ -105,7 +105,7 @@ const OnboardNewComponents: React.FC = () => {
         {
           onSuccess: (resp) => {
             if (resp?.status === 201) {
-              let centerDetails = {
+              const centerDetails = {
                 branches: [resp?.data?._id],
                 centerName: formData?.centerName,
                 email: formData?.email,

@@ -64,16 +64,16 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
 
   const handleFormSubmit = (value: any) => {
     if (!selectedValue) {
-      let testType = {
+      const testType = {
         testName: value.testName,
       };
       setTestDetail(testType);
       handleSteps();
     } else {
-      let filteredReport = reportList.filter(
+      const filteredReport = reportList.filter(
         (item: any) => item._id === value?.testName,
       )[0];
-      let testType = {
+      const testType = {
         testName: filteredReport?.name || '',
         keywords: transformData(filteredReport?.parameters),
       };
@@ -93,7 +93,7 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
   };
 
   const handleSearch = _.debounce((value: any) => {
-    let filtered = reportList.filter((item: any) =>
+    const filtered = reportList.filter((item: any) =>
       item.name.toLowerCase().includes(value.toLowerCase()),
     );
     setSelectedReport(filtered);

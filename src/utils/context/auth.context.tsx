@@ -24,7 +24,7 @@ function useApplicationAuth() {
 
   useEffect(() => {
     if (diagnosticDetails) {
-      let branchListTmp = diagnosticDetails?.branchDetails?.[0];
+      const branchListTmp = diagnosticDetails?.branchDetails?.[0];
       setActiveBranch(branchListTmp);
     }
   }, [diagnosticDetails]);

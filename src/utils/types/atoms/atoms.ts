@@ -27,12 +27,12 @@ export interface PageTemplateProps {
 }
 
 export type Query = {
-  phoneNumber: String;
-  name: String;
-  email: String;
-  branch: String;
-  subject: String;
-  message: String;
+  phoneNumber: string;
+  name: string;
+  email: string;
+  branch: string;
+  subject: string;
+  message: string;
 };
 
 export type OnboardStepsType = {

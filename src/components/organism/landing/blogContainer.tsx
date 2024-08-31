@@ -20,7 +20,11 @@ export function BlogContainer(): React.ReactElement {
       {/* Header */}
       <section className="flex justify-between my-10">
         <HeaderText_2 style="">Our Latest Blog Posts</HeaderText_2>
-        <a href={'https://blog.omerald.com/articles'} target="_blank">
+        <a
+          href={'https://blog.omerald.com/articles'}
+          target="_blank"
+          rel="noreferrer"
+        >
           <SignInButton
             style={'w-[30vw] sm:w-[20vw] lg:w-[14vw] text-slate-300'}
           >

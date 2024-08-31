@@ -5,7 +5,6 @@ import {
   FaTwitter,
   FaInstagram,
   FaYoutube,
-  IconType,
 } from 'react-icons/fa';
 
 interface SocialIcon {

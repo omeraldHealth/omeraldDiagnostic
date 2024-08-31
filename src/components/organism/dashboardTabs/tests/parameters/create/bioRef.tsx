@@ -107,8 +107,8 @@ const InputForm = ({ edit, isRangeTypeSectionVisible }) => {
   const handleRemove = (type, index) => {
     setData((prevData) => {
       // Copy the current state
-      let updatedBasicRange = [...prevData.basicRange];
-      let updatedAdvanceRange = { ...prevData.advanceRange };
+      const updatedBasicRange = [...prevData.basicRange];
+      const updatedAdvanceRange = { ...prevData.advanceRange };
 
       // Update based on type
       if (type === 'basicRange') {
@@ -136,8 +136,8 @@ const InputForm = ({ edit, isRangeTypeSectionVisible }) => {
     if (edit) {
       setBioRef((prevData) => {
         // Copy the current state
-        let updatedBasicRange = [...prevData.basicRange];
-        let updatedAdvanceRange = { ...prevData.advanceRange };
+        const updatedBasicRange = [...prevData.basicRange];
+        const updatedAdvanceRange = { ...prevData.advanceRange };
 
         // Update based on type
         if (type === 'basicRange') {

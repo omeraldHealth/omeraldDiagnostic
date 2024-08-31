@@ -129,7 +129,7 @@ export const AddReportComponent: React.FC<AddReportComponentProps> = ({
 
   const handleSubmitTest = async () => {
     if (!manualReport) {
-      let url = await customRequest({
+      const url = await customRequest({
         endpoint: uploadDiagnosticReportApi,
         file: reportData?.reportData?.file,
         header: {

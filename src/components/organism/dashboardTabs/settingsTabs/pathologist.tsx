@@ -56,7 +56,7 @@ export default function PathologistComp() {
       const imageUrl = await uploadImage(image);
       if (imageUrl) {
         successAlert('Signature uploaded');
-        let updatedPath = { ...data, signature: imageUrl };
+        const updatedPath = { ...data, signature: imageUrl };
         const updatedBranch = {
           ...currentBranch,
           pathologistDetail: [...currentBranch.pathologistDetail, updatedPath],
@@ -77,7 +77,7 @@ export default function PathologistComp() {
   };
 
   const handleRemove = (id) => {
-    let removedPath = currentBranch?.pathologistDetail?.filter(
+    const removedPath = currentBranch?.pathologistDetail?.filter(
       (path) => path?._id !== id,
     );
     const updatedBranch = {

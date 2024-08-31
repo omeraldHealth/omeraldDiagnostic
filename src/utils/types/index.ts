@@ -50,19 +50,19 @@ export interface BrandDetailsFormInterface {
 }
 
 export type IPathologistDetails = {
-  name: { type: String };
-  designation: { type: String };
-  signature: { type: String };
-  branchId: { type: String };
+  name: { type: string };
+  designation: { type: string };
+  signature: { type: string };
+  branchId: { type: string };
 };
 
 export interface ProfileDetailsInterface {
-  centerName: { type: String };
-  phoneNumber: { type: String };
-  ownerId: { type: String };
+  centerName: { type: string };
+  phoneNumber: { type: string };
+  ownerId: { type: string };
   brandingInfo: { type: Object };
   branches: { type: [Object] };
-  email: { type: String };
+  email: { type: string };
   updatedAt: { type: Date };
 }
 

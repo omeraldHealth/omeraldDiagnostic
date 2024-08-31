@@ -55,8 +55,8 @@ export function HelpYourBusiness(): React.ReactElement {
       {/* Description */}
       <div className="py-4 lg:py-8">
         <BodyText_1 style="lg:w-[40%] m-auto my-6">
-          Omerald's efficient software solution accelerates business growth for
-          diagnostic centre's.
+          Omeralds efficient software solution accelerates business growth for
+          diagnostic centres.
         </BodyText_1>
       </div>
       {/* Help Business Items */}

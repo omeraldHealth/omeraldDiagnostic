@@ -1,7 +1,7 @@
 export interface USER_DATA {
-  userName: String;
-  phoneNumber: String;
-  _id?: String;
+  userName: string;
+  phoneNumber: string;
+  _id?: string;
   diagnosticCenters: [];
 }
 

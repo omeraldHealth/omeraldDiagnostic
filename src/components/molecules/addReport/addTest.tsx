@@ -86,9 +86,9 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
 
   const handleSubmitTest = () => {
     if (edit) {
-      let updatedTest = currentBranch?.tests.map((test) => {
+      const updatedTest = currentBranch?.tests.map((test) => {
         if (test?._id === testDetailState._id) {
-          let SampleType = {
+          const SampleType = {
             testName: testDetailState?.testName,
             sampleName: testDetailState?.sampleName,
             parameters: testDetailState?.parameters, // Use ParametersSchemas here
@@ -116,7 +116,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
         console.error('Error logging activity:', error);
       }
     } else {
-      let SampleType = {
+      const SampleType = {
         testName: testDetailState?.testName,
         sampleName: testDetailState?.sampleName,
         parameters: testDetailState?.parameters, // Use ParametersSchemas here
@@ -307,7 +307,7 @@ const OmeraldTestDetails: React.FC<any> = ({ next }: any) => {
   const handleSelect = (value) => {
     if (value) {
       // Filter the reportData to find the selected report based on the ID
-      let selectedReport = reportData?.filter(
+      const selectedReport = reportData?.filter(
         (report) => report?._id === value,
       );
 
@@ -572,7 +572,7 @@ const TestParams: React.FC<any> = ({ data = [] }: any) => {
   };
 
   const handleRemoveParam = (value) => {
-    let updatedParam = testDetailState?.parameters?.filter(
+    const updatedParam = testDetailState?.parameters?.filter(
       (param) => param?._id !== value?._id,
     );
     const newState = {
@@ -872,9 +872,9 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
     if (edit) {
       form.setFieldsValue(paramData);
       setBasicRange(paramData?.bioRefRange?.basicRange);
-      let currentRanges = paramData?.bioRefRange?.advanceRange;
+      const currentRanges = paramData?.bioRefRange?.advanceRange;
 
-      let updated = false;
+      const updated = false;
       const convertedArr = convertToRangeArray(currentRanges);
       setAdvanceRange(convertedArr);
     }
@@ -892,7 +892,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
   });
 
   const handleSubmitBioRange = (data) => {
-    let object = {};
+    const object = {};
 
     if (rangeType === 'basic') {
       object.rangeType = 'basic';
@@ -973,7 +973,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
               return param;
             }
           });
-          let updatedDetails = {
+          const updatedDetails = {
             ...testDetailState, // Spread the existing state to retain other properties
             parameters: Array.isArray(updatedParameters)
               ? updatedParameters
@@ -981,7 +981,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
           };
           setTestDetail(updatedDetails);
         } else {
-          let updatedDetails = {
+          const updatedDetails = {
             ...testDetailState, // Spread the existing state to retain other properties
             parameters: [
               ...(Array.isArray(testDetailState.parameters)
@@ -1605,7 +1605,7 @@ const GenderRangeForm = ({ onFinish, genderRangeType }) => {
   const [selectedDetails, setSelectedDetails] = useState('');
 
   const handleSubmit = (values) => {
-    let submittedValues = {
+    const submittedValues = {
       ...values?.genderRange,
       genderRangeType,
       details: {},

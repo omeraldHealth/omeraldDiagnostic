@@ -39,15 +39,15 @@ const PreviewComponent = ({ showPreview, onClose, record, isTest }) => {
     // A4 size in pixels at 300 DPI: 2480x3508 (for high quality print)
     // However, you may need to adjust these dimensions based on your specific needs and the actual DPI you're achieving.
     // Scaling the captured image to fit within the A4 dimensions
-    let width = pdf.internal.pageSize.getWidth();
-    let height = pdf.internal.pageSize.getHeight();
-    let imgWidth = canvas.width;
-    let imgHeight = canvas.height;
+    const width = pdf.internal.pageSize.getWidth();
+    const height = pdf.internal.pageSize.getHeight();
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
 
     // Scale image to fit A4 page
-    let ratio = Math.min(width / imgWidth, height / imgHeight);
-    let scaledWidth = imgWidth * ratio;
-    let scaledHeight = imgHeight * ratio;
+    const ratio = Math.min(width / imgWidth, height / imgHeight);
+    const scaledWidth = imgWidth * ratio;
+    const scaledHeight = imgHeight * ratio;
 
     pdf.addImage(imgData, 'PNG', 0, 0, scaledWidth, scaledHeight);
     pdf.save('download.pdf');

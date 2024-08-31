@@ -751,6 +751,7 @@ export const REPORTS_COLUMNS = ({
             href={report?.reportData.url}
             target="_blank"
             className="text-orange-700"
+            rel="noreferrer"
           >
             <EyeIcon className="w-4 text-orange-500" />
           </a>

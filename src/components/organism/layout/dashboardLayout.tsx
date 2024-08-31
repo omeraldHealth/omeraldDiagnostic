@@ -97,6 +97,7 @@ export function DashboardLayout({ children }: any) {
                       href="https://omerald.com/"
                       target="_blank"
                       className="text-blue-700"
+                      rel="noreferrer"
                     >
                       Omerald.com
                     </a>

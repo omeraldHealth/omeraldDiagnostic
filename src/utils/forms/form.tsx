@@ -260,7 +260,7 @@ const getPopOver = (param: any) => {
         <span>
           {param?.bioRefRange.basicRange.map((basic: any) => {
             return (
-              <span>
+              <span key={basic?.unit}>
                 Basic: unit: {basic.unit}, min: {basic.min}, max: {basic.max}
               </span>
             );
@@ -504,6 +504,7 @@ export const ReportTableColumns: (
             href={report?.reportData.url}
             target="_blank"
             className="text-orange-700"
+            rel="noreferrer"
           >
             <EyeIcon className="w-4 text-orange-500" />
           </a>

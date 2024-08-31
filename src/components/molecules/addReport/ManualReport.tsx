@@ -47,7 +47,7 @@ const flattenBioRefTypes = (input) => {
     },
   };
 
-  let options = [];
+  const options = [];
 
   // Handle basicRange
   if (input.basicRange && input.basicRange.length) {

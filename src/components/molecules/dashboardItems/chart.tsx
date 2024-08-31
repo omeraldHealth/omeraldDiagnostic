@@ -22,7 +22,7 @@ const ReportSharedVsTime2: React.FC<ReportSharedVsTime2Props> = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reportCount, setReportCount] = useState<number[]>([]);
 
-  let reports: any = [];
+  const reports: any = [];
 
   const reportsList = reports?.filter((report: any) =>
     currentBranch?.reports.includes(report?._id),

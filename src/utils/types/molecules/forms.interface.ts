@@ -506,9 +506,9 @@ export interface DynamicFormType {
   formStyle?: string;
   button?: boolean;
   initial?: any;
-  showLabel?: Boolean;
-  reportsValidation?: Boolean;
-  disableElement?: Boolean;
+  showLabel?: boolean;
+  reportsValidation?: boolean;
+  disableElement?: boolean;
   setSelectedValue?: (value: any) => void;
   handleSubmit: (value: any) => void;
   handleImage?: (value: any) => void;
