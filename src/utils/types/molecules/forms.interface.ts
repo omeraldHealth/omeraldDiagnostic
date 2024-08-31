@@ -1,7 +1,7 @@
-import { useProfileValue } from "@components/common/constants/recoilValues";
-import path from "path";
-import { uploadDiagnosticReportApi } from "@utils/urls/app";
-import { UploadFile } from "antd";
+import { useProfileValue } from '@components/common/constants/recoilValues';
+import path from 'path';
+import { uploadDiagnosticReportApi } from '@utils/urls/app';
+import { UploadFile } from 'antd';
 
 export const textPattern = /[^0-9]/;
 
@@ -54,64 +54,64 @@ export type FormType = {
 export const profileForm: FormType[] = [
   // {"name":"brandLogo","type":"logo","label":"Logo","required":true},
   {
-    name: "centerName",
-    type: "text",
-    label: "Diagnostic Center Name",
+    name: 'centerName',
+    type: 'text',
+    label: 'Diagnostic Center Name',
     required: true,
   },
   {
-    name: "email",
-    type: "email",
-    label: "Email",
+    name: 'email',
+    type: 'email',
+    label: 'Email',
     required: true,
-    pattern: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
+    pattern: '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
   },
-  { name: "branchName", type: "text", label: "Branch Name", required: true },
+  { name: 'branchName', type: 'text', label: 'Branch Name', required: true },
   {
-    name: "branchEmail",
-    type: "email",
-    label: "Branch Email",
+    name: 'branchEmail',
+    type: 'email',
+    label: 'Branch Email',
     required: false,
   },
   {
-    name: "branchContact",
-    type: "text",
-    label: "Branch Contact",
+    name: 'branchContact',
+    type: 'text',
+    label: 'Branch Contact',
     required: true,
   },
   {
-    name: "branchAddress",
-    type: "text",
-    label: "Branch Address",
+    name: 'branchAddress',
+    type: 'text',
+    label: 'Branch Address',
     required: false,
   },
 ];
 
 export const selectForm: FormType[] = [
   {
-    name: "reportType",
-    type: "select",
-    label: "Select Report type",
+    name: 'reportType',
+    type: 'select',
+    label: 'Select Report type',
     required: true,
   },
 ];
 
 export const basicFormArray: FormType[] = [
-  { name: "phoneNumber", type: "text", label: "Phone Number", required: true },
+  { name: 'phoneNumber', type: 'text', label: 'Phone Number', required: true },
   {
-    name: "diagnosticName",
-    type: "text",
-    label: "Diagnostic Name",
+    name: 'diagnosticName',
+    type: 'text',
+    label: 'Diagnostic Name',
     required: true,
   },
   {
-    name: "email",
-    type: "email",
-    label: "Email",
+    name: 'email',
+    type: 'email',
+    label: 'Email',
     required: true,
     pattern: emailPattern,
   },
-  { name: "managerName", type: "text", label: "Manager Name", required: true },
+  { name: 'managerName', type: 'text', label: 'Manager Name', required: true },
 ];
 
 export const brandDetailsFormArray = (
@@ -119,29 +119,29 @@ export const brandDetailsFormArray = (
 ): FormType[] => {
   return [
     {
-      name: "brandLogo",
-      type: "logo",
-      label: "Brand Logo",
+      name: 'brandLogo',
+      type: 'logo',
+      label: 'Brand Logo',
       required: true,
       handleImage: handleImage,
     },
     {
-      name: "brandBanner",
-      type: "image",
-      label: "Brand Banner",
+      name: 'brandBanner',
+      type: 'image',
+      label: 'Brand Banner',
       required: false,
     },
     {
-      name: "facebookUrl",
-      type: "text",
-      label: "Facebook Url",
+      name: 'facebookUrl',
+      type: 'text',
+      label: 'Facebook Url',
       required: true,
       pattern: /.*facebook\.com.*/,
     },
     {
-      name: "instaUrl",
-      type: "text",
-      label: "Instagram Url",
+      name: 'instaUrl',
+      type: 'text',
+      label: 'Instagram Url',
       required: true,
       pattern: /.*instagram\.com.*/,
     },
@@ -149,65 +149,65 @@ export const brandDetailsFormArray = (
 };
 
 export const branchDetailsFormArray: FormType[] = [
-  { name: "branchName", type: "text", label: "Branch Name", required: true },
+  { name: 'branchName', type: 'text', label: 'Branch Name', required: true },
   {
-    name: "branchContact",
-    type: "text",
-    label: "Branch Contact",
+    name: 'branchContact',
+    type: 'text',
+    label: 'Branch Contact',
     required: true,
     pattern: phonePattern,
   },
   {
-    name: "branchEmail",
-    type: "email",
-    label: "Branch Email",
+    name: 'branchEmail',
+    type: 'email',
+    label: 'Branch Email',
     required: true,
     pattern: emailPattern,
   },
   {
-    name: "branchAddress",
-    type: "text",
-    label: "Branch Address",
+    name: 'branchAddress',
+    type: 'text',
+    label: 'Branch Address',
     required: true,
   },
 ];
 
 export const branchDetailsEditFormArray: FormType[] = [
-  { name: "branchName", type: "text", label: "Branch Name", required: true },
+  { name: 'branchName', type: 'text', label: 'Branch Name', required: true },
   {
-    name: "branchContact",
-    type: "settingContact",
-    label: "Branch Contact",
+    name: 'branchContact',
+    type: 'settingContact',
+    label: 'Branch Contact',
     required: true,
     pattern: phonePattern,
   },
-  { name: "branchEmail", type: "email", label: "Branch Email", required: true },
+  { name: 'branchEmail', type: 'email', label: 'Branch Email', required: true },
   {
-    name: "branchAddress",
-    type: "text",
-    label: "Branch Address",
+    name: 'branchAddress',
+    type: 'text',
+    label: 'Branch Address',
     required: true,
   },
   {
-    name: "branchOperator",
-    type: "multiSelect",
-    label: "Branch Operator",
+    name: 'branchOperator',
+    type: 'multiSelect',
+    label: 'Branch Operator',
     required: true,
   },
 ];
 
 export const testForm: FormType[] = [
   {
-    name: "sampleName",
-    type: "text",
-    label: "Parameters",
+    name: 'sampleName',
+    type: 'text',
+    label: 'Parameters',
     required: true,
     pattern: textPattern,
   },
   {
-    name: "testName",
-    type: "text",
-    label: "unit",
+    name: 'testName',
+    type: 'text',
+    label: 'unit',
     required: true,
     pattern: textPattern,
   },
@@ -220,86 +220,86 @@ export const testForm: FormType[] = [
 
 export const parameterForm: FormType[] = [
   {
-    name: "keyword",
-    type: "text",
-    label: "Parameters",
+    name: 'keyword',
+    type: 'text',
+    label: 'Parameters',
     required: true,
     pattern: textPattern,
   },
   {
-    name: "unit",
-    type: "text",
-    label: "unit",
+    name: 'unit',
+    type: 'text',
+    label: 'unit',
     required: true,
     pattern: textPattern,
   },
   {
-    name: "minRange",
-    type: "text",
-    label: "minRange",
+    name: 'minRange',
+    type: 'text',
+    label: 'minRange',
     required: true,
     pattern: numberPattern,
   },
   {
-    name: "maxRange",
-    type: "text",
-    label: "maxRange",
+    name: 'maxRange',
+    type: 'text',
+    label: 'maxRange',
     required: true,
     pattern: numberPattern,
   },
-  { name: "aliases", type: "tags", label: "Aliases", required: true },
+  { name: 'aliases', type: 'tags', label: 'Aliases', required: true },
 ];
 
 export const pathologistFormArray = (handleImage: any): FormType[] => [
   {
-    name: "signature",
-    type: "logo",
-    label: "Pathologist Signature",
+    name: 'signature',
+    type: 'logo',
+    label: 'Pathologist Signature',
     required: true,
     handleImage: handleImage,
   },
   {
-    name: "name",
-    type: "text",
-    label: "Pathologist Name",
+    name: 'name',
+    type: 'text',
+    label: 'Pathologist Name',
     required: true,
     pattern: textPattern,
   },
   {
-    name: "designation",
-    type: "text",
-    label: "Pathologist Designation",
+    name: 'designation',
+    type: 'text',
+    label: 'Pathologist Designation',
     required: true,
     pattern: textPattern,
   },
 ];
 
 const roles = [
-  { label: "Admin", value: "admin" },
-  { label: "Lab Manager", value: "manager" },
-  { label: "Operator", value: "operator" },
-  { label: "Spoc", value: "Spoc" },
+  { label: 'Admin', value: 'admin' },
+  { label: 'Lab Manager', value: 'manager' },
+  { label: 'Operator', value: 'operator' },
+  { label: 'Spoc', value: 'Spoc' },
 ];
 
 export const managerFormArray = [
   {
-    name: "managerName",
-    type: "text",
-    label: "Operator Name",
+    name: 'managerName',
+    type: 'text',
+    label: 'Operator Name',
     required: true,
     pattern: textPattern,
   },
   {
-    name: "managerRole",
-    type: "select",
-    label: "Operator Role",
+    name: 'managerRole',
+    type: 'select',
+    label: 'Operator Role',
     required: true,
     options: roles,
   },
   {
-    name: "managerContact",
-    type: "text",
-    label: "Operator Contact",
+    name: 'managerContact',
+    type: 'text',
+    label: 'Operator Contact',
     required: true,
     pattern: textPattern,
   },
@@ -307,27 +307,27 @@ export const managerFormArray = [
 
 export const customTestForm: FormType[] = [
   // {"name":"sampleName","type":"text","label":"Enter Custom Sample Name","required":true},
-  { name: "testName", type: "text", label: "Enter Test Name", required: true },
+  { name: 'testName', type: 'text', label: 'Enter Test Name', required: true },
 ];
 
 export const templateTestForm: FormType[] = [
   {
-    name: "sampleName",
-    type: "text",
-    label: "Enter Custom Sample Name",
+    name: 'sampleName',
+    type: 'text',
+    label: 'Enter Custom Sample Name',
     required: true,
   },
   {
-    name: "testName",
-    type: "search",
-    label: "Enter Test Name",
+    name: 'testName',
+    type: 'search',
+    label: 'Enter Test Name',
     required: true,
   },
 ];
 
 const genderOptions = [
-  { value: "male", label: "Male" },
-  { value: "female", label: "Female" },
+  { value: 'male', label: 'Male' },
+  { value: 'female', label: 'Female' },
 ];
 
 export const patientDetailsForm = (profileValues: any): FormType[] => {
@@ -337,45 +337,45 @@ export const patientDetailsForm = (profileValues: any): FormType[] => {
 
   return [
     {
-      name: "testName",
-      type: "search",
-      label: "Search Sample Type",
+      name: 'testName',
+      type: 'search',
+      label: 'Search Sample Type',
       required: true,
       pattern: textPattern,
     },
     {
-      name: "userName",
-      type: "text",
-      label: "Enter Patient Name",
+      name: 'userName',
+      type: 'text',
+      label: 'Enter Patient Name',
       required: true,
       pattern: textPattern,
     },
     {
-      name: "userId",
-      type: "contact",
-      label: "Enter Patient Contact",
+      name: 'userId',
+      type: 'contact',
+      label: 'Enter Patient Contact',
       required: true,
     },
     {
-      name: "email",
-      type: "email",
-      label: "Patient Email",
+      name: 'email',
+      type: 'email',
+      label: 'Patient Email',
       required: true,
       pattern: emailPattern,
     },
 
-    { name: "dob", type: "date", label: "Date of Birth", required: false },
+    { name: 'dob', type: 'date', label: 'Date of Birth', required: false },
     {
-      name: "gender",
-      type: "select",
-      label: "Select Gender",
+      name: 'gender',
+      type: 'select',
+      label: 'Select Gender',
       required: true,
       options: genderOptions,
     },
     {
-      name: "doctorName",
-      type: "select",
-      label: "Pathologist",
+      name: 'doctorName',
+      type: 'select',
+      label: 'Pathologist',
       required: false,
       options: pathologistList,
     },
@@ -385,29 +385,29 @@ export const patientDetailsForm = (profileValues: any): FormType[] => {
 export const manualReportForm = (profileValues: any): FormType[] => {
   return [
     {
-      name: "userName",
-      type: "text",
-      label: "Enter Patient Name",
+      name: 'userName',
+      type: 'text',
+      label: 'Enter Patient Name',
       required: true,
     },
     {
-      name: "userId",
-      type: "contact",
-      label: "Enter Patient Contact",
+      name: 'userId',
+      type: 'contact',
+      label: 'Enter Patient Contact',
       required: true,
     },
     {
-      name: "email",
-      type: "email",
-      label: "Patient Email",
+      name: 'email',
+      type: 'email',
+      label: 'Patient Email',
       required: true,
-      pattern: "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$",
+      pattern: '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$',
     },
-    { name: "dob", type: "date", label: "Date of Birth", required: false },
+    { name: 'dob', type: 'date', label: 'Date of Birth', required: false },
     {
-      name: "gender",
-      type: "select",
-      label: "Select Gender",
+      name: 'gender',
+      type: 'select',
+      label: 'Select Gender',
       required: true,
       options: genderOptions,
     },
@@ -420,16 +420,16 @@ export const reportUploadFormArray = (
 ): FormType[] => {
   return [
     {
-      name: "reportId",
-      type: "upload",
-      label: "Upload Report",
+      name: 'reportId',
+      type: 'upload',
+      label: 'Upload Report',
       required: true,
       handleUpload: handleUpload,
     },
     {
-      name: "reportDate",
-      type: "date",
-      label: "Report Created Date",
+      name: 'reportDate',
+      type: 'date',
+      label: 'Report Created Date',
       required: true,
       handleDate: handleDate,
       uploadUrl: uploadDiagnosticReportApi,
@@ -438,10 +438,10 @@ export const reportUploadFormArray = (
 };
 
 export const initialTestState: ReportTypes = {
-  sampleName: "",
+  sampleName: '',
   //@ts-ignore
   sampleType: {
-    testName: "",
+    testName: '',
     keywords: [],
   },
 };
@@ -450,20 +450,20 @@ export const initialReportState: ReportDetails[] = [];
 
 export const initialReportFormState: ReportDetails = {
   //@ts-ignore
-  dob: "",
-  email: "",
-  gender: "",
-  userId: "",
-  userName: "",
-  testName: "",
+  dob: '',
+  email: '',
+  gender: '',
+  userId: '',
+  userName: '',
+  testName: '',
   //@ts-ignore
-  reportDate: "",
-  reportId: "",
-  reportUrl: "",
-  doctorName: "",
+  reportDate: '',
+  reportId: '',
+  reportUrl: '',
+  doctorName: '',
   isManualReport: false,
   //@ts-ignore
-  status: "parsing",
+  status: 'parsing',
   //@ts-ignore
   parsedData: [],
 };
@@ -471,21 +471,21 @@ export const initialReportFormState: ReportDetails = {
 export const intialDiagnosticState = {
   tests: [],
   sharedReport: [],
-  phoneNumber: "",
-  diagnosticName: "",
-  email: "",
+  phoneNumber: '',
+  diagnosticName: '',
+  email: '',
   brandDetails: [
     {
-      facebookUrl: "",
-      instaUrl: "",
-      brandLogo: "",
+      facebookUrl: '',
+      instaUrl: '',
+      brandLogo: '',
     },
   ],
   managersDetail: [
     {
-      managerName: "",
-      managerRole: "",
-      managerContact: "",
+      managerName: '',
+      managerRole: '',
+      managerContact: '',
     },
   ],
   activities: [],

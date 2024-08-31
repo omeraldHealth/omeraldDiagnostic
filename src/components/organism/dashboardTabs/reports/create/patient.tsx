@@ -1,11 +1,11 @@
 import {
   useCurrentBranchValue,
   useProfileValue,
-} from "@components/common/constants/recoilValues";
-import { reportState } from "@components/common/recoil/report";
-import { reportDataState } from "@components/common/recoil/report/reportData";
-import { Button, Col, Form, Input, Row, Select } from "antd";
-import { useSetRecoilState } from "recoil";
+} from '@components/common/constants/recoilValues';
+import { reportState } from '@components/common/recoil/report';
+import { reportDataState } from '@components/common/recoil/report/reportData';
+import { Button, Col, Form, Input, Row, Select } from 'antd';
+import { useSetRecoilState } from 'recoil';
 
 const { Option } = Select;
 
@@ -31,7 +31,7 @@ export function PatientDetails({ form, handleNext }) {
           <div>
             <h2 className="text-xl font-bold mb-4">Patient Information</h2>
             <Form.Item
-              name={["patient", "name"]}
+              name={['patient', 'name']}
               label="Name"
               rules={[
                 { required: true, message: "Please enter the patient's name" },
@@ -42,12 +42,12 @@ export function PatientDetails({ form, handleNext }) {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  name={["patient", "dob"]}
+                  name={['patient', 'dob']}
                   label="Date of Birth"
                   rules={[
                     {
                       required: true,
-                      message: "Please select the date of birth",
+                      message: 'Please select the date of birth',
                     },
                   ]}
                 >
@@ -56,10 +56,10 @@ export function PatientDetails({ form, handleNext }) {
               </Col>
               <Col span={12}>
                 <Form.Item
-                  name={["patient", "gender"]}
+                  name={['patient', 'gender']}
                   label="Gender"
                   rules={[
-                    { required: true, message: "Please select the gender" },
+                    { required: true, message: 'Please select the gender' },
                   ]}
                 >
                   <Select placeholder="Select Gender">
@@ -71,22 +71,22 @@ export function PatientDetails({ form, handleNext }) {
               </Col>
             </Row>
             <Form.Item
-              name={["patient", "contact", "phone"]}
+              name={['patient', 'contact', 'phone']}
               label="Phone"
               rules={[
-                { required: true, message: "Please enter the phone number" },
+                { required: true, message: 'Please enter the phone number' },
               ]}
             >
               <Input />
             </Form.Item>
             <Form.Item
-              name={["patient", "contact", "email"]}
+              name={['patient', 'contact', 'email']}
               label="Email"
               rules={[
-                { required: true, message: "Please enter the email address" },
+                { required: true, message: 'Please enter the email address' },
                 {
-                  type: "email",
-                  message: "Please enter a valid email address",
+                  type: 'email',
+                  message: 'Please enter a valid email address',
                 },
               ]}
             >
@@ -100,21 +100,21 @@ export function PatientDetails({ form, handleNext }) {
               Diagnostic Center Information
             </h2>
             <Form.Item
-              name={["diagnosticCenter", "name"]}
+              name={['diagnosticCenter', 'name']}
               label="Center Name"
-              initialValue={profile?.centerName || ""}
+              initialValue={profile?.centerName || ''}
               rules={[
-                { required: true, message: "Please enter the center name" },
+                { required: true, message: 'Please enter the center name' },
               ]}
             >
               <Input disabled={!!profile?.centerName} />
             </Form.Item>
             <Form.Item
-              name={["diagnosticCenter", "branch", "name"]}
+              name={['diagnosticCenter', 'branch', 'name']}
               label="Branch Name"
-              initialValue={currentBranch?.branchName || ""}
+              initialValue={currentBranch?.branchName || ''}
               rules={[
-                { required: true, message: "Please enter the branch name" },
+                { required: true, message: 'Please enter the branch name' },
               ]}
             >
               <Input disabled={!!currentBranch?.branchName} />

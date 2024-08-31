@@ -1,19 +1,19 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   useCurrentBranchValue,
   useProfileValue,
-} from "@components/common/constants/recoilValues";
-import { Button, Form, Input, Switch } from "antd";
-import { PathologistColumns } from "@utils/forms/form";
-import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
-import axios from "axios";
-import { uploadDiagnosticLogoApi } from "@utils/index";
-import { errorAlert2, successAlert } from "@components/atoms/alerts/alert";
-import { useUpdateDiagnostic } from "@utils/reactQuery";
-import { Loader } from "@components/atoms/loader/loader";
-import { useSetRecoilState } from "recoil";
-import { branchState } from "@components/common/recoil/branch/branch";
-import { profileState } from "@components/common/recoil/profile";
+} from '@components/common/constants/recoilValues';
+import { Button, Form, Input, Switch } from 'antd';
+import { PathologistColumns } from '@utils/forms/form';
+import { DashboardTable } from '@components/molecules/dashboardItems/data-table';
+import axios from 'axios';
+import { uploadDiagnosticLogoApi } from '@utils/index';
+import { errorAlert2, successAlert } from '@components/atoms/alerts/alert';
+import { useUpdateDiagnostic } from '@utils/reactQuery';
+import { Loader } from '@components/atoms/loader/loader';
+import { useSetRecoilState } from 'recoil';
+import { branchState } from '@components/common/recoil/branch/branch';
+import { profileState } from '@components/common/recoil/profile';
 
 export default function PathologistComp() {
   const [showTest, setShowTest] = useState(false);
@@ -26,7 +26,7 @@ export default function PathologistComp() {
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
-      successAlert("Added pathologist succesfully");
+      successAlert('Added pathologist succesfully');
       setShowTest(false);
       setCurrentBranch(
         data?.data?.branches?.filter(
@@ -34,7 +34,7 @@ export default function PathologistComp() {
         )[0],
       );
       localStorage.setItem(
-        "selectedBranch",
+        'selectedBranch',
         JSON.stringify(
           data?.data?.branches?.filter(
             (branch) => branch?._id === currentBranch?._id,
@@ -45,7 +45,7 @@ export default function PathologistComp() {
       setLoading(false);
     },
     onError: () => {
-      errorAlert2("Error adding pathologist");
+      errorAlert2('Error adding pathologist');
       setLoading(false);
     },
   });
@@ -55,7 +55,7 @@ export default function PathologistComp() {
     try {
       const imageUrl = await uploadImage(image);
       if (imageUrl) {
-        successAlert("Signature uploaded");
+        successAlert('Signature uploaded');
         let updatedPath = { ...data, signature: imageUrl };
         const updatedBranch = {
           ...currentBranch,
@@ -71,7 +71,7 @@ export default function PathologistComp() {
         updateDiagnostic.mutate({ data: { branches: updatedBranches } });
       }
     } catch (error) {
-      errorAlert2("Error creating path:", error);
+      errorAlert2('Error creating path:', error);
     }
     setLoading(false);
   };
@@ -98,7 +98,7 @@ export default function PathologistComp() {
     <div className="p-0 h-auto bg-signBanner">
       <span className="flex justify-end">
         <Switch
-          style={{ fontSize: "10px" }}
+          style={{ fontSize: '10px' }}
           checkedChildren="Add"
           unCheckedChildren="View"
           checked={showTest}
@@ -136,7 +136,7 @@ const AddPathForm = ({ onFinish, handleImage }) => {
         <div className="grid grid-cols-2 gap-8">
           <div>
             <Form.Item
-              name={"name"}
+              name={'name'}
               label="Pathologist Name"
               className="w-[20vw]"
               rules={[{ required: true }]}
@@ -144,14 +144,14 @@ const AddPathForm = ({ onFinish, handleImage }) => {
               <Input />
             </Form.Item>
             <Form.Item
-              name={"designation"}
+              name={'designation'}
               className="w-[20vw]"
               label="Pathologist Designation"
               rules={[{ required: true }]}
             >
               <Input />
             </Form.Item>
-            <Form.Item name={"signature"} label="Pathologist Signature">
+            <Form.Item name={'signature'} label="Pathologist Signature">
               <FileUploader handleImage={handleImage} />
             </Form.Item>
           </div>
@@ -191,18 +191,18 @@ const uploadImage = async (file) => {
   try {
     if (file) {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
       const response = await axios.post(uploadDiagnosticLogoApi, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       });
       return response.data.url; // Assuming the response contains the URL in data.url
     } else {
-      errorAlert2("Error uploading signature");
+      errorAlert2('Error uploading signature');
     }
   } catch (error) {
-    errorAlert2("Error uploading file:", error);
-    throw new Error("File upload failed.");
+    errorAlert2('Error uploading file:', error);
+    throw new Error('File upload failed.');
   }
 };

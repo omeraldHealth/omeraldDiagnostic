@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { UserLayout } from "@components/templates/pageTemplate";
-import { mailImage } from "@utils/urls/files";
-import ContactPageForm from "./form";
+import { UserLayout } from '@components/templates/pageTemplate';
+import { mailImage } from '@utils/urls/files';
+import ContactPageForm from './form';
 
 interface ContactProps {}
 

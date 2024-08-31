@@ -1,7 +1,7 @@
-import Link from "next/link";
-import React, { Fragment } from "react";
-import { errorImage } from "@utils/index";
-import { TitleText } from "../font";
+import Link from 'next/link';
+import React, { Fragment } from 'react';
+import { errorImage } from '@utils/index';
+import { TitleText } from '../font';
 
 interface ErrorCompProps {
   pageName: string;

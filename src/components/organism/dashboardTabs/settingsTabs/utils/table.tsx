@@ -1,5 +1,5 @@
-import { Table } from "antd";
-import React, { useState } from "react";
+import { Table } from 'antd';
+import React, { useState } from 'react';
 
 export const CommonSettingTable = ({ data, columns }) => {
   const [pageSize, setPageSize] = useState(10);
@@ -21,14 +21,14 @@ export const CommonSettingTable = ({ data, columns }) => {
           pageSize,
           showQuickJumper: true,
           showSizeChanger: true,
-          pageSizeOptions: ["5", "10", "20", "50", "100"],
+          pageSizeOptions: ['5', '10', '20', '50', '100'],
           onShowSizeChange: (_, size) => setPageSize(size),
           style: {
-            marginRight: "2vw",
-            textAlign: "center",
+            marginRight: '2vw',
+            textAlign: 'center',
           },
         }}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: 'max-content' }}
       />
     </div>
   );

@@ -1,6 +1,6 @@
-import React from "react";
-import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
-import DynamicFormGenerator from "@components/common/form/dynamicForm";
+import React from 'react';
+import { DashboardTable } from '@components/molecules/dashboardItems/data-table';
+import DynamicFormGenerator from '@components/common/form/dynamicForm';
 
 /**
  * Common component for settings with a dynamic form and a data table.
@@ -43,7 +43,7 @@ export function SettingsCommon({
             <DynamicFormGenerator
               defaultValues={editElement ? defaultValues : []}
               formProps={form}
-              buttonText={editElement ? "Update" : "Submit"}
+              buttonText={editElement ? 'Update' : 'Submit'}
               handleSubmit={handleSubmit}
             />
           </section>
@@ -60,7 +60,7 @@ export function SettingsCommon({
             }}
             className="bg-gray-200 p-2 rounded-md"
           >
-            {!addElement ? "Add " + tabName : "View " + tabName}
+            {!addElement ? 'Add ' + tabName : 'View ' + tabName}
           </button>
         </section>
       )}

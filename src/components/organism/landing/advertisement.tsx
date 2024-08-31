@@ -1,9 +1,9 @@
-import { ReactElement } from "react";
-import { SignInButton } from "@components/atoms/buttons/button";
-import { BodyText_2, HeaderText_3 } from "@components/atoms/font";
-import Link from "next/link";
-import { advertisement } from "@utils/static/static";
-import { Carousel } from "antd";
+import { ReactElement } from 'react';
+import { SignInButton } from '@components/atoms/buttons/button';
+import { BodyText_2, HeaderText_3 } from '@components/atoms/font';
+import Link from 'next/link';
+import { advertisement } from '@utils/static/static';
+import { Carousel } from 'antd';
 
 interface AdvertisementItem {
   title: string;
@@ -42,7 +42,7 @@ export function Advertisement({ advertisementBanner }: any): ReactElement {
             <a
               target="_blank"
               href={
-                ad?.title === "Get Started"
+                ad?.title === 'Get Started'
                   ? advertisementBanner?.landing?.getStartedUrl
                   : advertisementBanner?.landing?.demoVideoUrl
               }

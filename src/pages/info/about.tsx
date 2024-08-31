@@ -1,5 +1,5 @@
-import { UserLayout } from "@components/templates/pageTemplate";
-import { aboutImage } from "@utils/urls/files";
+import { UserLayout } from '@components/templates/pageTemplate';
+import { aboutImage } from '@utils/urls/files';
 
 export default function About() {
   return (
@@ -27,7 +27,7 @@ export default function About() {
             <li className="my-2 font-light text-gray-500">
               <b className="font-bold text-gray-900">
                 Efficient Test Report Management:
-              </b>{" "}
+              </b>{' '}
               We offer robust systems that allow diagnostic centers to manage
               test reports online, ensuring accuracy and accessibility for
               healthcare professionals and patients.
@@ -35,13 +35,13 @@ export default function About() {
             <li className="my-2 font-light text-gray-500">
               <b className="font-bold text-gray-900">
                 Secure Patient Data Sharing:
-              </b>{" "}
+              </b>{' '}
               Through our platform, diagnostic centers can securely share test
               results with patients, facilitating informed decision-making and
               empowering individuals in their healthcare journey.
             </li>
             <li className="my-2 font-light text-gray-500">
-              <b className="font-bold text-gray-900">Insightful Analytics:</b>{" "}
+              <b className="font-bold text-gray-900">Insightful Analytics:</b>{' '}
               We provide powerful analytics tools that generate actionable
               insights from diagnostic data, supporting healthcare professionals
               in making informed decisions for early disease detection and
@@ -51,7 +51,7 @@ export default function About() {
         </section>
         <section className="flex items-center justify-center p-4">
           <img
-            style={{ height: "90vh" }}
+            style={{ height: '90vh' }}
             src={aboutImage}
             alt="About Us"
             className="h-[90vh]"

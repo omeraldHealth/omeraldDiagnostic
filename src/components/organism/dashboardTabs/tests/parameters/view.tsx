@@ -1,12 +1,12 @@
 //@ts-nocheck
-import { testDetailsState } from "@components/common/recoil/testDetails";
-import { paramState } from "@components/common/recoil/testDetails/param";
-import { bioRefState } from "@components/common/recoil/testDetails/test";
-import { useState } from "react";
-import { useRecoilState } from "recoil";
-import { CommonSettingTable } from "../../settingsTabs/utils/table";
-import { PARAMETER_COLUMNS } from "../../settingsTabs/utils/tabs";
-import UpdateParam from "./create/update";
+import { testDetailsState } from '@components/common/recoil/testDetails';
+import { paramState } from '@components/common/recoil/testDetails/param';
+import { bioRefState } from '@components/common/recoil/testDetails/test';
+import { useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { CommonSettingTable } from '../../settingsTabs/utils/table';
+import { PARAMETER_COLUMNS } from '../../settingsTabs/utils/tabs';
+import UpdateParam from './create/update';
 
 export const ViewParameters = () => {
   const [testDetails, setTestDetail] = useRecoilState(testDetailsState);

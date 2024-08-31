@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { useRecoilState } from "recoil";
-import { testDetailsState } from "@components/common/recoil/testDetails";
-import styles from "./param.module.css";
-import ComponentForm from "@components/organism/dashboardTabs/tests/components";
-import { Button } from "antd";
+import { useState, useEffect } from 'react';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useRecoilState } from 'recoil';
+import { testDetailsState } from '@components/common/recoil/testDetails';
+import styles from './param.module.css';
+import ComponentForm from '@components/organism/dashboardTabs/tests/components';
+import { Button } from 'antd';
 
 export const EditComponents = ({ edit, components, setComponents }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -118,7 +118,13 @@ export const EditComponents = ({ edit, components, setComponents }) => {
   );
 };
 
-const ComponentCard = ({ component, onEdit, onDelete, onMouseEnter, onMouseLeave }) => {
+const ComponentCard = ({
+  component,
+  onEdit,
+  onDelete,
+  onMouseEnter,
+  onMouseLeave,
+}) => {
   return (
     <div className={styles.componentCard}>
       <div
@@ -149,7 +155,9 @@ const HoverBox = ({ component, isHovering }) => {
   if (!component) return null;
 
   return (
-    <div className={`${styles.hoverBox} ${isHovering ? styles.show : styles.hide}`}>
+    <div
+      className={`${styles.hoverBox} ${isHovering ? styles.show : styles.hide}`}
+    >
       <h3>{component.title}</h3>
       <div dangerouslySetInnerHTML={{ __html: component.content }} />
       {component.isDynamic && component.images.length > 0 && (

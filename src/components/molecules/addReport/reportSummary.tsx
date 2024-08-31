@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { Typography, Button } from "antd";
+import React, { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { Typography, Button } from 'antd';
 import {
   errorAlert,
   successAlert,
   warningAlert,
-} from "@components/atoms/alerts/alert";
-import { Spinner } from "@components/atoms/loader";
-import { reportState } from "@components/common/recoil/report";
-import { uploadDiagnosticReportApi } from "@utils/index";
-import { useCreateReport } from "@utils/reactQuery";
-import axios from "axios";
-import { formatTimeFromDate } from "../../../utils/static/static";
+} from '@components/atoms/alerts/alert';
+import { Spinner } from '@components/atoms/loader';
+import { reportState } from '@components/common/recoil/report';
+import { uploadDiagnosticReportApi } from '@utils/index';
+import { useCreateReport } from '@utils/reactQuery';
+import axios from 'axios';
+import { formatTimeFromDate } from '../../../utils/static/static';
 import {
   ProfileSummaryCardProps,
   ReportSummaryCompProps,
   ReportSummaryProps,
-} from "../../../utils/types";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
-import { reportDataState } from "@components/common/recoil/report/reportData";
+} from '../../../utils/types';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { reportDataState } from '@components/common/recoil/report/reportData';
 
 const { Title } = Typography;
 
@@ -59,7 +59,7 @@ const ProfileSummaryCard: React.FC<ProfileSummaryCardProps> = ({
       )}
       {link && (
         <p className="text-blue-800 font-bold text-sm">
-          {title} URL:{" "}
+          {title} URL:{' '}
           <a href={link} className="text-blue-900 font-light">
             {link}
           </a>
@@ -103,12 +103,12 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({
 
   const updateDiagnostic = useCreateReport({
     onSuccess: (data) => {
-      successAlert("Report added successfully");
+      successAlert('Report added successfully');
       setReportState(data?.data);
       handleSuccess();
     },
     onError: () => {
-      errorAlert("Error creating report");
+      errorAlert('Error creating report');
     },
   });
 
@@ -118,24 +118,24 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({
     try {
       const file = reportValue?.reportId?.file;
       if (file && file.originFileObj) {
-        warningAlert("Uploading File, please wait");
+        warningAlert('Uploading File, please wait');
 
         const formData = new FormData();
-        formData.append("file", file.originFileObj);
+        formData.append('file', file.originFileObj);
 
         const resp = await axios.post(uploadDiagnosticReportApi, formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
         });
 
         if (resp?.status === 200) {
           setLoading(false);
-          successAlert("Uploaded file successfully");
+          successAlert('Uploaded file successfully');
 
           const newUuid = Array.from(crypto.getRandomValues(new Uint8Array(6)))
-            .map((value) => value.toString(16).padStart(2, "0"))
-            .join("");
+            .map((value) => value.toString(16).padStart(2, '0'))
+            .join('');
           const newProp = {
             reportUrl: resp?.data?.url,
             reportId: newUuid,
@@ -145,25 +145,25 @@ const ReportSummaryComp: React.FC<ReportSummaryCompProps> = ({
           const updatedReport = { ...reportValue, ...newProp };
           updateDiagnostic?.mutate({ data: updatedReport });
         } else {
-          errorAlert("Error uploading file");
+          errorAlert('Error uploading file');
         }
       } else {
-        console.error("File or originFileObj is undefined.");
-        errorAlert("Error uploading file");
+        console.error('File or originFileObj is undefined.');
+        errorAlert('Error uploading file');
       }
     } catch (error) {
-      console.error("An error occurred:", error);
-      errorAlert("An error occurred while uploading file");
+      console.error('An error occurred:', error);
+      errorAlert('An error occurred while uploading file');
     } finally {
       setLoading(false);
-      warningAlert("Saving report");
+      warningAlert('Saving report');
     }
   };
 
-  const moment = require("moment");
+  const moment = require('moment');
 
   const formattedDate = moment(reportData?.reportData?.reportDate).format(
-    "MM-DD-YYYY",
+    'MM-DD-YYYY',
   );
 
   return (

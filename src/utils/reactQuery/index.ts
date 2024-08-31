@@ -1,10 +1,10 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from 'axios';
 import {
   useMutation,
   useQuery,
   useQueryClient,
   UseQueryOptions,
-} from "react-query";
+} from 'react-query';
 import {
   updateDiagProfileApi,
   uploadDiagnosticReportApi,
@@ -28,7 +28,7 @@ import {
   deleteDiagReportApi,
   updateDiagReportApi,
   getDiagTestApi,
-} from "@utils/urls/app";
+} from '@utils/urls/app';
 
 // useQuery hook to get data
 export function useQueryGetData<T>(
@@ -47,16 +47,16 @@ interface UseMutationProps<TData, TVariables> {
 }
 
 function createMutation<TData, TVariables>(
-  method: "put" | "post" | "delete",
+  method: 'put' | 'post' | 'delete',
   url: string,
   { onSuccess, onError }: UseMutationProps<TData, TVariables>,
 ) {
   return useMutation(
     (data: any) =>
-      axios[method](url, method === "delete" ? null : data?.data, {
+      axios[method](url, method === 'delete' ? null : data?.data, {
         headers:
-          method === "post"
-            ? { "Content-Type": "application/json" }
+          method === 'post'
+            ? { 'Content-Type': 'application/json' }
             : undefined,
       }),
     {
@@ -68,18 +68,18 @@ function createMutation<TData, TVariables>(
 
 // Functions for different mutations
 export function useGetUser({ userPhoneNumber }: any) {
-  return useQueryGetData("userData", getDiagnosticUserApi + userPhoneNumber, {
+  return useQueryGetData('userData', getDiagnosticUserApi + userPhoneNumber, {
     enabled: !!userPhoneNumber,
   });
 }
 
 export function useGetAdminReports() {
-  return useQueryGetData("adminReports", getAdminReportTypesApi);
+  return useQueryGetData('adminReports', getAdminReportTypesApi);
 }
 
 export function useGetDcProfile({ selectedCenterId }: any) {
   return useQueryGetData(
-    "diagnosticCenter",
+    'diagnosticCenter',
     getDiagProfileByIdApi + selectedCenterId,
     { enabled: !!selectedCenterId },
   );
@@ -87,46 +87,44 @@ export function useGetDcProfile({ selectedCenterId }: any) {
 
 export function useGetDcBranch({ selectedBranchId }: any) {
   return useQueryGetData(
-    "diagnosticBranch",
+    'diagnosticBranch',
     getDiagBranchByIdApi + selectedBranchId,
     { enabled: !!selectedBranchId },
   );
 }
 
 export function useGetDcTest({ selectedTestId }: any) {
-  return useQueryGetData(
-    "diagnosticTest",
-    getDiagTestApi + selectedTestId,
-    { enabled: !!selectedTestId },
-  );
+  return useQueryGetData('diagnosticTest', getDiagTestApi + selectedTestId, {
+    enabled: !!selectedTestId,
+  });
 }
 
 export function useGetDcSettings() {
-  return useQueryGetData("diagnosticSettings", getDiagnosticSetting);
+  return useQueryGetData('diagnosticSettings', getDiagnosticSetting);
 }
 
 export function useCreateUser<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return createMutation("post", createDiagnosticUserApi, props);
+  return createMutation('post', createDiagnosticUserApi, props);
 }
 
 export function useCreateTest<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return createMutation("post", createDiagTestApi, props);
+  return createMutation('post', createDiagTestApi, props);
 }
 
 // update
 function UpdateMutation<TData, TVariables>(
-  method: "put",
+  method: 'put',
   url: string,
   { onSuccess, onError }: UseMutationProps<TData, TVariables>,
 ) {
   return useMutation(
     (data: any) =>
       axios[method](url + data?.recordId, data?.data, {
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       }),
     {
       onSuccess,
@@ -138,49 +136,49 @@ function UpdateMutation<TData, TVariables>(
 export function useUpdateUser<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return UpdateMutation("put", updateDiagnosticUserApi, props);
+  return UpdateMutation('put', updateDiagnosticUserApi, props);
 }
 
 export function useUpdateTest<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return UpdateMutation("put", updateDiagTestApi, props);
+  return UpdateMutation('put', updateDiagTestApi, props);
 }
 
 export function useCreateDiagnostic<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return createMutation("post", createDiagProfileApi, props);
+  return createMutation('post', createDiagProfileApi, props);
 }
 
 export function useCreateDiagnosticBranch<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return createMutation("post", createDiagBranchApi, props);
+  return createMutation('post', createDiagBranchApi, props);
 }
 
 export function useUpdateDiagnostic<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return UpdateMutation("put", updateDiagProfileApi, props);
+  return UpdateMutation('put', updateDiagProfileApi, props);
 }
 
 export function useUpdateBranch<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return UpdateMutation("put", updateDiagBranchApi, props);
+  return UpdateMutation('put', updateDiagBranchApi, props);
 }
 
 export function useCreatePathSignature<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return createMutation("post", uploadPathSignature, props);
+  return createMutation('post', uploadPathSignature, props);
 }
 
 // Delete
 
 function deleteMutation<TData, TVariables>(
-  method: "delete",
+  method: 'delete',
   url: string,
   { onSuccess, onError }: UseMutationProps<TData, TVariables>,
 ) {
@@ -193,49 +191,49 @@ function deleteMutation<TData, TVariables>(
 export function useDeleteBranch<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return deleteMutation("delete", deleteDiagBranchApi, props);
+  return deleteMutation('delete', deleteDiagBranchApi, props);
 }
 
 export function useDeleteTest<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return deleteMutation("delete", deleteDiagTestApi, props);
+  return deleteMutation('delete', deleteDiagTestApi, props);
 }
 
 export function useUploadReportFile<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return createMutation("post", uploadDiagnosticReportApi, props);
+  return createMutation('post', uploadDiagnosticReportApi, props);
 }
 
 export function useUploadBranding<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return createMutation("post", uploadDiagnosticLogoApi, props);
+  return createMutation('post', uploadDiagnosticLogoApi, props);
 }
 
 export function useDeleteReports<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return deleteMutation("delete", deleteDiagReportApi, props);
+  return deleteMutation('delete', deleteDiagReportApi, props);
 }
 
 export function useCreateReport<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return createMutation("post", createDiagReportApi, props);
+  return createMutation('post', createDiagReportApi, props);
 }
 
 export function useUpdateReport<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return UpdateMutation("put", updateDiagReportApi, props);
+  return UpdateMutation('put', updateDiagReportApi, props);
 }
 
 export function usedeleteReport<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
-  return deleteMutation("delete", deleteDiagReportApi, props);
+  return deleteMutation('delete', deleteDiagReportApi, props);
 }
 
 export function useInvalidateQuery() {

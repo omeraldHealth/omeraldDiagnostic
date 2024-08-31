@@ -1,7 +1,7 @@
-import React from "react";
-import { SignUp } from "@clerk/nextjs";
-import { ClerkLoading } from "@clerk/nextjs";
-import { UserLayout } from "@components/templates/pageTemplate";
+import React from 'react';
+import { SignUp } from '@clerk/nextjs';
+import { ClerkLoading } from '@clerk/nextjs';
+import { UserLayout } from '@components/templates/pageTemplate';
 
 const SignUpComp = () => {
   return (

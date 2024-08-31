@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { useRouter } from "next/router";
-import { useProfileValue } from "@components/common/constants/recoilValues";
-import { useUser } from "@clerk/clerk-react";
-import { useRecoilValue } from "recoil";
-import { createDC } from "@components/common/recoil/chooseDc";
-import { OnboardNavbar } from "@components/molecules/navbar";
-import OnboardNewComponents from "@components/molecules/onboard/onboard";
-import { Spinner } from "@components/atoms/loader";
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useProfileValue } from '@components/common/constants/recoilValues';
+import { useUser } from '@clerk/clerk-react';
+import { useRecoilValue } from 'recoil';
+import { createDC } from '@components/common/recoil/chooseDc';
+import { OnboardNavbar } from '@components/molecules/navbar';
+import OnboardNewComponents from '@components/molecules/onboard/onboard';
+import { Spinner } from '@components/atoms/loader';
 
 const Onboard: React.FC = (): JSX.Element => {
   const { user, isLoaded } = useUser();
@@ -16,7 +16,7 @@ const Onboard: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     if (user && profileValue?._id && createDcState === false) {
-      router?.push("/dashboard");
+      router?.push('/dashboard');
     }
   }, [profileValue, user, router]);
 
@@ -28,7 +28,7 @@ const Onboard: React.FC = (): JSX.Element => {
           <OnboardNewComponents />
         ) : (
           <p className="font-bold text-xl">
-            User not logged in, please login to onboard{" "}
+            User not logged in, please login to onboard{' '}
           </p>
         )}
       </section>

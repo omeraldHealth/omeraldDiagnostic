@@ -1,12 +1,12 @@
-import { useUser } from "@clerk/clerk-react";
-import { errorAlert2, successAlert } from "@components/atoms/alerts/alert";
-import { Spinner } from "@components/atoms/loader";
-import { PlusCircleIcon } from "@heroicons/react/20/solid";
-import { uploadDiagnosticLogoApi } from "@utils/index";
-import { Button, Form, Input, Upload } from "antd";
-import axios from "axios";
-import { useState } from "react";
-import { LoaderIcon } from "react-hot-toast";
+import { useUser } from '@clerk/clerk-react';
+import { errorAlert2, successAlert } from '@components/atoms/alerts/alert';
+import { Spinner } from '@components/atoms/loader';
+import { PlusCircleIcon } from '@heroicons/react/20/solid';
+import { uploadDiagnosticLogoApi } from '@utils/index';
+import { Button, Form, Input, Upload } from 'antd';
+import axios from 'axios';
+import { useState } from 'react';
+import { LoaderIcon } from 'react-hot-toast';
 
 export const OnboardingForm = ({ next, setFormData, formData }: any) => {
   const [form] = Form.useForm();
@@ -24,17 +24,17 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
   };
 
   const handleUpload = (info: any) => {
-    if (info.file.status === "uploading") {
+    if (info.file.status === 'uploading') {
       setLoading(true);
       return;
     }
-    if (info.file.status === "done") {
+    if (info.file.status === 'done') {
       const url = info.file.response.url;
       setImageUrl(url);
       setLoading(false);
       form.setFieldsValue({ url: imageUrl });
       successAlert(`${info.file.name} file upload successfully.`);
-    } else if (info.file.status === "error") {
+    } else if (info.file.status === 'error') {
       setLoading(false);
     }
   };
@@ -43,7 +43,7 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
       const response = await axios.post(action, formData);
       if (response?.status == 201) {
         setImageUrl(response.data.url);
@@ -51,11 +51,11 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
         return response;
       } else {
         setLoading(false);
-        errorAlert2("Error uploading file");
+        errorAlert2('Error uploading file');
       }
     } catch (error) {
       setLoading(false);
-      throw new Error("File upload failed.");
+      throw new Error('File upload failed.');
     }
   };
 
@@ -84,9 +84,9 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
             <Form.Item
               name="brandLogo"
               label="Brand Logo"
-              key={"branchLogo"}
+              key={'branchLogo'}
               rules={[
-                { required: false, message: "Please upload brand logo!" },
+                { required: false, message: 'Please upload brand logo!' },
               ]}
             >
               <span>
@@ -118,10 +118,10 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
             <Form.Item
               name="phoneNumber"
               label="Phone Number"
-              key={"phoneNumber"}
+              key={'phoneNumber'}
               initialValue={userContact && userContact}
               rules={[
-                { required: true, message: "Please enter diagnostic contact!" },
+                { required: true, message: 'Please enter diagnostic contact!' },
               ]}
             >
               <Input
@@ -133,9 +133,9 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
             <Form.Item
               name="centerName"
               label="Diagnostic Name"
-              key={"centerName"}
+              key={'centerName'}
               rules={[
-                { required: true, message: "Please enter diagnostic name!" },
+                { required: true, message: 'Please enter diagnostic name!' },
               ]}
             >
               <Input
@@ -146,9 +146,9 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
             <Form.Item
               name="email"
               label="Diagnostic Email"
-              key={"email"}
+              key={'email'}
               rules={[
-                { required: true, message: "Please enter diagnostic email!" },
+                { required: true, message: 'Please enter diagnostic email!' },
               ]}
             >
               <Input
@@ -164,10 +164,10 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
             <Form.Item
               name="branchContact"
               label="Branch Phone Number"
-              key={"branchContact"}
+              key={'branchContact'}
               initialValue={userContact && userContact}
               rules={[
-                { required: true, message: "Please enter branch contact!" },
+                { required: true, message: 'Please enter branch contact!' },
               ]}
             >
               <Input
@@ -178,9 +178,9 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
             <Form.Item
               name="branchEmail"
               label="Branch Email"
-              key={"branchEmail"}
+              key={'branchEmail'}
               rules={[
-                { required: true, message: "Please enter branch email!" },
+                { required: true, message: 'Please enter branch email!' },
               ]}
             >
               <Input
@@ -191,8 +191,8 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
             <Form.Item
               name="branchName"
               label="Branch Name"
-              key={"branchName"}
-              rules={[{ required: true, message: "Please enter branch name!" }]}
+              key={'branchName'}
+              rules={[{ required: true, message: 'Please enter branch name!' }]}
             >
               <Input
                 className="w-[100%] py-2 bg-gray-100"
@@ -202,9 +202,9 @@ export const OnboardingForm = ({ next, setFormData, formData }: any) => {
             <Form.Item
               name="branchAddress"
               label="Branch Address"
-              key={"branchAddress"}
+              key={'branchAddress'}
               rules={[
-                { required: true, message: "Please enter branch address!" },
+                { required: true, message: 'Please enter branch address!' },
               ]}
             >
               <Input

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Button, Select } from "antd";
-import { FaCheck } from "react-icons/fa";
+import React, { useState } from 'react';
+import { Button, Select } from 'antd';
+import { FaCheck } from 'react-icons/fa';
 
 const { Option } = Select;
 

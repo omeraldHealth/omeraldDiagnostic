@@ -1,5 +1,5 @@
-import { ReportDetailsInterface } from "../../../utils";
-import { ProfileDetailsInterface } from "../../../utils/types";
+import { ReportDetailsInterface } from '../../../utils';
+import { ProfileDetailsInterface } from '../../../utils/types';
 
 export interface PdfTestingProps {
   report: ReportDetailsInterface;

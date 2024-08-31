@@ -5,17 +5,17 @@ import {
   errorAlert2,
   successAlert,
   warningAlert2,
-} from "@components/atoms/alerts/alert";
+} from '@components/atoms/alerts/alert';
 import {
   useCurrentBranchValue,
   useCurrentPathologistValue,
   useProfileValue,
-} from "@components/common/constants/recoilValues";
+} from '@components/common/constants/recoilValues';
 import {
   usePersistedPathologistState,
   usePersistedDCState,
   usePersistedBranchState,
-} from "@components/common/recoil/hooks/usePersistedState";
+} from '@components/common/recoil/hooks/usePersistedState';
 import {
   useDeletePathologist,
   useDeleteReports,
@@ -23,24 +23,24 @@ import {
   useUpdateBranch,
   useUpdateDiagnostic,
   useUpdateUser,
-} from "@utils/reactQuery";
-import { Switch } from "antd";
-import { useEffect, useState } from "react";
-import { removePathologistById } from "../utils/functions";
-import { CommonSettingTable } from "../utils/table";
-import { PATHOLOGIST_COLUMNS } from "../utils/tabs";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
-import { useSetRecoilState } from "recoil";
-import { profileState } from "@components/common/recoil/profile";
-import AddPathologist from "./create";
-import { branchState } from "@components/common/recoil/branch/branch";
+} from '@utils/reactQuery';
+import { Switch } from 'antd';
+import { useEffect, useState } from 'react';
+import { removePathologistById } from '../utils/functions';
+import { CommonSettingTable } from '../utils/table';
+import { PATHOLOGIST_COLUMNS } from '../utils/tabs';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
+import { useSetRecoilState } from 'recoil';
+import { profileState } from '@components/common/recoil/profile';
+import AddPathologist from './create';
+import { branchState } from '@components/common/recoil/branch/branch';
 
 function PathologistTab() {
   const [addPathologist, setAddPathologist] = useState(false);
   const [selectedBranch] = usePersistedBranchState();
   const [selectedDc] = usePersistedDCState();
   const [isEdit, setIsEdit] = useState(false);
-  const [PathologistId, setPathologistId] = useState("");
+  const [PathologistId, setPathologistId] = useState('');
   const currentBranch = useCurrentBranchValue();
   const profileValue = useProfileValue();
   const updateProfile = useUpdateDiagnostic({});
@@ -53,7 +53,7 @@ function PathologistTab() {
   const updateBranch = useUpdateBranch({});
 
   useEffect(() => {
-    invalidateQuery("diagnosticBranch");
+    invalidateQuery('diagnosticBranch');
   }, []);
 
   const handleSwitch = (checked: boolean) => setAddPathologist(checked);
@@ -77,13 +77,13 @@ function PathologistTab() {
       { data: { pathologistDetail: filteredPaths }, recordId: selectedBranch },
       {
         onSuccess: (resp) => {
-          successAlert("Deleted path succesfully");
-          invalidateQuery("diagnosticBranch");
-          logActivity({ activity: "Deleted Pathologist " + record?.name });
+          successAlert('Deleted path succesfully');
+          invalidateQuery('diagnosticBranch');
+          logActivity({ activity: 'Deleted Pathologist ' + record?.name });
           setCurrentBranch(resp?.data);
         },
         onError: (err) => {
-          errorAlert2("Error deleting pathologist");
+          errorAlert2('Error deleting pathologist');
         },
       },
     );
@@ -99,7 +99,7 @@ function PathologistTab() {
       <section className="my-2 py-2 flex justify-end">
         <Switch
           checked={addPathologist}
-          style={{ backgroundColor: "orange" }}
+          style={{ backgroundColor: 'orange' }}
           onChange={handleSwitch}
           checkedChildren="Add"
           unCheckedChildren="View"

@@ -1,17 +1,17 @@
-import React from "react";
-import Link from "next/link";
-import { UserButton, useSession } from "@clerk/clerk-react";
-import { Logo } from "@components/atoms/nav/logo";
-import { useRouter } from "next/router";
-import NavFont from "@components/atoms/nav/navFont";
-import { logoUrl } from "@utils/constants";
-import PageHead from "@components/atoms/head/head";
-import { InformationCircleIcon } from "@heroicons/react/20/solid";
+import React from 'react';
+import Link from 'next/link';
+import { UserButton, useSession } from '@clerk/clerk-react';
+import { Logo } from '@components/atoms/nav/logo';
+import { useRouter } from 'next/router';
+import NavFont from '@components/atoms/nav/navFont';
+import { logoUrl } from '@utils/constants';
+import PageHead from '@components/atoms/head/head';
+import { InformationCircleIcon } from '@heroicons/react/20/solid';
 
 const navLinks = [
-  { navLink: "/info/about", navText: "About Us" },
-  { navLink: "/info/faq", navText: "FAQ" },
-  { navLink: "/info/privacy", navText: "Privacy Policy" },
+  { navLink: '/info/about', navText: 'About Us' },
+  { navLink: '/info/faq', navText: 'FAQ' },
+  { navLink: '/info/privacy', navText: 'Privacy Policy' },
 ];
 
 export function Navbar() {
@@ -19,7 +19,7 @@ export function Navbar() {
   const router = useRouter();
 
   const handleDashboard = () => {
-    router.push("/verifyUser");
+    router.push('/verifyUser');
   };
 
   return (
@@ -40,7 +40,7 @@ export function Navbar() {
         ))}
       </section>
       <div>
-        {session?.status !== "active" ? (
+        {session?.status !== 'active' ? (
           <Link href="/signIn">
             <button className="bg-orange-400 px-4 py-2 text-white rounded-md">
               Sign In
@@ -66,9 +66,9 @@ export const OnboardNavbar = () => {
   return (
     <>
       <PageHead
-        icon={"./favicon.png"}
-        title={"Onboard"}
-        description={"Onboarding Page"}
+        icon={'./favicon.png'}
+        title={'Onboard'}
+        description={'Onboarding Page'}
       />
       <section className="py-4 flex justify-between w-full px-[10vw] items-center border-b-2 border-gray-200">
         <Link href="/">
@@ -80,7 +80,7 @@ export const OnboardNavbar = () => {
         </Link>
         <section className="flex justify-center items-center h-full ">
           <p className="text-lg flex">
-            <InformationCircleIcon className="w-[30px] text-blue-700 mx-2" />{" "}
+            <InformationCircleIcon className="w-[30px] text-blue-700 mx-2" />{' '}
             Diagnostic Details
           </p>
           <span className="mx-4">

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Button, Switch } from "antd";
-import { ViewTest } from "./view";
-import { AddTest } from "./create";
-import BulkUploadModal from "./bulk";
-import { ArrowTurnRightUpIcon } from "@heroicons/react/20/solid";
+import React, { useState } from 'react';
+import { Button, Switch } from 'antd';
+import { ViewTest } from './view';
+import { AddTest } from './create';
+import BulkUploadModal from './bulk';
+import { ArrowTurnRightUpIcon } from '@heroicons/react/20/solid';
 
 export default function TestTab() {
   const [showTest, setShowTest] = useState(false);
@@ -19,7 +19,7 @@ export default function TestTab() {
 
   const hideModal = () => {
     setModalVisible(false);
-    setShowTest(false)
+    setShowTest(false);
   };
 
   return (
@@ -34,7 +34,11 @@ export default function TestTab() {
         />
         {showTest && (
           <div className="ml-2">
-            <Button type="primary" onClick={showModal} icon={<ArrowTurnRightUpIcon className="w-4 h-4" />}>
+            <Button
+              type="primary"
+              onClick={showModal}
+              icon={<ArrowTurnRightUpIcon className="w-4 h-4" />}
+            >
               Bulk Upload
             </Button>
             <BulkUploadModal visible={modalVisible} onClose={hideModal} />

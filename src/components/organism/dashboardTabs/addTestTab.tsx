@@ -1,5 +1,5 @@
-import { AddTestComponent } from "@components/molecules/addReport/addTest";
-import { Fragment } from "react";
+import { AddTestComponent } from '@components/molecules/addReport/addTest';
+import { Fragment } from 'react';
 
 export default function AddTestTab() {
   return (

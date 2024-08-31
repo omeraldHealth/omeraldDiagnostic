@@ -1,8 +1,8 @@
-import { Colors } from "@styles/index";
-import { body, header, title } from "@styles/styleTemplate/typography";
-import styled from "styled-components";
+import { Colors } from '@styles/index';
+import { body, header, title } from '@styles/styleTemplate/typography';
+import styled from 'styled-components';
 
-const screenWidth = typeof window !== "undefined" ? window.screen.width : null;
+const screenWidth = typeof window !== 'undefined' ? window.screen.width : null;
 
 export const TitleTextStyled = styled.p`
   ${screenWidth && screenWidth > 900 && title.omerald_textStyle_monitor_Title1}

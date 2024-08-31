@@ -1,11 +1,11 @@
-import { Form, Steps } from "antd";
-import { useState } from "react";
-import { PatientDetails } from "./patient";
-import { UploadReport } from "./upload";
-import ManualReport from "./manual";
-import ReportSummary from "./summary";
+import { Form, Steps } from 'antd';
+import { useState } from 'react';
+import { PatientDetails } from './patient';
+import { UploadReport } from './upload';
+import ManualReport from './manual';
+import ReportSummary from './summary';
 
-export const AddReport = ({handleShowView}) => {
+export const AddReport = ({ handleShowView }) => {
   const [currentStep, setStep] = useState(0);
   const [manualReport, setManualReport] = useState(false);
   const [form] = Form.useForm();
@@ -15,11 +15,11 @@ export const AddReport = ({handleShowView}) => {
 
   const steps = [
     {
-      title: "Patient Details",
+      title: 'Patient Details',
       content: <PatientDetails form={form} handleNext={handleNext} />,
     },
     {
-      title: "Upload / Generate Report",
+      title: 'Upload / Generate Report',
       content: (
         <UploadReport
           manualReport={manualReport}
@@ -33,14 +33,25 @@ export const AddReport = ({handleShowView}) => {
     ...(manualReport
       ? [
           {
-            title: "Manual Report Step",
-          content: <ManualReport next={handleNext} form={form} handlePrevious={handlePrevious} />,
+            title: 'Manual Report Step',
+            content: (
+              <ManualReport
+                next={handleNext}
+                form={form}
+                handlePrevious={handlePrevious}
+              />
+            ),
           },
         ]
       : []),
     {
-      title: "Report Summary",
-      content: <ReportSummary handlePrevious={handlePrevious} handleShowView={handleShowView} />,
+      title: 'Report Summary',
+      content: (
+        <ReportSummary
+          handlePrevious={handlePrevious}
+          handleShowView={handleShowView}
+        />
+      ),
     },
   ];
 

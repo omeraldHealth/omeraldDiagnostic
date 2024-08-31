@@ -1,5 +1,5 @@
-import InfoPage from "@components/organism/info";
-import { UserLayout } from "@components/templates/pageTemplate";
+import InfoPage from '@components/organism/info';
+import { UserLayout } from '@components/templates/pageTemplate';
 
 export default function Consent() {
   return (
@@ -7,7 +7,7 @@ export default function Consent() {
       tabDescription="About us page"
       tabName="Admin Diagnostic | Privacy"
     >
-      <InfoPage detail={"PlatformConsent"} />
+      <InfoPage detail={'PlatformConsent'} />
     </UserLayout>
   );
 }

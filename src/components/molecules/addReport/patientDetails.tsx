@@ -3,14 +3,14 @@
 import {
   useCurrentBranchValue,
   useProfileValue,
-} from "@components/common/constants/recoilValues";
-import { reportState } from "@components/common/recoil/report";
-import { Form, Input, Button, Select, Row, Col } from "antd";
-import { profile } from "console";
-import { useRecoilState } from "recoil";
+} from '@components/common/constants/recoilValues';
+import { reportState } from '@components/common/recoil/report';
+import { Form, Input, Button, Select, Row, Col } from 'antd';
+import { profile } from 'console';
+import { useRecoilState } from 'recoil';
 const { Option } = Select;
-import { reportDataState } from "../../common/recoil/report/reportData";
-import { ManualReport } from "./ManualReport";
+import { reportDataState } from '../../common/recoil/report/reportData';
+import { ManualReport } from './ManualReport';
 
 export function PatientDetails({ next }: any) {
   const profile = useProfileValue();
@@ -37,7 +37,7 @@ export function PatientDetails({ next }: any) {
           <div>
             <h2 className="text-xl font-bold mb-4">Patient Information</h2>
             <Form.Item
-              name={["patient", "name"]}
+              name={['patient', 'name']}
               label="Name"
               initialValue={reportData?.patient?.name}
               rules={[{ required: true }]}
@@ -47,7 +47,7 @@ export function PatientDetails({ next }: any) {
             <Row className="grid grid-cols-2 gap-8 ">
               <Col>
                 <Form.Item
-                  name={["patient", "dob"]}
+                  name={['patient', 'dob']}
                   label="Date of Birth"
                   initialValue={reportData?.patient?.dob}
                   rules={[{ required: true }]}
@@ -57,7 +57,7 @@ export function PatientDetails({ next }: any) {
               </Col>
               <Col>
                 <Form.Item
-                  name={["patient", "gender"]}
+                  name={['patient', 'gender']}
                   label="Gender"
                   rules={[{ required: true }]}
                   initialValue={reportData?.patient?.gender}
@@ -71,7 +71,7 @@ export function PatientDetails({ next }: any) {
               </Col>
             </Row>
             <Form.Item
-              name={["patient", "contact", "phone"]}
+              name={['patient', 'contact', 'phone']}
               label="Phone"
               rules={[{ required: true }]}
               initialValue={reportData?.patient?.contact?.phone}
@@ -79,7 +79,7 @@ export function PatientDetails({ next }: any) {
               <Input />
             </Form.Item>
             <Form.Item
-              name={["patient", "contact", "email"]}
+              name={['patient', 'contact', 'email']}
               label="Email"
               initialValue={reportData?.patient?.contact?.email}
               rules={[{ required: true }]}
@@ -94,15 +94,15 @@ export function PatientDetails({ next }: any) {
               Diagnostic Center Information
             </h2>
             <Form.Item
-              name={["diagnosticCenter", "name"]}
+              name={['diagnosticCenter', 'name']}
               label="Center Name"
-              initialValue={profile?.centerName || ""}
+              initialValue={profile?.centerName || ''}
               rules={[{ required: true }]}
             >
               <Input disabled={!!profile?.centerName} />
             </Form.Item>
             <Form.Item
-              name={["diagnosticCenter", "branch", "name"]}
+              name={['diagnosticCenter', 'branch', 'name']}
               label="Branch Name"
               initialValue={currentBranch.branchName}
               rules={[{ required: true }]}

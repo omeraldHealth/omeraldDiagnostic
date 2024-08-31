@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { useRef, useState } from 'react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 import {
   Page,
   Text,
@@ -8,8 +8,8 @@ import {
   Document,
   StyleSheet,
   PDFDownloadLink,
-} from "@react-pdf/renderer";
-import DiagnosticReport from "./report/DiagnosticReport";
+} from '@react-pdf/renderer';
+import DiagnosticReport from './report/DiagnosticReport';
 
 const PreviewComponent = ({ showPreview, onClose, record, isTest }) => {
   const componentRef = useRef();
@@ -29,11 +29,11 @@ const PreviewComponent = ({ showPreview, onClose, record, isTest }) => {
       logging: false,
     });
 
-    const imgData = canvas.toDataURL("image/png");
+    const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "px",
-      format: "a4",
+      orientation: 'portrait',
+      unit: 'px',
+      format: 'a4',
     });
 
     // A4 size in pixels at 300 DPI: 2480x3508 (for high quality print)
@@ -49,8 +49,8 @@ const PreviewComponent = ({ showPreview, onClose, record, isTest }) => {
     let scaledWidth = imgWidth * ratio;
     let scaledHeight = imgHeight * ratio;
 
-    pdf.addImage(imgData, "PNG", 0, 0, scaledWidth, scaledHeight);
-    pdf.save("download.pdf");
+    pdf.addImage(imgData, 'PNG', 0, 0, scaledWidth, scaledHeight);
+    pdf.save('download.pdf');
     setPdfLoading(false);
   };
 
@@ -89,7 +89,7 @@ const PreviewComponent = ({ showPreview, onClose, record, isTest }) => {
               disabled={pdfLoading}
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mr-2 focus:outline-none"
             >
-              {pdfLoading ? "Exporting..." : "Export PDF"}
+              {pdfLoading ? 'Exporting...' : 'Export PDF'}
             </button>
             <button
               onClick={onClose}

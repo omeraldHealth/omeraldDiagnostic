@@ -1,4 +1,4 @@
-import { ArrowUpIcon } from "@heroicons/react/20/solid";
+import { ArrowUpIcon } from '@heroicons/react/20/solid';
 import {
   Button,
   Col,
@@ -8,22 +8,25 @@ import {
   Row,
   Select,
   Upload,
-} from "antd";
-import { useRecoilState } from "recoil";
-import { useCurrentBranchValue, useProfileValue } from "@components/common/constants/recoilValues";
-import { reportDataState } from "@components/common/recoil/report/reportData";
+} from 'antd';
+import { useRecoilState } from 'recoil';
+import {
+  useCurrentBranchValue,
+  useProfileValue,
+} from '@components/common/constants/recoilValues';
+import { reportDataState } from '@components/common/recoil/report/reportData';
 import {
   errorAlert,
   errorAlert2,
   successAlert,
-} from "@components/atoms/alerts/alert";
-import { uploadDiagnosticReportApi } from "@utils/index";
-import moment from "moment";
-import axios from "axios";
-import { useState } from "react";
-import { Loader } from "@components/atoms/loader/loader";
-import { reportState } from "@components/common/recoil/report";
-import { report } from "process";
+} from '@components/atoms/alerts/alert';
+import { uploadDiagnosticReportApi } from '@utils/index';
+import moment from 'moment';
+import axios from 'axios';
+import { useState } from 'react';
+import { Loader } from '@components/atoms/loader/loader';
+import { reportState } from '@components/common/recoil/report';
+import { report } from 'process';
 
 interface UploadReportProps {
   next: () => void;
@@ -47,9 +50,17 @@ export const UploadReport: React.FC<UploadReportProps> = ({
         setManualReport={setManualReport}
       />
       {manualReport ? (
-        <GenerateReport next={next} form={form} handlePrevious={handlePrevious} />
+        <GenerateReport
+          next={next}
+          form={form}
+          handlePrevious={handlePrevious}
+        />
       ) : (
-          <UploadReportFile form={form} next={next} handlePrevious={handlePrevious} />
+        <UploadReportFile
+          form={form}
+          next={next}
+          handlePrevious={handlePrevious}
+        />
       )}
     </section>
   </div>
@@ -73,10 +84,14 @@ const ReportHeader: React.FC<{
 interface UploadReportFileProps {
   next: () => void;
   form: any;
-  handlePrevious: any
+  handlePrevious: any;
 }
 
-const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handlePrevious }) => {
+const UploadReportFile: React.FC<UploadReportFileProps> = ({
+  next,
+  form,
+  handlePrevious,
+}) => {
   const [fileList, setFileList] = useState<any[]>([]);
   const [loading, setLoading] = useState<Boolean>(false);
   const [reportData, setReportdata] = useRecoilState(reportDataState);
@@ -86,12 +101,12 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handleP
 
     if (fileList.length > 0) {
       setLoading(true);
-      formData.append("file", fileList[0]);
+      formData.append('file', fileList[0]);
 
       try {
         const resp = await axios.post(uploadDiagnosticReportApi, formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
         });
 
@@ -112,10 +127,10 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handleP
             ...reportData,
             reportData: updatedReportData, // Save the updated report data in Recoil
           });
-          successAlert("File upload successful");
+          successAlert('File upload successful');
         }
       } catch (error) {
-        errorAlert("File upload failed");
+        errorAlert('File upload failed');
       } finally {
         setLoading(false);
         setFileList([]);
@@ -156,17 +171,17 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handleP
             <div key={key}>
               <Form.Item
                 {...restField}
-                name={[name, "reportName"]}
+                name={[name, 'reportName']}
                 label="Enter Report Name"
                 rules={[
-                  { required: true, message: "Please input the report name!" },
+                  { required: true, message: 'Please input the report name!' },
                 ]}
               >
                 <Input />
               </Form.Item>
               <Form.Item
                 {...restField}
-                name={[name, "file"]}
+                name={[name, 'file']}
                 label="Upload Report File"
               >
                 <Upload
@@ -176,7 +191,7 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handleP
                   fileList={fileList.map((file, index) => ({
                     uid: index.toString(),
                     name: file.name,
-                    status: "done",
+                    status: 'done',
                   }))}
                 >
                   <Button className="flex">
@@ -187,7 +202,7 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handleP
               </Form.Item>
               <Form.Item
                 {...restField}
-                name={[name, "reportDate"]}
+                name={[name, 'reportDate']}
                 label="Report Date"
               >
                 <DatePicker />
@@ -201,7 +216,13 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handleP
         <Button type="primary" htmlType="submit">
           Next
         </Button>
-        <Button type="default" onClick={() => {handlePrevious() }} className="mx-4">
+        <Button
+          type="default"
+          onClick={() => {
+            handlePrevious();
+          }}
+          className="mx-4"
+        >
           Previous
         </Button>
       </Form.Item>
@@ -210,27 +231,29 @@ const UploadReportFile: React.FC<UploadReportFileProps> = ({ next, form, handleP
   );
 };
 
-
-
-const GenerateReport: React.FC<{ next: () => void, form: any, handlePrevious:any }> = ({ next, form,handlePrevious }) => {
+const GenerateReport: React.FC<{
+  next: () => void;
+  form: any;
+  handlePrevious: any;
+}> = ({ next, form, handlePrevious }) => {
   const [reportData, setReportData] = useRecoilState(reportDataState);
   const [testId, setTestId] = useRecoilState(reportState);
   const currentBranch = useCurrentBranchValue();
-  const currentProfile = useProfileValue()
+  const currentProfile = useProfileValue();
 
   const [searchTerm, setSearchTerm] = useState('');
 
   // Filter pathologists based on the search term
-  const filteredPathologists = currentBranch?.pathologistDetail?.filter((path) =>
-    path.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPathologists = currentBranch?.pathologistDetail?.filter(
+    (path) => path.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const onFinish = (values: any) => {
     if (!values?.pathologist?.name)
-      return errorAlert2("Please Add Pathologist Details");
-      setTestId(values?.reportType)
-      setReportData({ ...reportData, reportData: form.getFieldsValue() });
-      next();
+      return errorAlert2('Please Add Pathologist Details');
+    setTestId(values?.reportType);
+    setReportData({ ...reportData, reportData: form.getFieldsValue() });
+    next();
   };
 
   return (
@@ -245,7 +268,7 @@ const GenerateReport: React.FC<{ next: () => void, form: any, handlePrevious:any
       <Form.Item
         name="reportName"
         label="Enter Report Name"
-        rules={[{ required: true, message: "Please input the report name!" }]}
+        rules={[{ required: true, message: 'Please input the report name!' }]}
       >
         <Input />
       </Form.Item>
@@ -260,21 +283,23 @@ const GenerateReport: React.FC<{ next: () => void, form: any, handlePrevious:any
             name="reportType"
             label="Choose Report Type"
             rules={[
-              { required: true, message: "Please select a report type!" },
+              { required: true, message: 'Please select a report type!' },
             ]}
           >
             <Select
-               showSearch
-               placeholder="Select pathologist"
-               optionFilterProp="children" // Filters based on the visible text in the dropdown
-               filterOption={(input, option) =>
-                 (option?.children as string).toLowerCase().includes(input.toLowerCase())
-               }
-               filterSort={(optionA, optionB) =>
-                 (optionA?.children as string)
-                   .toLowerCase()
-                   .localeCompare((optionB?.children as string).toLowerCase())
-               }
+              showSearch
+              placeholder="Select pathologist"
+              optionFilterProp="children" // Filters based on the visible text in the dropdown
+              filterOption={(input, option) =>
+                (option?.children as string)
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+              filterSort={(optionA, optionB) =>
+                (optionA?.children as string)
+                  .toLowerCase()
+                  .localeCompare((optionB?.children as string).toLowerCase())
+              }
             >
               {currentProfile?.tests?.map((item) => (
                 <Select.Option key={item._id} value={item._id}>
@@ -286,30 +311,36 @@ const GenerateReport: React.FC<{ next: () => void, form: any, handlePrevious:any
         </Col>
       </Row>
       <Form.Item
-          name={["pathologist", "name"]}
-          label="Pathologist"
-          rules={[{ required: true, message: "Please select a pathologist!" }]}
+        name={['pathologist', 'name']}
+        label="Pathologist"
+        rules={[{ required: true, message: 'Please select a pathologist!' }]}
+      >
+        <Select
+          showSearch
+          placeholder="Select pathologist"
+          optionFilterProp="children" // Enables searching based on the children (text content)
+          filterOption={(input, option) =>
+            option?.children.toLowerCase().includes(input.toLowerCase())
+          }
         >
-          <Select
-            showSearch
-            placeholder="Select pathologist"
-            optionFilterProp="children" // Enables searching based on the children (text content)
-            filterOption={(input, option) =>
-              option?.children.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {currentBranch?.pathologistDetail?.map((path) => (
-              <Select.Option key={path._id} value={path.name}>
-                {path.name}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
+          {currentBranch?.pathologistDetail?.map((path) => (
+            <Select.Option key={path._id} value={path.name}>
+              {path.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
-        <Button type="default" onClick={() => {handlePrevious() }} className="mx-4">
+        <Button
+          type="default"
+          onClick={() => {
+            handlePrevious();
+          }}
+          className="mx-4"
+        >
           Previous
         </Button>
       </Form.Item>

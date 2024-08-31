@@ -1,10 +1,10 @@
-import { branchState } from "@components/common/recoil/branch/branch";
+import { branchState } from '@components/common/recoil/branch/branch';
 import {
   usePersistedBranchState,
   usePersistedDCState,
-} from "@components/common/recoil/hooks/usePersistedState";
-import { useGetDcProfile } from "@utils/reactQuery";
-import { useSetRecoilState } from "recoil";
+} from '@components/common/recoil/hooks/usePersistedState';
+import { useGetDcProfile } from '@utils/reactQuery';
+import { useSetRecoilState } from 'recoil';
 
 // export function useUpdatedBranch() {
 //   const setCurrentBranch = useSetRecoilState(branchState);

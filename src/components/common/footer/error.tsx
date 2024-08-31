@@ -1,10 +1,10 @@
 // components/ErrorBoundary.tsx
 
-import React from "react";
+import React from 'react';
 import {
   ErrorBoundary as ReactErrorBoundary,
   FallbackProps,
-} from "react-error-boundary";
+} from 'react-error-boundary';
 
 const ErrorFallback: React.FC<FallbackProps> = ({
   error,

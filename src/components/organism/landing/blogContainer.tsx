@@ -1,7 +1,7 @@
-import React from "react";
-import { SignInButton } from "@components/atoms/buttons/button";
-import { HeaderText_2 } from "@components/atoms/font";
-import { blogs, sideBlogs } from "@utils/static/static";
+import React from 'react';
+import { SignInButton } from '@components/atoms/buttons/button';
+import { HeaderText_2 } from '@components/atoms/font';
+import { blogs, sideBlogs } from '@utils/static/static';
 
 interface Blog {
   url: string;
@@ -20,11 +20,11 @@ export function BlogContainer(): React.ReactElement {
       {/* Header */}
       <section className="flex justify-between my-10">
         <HeaderText_2 style="">Our Latest Blog Posts</HeaderText_2>
-        <a href={"https://blog.omerald.com/articles"} target="_blank">
+        <a href={'https://blog.omerald.com/articles'} target="_blank">
           <SignInButton
-            style={"w-[30vw] sm:w-[20vw] lg:w-[14vw] text-slate-300"}
+            style={'w-[30vw] sm:w-[20vw] lg:w-[14vw] text-slate-300'}
           >
-            {"See All Blog posts"}
+            {'See All Blog posts'}
           </SignInButton>
         </a>
       </section>
@@ -38,13 +38,13 @@ export function BlogContainer(): React.ReactElement {
                 alt="blogBanner"
               />
               <p className="my-4 text-gray-500">
-                {blog.date} <span>{" Category"}</span>
+                {blog.date} <span>{' Category'}</span>
               </p>
               <p className="my-4 font-bold">
-                {blog.title} <span>{" Category"}</span>
+                {blog.title} <span>{' Category'}</span>
               </p>
               <p className="my-4 font-light text-gray-500">
-                {blog.description} <span>{" Category"}</span>
+                {blog.description} <span>{' Category'}</span>
               </p>
             </section>
           ))}
@@ -60,10 +60,10 @@ export function BlogContainer(): React.ReactElement {
                 />
                 <span className="ml-4">
                   <p className="mb-4 text-gray-500">
-                    {blog.date} <span>{" Category"}</span>
+                    {blog.date} <span>{' Category'}</span>
                   </p>
                   <p className="mb-4 font-bold">
-                    {blog.title} <span>{" Category"}</span>
+                    {blog.title} <span>{' Category'}</span>
                   </p>
                 </span>
               </section>

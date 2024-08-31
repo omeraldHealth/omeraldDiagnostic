@@ -1,6 +1,6 @@
-import { LogoImage } from "@components/atoms/nav/logo";
-import { navigation } from "src/utils/static/static";
-import Link from "next/link";
+import { LogoImage } from '@components/atoms/nav/logo';
+import { navigation } from 'src/utils/static/static';
+import Link from 'next/link';
 
 export function Footer() {
   return (
@@ -75,7 +75,7 @@ export function Footer() {
 
         <div className="mt-12 border-t border-gray-200 pt-8 text-center">
           <p className="text-black text-md">
-            &copy; 2024{" "}
+            &copy; 2024{' '}
             <span
               href="https://omerald.com/"
               target="_blank"

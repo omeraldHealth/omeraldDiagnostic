@@ -1,5 +1,5 @@
-import { toast, ToastOptions } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastOptions } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Set to keep track of displayed messages
 const displayedMessages = new Set<string>();
@@ -29,31 +29,31 @@ const showToastIfDisplayed = (msg: string, options: ToastOptions): void => {
  * @param {string} msg - The success message.
  */
 export const successAlert = (msg: string): void =>
-  showToastIfNotDisplayed(msg, { type: "success" });
+  showToastIfNotDisplayed(msg, { type: 'success' });
 
 /**
  * Displays an info toast message.
  * @param {string} msg - The info message.
  */
 export const infoAlert = (msg: string): void =>
-  showToastIfNotDisplayed(msg, { type: "info" });
+  showToastIfNotDisplayed(msg, { type: 'info' });
 
 /**
  * Displays a warning toast message.
  * @param {string} msg - The warning message.
  */
 export const warningAlert = (msg: string): void =>
-  showToastIfNotDisplayed(msg, { type: "warning" });
+  showToastIfNotDisplayed(msg, { type: 'warning' });
 
 export const warningAlert2 = (msg: string): void =>
-  showToastIfDisplayed(msg, { type: "warning" });
+  showToastIfDisplayed(msg, { type: 'warning' });
 
 export const errorAlert2 = (msg: string): void =>
-  showToastIfDisplayed(msg, { type: "error" });
+  showToastIfDisplayed(msg, { type: 'error' });
 
 /**
  * Displays an error toast message.
  * @param {string} msg - The error message.
  */
 export const errorAlert = (msg: string): void =>
-  showToastIfNotDisplayed(msg, { type: "error" });
+  showToastIfNotDisplayed(msg, { type: 'error' });

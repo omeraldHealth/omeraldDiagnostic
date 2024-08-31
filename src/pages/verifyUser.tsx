@@ -1,24 +1,24 @@
-import { useSession, useUser } from "@clerk/clerk-react";
+import { useSession, useUser } from '@clerk/clerk-react';
 import {
   errorAlert,
   successAlert,
   warningAlert,
-} from "@components/atoms/alerts/alert";
-import { userState } from "@components/common/recoil/user";
-import { UserLayout } from "@components/templates/pageTemplate";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
-import { useCreateUser, useGetUser } from "@utils/reactQuery";
-import { USER_DATA } from "@utils/constants/interface";
-import { Spinner } from "@components/atoms/loader";
-import verifyUser from "@public/verifyUser.gif";
+} from '@components/atoms/alerts/alert';
+import { userState } from '@components/common/recoil/user';
+import { UserLayout } from '@components/templates/pageTemplate';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { useCreateUser, useGetUser } from '@utils/reactQuery';
+import { USER_DATA } from '@utils/constants/interface';
+import { Spinner } from '@components/atoms/loader';
+import verifyUser from '@public/verifyUser.gif';
 
 const VerifyUser = () => {
   const { session } = useSession();
   const { user, isLoaded } = useUser();
   const router = useRouter();
-  const phone = user?.phoneNumbers?.[0]?.phoneNumber || "";
+  const phone = user?.phoneNumbers?.[0]?.phoneNumber || '';
   const setUserRecoil = useSetRecoilState(userState);
   const [loading, setLoading] = useState(true);
   const {
@@ -29,7 +29,7 @@ const VerifyUser = () => {
   const createUserMutation = useCreateUser({
     onSuccess: (resp) => {
       if (resp.status === 201) {
-        successAlert("User Created Successfully");
+        successAlert('User Created Successfully');
         setUserRecoil(resp?.data);
         phone && refetch();
         //@ts-ignore
@@ -37,8 +37,8 @@ const VerifyUser = () => {
       }
     },
     onError: () => {
-      errorAlert("Error creating user");
-      router.push("/");
+      errorAlert('Error creating user');
+      router.push('/');
     },
   });
 
@@ -55,18 +55,18 @@ const VerifyUser = () => {
   const handleCheckDcProfile = (data: USER_DATA) => {
     if (data?.diagnosticCenters?.length > 0) {
       setUserRecoil(data);
-      router.push("/chooseDc");
+      router.push('/chooseDc');
     } else {
-      warningAlert("Diagnostic Profiles not found, please onboard");
-      router.push("/onboard");
+      warningAlert('Diagnostic Profiles not found, please onboard');
+      router.push('/onboard');
     }
   };
 
   const handleVerifyUser = (userObj: USER_DATA | null): void => {
     if (!userObj) {
       const newUser: USER_DATA = {
-        userName: user?.fullName || "",
-        phoneNumber: phone || "",
+        userName: user?.fullName || '',
+        phoneNumber: phone || '',
         diagnosticCenters: [],
       };
       handleCreateUser(newUser);
@@ -80,7 +80,7 @@ const VerifyUser = () => {
 
   useEffect(() => {
     if (
-      session?.status === "active" &&
+      session?.status === 'active' &&
       !isLoading &&
       userData &&
       // @ts-ignore
@@ -90,7 +90,7 @@ const VerifyUser = () => {
       handleVerifyUser(userData.data);
     }
 
-    if (session?.status === "active" && !isLoading && !userData) {
+    if (session?.status === 'active' && !isLoading && !userData) {
       //@ts-ignore
       handleVerifyUser(userData?.data);
     }

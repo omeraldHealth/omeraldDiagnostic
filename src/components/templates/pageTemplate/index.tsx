@@ -1,19 +1,19 @@
-import React from "react";
-import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
-import { ROUTES_WITHOUT_SIDEBAR } from "@components/common/constants/recoilValues";
-import { Spinner } from "../../atoms/loader";
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import { ROUTES_WITHOUT_SIDEBAR } from '@components/common/constants/recoilValues';
+import { Spinner } from '../../atoms/loader';
 
 // Dynamic imports with loading spinner
-const PageHead = dynamic(() => import("@components/atoms/head/head"), {
+const PageHead = dynamic(() => import('@components/atoms/head/head'), {
   loading: () => <Spinner />,
 });
 const Navbar = dynamic(
-  () => import("@components/molecules/navbar").then((res) => res.Navbar),
+  () => import('@components/molecules/navbar').then((res) => res.Navbar),
   { loading: () => <Spinner /> },
 );
 const Footer = dynamic(
-  () => import("@components/common/footer").then((res) => res.Footer),
+  () => import('@components/common/footer').then((res) => res.Footer),
   { loading: () => <Spinner /> },
 );
 
@@ -37,7 +37,7 @@ export const UserLayout = ({
   return (
     <div className="flex flex-col min-h-screen">
       <PageHead
-        icon={"/favicon.png"}
+        icon={'/favicon.png'}
         title={tabName}
         description={tabDescription}
       />

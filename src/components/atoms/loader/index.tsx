@@ -1,5 +1,5 @@
-import React from "react";
-import { ButtonSpinner } from "@chakra-ui/react";
+import React from 'react';
+import { ButtonSpinner } from '@chakra-ui/react';
 
 export const Spinner: React.FC = () => {
   return (

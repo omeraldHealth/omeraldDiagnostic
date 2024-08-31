@@ -1,44 +1,44 @@
-import React, { Fragment } from "react";
-import { Text, View, StyleSheet } from "@react-pdf/renderer";
+import React, { Fragment } from 'react';
+import { Text, View, StyleSheet } from '@react-pdf/renderer';
 
 // Border color constant
-const borderColor = "#90e5fc";
+const borderColor = '#90e5fc';
 
 // Styles for the table row
 const styles = StyleSheet.create({
   row: {
-    display: "flex",
-    flexDirection: "row",
-    borderBottomColor: "#bff0fd",
+    display: 'flex',
+    flexDirection: 'row',
+    borderBottomColor: '#bff0fd',
     borderBottomWidth: 1,
-    alignItems: "center",
+    alignItems: 'center',
     height: 24,
-    fontWeight: "bold", // Changed fontStyle to fontWeight for bold text
+    fontWeight: 'bold', // Changed fontStyle to fontWeight for bold text
   },
   description: {
-    width: "45%",
-    textAlign: "left",
+    width: '45%',
+    textAlign: 'left',
     borderRightColor: borderColor,
     borderRightWidth: 1,
     paddingLeft: 8,
   },
   result: {
-    width: "10%",
+    width: '10%',
     borderRightColor: borderColor,
     borderRightWidth: 1,
-    textAlign: "right",
+    textAlign: 'right',
     paddingRight: 8,
   },
   unit: {
-    width: "15%",
+    width: '15%',
     borderRightColor: borderColor,
     borderRightWidth: 1,
-    textAlign: "right",
+    textAlign: 'right',
     paddingRight: 8,
   },
   range: {
-    width: "30%",
-    textAlign: "right",
+    width: '30%',
+    textAlign: 'right',
     paddingRight: 8,
   },
 });

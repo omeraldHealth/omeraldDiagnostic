@@ -1,10 +1,10 @@
-import { Steps } from "antd";
-import { useState } from "react";
-import { ParameterComp } from "../parameters";
-import TestSummary from "../summary";
-import TestDetailTab from "../create/testDetail";
-import { testDetailsState } from "@components/common/recoil/testDetails";
-import { useRecoilState } from "recoil";
+import { Steps } from 'antd';
+import { useState } from 'react';
+import { ParameterComp } from '../parameters';
+import TestSummary from '../summary';
+import TestDetailTab from '../create/testDetail';
+import { testDetailsState } from '@components/common/recoil/testDetails';
+import { useRecoilState } from 'recoil';
 
 export const UpdateTest = ({ handleShowTest }) => {
   const [currentStep, setStep] = useState(0);
@@ -15,11 +15,11 @@ export const UpdateTest = ({ handleShowTest }) => {
 
   const steps = [
     {
-      title: "Choose Test Type",
+      title: 'Choose Test Type',
       content: <TestDetailTab handleNext={handleNext} />,
     },
     {
-      title: "Add Parameters",
+      title: 'Add Parameters',
       content: (
         <ParameterComp
           edit={true}
@@ -29,7 +29,7 @@ export const UpdateTest = ({ handleShowTest }) => {
       ),
     },
     {
-      title: "Test Summary",
+      title: 'Test Summary',
       content: (
         <TestSummary
           handlePrevious={handlePrevious}

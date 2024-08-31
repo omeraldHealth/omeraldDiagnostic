@@ -1,20 +1,20 @@
 // @ts-nocheck
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import {
   useGetDcBranch,
   useGetDcProfile,
   useInvalidateQuery,
   useUpdateBranch,
   useUpdateDiagnostic,
-} from "@utils/reactQuery";
+} from '@utils/reactQuery';
 import {
   useCurrentBranchValue,
   useUserValues,
-} from "../constants/recoilValues";
+} from '../constants/recoilValues';
 import {
   usePersistedBranchState,
   usePersistedDCState,
-} from "../recoil/hooks/usePersistedState";
+} from '../recoil/hooks/usePersistedState';
 
 export function useActivityLogger() {
   const user = useUserValues();
@@ -33,7 +33,7 @@ export function useActivityLogger() {
 
   const logActivity = async ({ activity }) => {
     if (isLoading) {
-      console.warn("Branch data is still loading. Please wait.");
+      console.warn('Branch data is still loading. Please wait.');
       return;
     }
 
@@ -46,7 +46,7 @@ export function useActivityLogger() {
         recordId: selectedBranch,
       });
     } catch (error) {
-      console.error("Error logging activity:", error);
+      console.error('Error logging activity:', error);
     }
   };
 

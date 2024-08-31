@@ -1,13 +1,13 @@
-import React from "react";
-import { HeaderText_2, TitleText, TitleText_2 } from "@components/atoms/font";
-import { reviewPerson } from "@utils/index";
+import React from 'react';
+import { HeaderText_2, TitleText, TitleText_2 } from '@components/atoms/font';
+import { reviewPerson } from '@utils/index';
 import {
   FaStar,
   FaQuoteLeft,
   FaQuoteRight,
   FaArrowAltCircleRight,
   FaArrowAltCircleLeft,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
 interface TestimonialProps {
   testimonials: any;
@@ -26,12 +26,12 @@ export const Testimonial: React.FC<TestimonialProps> = ({ testimonials }) => {
       <section className="grid xl:grid-cols-2 gap-10 py-20">
         <div className="flex">
           <FaArrowAltCircleLeft
-            size={"30px"}
+            size={'30px'}
             className="text-purple-900 border-2 border-gray-500 rounded-full self-center"
           />
           <img src={reviewPerson} className="h-[80%]" alt="reviewUserImage" />
           <FaArrowAltCircleRight
-            size={"30px"}
+            size={'30px'}
             className="text-purple-900 border-2 border-gray-500 rounded-full self-center"
           />
         </div>
@@ -44,7 +44,7 @@ export const Testimonial: React.FC<TestimonialProps> = ({ testimonials }) => {
                 <FaStar key={index} className="text-purple-900 w-[30px]" />
               ))}
           </span>
-          <div style={{ textAlign: "left" }} className="my-4 text-[#1B1C31]">
+          <div style={{ textAlign: 'left' }} className="my-4 text-[#1B1C31]">
             <FaQuoteLeft className="text-orange-400 w-[15px] mr-2 mb-4 inline" />
             {testimonials?.landing?.testimonials[0]?.comment}
             <FaQuoteRight className="text-orange-400 w-[15px] mb-4 inline" />

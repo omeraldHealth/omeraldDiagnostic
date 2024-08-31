@@ -1,5 +1,5 @@
-import { AddReportComponent } from "@components/molecules/addReport/addReport";
-import { Fragment } from "react";
+import { AddReportComponent } from '@components/molecules/addReport/addReport';
+import { Fragment } from 'react';
 
 export default function AddReportsTab() {
   return (

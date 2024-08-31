@@ -1,25 +1,25 @@
-import { FormControl, FormLabel, Input, Stack } from "@chakra-ui/react";
-import { errorAlert2, successAlert } from "@components/atoms/alerts/alert";
-import { useProfileValue } from "@components/common/constants/recoilValues";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
-import { usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
+import { FormControl, FormLabel, Input, Stack } from '@chakra-ui/react';
+import { errorAlert2, successAlert } from '@components/atoms/alerts/alert';
+import { useProfileValue } from '@components/common/constants/recoilValues';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
+import { usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
 import {
   useCreateDiagnosticBranch,
   useInvalidateQuery,
   useUpdateBranch,
   useUpdateDiagnostic,
-} from "@utils/reactQuery";
-import { Button } from "antd";
-import { useState } from "react";
+} from '@utils/reactQuery';
+import { Button } from 'antd';
+import { useState } from 'react';
 
 const AddBranch = ({ handleShowBranch }) => {
   const profileValue = useProfileValue();
   const [selectedDc] = usePersistedDCState();
   const [formData, setFormData] = useState({
-    branchName: "",
-    branchEmail: "",
-    branchContact: "",
-    branchAddress: "",
+    branchName: '',
+    branchEmail: '',
+    branchContact: '',
+    branchAddress: '',
   });
 
   const invalidateQuery = useInvalidateQuery();
@@ -27,12 +27,12 @@ const AddBranch = ({ handleShowBranch }) => {
 
   const updateProfile = useUpdateDiagnostic({
     onSuccess: () => {
-      successAlert("Branch added successfully");
-      logActivity({ activity: "Created New Branch" });
+      successAlert('Branch added successfully');
+      logActivity({ activity: 'Created New Branch' });
       handleShowBranch(false);
-      invalidateQuery("diagnosticCenter");
+      invalidateQuery('diagnosticCenter');
     },
-    onError: (err) => errorAlert2("Error updating branch: " + err.message),
+    onError: (err) => errorAlert2('Error updating branch: ' + err.message),
   });
 
   const createBranch = useCreateDiagnosticBranch({
@@ -41,7 +41,7 @@ const AddBranch = ({ handleShowBranch }) => {
       const branches = [...profileValue?.branches, resp?.data?._id];
       updateProfile.mutate({ data: { branches }, recordId: selectedDc });
     },
-    onError: (err) => errorAlert2("Error creating branch: " + err.message),
+    onError: (err) => errorAlert2('Error creating branch: ' + err.message),
   });
 
   const handleChange = ({ target: { name, value } }) => {
@@ -50,10 +50,10 @@ const AddBranch = ({ handleShowBranch }) => {
 
   const handleCancel = () => {
     setFormData({
-      branchName: "",
-      branchEmail: "",
-      branchContact: "",
-      branchAddress: "",
+      branchName: '',
+      branchEmail: '',
+      branchContact: '',
+      branchAddress: '',
     });
     handleShowBranch(false);
   };
@@ -67,14 +67,14 @@ const AddBranch = ({ handleShowBranch }) => {
       !formData.branchContact ||
       !formData.branchAddress
     ) {
-      return errorAlert2("Please fill in all required fields");
+      return errorAlert2('Please fill in all required fields');
     }
 
     const branchExists = profileValue?.branches?.find(
       (branch) => branch?.branchName == formData.branchName,
     );
     if (branchExists) {
-      errorAlert2("Branch already exisits");
+      errorAlert2('Branch already exisits');
       return;
     }
 

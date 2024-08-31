@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 interface LogoProps {
   src: string;
@@ -7,7 +7,7 @@ interface LogoProps {
 }
 
 const logo =
-  "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png";
+  'https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png';
 
 const LogoImage: React.FC = () => {
   return (
@@ -37,11 +37,11 @@ const DashboardLogo: React.FC = () => {
   );
 };
 
-const Logo: React.FC<LogoProps> = ({ src, alt, width = "50px" }) => (
+const Logo: React.FC<LogoProps> = ({ src, alt, width = '50px' }) => (
   <img src={src} alt={alt} className={`w-${width} sm:w-[70px] rounded-full`} />
 );
 
-const LogoRound: React.FC<LogoProps> = ({ src, alt, width = "50px" }) => (
+const LogoRound: React.FC<LogoProps> = ({ src, alt, width = '50px' }) => (
   <img src={src} alt={alt} className={`w-${width} sm:w-[70px] rounded-full`} />
 );
 

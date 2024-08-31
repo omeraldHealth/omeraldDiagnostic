@@ -1,5 +1,5 @@
-import InfoPage from "@components/organism/info";
-import { UserLayout } from "@components/templates/pageTemplate";
+import InfoPage from '@components/organism/info';
+import { UserLayout } from '@components/templates/pageTemplate';
 
 export default function Disclaimer() {
   return (
@@ -7,7 +7,7 @@ export default function Disclaimer() {
       tabDescription="Disclaimer us page"
       tabName="Admin Diagnostic | Disclaimer"
     >
-      <InfoPage detail={"Disclaimer"} />
+      <InfoPage detail={'Disclaimer'} />
     </UserLayout>
   );
 }

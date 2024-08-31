@@ -1,21 +1,21 @@
 // @ts-nocheck
 
-import { FormControl, FormLabel, Input, Select, Stack } from "@chakra-ui/react";
-import { errorAlert2, warningAlert2 } from "@components/atoms/alerts/alert";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
+import { FormControl, FormLabel, Input, Select, Stack } from '@chakra-ui/react';
+import { errorAlert2, warningAlert2 } from '@components/atoms/alerts/alert';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
 import {
   usePersistedBranchState,
   usePersistedDCState,
-} from "@components/common/recoil/hooks/usePersistedState";
-import { useInvalidateQuery, useUpdateUser } from "@utils/reactQuery";
-import { phonePattern } from "@utils/types/molecules/forms.interface";
-import { Button } from "antd";
-import { useEffect, useState } from "react";
-import { getRoleNameByBranchId } from "../../utils/functions";
+} from '@components/common/recoil/hooks/usePersistedState';
+import { useInvalidateQuery, useUpdateUser } from '@utils/reactQuery';
+import { phonePattern } from '@utils/types/molecules/forms.interface';
+import { Button } from 'antd';
+import { useEffect, useState } from 'react';
+import { getRoleNameByBranchId } from '../../utils/functions';
 
 const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
-  const initialFormData = { userName: "", phoneNumber: "", roleName: "admin" };
+  const initialFormData = { userName: '', phoneNumber: '', roleName: 'admin' };
   const [selectedDc] = usePersistedDCState();
   const [selectedBranch] = usePersistedBranchState();
   const currentBranch = useCurrentBranchValue();
@@ -32,19 +32,19 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
       setFormData({
         userName: user.userName,
         phoneNumber: user.phoneNumber,
-        roleName: role || "spoc",
+        roleName: role || 'spoc',
       });
     }
   }, [currentBranch, operatorId, selectedBranch]);
 
   const updateUser = useUpdateUser({
     onSuccess: (resp) => {
-      warningAlert2("User updated successfully");
-      invalidateQuery("diagnosticBranch");
-      logActivity({ activity: "Updated Role For: " + resp?.data?.userName });
+      warningAlert2('User updated successfully');
+      invalidateQuery('diagnosticBranch');
+      logActivity({ activity: 'Updated Role For: ' + resp?.data?.userName });
       handleEditEmployee(false);
     },
-    onError: () => errorAlert2("Error updating employee"),
+    onError: () => errorAlert2('Error updating employee'),
   });
 
   const handleChange = ({ target: { name, value } }) => {
@@ -79,18 +79,18 @@ const UpdateEmployee = ({ handleEditEmployee, operatorId }) => {
     e.preventDefault();
 
     if (!formData.userName || !formData.phoneNumber) {
-      return errorAlert2("Invalid Data, please edit all details");
+      return errorAlert2('Invalid Data, please edit all details');
     }
 
     if (!phonePattern.test(formData.phoneNumber)) {
-      return errorAlert2("Invalid phone number, please add country code");
+      return errorAlert2('Invalid phone number, please add country code');
     }
 
     const user = currentBranch?.branchOperator?.find(
       (emp) => emp._id === operatorId,
     );
     if (!user) {
-      return errorAlert2("Error updating user");
+      return errorAlert2('Error updating user');
     }
 
     handleUpdateEmployee(user);

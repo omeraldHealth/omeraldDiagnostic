@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { Button } from "antd";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { profileState } from "../../common/recoil/profile";
-import { testDetailsState } from "../../common/recoil/testDetails";
-import DynamicFormGenerator from "../../common/form/dynamicForm";
-import { DashboardTable } from "../dashboardItems/data-table";
-import { ParameterColumns } from "@utils/forms/form";
-import { useUpdateDiagnostic } from "@utils/reactQuery";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
-import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
-import { parameterForm } from "@utils/types/molecules/forms.interface";
-import { Spinner } from "@components/atoms/loader";
+import React, { useState } from 'react';
+import { Button } from 'antd';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { profileState } from '../../common/recoil/profile';
+import { testDetailsState } from '../../common/recoil/testDetails';
+import DynamicFormGenerator from '../../common/form/dynamicForm';
+import { DashboardTable } from '../dashboardItems/data-table';
+import { ParameterColumns } from '@utils/forms/form';
+import { useUpdateDiagnostic } from '@utils/reactQuery';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { parameterForm } from '@utils/types/molecules/forms.interface';
+import { Spinner } from '@components/atoms/loader';
 
 interface AddKeywordsProps {
   handleSuccess: () => void;
@@ -45,13 +45,13 @@ export const AddKeywords: React.FC<AddKeywordsProps> = ({
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
-      successAlert("Profile updated successfully");
+      successAlert('Profile updated successfully');
       setProfile(data?.data);
       handleSuccess();
       setLoading(false);
     },
     onError: () => {
-      errorAlert("Error updating profile");
+      errorAlert('Error updating profile');
       setLoading(false);
     },
   });
@@ -112,10 +112,10 @@ const AddKeyWordHeader: React.FC<AddKeyWordHeaderProps> = ({
           onClick={toggleAddKeyword}
           className="p-1 text-xs sm:text-md sm:px-2 bg-gray-200 text-black"
         >
-          {!addKeyword ? "Add Parameter" : "View Parameter"}
+          {!addKeyword ? 'Add Parameter' : 'View Parameter'}
         </button>
         <Button className="mx-4" onClick={handleBack}>
-          {" "}
+          {' '}
           Back
         </Button>
       </section>

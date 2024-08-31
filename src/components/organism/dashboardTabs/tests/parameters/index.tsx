@@ -1,12 +1,12 @@
-import { Button } from "antd";
-import { useState, useEffect } from "react";
-import AddParameters from "./create";
-import { ViewParameters } from "./view";
-import ComponentForm from "../components";
-import styles from "./param.module.css";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { useRecoilState } from "recoil";
-import { testDetailsState } from "@components/common/recoil/testDetails";
+import { Button } from 'antd';
+import { useState, useEffect } from 'react';
+import AddParameters from './create';
+import { ViewParameters } from './view';
+import ComponentForm from '../components';
+import styles from './param.module.css';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useRecoilState } from 'recoil';
+import { testDetailsState } from '@components/common/recoil/testDetails';
 
 export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -18,11 +18,11 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [testDetails, setTestDetail] = useRecoilState(testDetailsState);
 
-  useEffect(() => { 
-    if (edit) { 
-      setComponents(testDetails?.components)
+  useEffect(() => {
+    if (edit) {
+      setComponents(testDetails?.components);
     }
-  },[edit])
+  }, [edit]);
 
   useEffect(() => {
     let timer;
@@ -36,8 +36,8 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
 
   useEffect(() => {
     setTestDetail({ ...testDetails, components: components });
-  }, [components])
-  
+  }, [components]);
+
   const handleCreateOrEdit = (values) => {
     if (isEditing && editIndex !== null) {
       const updatedComponents = [...components];
@@ -126,23 +126,33 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
             ))
           )}
         </section>
-         {/* Modal-like box at the bottom */}
-          {hoveredComponent && (
-            <div className={`${styles.hoverBox} ${isHovering ? styles.show : styles.hide}`}>
-              <h3>{hoveredComponent.title}</h3>
-              <div dangerouslySetInnerHTML={{ __html: hoveredComponent.content }}></div>
-              {hoveredComponent.isDynamic && hoveredComponent.images.length > 0 && (
+        {/* Modal-like box at the bottom */}
+        {hoveredComponent && (
+          <div
+            className={`${styles.hoverBox} ${isHovering ? styles.show : styles.hide}`}
+          >
+            <h3>{hoveredComponent.title}</h3>
+            <div
+              dangerouslySetInnerHTML={{ __html: hoveredComponent.content }}
+            ></div>
+            {hoveredComponent.isDynamic &&
+              hoveredComponent.images.length > 0 && (
                 <div className={`${styles.images} mt-4`}>
                   <h4 className="text-sm font-semibold">Images:</h4>
                   <div className="flex gap-2 mt-2">
                     {hoveredComponent.images.map((img, idx) => (
-                      <img key={idx} src={`/path/to/uploads/${img}`} alt={`Component Image ${idx}`} className="w-16 h-16 object-cover" />
+                      <img
+                        key={idx}
+                        src={`/path/to/uploads/${img}`}
+                        alt={`Component Image ${idx}`}
+                        className="w-16 h-16 object-cover"
+                      />
                     ))}
                   </div>
                 </div>
               )}
-            </div>
-          )}
+          </div>
+        )}
       </section>
       <section className="flex justify-between mt-6">
         <section className="flex">
@@ -173,7 +183,6 @@ export const ParameterComp = ({ handleNext, handlePrevious, edit }) => {
           </div>
         </section>
       </section>
-
     </section>
   );
 };

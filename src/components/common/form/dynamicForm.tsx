@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Button,
   Col,
@@ -10,10 +10,10 @@ import {
   Space,
   Spin,
   Input,
-} from "antd";
-import { FormType } from "@utils/types/molecules/forms.interface";
-import LogoUploader from "@components/atoms/fileUploder/logoUploaders";
-import { FileUploader } from "@components/atoms/fileUploder/fileUpload";
+} from 'antd';
+import { FormType } from '@utils/types/molecules/forms.interface';
+import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
+import { FileUploader } from '@components/atoms/fileUploder/fileUpload';
 
 interface DynamicFormType {
   formProps: Array<FormType>;
@@ -50,9 +50,9 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
     const defaultValue = defaultValues[formItem.name];
 
     switch (formItem.type) {
-      case "text":
-      case "email":
-      case "contact":
+      case 'text':
+      case 'email':
+      case 'contact':
         return (
           <Form.Item
             key={formItem.name}
@@ -64,7 +64,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
             <Input placeholder={formItem.label} disabled={disableField} />
           </Form.Item>
         );
-      case "description":
+      case 'description':
         return (
           <Form.Item
             key={formItem.name}
@@ -76,10 +76,10 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
             <TextArea placeholder={formItem.label} disabled={disableField} />
           </Form.Item>
         );
-      case "phoneNumber":
+      case 'phoneNumber':
         // Implement your phone number input logic
         return null;
-      case "select":
+      case 'select':
         return (
           <Form.Item
             key={formItem.name}
@@ -102,7 +102,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
             </Select>
           </Form.Item>
         );
-      case "date":
+      case 'date':
         return (
           <Form.Item
             key={formItem.name}
@@ -116,7 +116,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
             />
           </Form.Item>
         );
-      case "radio":
+      case 'radio':
         return (
           <Form.Item
             key={formItem.name}
@@ -132,7 +132,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
             </Radio.Group>
           </Form.Item>
         );
-      case "tags":
+      case 'tags':
         return (
           <Form.Item
             key={formItem.label + 1}
@@ -142,12 +142,12 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
           >
             <Select
               mode="tags"
-              style={{ width: "100%" }}
+              style={{ width: '100%' }}
               placeholder="Aliases"
             />
           </Form.Item>
         );
-      case "calender":
+      case 'calender':
         return (
           <Form.Item
             key={formItem.label + 1}
@@ -164,7 +164,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
             </Space>
           </Form.Item>
         );
-      case "upload":
+      case 'upload':
         return (
           <Form.Item
             key={formItem.label + 1}
@@ -179,7 +179,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
             <FileUploader handleImage={formItem?.handleUpload} />
           </Form.Item>
         );
-      case "logo":
+      case 'logo':
         return (
           <Form.Item
             key={formItem.label + 1}
@@ -190,7 +190,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
             <LogoUploader handleImage={formItem?.handleImage ?? (() => {})} />
           </Form.Item>
         );
-      case "search":
+      case 'search':
         return (
           <Form.Item
             label={formItem.label}
@@ -201,8 +201,8 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
           >
             <Select
               showSearch
-              style={formItem.label === "Enter Test Name" ? { width: 380 } : {}}
-              placeholder={"Test Name"}
+              style={formItem.label === 'Enter Test Name' ? { width: 380 } : {}}
+              placeholder={'Test Name'}
               defaultActiveFirstOption={false}
               showArrow={false}
               filterOption={false}
@@ -226,7 +226,7 @@ const DynamicFormGenerator: React.FC<DynamicFormType> = ({
     const itemsPerColumn = Math.ceil(formProps.length / 2);
 
     return (
-      <section className={"w-[100%] grid grid-cols-2 gap-10"}>
+      <section className={'w-[100%] grid grid-cols-2 gap-10'}>
         <section>
           {formProps
             .slice(0, itemsPerColumn)

@@ -1,5 +1,5 @@
-import React from "react";
-import { BodyText_1, BodyText_2, HeaderText_3 } from "@components/atoms/font";
+import React from 'react';
+import { BodyText_1, BodyText_2, HeaderText_3 } from '@components/atoms/font';
 
 /**
  * BottomBanner component to display information about why to choose the diagnostic center.

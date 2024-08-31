@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-import styles from "./param.module.css";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import { useRecoilState } from "recoil";
-import { testDetailsState } from "@components/common/recoil/testDetails";
+import { useState, useEffect } from 'react';
+import styles from './param.module.css';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import { useRecoilState } from 'recoil';
+import { testDetailsState } from '@components/common/recoil/testDetails';
 
-export const ViewComponent = ({component}) => {
+export const ViewComponent = ({ component }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [components, setComponents] = useState(component);
@@ -26,8 +26,8 @@ export const ViewComponent = ({component}) => {
 
   useEffect(() => {
     setTestDetail({ ...testDetails, components: components });
-  }, [components])
-    
+  }, [components]);
+
   const handleMouseEnter = (component) => {
     setHoveredComponent(component);
     setIsHovering(true);
@@ -77,25 +77,34 @@ export const ViewComponent = ({component}) => {
             ))
           )}
         </section>
-         {/* Modal-like box at the bottom */}
-          {hoveredComponent && (
-            <div className={`${styles.hoverBox} ${isHovering ? styles.show : styles.hide}`}>
-              <h3>{hoveredComponent.title}</h3>
-              <div dangerouslySetInnerHTML={{ __html: hoveredComponent.content }}></div>
-              {hoveredComponent.isDynamic && hoveredComponent.images.length > 0 && (
+        {/* Modal-like box at the bottom */}
+        {hoveredComponent && (
+          <div
+            className={`${styles.hoverBox} ${isHovering ? styles.show : styles.hide}`}
+          >
+            <h3>{hoveredComponent.title}</h3>
+            <div
+              dangerouslySetInnerHTML={{ __html: hoveredComponent.content }}
+            ></div>
+            {hoveredComponent.isDynamic &&
+              hoveredComponent.images.length > 0 && (
                 <div className={`${styles.images} mt-4`}>
                   <h4 className="text-sm font-semibold">Images:</h4>
                   <div className="flex gap-2 mt-2">
                     {hoveredComponent.images.map((img, idx) => (
-                      <img key={idx} src={`/path/to/uploads/${img}`} alt={`Component Image ${idx}`} className="w-16 h-16 object-cover" />
+                      <img
+                        key={idx}
+                        src={`/path/to/uploads/${img}`}
+                        alt={`Component Image ${idx}`}
+                        className="w-16 h-16 object-cover"
+                      />
                     ))}
                   </div>
                 </div>
               )}
-            </div>
-          )}
+          </div>
+        )}
       </section>
-  
     </section>
   );
 };

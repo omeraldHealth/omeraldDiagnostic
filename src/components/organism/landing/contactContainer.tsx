@@ -1,7 +1,7 @@
-import React from "react";
-import Link from "next/link";
-import { BodyText_2, HeaderText_2, HeaderText_3 } from "@components/atoms/font";
-import styles from "./landing.module.css";
+import React from 'react';
+import Link from 'next/link';
+import { BodyText_2, HeaderText_2, HeaderText_3 } from '@components/atoms/font';
+import styles from './landing.module.css';
 
 /**
  * ContactContainer component to display contact information and a link to the contact page.
@@ -10,7 +10,7 @@ import styles from "./landing.module.css";
 export function ContactContainer(): React.ReactElement {
   return (
     <div
-      className={`w-[100%] h-auto py-[10%] px-2 text-center ${styles["contactUs"]}`}
+      className={`w-[100%] h-auto py-[10%] px-2 text-center ${styles['contactUs']}`}
     >
       {/* DC Management App Header */}
       <div className="my-4 lg:my-2">

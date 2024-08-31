@@ -1,12 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import {
   AuthContextInterface,
   UserDetailsInterface,
   initialAuthContext,
-} from "@utils/index";
-import { useRouter } from "next/router";
-import axios from "axios";
-import { useUser, useClerk } from "@clerk/nextjs";
+} from '@utils/index';
+import { useRouter } from 'next/router';
+import axios from 'axios';
+import { useUser, useClerk } from '@clerk/nextjs';
 
 const AuthContext = createContext<AuthContextInterface>(initialAuthContext);
 
@@ -36,7 +36,7 @@ function useApplicationAuth() {
   const handleUser = async () => {
     if (ClerkUser) {
       let flag = true;
-      const phoneNumber = ClerkUser?.phoneNumbers[0]?.phoneNumber || "";
+      const phoneNumber = ClerkUser?.phoneNumbers[0]?.phoneNumber || '';
       const { data: employees } = await axios.get(
         getEmployeeById + phoneNumber,
       );
@@ -54,7 +54,7 @@ function useApplicationAuth() {
       }
       // @ts-ignore
       setUser({
-        phoneNumber: ClerkUser?.phoneNumbers[0]?.phoneNumber || "",
+        phoneNumber: ClerkUser?.phoneNumbers[0]?.phoneNumber || '',
         data: ClerkUser,
       });
       setLoading(false);

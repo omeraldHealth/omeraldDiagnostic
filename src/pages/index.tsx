@@ -1,9 +1,9 @@
-import { Spinner } from "@components/atoms/loader";
-import { UserLayout } from "@components/templates/pageTemplate";
-import dynamic from "next/dynamic";
+import { Spinner } from '@components/atoms/loader';
+import { UserLayout } from '@components/templates/pageTemplate';
+import dynamic from 'next/dynamic';
 
 const LandingPage = dynamic(
-  () => import("@components/organism/landing/landingPage"),
+  () => import('@components/organism/landing/landingPage'),
   { loading: () => <Spinner /> },
 );
 

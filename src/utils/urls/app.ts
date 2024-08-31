@@ -22,13 +22,13 @@ export const updateDiagBranchApi =
 export const deleteDiagBranchApi =
   diagBackendApiPath + `branches/deleteBranch/`;
 
-  export const getDiagTestApi = diagBackendApiPath + `tests/getTest/`; 
+export const getDiagTestApi = diagBackendApiPath + `tests/getTest/`;
 export const createDiagTestApi = diagBackendApiPath + `tests/createTest/`; // Endpoint to create diagnostic profile
 export const updateDiagTestApi = diagBackendApiPath + `tests/updateTest/`; // Endpoint to update diagnostic profile
 export const deleteDiagTestApi = diagBackendApiPath + `tests/deleteTest/`;
 
-export const bulkDiagTestApi = diagBackendApiPath + `tests/bulkUpdate/`; 
-export const bulkDiagReportApi = diagBackendApiPath + `reports/bulkUpdate/`; 
+export const bulkDiagTestApi = diagBackendApiPath + `tests/bulkUpdate/`;
+export const bulkDiagReportApi = diagBackendApiPath + `reports/bulkUpdate/`;
 
 export const createDiagReportApi = diagBackendApiPath + `reports/createReport/`; // Endpoint to create diagnostic profile
 export const updateDiagReportApi = diagBackendApiPath + `reports/updateReport/`; // Endpoint to update diagnostic profile
@@ -46,18 +46,18 @@ export const uploadDiagnosticLogoApi =
 export const uploadDiagnosticReportApi =
   diagBackendApiPath + `s3/diagnostic/reportUpload`; // Endpoint to upload diagnostic logo
 export const uploadPathSignature =
-  diagBackendApiPath + "s3/diagnostic/signatureUpload";
+  diagBackendApiPath + 's3/diagnostic/signatureUpload';
 export const componentImages =
-  diagBackendApiPath + "s3/diagnostic/componentImages";
+  diagBackendApiPath + 's3/diagnostic/componentImages';
 
 // External API path to get all admin report types
 export const getAdminReportTypesApi =
-  adminBackendApiPath + "/api/v1/reports/getAllReports";
+  adminBackendApiPath + '/api/v1/reports/getAllReports';
 export const getDiagnosticLandingData =
-  adminBackendApiPath + "/api/v1/diagnosticLanding/getDiagLanding";
+  adminBackendApiPath + '/api/v1/diagnosticLanding/getDiagLanding';
 export const getDiagnosticSetting =
-  adminBackendApiPath + "/api/v1/diagSettings/getDiagnosticSetting";
+  adminBackendApiPath + '/api/v1/diagSettings/getDiagnosticSetting';
 export const getAdminApiGetToken =
-  adminBackendApiPath + "/api/v1/auth/getAuthToken";
+  adminBackendApiPath + '/api/v1/auth/getAuthToken';
 
-export const paramSearch = diagBackendApiPath + "tests/searchTestParams/"
+export const paramSearch = diagBackendApiPath + 'tests/searchTestParams/';

@@ -1,11 +1,11 @@
-import { Button, Form, Input, InputNumber, Select } from "antd";
-import { useState } from "react";
-import { FaPlus, FaTrash } from "react-icons/fa";
+import { Button, Form, Input, InputNumber, Select } from 'antd';
+import { useState } from 'react';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 
 const { Option } = Select;
 
 const AdvanceRangeInput = ({ form }) => {
-  const [rangeOption, setRangeOption] = useState("age");
+  const [rangeOption, setRangeOption] = useState('age');
 
   const handleRangeOptionChange = (value) => {
     setRangeOption(value);
@@ -25,9 +25,9 @@ const AdvanceRangeInput = ({ form }) => {
           <Option value="custom">Custom Range</Option>
         </Select>
       </Form.Item>
-      {rangeOption === "age" ? (
+      {rangeOption === 'age' ? (
         <AgeRangeForm form={form} />
-      ) : rangeOption === "gender" ? (
+      ) : rangeOption === 'gender' ? (
         <GenderRangeForm form={form} />
       ) : (
         <CustomRangeForm form={form} />
@@ -44,7 +44,7 @@ const GenderRangeForm = ({ form }) => {
   const handleGenderChange = (value, fieldName) => {
     setSelectedGender(value);
     // Optionally, you can clear previous values if needed
-    form.setFieldsValue({ [fieldName]: { unit: "", min: "", max: "" } });
+    form.setFieldsValue({ [fieldName]: { unit: '', min: '', max: '' } });
   };
 
   return (
@@ -54,14 +54,14 @@ const GenderRangeForm = ({ form }) => {
           {fields.map(({ key, name, fieldKey, ...restField }) => (
             <section
               key={key}
-              style={{ display: "", alignItems: "center", marginBottom: "8px" }}
+              style={{ display: '', alignItems: 'center', marginBottom: '8px' }}
             >
               <Form.Item
                 {...restField}
-                name={[name, "gender"]}
-                fieldKey={[fieldKey, "gender"]}
-                rules={[{ required: true, message: "Gender is required" }]}
-                style={{ flex: 1, marginRight: "8px" }}
+                name={[name, 'gender']}
+                fieldKey={[fieldKey, 'gender']}
+                rules={[{ required: true, message: 'Gender is required' }]}
+                style={{ flex: 1, marginRight: '8px' }}
               >
                 <Select
                   placeholder="Select Gender"
@@ -76,36 +76,36 @@ const GenderRangeForm = ({ form }) => {
                 {selectedGender && (
                   <Form.Item
                     {...restField}
-                    name={[name, "unit"]}
-                    fieldKey={[fieldKey, "unit"]}
-                    style={{ flex: 1, marginLeft: "8px" }}
+                    name={[name, 'unit']}
+                    fieldKey={[fieldKey, 'unit']}
+                    style={{ flex: 1, marginLeft: '8px' }}
                   >
-                    <Input placeholder="Unit" style={{ width: "100%" }} />
+                    <Input placeholder="Unit" style={{ width: '100%' }} />
                   </Form.Item>
                 )}
                 {selectedGender && (
                   <Form.Item
                     {...restField}
-                    name={[name, "min"]}
-                    fieldKey={[fieldKey, "min"]}
-                    style={{ flex: 1, marginLeft: "8px" }}
+                    name={[name, 'min']}
+                    fieldKey={[fieldKey, 'min']}
+                    style={{ flex: 1, marginLeft: '8px' }}
                   >
                     <InputNumber
                       placeholder="Min Value"
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                     />
                   </Form.Item>
                 )}
                 {selectedGender && (
                   <Form.Item
                     {...restField}
-                    name={[name, "max"]}
-                    fieldKey={[fieldKey, "max"]}
-                    style={{ flex: 1, marginLeft: "8px" }}
+                    name={[name, 'max']}
+                    fieldKey={[fieldKey, 'max']}
+                    style={{ flex: 1, marginLeft: '8px' }}
                   >
                     <InputNumber
                       placeholder="Max Value"
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                     />
                   </Form.Item>
                 )}
@@ -113,7 +113,7 @@ const GenderRangeForm = ({ form }) => {
                   <FaTrash
                     className="mt-2"
                     onClick={() => remove(name)}
-                    style={{ cursor: "pointer", marginLeft: "8px" }}
+                    style={{ cursor: 'pointer', marginLeft: '8px' }}
                   />
                 )}
               </section>
@@ -149,7 +149,7 @@ const AgeRangeForm = ({ form }) => {
       <Form.Item
         label="Select Age Range Type"
         name="ageRangeType"
-        rules={[{ required: true, message: "Age Range Type is required" }]}
+        rules={[{ required: true, message: 'Age Range Type is required' }]}
       >
         <Select
           placeholder="Select Age Range Type"
@@ -171,51 +171,51 @@ const AgeRangeForm = ({ form }) => {
                 <section
                   key={key}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "8px",
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginBottom: '8px',
                   }}
                 >
                   <Form.Item
                     {...restField}
-                    name={[name, "unit"]}
-                    fieldKey={[fieldKey, "unit"]}
-                    rules={[{ required: true, message: "Unit is required" }]}
-                    style={{ flex: 1, marginRight: "8px" }}
+                    name={[name, 'unit']}
+                    fieldKey={[fieldKey, 'unit']}
+                    rules={[{ required: true, message: 'Unit is required' }]}
+                    style={{ flex: 1, marginRight: '8px' }}
                   >
-                    <Input placeholder="Unit" style={{ width: "100%" }} />
+                    <Input placeholder="Unit" style={{ width: '100%' }} />
                   </Form.Item>
                   <Form.Item
                     {...restField}
-                    name={[name, "min"]}
-                    fieldKey={[fieldKey, "min"]}
+                    name={[name, 'min']}
+                    fieldKey={[fieldKey, 'min']}
                     rules={[
-                      { required: true, message: "Min Value is required" },
+                      { required: true, message: 'Min Value is required' },
                     ]}
-                    style={{ flex: 1, marginRight: "8px" }}
+                    style={{ flex: 1, marginRight: '8px' }}
                   >
                     <InputNumber
                       placeholder="Min Value"
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                     />
                   </Form.Item>
                   <Form.Item
                     {...restField}
-                    name={[name, "max"]}
-                    fieldKey={[fieldKey, "max"]}
+                    name={[name, 'max']}
+                    fieldKey={[fieldKey, 'max']}
                     rules={[
-                      { required: true, message: "Max Value is required" },
+                      { required: true, message: 'Max Value is required' },
                     ]}
-                    style={{ flex: 1, marginRight: "8px" }}
+                    style={{ flex: 1, marginRight: '8px' }}
                   >
                     <InputNumber
                       placeholder="Max Value"
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                     />
                   </Form.Item>
                   <FaTrash
                     onClick={() => remove(name)}
-                    style={{ cursor: "pointer", marginLeft: "8px" }}
+                    style={{ cursor: 'pointer', marginLeft: '8px' }}
                   />
                 </section>
               ))}
@@ -238,7 +238,6 @@ const AgeRangeForm = ({ form }) => {
   );
 };
 
-
 const CustomRangeForm = ({ form }) => {
   return (
     <Form.List name="customRanges">
@@ -248,60 +247,58 @@ const CustomRangeForm = ({ form }) => {
             <section
               key={key}
               style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "8px",
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: '8px',
               }}
             >
               <Form.Item
                 {...restField}
-                name={[name, "categoryType"]}
-                fieldKey={[fieldKey, "categoryType"]}
-                rules={[{ required: true, message: "Category Type is required" }]}
-                style={{ flex: 1, marginRight: "8px" }}
-              >
-                <Input placeholder="Category Type" style={{ width: "100%" }} />
-              </Form.Item>
-              <Form.Item
-                {...restField}
-                name={[name, "unit"]}
-                fieldKey={[fieldKey, "unit"]}
-                rules={[{ required: true, message: "Unit is required" }]}
-                style={{ flex: 1, marginRight: "8px" }}
-              >
-                <Input placeholder="Unit" style={{ width: "100%" }} />
-              </Form.Item>
-              <Form.Item
-                {...restField}
-                name={[name, "min"]}
-                fieldKey={[fieldKey, "min"]}
+                name={[name, 'categoryType']}
+                fieldKey={[fieldKey, 'categoryType']}
                 rules={[
-                  { required: true, message: "Min Value is required" },
+                  { required: true, message: 'Category Type is required' },
                 ]}
-                style={{ flex: 1, marginRight: "8px" }}
+                style={{ flex: 1, marginRight: '8px' }}
+              >
+                <Input placeholder="Category Type" style={{ width: '100%' }} />
+              </Form.Item>
+              <Form.Item
+                {...restField}
+                name={[name, 'unit']}
+                fieldKey={[fieldKey, 'unit']}
+                rules={[{ required: true, message: 'Unit is required' }]}
+                style={{ flex: 1, marginRight: '8px' }}
+              >
+                <Input placeholder="Unit" style={{ width: '100%' }} />
+              </Form.Item>
+              <Form.Item
+                {...restField}
+                name={[name, 'min']}
+                fieldKey={[fieldKey, 'min']}
+                rules={[{ required: true, message: 'Min Value is required' }]}
+                style={{ flex: 1, marginRight: '8px' }}
               >
                 <InputNumber
                   placeholder="Min Value"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                 />
               </Form.Item>
               <Form.Item
                 {...restField}
-                name={[name, "max"]}
-                fieldKey={[fieldKey, "max"]}
-                rules={[
-                  { required: true, message: "Max Value is required" },
-                ]}
-                style={{ flex: 1, marginRight: "8px" }}
+                name={[name, 'max']}
+                fieldKey={[fieldKey, 'max']}
+                rules={[{ required: true, message: 'Max Value is required' }]}
+                style={{ flex: 1, marginRight: '8px' }}
               >
                 <InputNumber
                   placeholder="Max Value"
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                 />
               </Form.Item>
               <FaTrash
                 onClick={() => remove(name)}
-                style={{ cursor: "pointer", marginLeft: "8px" }}
+                style={{ cursor: 'pointer', marginLeft: '8px' }}
               />
             </section>
           ))}

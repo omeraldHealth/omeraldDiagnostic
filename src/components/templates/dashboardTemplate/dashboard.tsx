@@ -1,28 +1,28 @@
-import { DashboardLayout } from "@components/organism/layout/dashboardLayout";
-import { dashTabs } from "components/common/recoil/dashboard/index";
-import { useRecoilValue } from "recoil";
-import dynamic from "next/dynamic";
-import { UserLayout } from "../pageTemplate";
+import { DashboardLayout } from '@components/organism/layout/dashboardLayout';
+import { dashTabs } from 'components/common/recoil/dashboard/index';
+import { useRecoilValue } from 'recoil';
+import dynamic from 'next/dynamic';
+import { UserLayout } from '../pageTemplate';
 
 // Dynamic imports with loading spinner
 const DashboardTab = dynamic(
-  () => import("@components/organism/dashboardTabs/dashboardTab"),
+  () => import('@components/organism/dashboardTabs/dashboardTab'),
   { ssr: false },
 );
 const ReportsTab = dynamic(
-  () => import("@components/organism/dashboardTabs/reportsTab"),
+  () => import('@components/organism/dashboardTabs/reportsTab'),
   { ssr: false },
 );
 const ProfileTab = dynamic(
-  () => import("@components/organism/dashboardTabs/profileTab"),
+  () => import('@components/organism/dashboardTabs/profileTab'),
   { ssr: false },
 );
 const SettingsTab = dynamic(
-  () => import("@components/organism/dashboardTabs/settingsTab"),
+  () => import('@components/organism/dashboardTabs/settingsTab'),
   { ssr: false },
 );
 const TestTab = dynamic(
-  () => import("@components/organism/dashboardTabs/testTab"),
+  () => import('@components/organism/dashboardTabs/testTab'),
   { ssr: false },
 );
 

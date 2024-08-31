@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 const LabReportTable = ({ report, isTest }) => {
-  console.log("LabReportTable", report);
+  console.log('LabReportTable', report);
 
   // Function to determine if value is out of range
   const isOutOfRange = (value, min, max) => {
@@ -11,19 +11,22 @@ const LabReportTable = ({ report, isTest }) => {
 
   const renderSubRows = (rangeType, range, isFirstSubRow) => {
     const outOfRangeStyle = isOutOfRange(range?.value, range?.min, range?.max)
-      ? "text-red-500 font-bold"
-      : "";
+      ? 'text-red-500 font-bold'
+      : '';
 
     return (
-      <tr key={`${rangeType}-${range.min}-${range.max}`} className={isFirstSubRow ? "" : "border-t-0"}>
+      <tr
+        key={`${rangeType}-${range.min}-${range.max}`}
+        className={isFirstSubRow ? '' : 'border-t-0'}
+      >
         <td className="p-2 text-md"></td> {/* Empty cell for alignment */}
         <td className={`p-2 text-md ${outOfRangeStyle}`}>
-          {range?.value || "N/A"}
+          {range?.value || 'N/A'}
         </td>
         <td className="p-2 text-md">
           {range?.min} - {range?.max}
         </td>
-        <td className="p-2 text-md">{range?.unit || "N/A"}</td>
+        <td className="p-2 text-md">{range?.unit || 'N/A'}</td>
       </tr>
     );
   };
@@ -53,18 +56,26 @@ const LabReportTable = ({ report, isTest }) => {
 
               {/* Basic Range */}
               {param?.bioRefRange?.basicRange?.map((range, index) =>
-                renderSubRows("Basic Range", range, index === 0)
+                renderSubRows('Basic Range', range, index === 0),
               )}
 
               {/* Age Range */}
               {param?.bioRefRange?.advanceRange?.ageRange?.map((range, index) =>
-                renderSubRows(`Age Range (${range.ageRangeType})`, range, index === 0)
+                renderSubRows(
+                  `Age Range (${range.ageRangeType})`,
+                  range,
+                  index === 0,
+                ),
               )}
 
               {/* Gender Range */}
               {param?.bioRefRange?.advanceRange?.genderRange?.map(
                 (range, index) =>
-                  renderSubRows(`Gender Range (${range.genderRangeType})`, range, index === 0)
+                  renderSubRows(
+                    `Gender Range (${range.genderRangeType})`,
+                    range,
+                    index === 0,
+                  ),
               )}
             </React.Fragment>
           ))}
@@ -73,19 +84,19 @@ const LabReportTable = ({ report, isTest }) => {
 
       {/* Display additional components below the table */}
       {report.reportData?.parsedData.components?.length > 0 && (
-          <div className="mt-6">
-            <h2 className="text-xl font-bold mb-3">Additional Components</h2>
-            {report.reportData.parsedData.components.map((component, index) => (
-              <div key={index} className="border-t pt-4 mt-4">
-                <h3 className="text-lg font-bold">{component.title}</h3>
-                <div
-                  className="ck-content"
-                  dangerouslySetInnerHTML={{ __html: component.content }}
-                ></div>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="mt-6">
+          <h2 className="text-xl font-bold mb-3">Additional Components</h2>
+          {report.reportData.parsedData.components.map((component, index) => (
+            <div key={index} className="border-t pt-4 mt-4">
+              <h3 className="text-lg font-bold">{component.title}</h3>
+              <div
+                className="ck-content"
+                dangerouslySetInnerHTML={{ __html: component.content }}
+              ></div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

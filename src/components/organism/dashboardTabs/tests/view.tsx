@@ -1,43 +1,47 @@
-import { usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
-import { TEST_DETAILS_COLUMNS } from "../settingsTabs/utils/tabs";
-import { CommonSettingTable } from "../settingsTabs/utils/table";
+import { usePersistedDCState } from '@components/common/recoil/hooks/usePersistedState';
+import { TEST_DETAILS_COLUMNS } from '../settingsTabs/utils/tabs';
+import { CommonSettingTable } from '../settingsTabs/utils/table';
 import {
   useDeleteTest,
   useGetDcProfile,
   useInvalidateQuery,
   useUpdateBranch,
   useUpdateDiagnostic,
-} from "@utils/reactQuery";
-import { errorAlert, warningAlert2 } from "@components/atoms/alerts/alert";
-import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { branchState } from "@components/common/recoil/branch/branch";
-import { UpdateTest } from "./update";
+} from '@utils/reactQuery';
+import { errorAlert, warningAlert2 } from '@components/atoms/alerts/alert';
+import { useEffect, useState } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { branchState } from '@components/common/recoil/branch/branch';
+import { UpdateTest } from './update';
 import {
   editTestIdState,
   editTestState,
   testDetailsState,
-} from "@components/common/recoil/testDetails";
-import { Loader } from "@components/atoms/loader/loader";
-import PreviewComponent from "../previewReport";
-import { useTestDetailValue } from "@components/common/constants/recoilValues";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
-import { CKEditor } from "ckeditor4-react";
+} from '@components/common/recoil/testDetails';
+import { Loader } from '@components/atoms/loader/loader';
+import PreviewComponent from '../previewReport';
+import { useTestDetailValue } from '@components/common/constants/recoilValues';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
+import { CKEditor } from 'ckeditor4-react';
 
 export const ViewTest: React.FC = () => {
   const [showTest, setShowTest] = useState(false);
   const [selectedDc] = usePersistedDCState();
-  const updatedDc = useUpdateDiagnostic({})
+  const updatedDc = useUpdateDiagnostic({});
   const deleteTest = useDeleteTest({});
   const invalidateQuery = useInvalidateQuery();
   const setEditTestState = useSetRecoilState(editTestState);
   const setCurrentBranch = useSetRecoilState(branchState);
-  const { data: currentProfile, refetch, isLoading } = useGetDcProfile({
+  const {
+    data: currentProfile,
+    refetch,
+    isLoading,
+  } = useGetDcProfile({
     selectedCenterId: selectedDc,
   });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
   const [testId, setTestId] = useRecoilState(editTestIdState);
-  const logActivity = useActivityLogger()
+  const logActivity = useActivityLogger();
 
   const [previewRecord, setPreviewRecord] = useState({});
   const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
@@ -73,22 +77,24 @@ export const ViewTest: React.FC = () => {
                 ?.filter((test) => test?._id !== record?._id)
                 ?.map((test) => test._id);
               updatedDc.mutateAsync(
-                { data: {tests: updatedTestIds}, recordId: selectedDc },
+                { data: { tests: updatedTestIds }, recordId: selectedDc },
                 {
                   onSuccess: (resp) => {
-                    invalidateQuery("diagnosticCenter");
+                    invalidateQuery('diagnosticCenter');
                     setCurrentBranch(resp?.data);
                   },
                 },
               );
-              invalidateQuery("diagnosticCenter");
-              logActivity({ activity: "Deleted Test " + record?.testName || "" });
-              warningAlert2("Deleted Test Successfully");
+              invalidateQuery('diagnosticCenter');
+              logActivity({
+                activity: 'Deleted Test ' + record?.testName || '',
+              });
+              warningAlert2('Deleted Test Successfully');
               refetch();
             }
           },
           onError: (err) => {
-            errorAlert("Error deleting test");
+            errorAlert('Error deleting test');
           },
         },
       );
@@ -107,13 +113,12 @@ export const ViewTest: React.FC = () => {
   const columns = TEST_DETAILS_COLUMNS({
     handleEdit,
     handleDelete,
-    handlePreview
+    handlePreview,
   });
 
   return (
     <section>
-
-      {isLoading && <Loader/>}
+      {isLoading && <Loader />}
 
       {!showTest ? (
         <CommonSettingTable data={tests} columns={columns} />
@@ -122,19 +127,19 @@ export const ViewTest: React.FC = () => {
       )}
 
       {previewReportModalOpen && (
-          <PreviewComponent
+        <PreviewComponent
           showPreview={previewReportModalOpen}
           onClose={() => setPreviewReportModalOpen(false)}
           record={previewRecord}
           isTest={true}
-          />
+        />
       )}
-      
+
       <CKEditor
-            onChange={(evt) => {
-              // form.setFieldsValue({ content: evt.editor.getData() });
-            }}
-          />
+        onChange={(evt) => {
+          // form.setFieldsValue({ content: evt.editor.getData() });
+        }}
+      />
     </section>
   );
 };

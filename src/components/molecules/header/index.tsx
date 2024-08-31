@@ -1,9 +1,9 @@
-import React from "react";
-import { Bars3Icon } from "@heroicons/react/20/solid";
-import { useDashboardTabs } from "@components/common/constants/recoilValues";
-import { UserButton } from "@clerk/clerk-react";
-import SelectDC from "./selectDc";
-import { BranchSelection } from "./branchSelection";
+import React from 'react';
+import { Bars3Icon } from '@heroicons/react/20/solid';
+import { useDashboardTabs } from '@components/common/constants/recoilValues';
+import { UserButton } from '@clerk/clerk-react';
+import SelectDC from './selectDc';
+import { BranchSelection } from './branchSelection';
 
 export function DashboardHeader() {
   const tabName = useDashboardTabs();

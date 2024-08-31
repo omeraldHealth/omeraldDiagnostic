@@ -1,34 +1,34 @@
 // @ts-nocheck
 
-import { FormControl, FormLabel, Input, Select, Stack } from "@chakra-ui/react";
-import { errorAlert2, successAlert } from "@components/atoms/alerts/alert";
+import { FormControl, FormLabel, Input, Select, Stack } from '@chakra-ui/react';
+import { errorAlert2, successAlert } from '@components/atoms/alerts/alert';
 import {
   useCurrentBranchValue,
   useProfileValue,
-} from "@components/common/constants/recoilValues";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
+} from '@components/common/constants/recoilValues';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
 import {
   usePersistedBranchState,
   usePersistedDCState,
-} from "@components/common/recoil/hooks/usePersistedState";
-import { getDiagnosticUserApi } from "@utils/index";
+} from '@components/common/recoil/hooks/usePersistedState';
+import { getDiagnosticUserApi } from '@utils/index';
 import {
   useCreateUser,
   useInvalidateQuery,
   useUpdateBranch,
   useUpdateDiagnostic,
   useUpdateUser,
-} from "@utils/reactQuery";
-import { phonePattern } from "@utils/types/molecules/forms.interface";
-import { Button } from "antd";
-import axios from "axios";
-import { useState } from "react";
+} from '@utils/reactQuery';
+import { phonePattern } from '@utils/types/molecules/forms.interface';
+import { Button } from 'antd';
+import axios from 'axios';
+import { useState } from 'react';
 
 const AddEmployee = ({ handleShowBranch }) => {
   const [formData, setFormData] = useState({
-    userName: "",
-    phoneNumber: "",
-    roleName: "admin",
+    userName: '',
+    phoneNumber: '',
+    roleName: 'admin',
   });
 
   const [selectedDc] = usePersistedDCState();
@@ -41,24 +41,24 @@ const AddEmployee = ({ handleShowBranch }) => {
   const updateBranchMut = useUpdateBranch({
     onSuccess: (resp) => {
       handleShowBranch(false);
-      invalidateQuery("diagnosticBranch");
-      logActivity({ activity: "Added New Employee" });
+      invalidateQuery('diagnosticBranch');
+      logActivity({ activity: 'Added New Employee' });
     },
-    onError: () => errorAlert2("Error updating diagnostic center"),
+    onError: () => errorAlert2('Error updating diagnostic center'),
   });
 
   const updateUser = useUpdateUser({
     onSuccess: (resp) => {
-      successAlert("User updated successfully");
+      successAlert('User updated successfully');
       // logActivity({activity: "Created User "+resp?.data?.userName })
       handleShowBranch(false);
     },
-    onError: () => errorAlert2("Error updating user"),
+    onError: () => errorAlert2('Error updating user'),
   });
 
   const createUser = useCreateUser({
     onSuccess: async (resp) => {
-      successAlert("Employee created successfully");
+      successAlert('Employee created successfully');
 
       // Check if currentBranch exists and resp.data._id is available
       if (currentBranch && resp?.data?._id) {
@@ -70,14 +70,14 @@ const AddEmployee = ({ handleShowBranch }) => {
             recordId: selectedBranch,
           });
         } catch (error) {
-          errorAlert2("Error updating branch: " + error.message);
+          errorAlert2('Error updating branch: ' + error.message);
         }
       } else {
-        console.error("Current branch or new operator ID is not available");
-        errorAlert2("Failed to update branch due to missing data");
+        console.error('Current branch or new operator ID is not available');
+        errorAlert2('Failed to update branch due to missing data');
       }
     },
-    onError: (err) => errorAlert2("Error creating employee: " + err.message),
+    onError: (err) => errorAlert2('Error creating employee: ' + err.message),
   });
 
   const getUpdatedBranch = (userId) => ({
@@ -91,9 +91,9 @@ const AddEmployee = ({ handleShowBranch }) => {
 
   const handleCancel = () => {
     setFormData({
-      userName: "",
-      phoneNumber: "",
-      roleName: "admin",
+      userName: '',
+      phoneNumber: '',
+      roleName: 'admin',
     });
     handleShowBranch(false);
   };
@@ -102,11 +102,11 @@ const AddEmployee = ({ handleShowBranch }) => {
     e.preventDefault();
 
     if (!formData.userName || !formData.phoneNumber) {
-      return errorAlert2("Please fill in all required fields");
+      return errorAlert2('Please fill in all required fields');
     }
 
     if (!phonePattern.test(formData.phoneNumber)) {
-      return errorAlert2("Invalid phone number format");
+      return errorAlert2('Invalid phone number format');
     }
 
     await checkUser(formData);
@@ -135,7 +135,7 @@ const AddEmployee = ({ handleShowBranch }) => {
               recordId: selectedBranch,
             });
           } else {
-            errorAlert2("User already exists in the current branch");
+            errorAlert2('User already exists in the current branch');
           }
         } else if (!diagPresent) {
           updateDcAndBranch(data);

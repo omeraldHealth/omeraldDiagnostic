@@ -1,13 +1,13 @@
-import { bioRefState } from "@components/common/recoil/testDetails/test";
-import { Button, Form, Radio } from "antd";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import AdvanceRangeInput from "./advance";
-import BasicRangeInput from "./basicRange";
-import RenderRanges from "./showRefRange";
+import { bioRefState } from '@components/common/recoil/testDetails/test';
+import { Button, Form, Radio } from 'antd';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import AdvanceRangeInput from './advance';
+import BasicRangeInput from './basicRange';
+import RenderRanges from './showRefRange';
 
-const   InputForm = ({ edit, isRangeTypeSectionVisible }) => {
-  const [rangeType, setRangeType] = useState("basic");
+const InputForm = ({ edit, isRangeTypeSectionVisible }) => {
+  const [rangeType, setRangeType] = useState('basic');
   const [bioRef, setBioRef] = useRecoilState(bioRefState);
   const [form] = Form.useForm();
 
@@ -26,9 +26,9 @@ const   InputForm = ({ edit, isRangeTypeSectionVisible }) => {
     }
   }, []);
 
-  useEffect(() => { 
-    setBioRef(data)
-  },[data])
+  useEffect(() => {
+    setBioRef(data);
+  }, [data]);
 
   const handleRangeTypeChange = (e) => {
     setRangeType(e.target.value);
@@ -59,7 +59,7 @@ const   InputForm = ({ edit, isRangeTypeSectionVisible }) => {
                 ...newData.advanceRange.genderRange,
               ]
             : prevData.advanceRange?.genderRange || [],
-            customRange: newData.advanceRange?.customRange
+          customRange: newData.advanceRange?.customRange
             ? [
                 ...(prevData.advanceRange?.customRange || []),
                 ...newData.advanceRange?.customRange,
@@ -109,22 +109,22 @@ const   InputForm = ({ edit, isRangeTypeSectionVisible }) => {
       // Copy the current state
       let updatedBasicRange = [...prevData.basicRange];
       let updatedAdvanceRange = { ...prevData.advanceRange };
-  
+
       // Update based on type
-      if (type === "basicRange") {
+      if (type === 'basicRange') {
         updatedBasicRange.splice(index, 1);
-      } else if (type === "ageRange") {
+      } else if (type === 'ageRange') {
         updatedAdvanceRange.ageRange = updatedAdvanceRange.ageRange.filter(
           (_, i) => i !== index,
         );
-      } else if (type === "genderRange") {
+      } else if (type === 'genderRange') {
         updatedAdvanceRange.genderRange =
           updatedAdvanceRange.genderRange.filter((_, i) => i !== index);
-      } else if (type === "customRange") {
+      } else if (type === 'customRange') {
         updatedAdvanceRange.customRange =
           updatedAdvanceRange?.customRange.filter((_, i) => i !== index);
       }
-  
+
       // Return updated state with basicRange and advanceRange updated
       return {
         ...prevData,
@@ -132,28 +132,28 @@ const   InputForm = ({ edit, isRangeTypeSectionVisible }) => {
         advanceRange: updatedAdvanceRange,
       };
     });
-  
+
     if (edit) {
       setBioRef((prevData) => {
         // Copy the current state
         let updatedBasicRange = [...prevData.basicRange];
         let updatedAdvanceRange = { ...prevData.advanceRange };
-  
+
         // Update based on type
-        if (type === "basicRange") {
+        if (type === 'basicRange') {
           updatedBasicRange.splice(index, 1);
-        } else if (type === "ageRange") {
+        } else if (type === 'ageRange') {
           updatedAdvanceRange.ageRange = updatedAdvanceRange.ageRange.filter(
             (_, i) => i !== index,
           );
-        } else if (type === "genderRange") {
+        } else if (type === 'genderRange') {
           updatedAdvanceRange.genderRange =
             updatedAdvanceRange.genderRange.filter((_, i) => i !== index);
-        } else if (type === "customRange") {
+        } else if (type === 'customRange') {
           updatedAdvanceRange.customRange =
             updatedAdvanceRange.customRange.filter((_, i) => i !== index);
         }
-  
+
         // Return updated state with basicRange and advanceRange updated
         return {
           ...prevData,
@@ -163,7 +163,6 @@ const   InputForm = ({ edit, isRangeTypeSectionVisible }) => {
       });
     }
   };
-  
 
   return (
     <section>
@@ -175,7 +174,7 @@ const   InputForm = ({ edit, isRangeTypeSectionVisible }) => {
               <Radio.Button value="advanced">Advanced Range</Radio.Button>
             </Radio.Group>
           </Form.Item>
-          {rangeType === "basic" ? (
+          {rangeType === 'basic' ? (
             <BasicRangeInput form={form} />
           ) : (
             <AdvanceRangeInput form={form} />
@@ -194,10 +193,16 @@ const   InputForm = ({ edit, isRangeTypeSectionVisible }) => {
 
 export default InputForm;
 
-
 const transformData = (incomingData) => {
-  const { rangeOption, ageRangeType, ageRanges, genderRanges, basicRange, customRanges } = incomingData;
-  console.log("incomingData", incomingData)
+  const {
+    rangeOption,
+    ageRangeType,
+    ageRanges,
+    genderRanges,
+    basicRange,
+    customRanges,
+  } = incomingData;
+  console.log('incomingData', incomingData);
 
   // Initialize the base structure
   const transformedData = {
@@ -211,7 +216,7 @@ const transformData = (incomingData) => {
 
   // Handle different range options
   switch (rangeOption) {
-    case "age":
+    case 'age':
       if (ageRangeType && ageRanges) {
         transformedData.advanceRange.ageRange = ageRanges.map((range) => ({
           ageRangeType, // Use the type from the incoming data
@@ -222,25 +227,29 @@ const transformData = (incomingData) => {
       }
       break;
 
-    case "gender":
+    case 'gender':
       if (genderRanges) {
-        transformedData.advanceRange.genderRange = genderRanges.map((range) => ({
-          genderRangeType: genderRanges?.[0]?.gender, // Assuming this field is part of the gender range data
-          unit: range.unit,
-          min: range.min,
-          max: range.max,
-        }));
+        transformedData.advanceRange.genderRange = genderRanges.map(
+          (range) => ({
+            genderRangeType: genderRanges?.[0]?.gender, // Assuming this field is part of the gender range data
+            unit: range.unit,
+            min: range.min,
+            max: range.max,
+          }),
+        );
       }
       break;
 
-    case "custom":
+    case 'custom':
       if (customRanges) {
-        transformedData.advanceRange.customRange = customRanges.map((range) => ({
-          categoryType: range.categoryType, // Use the custom name
-          min: range.min,
-          max: range.max,
-          unit: range.unit,
-        }));
+        transformedData.advanceRange.customRange = customRanges.map(
+          (range) => ({
+            categoryType: range.categoryType, // Use the custom name
+            min: range.min,
+            max: range.max,
+            unit: range.unit,
+          }),
+        );
       }
       break;
 

@@ -1,10 +1,10 @@
-import { usePersistedBranchState } from "@components/common/recoil/hooks/usePersistedState";
-import { profileState } from "@components/common/recoil/profile";
-import { BranchDetailInterface } from "@utils/types";
-import { Select } from "antd";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { usePersistedBranchState } from '@components/common/recoil/hooks/usePersistedState';
+import { profileState } from '@components/common/recoil/profile';
+import { BranchDetailInterface } from '@utils/types';
+import { Select } from 'antd';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 interface Branch {
   branchName: string;

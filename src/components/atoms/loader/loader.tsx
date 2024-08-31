@@ -1,5 +1,5 @@
-import React from "react";
-import { ColorRing } from "react-loader-spinner";
+import React from 'react';
+import { ColorRing } from 'react-loader-spinner';
 
 export const Loader: React.FC = () => {
   return (
@@ -11,7 +11,7 @@ export const Loader: React.FC = () => {
         ariaLabel="dna-loading"
         wrapperClass="dna-wrapper"
         wrapperStyle={{
-          alignSelf: "center",
+          alignSelf: 'center',
         }}
       />
     </div>

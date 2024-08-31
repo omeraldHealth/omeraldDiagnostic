@@ -1,5 +1,5 @@
-import { Table, TablePaginationConfig } from "antd";
-import React, { useState, ChangeEvent } from "react";
+import { Table, TablePaginationConfig } from 'antd';
+import React, { useState, ChangeEvent } from 'react';
 
 interface DashboardTableProps {
   columns: any[];
@@ -31,7 +31,7 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
   };
 
   return (
-    <div style={{ width: "100%", overflowX: "auto" }}>
+    <div style={{ width: '100%', overflowX: 'auto' }}>
       <Table
         dataSource={data || []}
         columns={columns}
@@ -39,7 +39,7 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
         onChange={handleTableChange}
         className="my-pagination-class"
         rowKey={(data) => data?._id || generateUniqueKey()}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: 'max-content' }}
       />
     </div>
   );

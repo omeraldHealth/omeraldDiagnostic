@@ -1,5 +1,5 @@
-import { Card, List, Typography } from "antd";
-import { FaTrash } from "react-icons/fa";
+import { Card, List, Typography } from 'antd';
+import { FaTrash } from 'react-icons/fa';
 
 const { Title, Text } = Typography;
 
@@ -7,7 +7,7 @@ const { Title, Text } = Typography;
 const sampleData = {
   basicRange: [
     {
-      unit: "mm",
+      unit: 'mm',
       min: 2,
       max: 22,
     },
@@ -23,7 +23,7 @@ const RenderRanges = ({ data, onRemove }) => {
   if (!data || !data?.advanceRange) {
     return null;
   }
-  console.log(data?.advanceRange)
+  console.log(data?.advanceRange);
   return (
     <div>
       {/* Render Basic Range */}
@@ -35,8 +35,8 @@ const RenderRanges = ({ data, onRemove }) => {
             key={index}
             actions={[
               <FaTrash
-                onClick={() => onRemove("basicRange", index)}
-                style={{ cursor: "pointer" }}
+                onClick={() => onRemove('basicRange', index)}
+                style={{ cursor: 'pointer' }}
               />,
             ]}
           >
@@ -69,8 +69,8 @@ const RenderRanges = ({ data, onRemove }) => {
                 key={index}
                 actions={[
                   <FaTrash
-                    onClick={() => onRemove("ageRange", index)}
-                    style={{ cursor: "pointer" }}
+                    onClick={() => onRemove('ageRange', index)}
+                    style={{ cursor: 'pointer' }}
                   />,
                 ]}
               >
@@ -102,8 +102,8 @@ const RenderRanges = ({ data, onRemove }) => {
                 key={index}
                 actions={[
                   <FaTrash
-                    onClick={() => onRemove("genderRange", index)}
-                    style={{ cursor: "pointer" }}
+                    onClick={() => onRemove('genderRange', index)}
+                    style={{ cursor: 'pointer' }}
                   />,
                 ]}
               >
@@ -134,8 +134,8 @@ const RenderRanges = ({ data, onRemove }) => {
                 key={index}
                 actions={[
                   <FaTrash
-                    onClick={() => onRemove("customRange", index)}
-                    style={{ cursor: "pointer" }}
+                    onClick={() => onRemove('customRange', index)}
+                    style={{ cursor: 'pointer' }}
                   />,
                 ]}
               >

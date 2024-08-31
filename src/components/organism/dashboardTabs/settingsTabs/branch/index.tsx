@@ -4,39 +4,39 @@ import {
   errorAlert,
   successAlert,
   warningAlert2,
-} from "@components/atoms/alerts/alert";
+} from '@components/atoms/alerts/alert';
 import {
   useCurrentBranchValue,
   useProfileValue,
-} from "@components/common/constants/recoilValues";
+} from '@components/common/constants/recoilValues';
 import {
   usePersistedBranchState,
   usePersistedDCState,
-} from "@components/common/recoil/hooks/usePersistedState";
+} from '@components/common/recoil/hooks/usePersistedState';
 import {
   useDeleteBranch,
   useDeleteReports,
   useInvalidateQuery,
   useUpdateDiagnostic,
   useUpdateUser,
-} from "@utils/reactQuery";
-import { Switch } from "antd";
-import { useEffect, useState } from "react";
-import { removeBranchById } from "../utils/functions";
-import { CommonSettingTable } from "../utils/table";
-import { BRANCH_DETAILS_COLUMNS } from "../utils/tabs";
-import AddBranch from "./create";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
-import { useSetRecoilState } from "recoil";
-import { profileState } from "@components/common/recoil/profile";
-import UpdateBranch from "./create/update";
+} from '@utils/reactQuery';
+import { Switch } from 'antd';
+import { useEffect, useState } from 'react';
+import { removeBranchById } from '../utils/functions';
+import { CommonSettingTable } from '../utils/table';
+import { BRANCH_DETAILS_COLUMNS } from '../utils/tabs';
+import AddBranch from './create';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
+import { useSetRecoilState } from 'recoil';
+import { profileState } from '@components/common/recoil/profile';
+import UpdateBranch from './create/update';
 
 function BranchTab() {
   const [addBranch, setAddBranch] = useState(false);
   const [selectedBranch] = usePersistedBranchState();
   const [selectedDc] = usePersistedDCState();
   const [isEdit, setIsEdit] = useState(false);
-  const [branchId, setBranchId] = useState("");
+  const [branchId, setBranchId] = useState('');
   const currentBranch = useCurrentBranchValue();
   const profileValue = useProfileValue();
   const updateProfile = useUpdateDiagnostic({});
@@ -48,7 +48,7 @@ function BranchTab() {
   const deleteBranch = useDeleteBranch({});
 
   useEffect(() => {
-    invalidateQuery("diagnosticCenter");
+    invalidateQuery('diagnosticCenter');
   }, []);
 
   const handleSwitch = (checked: boolean) => setAddBranch(checked);
@@ -72,10 +72,10 @@ function BranchTab() {
       { data: { branches }, recordId: selectedDc },
       {
         onSuccess: (resp) => {
-          invalidateQuery("diagnosticCenter");
+          invalidateQuery('diagnosticCenter');
           setProfileData(resp?.data);
-          successAlert("Branch Deleted Successfully");
-          logActivity({ activity: "Delete Branch " + record?.branchName });
+          successAlert('Branch Deleted Successfully');
+          logActivity({ activity: 'Delete Branch ' + record?.branchName });
         },
       },
     );
@@ -105,7 +105,7 @@ function BranchTab() {
       <section className="my-2 py-2 flex justify-end">
         <Switch
           checked={addBranch}
-          style={{ backgroundColor: "orange" }}
+          style={{ backgroundColor: 'orange' }}
           onChange={handleSwitch}
           checkedChildren="Add"
           unCheckedChildren="View"

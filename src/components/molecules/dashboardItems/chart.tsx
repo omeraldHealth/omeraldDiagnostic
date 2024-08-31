@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
-import { DatePicker, InputNumber, Modal } from "antd";
-import { PencilSquareIcon } from "@heroicons/react/20/solid";
-import "chartjs-adapter-moment";
-import moment from "moment";
-import { useRecoilValue } from "recoil";
-import { Spinner } from "@components/atoms/loader";
-import { profileState } from "../../common/recoil/profile";
-import { branchState } from "../../common/recoil/branch/branch";
+import React, { useEffect, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import { DatePicker, InputNumber, Modal } from 'antd';
+import { PencilSquareIcon } from '@heroicons/react/20/solid';
+import 'chartjs-adapter-moment';
+import moment from 'moment';
+import { useRecoilValue } from 'recoil';
+import { Spinner } from '@components/atoms/loader';
+import { profileState } from '../../common/recoil/profile';
+import { branchState } from '../../common/recoil/branch/branch';
 
 const { RangePicker } = DatePicker;
 
@@ -29,14 +29,14 @@ const ReportSharedVsTime2: React.FC<ReportSharedVsTime2Props> = () => {
   );
 
   useEffect(() => {
-    const sixMonthsAgo = moment().subtract(6, "months").toDate();
+    const sixMonthsAgo = moment().subtract(6, 'months').toDate();
     const current = moment().toDate();
     initialLoad(sixMonthsAgo, current);
     setMaxVal(profile?.reports?.length || 0);
   }, [currentBranch, profile]);
 
   useEffect(() => {
-    const sixMonthsAgo = moment().subtract(6, "months").toDate();
+    const sixMonthsAgo = moment().subtract(6, 'months').toDate();
     const current = moment().toDate();
     initialLoad(sixMonthsAgo, current);
     setMaxVal(profile?.reports?.length || 4);
@@ -73,7 +73,7 @@ const ReportSharedVsTime2: React.FC<ReportSharedVsTime2Props> = () => {
     plugins: {
       title: {
         display: true,
-        text: "Reports Shared Last 6 months",
+        text: 'Reports Shared Last 6 months',
       },
     },
     elements: {
@@ -88,16 +88,16 @@ const ReportSharedVsTime2: React.FC<ReportSharedVsTime2Props> = () => {
         min: 0,
       },
       x: {
-        type: "time",
+        type: 'time',
         time: {
-          unit: "month",
+          unit: 'month',
           displayFormats: {
-            month: "MMM YYYY",
+            month: 'MMM YYYY',
           },
-          tooltipFormat: "MMM YYYY",
+          tooltipFormat: 'MMM YYYY',
         },
         ticks: {
-          source: "labels",
+          source: 'labels',
           autoSkip: true,
           maxRotation: 0,
           minRotation: 0,
@@ -111,20 +111,20 @@ const ReportSharedVsTime2: React.FC<ReportSharedVsTime2Props> = () => {
 
     datasets: [
       {
-        label: "Reports Uploaded",
+        label: 'Reports Uploaded',
         fill: false,
         lineTension: 0.5,
-        backgroundColor: "rgba(49, 104, 212)",
-        borderColor: "rgb(49, 104, 212)",
+        backgroundColor: 'rgba(49, 104, 212)',
+        borderColor: 'rgb(49, 104, 212)',
         borderWidth: 2,
         data: reportCount,
       },
       {
-        label: "Reports Shared",
+        label: 'Reports Shared',
         fill: false,
         lineTension: 0.5,
-        backgroundColor: "rgba(214, 128, 6)",
-        borderColor: "rgb(214, 128, 6)",
+        backgroundColor: 'rgba(214, 128, 6)',
+        borderColor: 'rgb(214, 128, 6)',
         borderWidth: 2,
         data: [],
       },
@@ -141,7 +141,7 @@ const ReportSharedVsTime2: React.FC<ReportSharedVsTime2Props> = () => {
   };
 
   const handleCancel = () => {
-    const sixMonthsAgo = moment().subtract(6, "months").toDate();
+    const sixMonthsAgo = moment().subtract(6, 'months').toDate();
     const current = moment().toDate();
     initialLoad(sixMonthsAgo, current);
     setMaxVal(profile?.reports?.length || 2);
@@ -150,8 +150,8 @@ const ReportSharedVsTime2: React.FC<ReportSharedVsTime2Props> = () => {
 
   const disabledDate = (current: any) => {
     return (
-      (current && current < moment().subtract(6, "months").endOf("day")) ||
-      current > moment().endOf("day")
+      (current && current < moment().subtract(6, 'months').endOf('day')) ||
+      current > moment().endOf('day')
     );
   };
 
@@ -207,8 +207,8 @@ function getMonthYearArray(startDate: any, endDate: any, data: any) {
 
   for (let i = 0; i <= monthDifference; i++) {
     const monthYear = new Date(startYear, startMonth + i, 1).toLocaleString(
-      "default",
-      { month: "long", year: "numeric" },
+      'default',
+      { month: 'long', year: 'numeric' },
     );
     monthYearArray.push(monthYear);
   }

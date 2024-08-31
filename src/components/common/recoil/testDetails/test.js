@@ -1,6 +1,6 @@
-const { atom } = require("recoil");
+const { atom } = require('recoil');
 
 export const bioRefState = atom({
-  key: "bioRefState",
+  key: 'bioRefState',
   default: {},
 });

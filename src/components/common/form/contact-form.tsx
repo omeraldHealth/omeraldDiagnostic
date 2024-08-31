@@ -1,17 +1,17 @@
-import { mailImage } from "@utils/index";
-import React from "react";
-import DynamicFormGenerator from "./dynamicForm";
+import { mailImage } from '@utils/index';
+import React from 'react';
+import DynamicFormGenerator from './dynamicForm';
 
 export const ContactForm = () => {
   const handleForm = async (value: any) => {};
 
   const contactForm = [
-    { name: "subject", type: "text", label: "Subject", required: true },
-    { name: "message", type: "text", label: "message", required: true },
+    { name: 'subject', type: 'text', label: 'Subject', required: true },
+    { name: 'message', type: 'text', label: 'message', required: true },
     {
-      name: "description",
-      type: "description",
-      label: "description",
+      name: 'description',
+      type: 'description',
+      label: 'description',
       required: true,
     },
   ];

@@ -1,12 +1,26 @@
-import { errorAlert, successAlert, warningAlert2 } from "@components/atoms/alerts/alert";
-import { useCurrentBranchValue, useReportDetailsValue } from "@components/common/constants/recoilValues";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
-import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
-import { useCreateReport, useInvalidateQuery, useUpdateBranch } from "@utils/reactQuery";
-import { Button } from "antd";
-import { useEffect } from "react";
+import {
+  errorAlert,
+  successAlert,
+  warningAlert2,
+} from '@components/atoms/alerts/alert';
+import {
+  useCurrentBranchValue,
+  useReportDetailsValue,
+} from '@components/common/constants/recoilValues';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
+import {
+  usePersistedBranchState,
+  usePersistedDCState,
+} from '@components/common/recoil/hooks/usePersistedState';
+import {
+  useCreateReport,
+  useInvalidateQuery,
+  useUpdateBranch,
+} from '@utils/reactQuery';
+import { Button } from 'antd';
+import { useEffect } from 'react';
 
-export default function ReportSummary({handleShowView, handlePrevious}) {
+export default function ReportSummary({ handleShowView, handlePrevious }) {
   const incomingData = useReportDetailsValue();
   const [selectedBranch] = usePersistedBranchState();
   const [selectedDc] = usePersistedDCState();
@@ -19,16 +33,16 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
 
   const transformedData = {
     pathologist: {
-      name: incomingData?.reportData?.pathologist?.name || "",
-      id: incomingData?.reportData?.reportType || "",
+      name: incomingData?.reportData?.pathologist?.name || '',
+      id: incomingData?.reportData?.reportType || '',
     },
     patient: {
-      name: incomingData?.patient?.name || "Unknown Patient",
+      name: incomingData?.patient?.name || 'Unknown Patient',
       dob: incomingData?.patient?.dob || null,
-      gender: incomingData?.patient?.gender?.toLowerCase() || "other",
+      gender: incomingData?.patient?.gender?.toLowerCase() || 'other',
       contact: {
-        phone: incomingData?.patient?.contact?.phone || "N/A",
-        email: incomingData?.patient?.contact?.email || "N/A",
+        phone: incomingData?.patient?.contact?.phone || 'N/A',
+        email: incomingData?.patient?.contact?.email || 'N/A',
       },
     },
     diagnosticCenter: {
@@ -36,14 +50,14 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
       branch: selectedBranch || null,
     },
     reportData: {
-      reportName: incomingData?.reportData?.reportName || "Unnamed Report",
+      reportName: incomingData?.reportData?.reportName || 'Unnamed Report',
       isManual: incomingData?.reportData?.url ? true : false,
       parsedData: {
         test: incomingData?.reportData?.reportType,
         parameters: incomingData?.parsedData?.parameters || [],
-        components:  incomingData?.parsedData?.components || [],
+        components: incomingData?.parsedData?.components || [],
       },
-      url: incomingData?.reportData?.url || "",
+      url: incomingData?.reportData?.url || '',
       components: incomingData?.reportData?.components || [], // Added components here
     },
   };
@@ -56,33 +70,43 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
           onSuccess: (resp) => {
             if (resp?.status === 201) {
               try {
-                const updatedReportIds = [...(currentBranch?.reports || []), resp?.data?._id];
+                const updatedReportIds = [
+                  ...(currentBranch?.reports || []),
+                  resp?.data?._id,
+                ];
 
                 updateBranch.mutate(
-                  { data: { reports: updatedReportIds }, recordId: selectedBranch },
+                  {
+                    data: { reports: updatedReportIds },
+                    recordId: selectedBranch,
+                  },
                   {
                     onSuccess: (res) => {
                       if (res.status === 200) {
-                        warningAlert2("Report added successfully");
-                        invalidateQuery("diagnosticBranch");
-                        logActivity({ activity: "Created Report " + transformedData?.reportData?.reportName || "" });
+                        warningAlert2('Report added successfully');
+                        invalidateQuery('diagnosticBranch');
+                        logActivity({
+                          activity:
+                            'Created Report ' +
+                              transformedData?.reportData?.reportName || '',
+                        });
                         handleShowView(false);
                       }
                     },
                     onError: (err) => {
-                      errorAlert("Branch update failed");
+                      errorAlert('Branch update failed');
                     },
-                  }
+                  },
                 );
               } catch (error) {
-                errorAlert("Report adding failed");
+                errorAlert('Report adding failed');
               }
             }
           },
           onError: (err) => {
-            errorAlert("Report adding failed");
+            errorAlert('Report adding failed');
           },
-        }
+        },
       );
     }
   };
@@ -131,41 +155,62 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
         </div>
 
         {/* Parameters and Bio Ref Range */}
-        {(transformedData.reportData?.url === "" || !transformedData.reportData?.url) ? (
+        {transformedData.reportData?.url === '' ||
+        !transformedData.reportData?.url ? (
           <div className="mt-6">
-            <h2 className="text-xl font-bold mb-3">Parameters and Reference Ranges</h2>
-            {transformedData.reportData?.parsedData?.parameters?.map((param, index) => (
-              <div key={index} className="border-t pt-4 mt-4 grid grid-cols-2">
-                <h3 className="text-lg font-semibold">{param.name}</h3>
-                <div className="grid grid-cols-4 md:grid-cols-4 gap-4 mt-2">
-                  <div>
-                    <p className="font-semibold">Age Range:</p>
-                    {param.bioRefRange.advanceRange.ageRange.map((range, i) => (
-                      <p key={i}>{`${range.ageRangeType} (${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
-                    ))}
+            <h2 className="text-xl font-bold mb-3">
+              Parameters and Reference Ranges
+            </h2>
+            {transformedData.reportData?.parsedData?.parameters?.map(
+              (param, index) => (
+                <div
+                  key={index}
+                  className="border-t pt-4 mt-4 grid grid-cols-2"
+                >
+                  <h3 className="text-lg font-semibold">{param.name}</h3>
+                  <div className="grid grid-cols-4 md:grid-cols-4 gap-4 mt-2">
+                    <div>
+                      <p className="font-semibold">Age Range:</p>
+                      {param.bioRefRange.advanceRange.ageRange.map(
+                        (range, i) => (
+                          <p
+                            key={i}
+                          >{`${range.ageRangeType} (${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
+                        ),
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-semibold">Gender Range:</p>
+                      {param.bioRefRange.advanceRange.genderRange.map(
+                        (range, i) => (
+                          <p
+                            key={i}
+                          >{`${range.genderRangeType} (${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
+                        ),
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-semibold">Custom Range:</p>
+                      {param.bioRefRange.advanceRange.customRange.map(
+                        (range, i) => (
+                          <p
+                            key={i}
+                          >{`${range.categoryType} (${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
+                        ),
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-semibold">Basic Range:</p>
+                      {param.bioRefRange.basicRange.map((range, i) => (
+                        <p
+                          key={i}
+                        >{`(${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
+                      ))}
+                    </div>
                   </div>
-                  <div>
-                    <p className="font-semibold">Gender Range:</p>
-                    {param.bioRefRange.advanceRange.genderRange.map((range, i) => (
-                      <p key={i}>{`${range.genderRangeType} (${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
-                    ))}
-                  </div>
-                  <div>
-                    <p className="font-semibold">Custom Range:</p>
-                    {param.bioRefRange.advanceRange.customRange.map((range, i) => (
-                      <p key={i}>{`${range.categoryType} (${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
-                    ))}
-                  </div>
-                  <div>
-                    <p className="font-semibold">Basic Range:</p>
-                    {param.bioRefRange.basicRange.map((range, i) => (
-                      <p key={i}>{`(${range.min}-${range.max} ${range.unit}): ${range.value}`}</p>
-                    ))}
-                  </div>
-                  
                 </div>
-              </div>
-            ))}
+              ),
+            )}
           </div>
         ) : (
           <div className="my-6">
@@ -178,20 +223,20 @@ export default function ReportSummary({handleShowView, handlePrevious}) {
         {transformedData.reportData?.parsedData.components?.length > 0 && (
           <div className="mt-6">
             <h2 className="text-xl font-bold mb-3">Additional Components</h2>
-            {transformedData.reportData.parsedData.components.map((component, index) => (
-              <div key={index} className="border-t pt-4 mt-4">
-                <h3 className="text-lg font-bold">{component.title}</h3>
-                <div
-                  className="ck-content"
-                  dangerouslySetInnerHTML={{ __html: component.content }}
-                ></div>
-              </div>
-            ))}
+            {transformedData.reportData.parsedData.components.map(
+              (component, index) => (
+                <div key={index} className="border-t pt-4 mt-4">
+                  <h3 className="text-lg font-bold">{component.title}</h3>
+                  <div
+                    className="ck-content"
+                    dangerouslySetInnerHTML={{ __html: component.content }}
+                  ></div>
+                </div>
+              ),
+            )}
           </div>
         )}
-        <Button onClick={handleSubmit}>
-          Submit
-        </Button>
+        <Button onClick={handleSubmit}>Submit</Button>
         <Button type="default" onClick={handlePrevious} className="mx-4">
           Previous
         </Button>

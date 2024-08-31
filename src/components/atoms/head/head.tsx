@@ -1,5 +1,5 @@
-import Head from "next/head";
-import React, { FC } from "react";
+import Head from 'next/head';
+import React, { FC } from 'react';
 
 interface PageHeadProps {
   title?: string;
@@ -10,7 +10,7 @@ interface PageHeadProps {
 const PageHead: FC<PageHeadProps> = ({ title, description, icon }) => {
   return (
     <Head>
-      <title>{title || "Omerald"}</title>
+      <title>{title || 'Omerald'}</title>
       <meta name="description" content={description} />
       <meta
         httpEquiv="Content-Security-Policy"
@@ -21,7 +21,7 @@ const PageHead: FC<PageHeadProps> = ({ title, description, icon }) => {
         rel="icon"
         href={
           icon ||
-          "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png"
+          'https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png'
         }
       />
       <link rel="apple-touch-icon" href="/favicon.png" />

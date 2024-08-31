@@ -1,4 +1,4 @@
-import { ArrowUpIcon } from "@heroicons/react/20/solid";
+import { ArrowUpIcon } from '@heroicons/react/20/solid';
 import {
   Button,
   Col,
@@ -8,14 +8,14 @@ import {
   Row,
   Select,
   Upload,
-} from "antd";
-import { useRecoilState } from "recoil";
-import { reportDataState } from "../../common/recoil/report/reportData";
+} from 'antd';
+import { useRecoilState } from 'recoil';
+import { reportDataState } from '../../common/recoil/report/reportData';
 import {
   useCurrentBranchValue,
   useProfileValue,
-} from "@components/common/constants/recoilValues";
-import moment from "moment";
+} from '@components/common/constants/recoilValues';
+import moment from 'moment';
 
 interface UploadReportProps {
   next: () => void;
@@ -87,20 +87,20 @@ const UploadReportFile: React.FC<{ next: () => void }> = ({ next }) => {
       <Form.Item
         name="reportName"
         label="Enter Report Name"
-        rules={[{ required: true, message: "Please input the report name!" }]}
+        rules={[{ required: true, message: 'Please input the report name!' }]}
       >
         <Input />
       </Form.Item>
       <Form.Item
         name="file"
         label="Upload Report File"
-        rules={[{ required: true, message: "Please upload the report file!" }]}
+        rules={[{ required: true, message: 'Please upload the report file!' }]}
       >
         <Upload
           beforeUpload={() => false}
           listType="text"
           customRequest={({ onSuccess }) =>
-            setTimeout(() => onSuccess("ok"), 0)
+            setTimeout(() => onSuccess('ok'), 0)
           }
         >
           <Button icon={<ArrowUpIcon className="w-4" />}>
@@ -127,7 +127,7 @@ const GenerateReport: React.FC<{ next: () => void }> = ({ next }) => {
 
   const onFinish = (values: any) => {
     if (!values?.pathologist?.name)
-      return errorAlert2("Please Add Pathologist Details");
+      return errorAlert2('Please Add Pathologist Details');
     setReportData({ ...reportData, ...values });
     next();
   };
@@ -147,7 +147,7 @@ const GenerateReport: React.FC<{ next: () => void }> = ({ next }) => {
       <Form.Item
         name="reportName"
         label="Enter Report Name"
-        rules={[{ required: true, message: "Please input the report name!" }]}
+        rules={[{ required: true, message: 'Please input the report name!' }]}
       >
         <Input />
       </Form.Item>
@@ -162,7 +162,7 @@ const GenerateReport: React.FC<{ next: () => void }> = ({ next }) => {
             name="reportType"
             label="Choose Report Type"
             rules={[
-              { required: true, message: "Please select a report type!" },
+              { required: true, message: 'Please select a report type!' },
             ]}
           >
             <Select showSearch placeholder="Select a report type">
@@ -175,7 +175,7 @@ const GenerateReport: React.FC<{ next: () => void }> = ({ next }) => {
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item name={["pathologist", "name"]} label="Pathologist">
+      <Form.Item name={['pathologist', 'name']} label="Pathologist">
         <Select showSearch placeholder="Select pathologist">
           {currentBranch?.pathologistDetail?.map((path) => (
             <Select.Option key={path._id} value={path.name}>

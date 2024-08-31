@@ -1,13 +1,13 @@
-import { errorAlert2 } from "@components/atoms/alerts/alert";
-import { testDetailsState } from "@components/common/recoil/testDetails";
-import { paramState } from "@components/common/recoil/testDetails/param";
-import { bioRefState } from "@components/common/recoil/testDetails/test";
-import { AutoComplete, Button, Form, Input, Modal, Select, Switch } from "antd";
-import { useCallback, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import InputForm from "./bioRef";
-import axios from "axios";
-import { paramSearch } from "@utils/index";
+import { errorAlert2 } from '@components/atoms/alerts/alert';
+import { testDetailsState } from '@components/common/recoil/testDetails';
+import { paramState } from '@components/common/recoil/testDetails/param';
+import { bioRefState } from '@components/common/recoil/testDetails/test';
+import { AutoComplete, Button, Form, Input, Modal, Select, Switch } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import InputForm from './bioRef';
+import axios from 'axios';
+import { paramSearch } from '@utils/index';
 
 const AddParameters = ({ edit }) => {
   const [isModalVisible, setIsModalVisible] = useState(edit || false);
@@ -15,7 +15,8 @@ const AddParameters = ({ edit }) => {
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
   const [bioRefValue, setBioRefValue] = useRecoilState(bioRefState);
   const [parmValue, setParmValue] = useRecoilState(paramState);
-  const [isRangeTypeSectionVisible, setIsRangeTypeSectionVisible] = useState(true); // Control visibility of the Range Type section
+  const [isRangeTypeSectionVisible, setIsRangeTypeSectionVisible] =
+    useState(true); // Control visibility of the Range Type section
 
   const resetFormAndVisibility = () => {
     form.resetFields();
@@ -31,14 +32,14 @@ const AddParameters = ({ edit }) => {
         const parameters = {
           ...parmValue,
           bioRefRange: { ...bioRefValue },
-          subText: form.getFieldValue("subText"), // Include subText in the parameters object
+          subText: form.getFieldValue('subText'), // Include subText in the parameters object
         };
-  
+
         if (!parameters?.name) {
-          errorAlert2("Please add a valid parameter name");
+          errorAlert2('Please add a valid parameter name');
           return;
         }
-  
+
         const updatedTest = {
           ...testDetail,
           parameters: [
@@ -46,7 +47,7 @@ const AddParameters = ({ edit }) => {
             ...(Array.isArray(parameters) ? parameters : [parameters]),
           ],
         };
-  
+
         setTestDetail(updatedTest);
         setIsModalVisible(false);
         setBioRefValue({});
@@ -54,10 +55,9 @@ const AddParameters = ({ edit }) => {
         resetFormAndVisibility(); // Reset visibility and form on OK
       })
       .catch((info) => {
-        console.error("Validation failed:", info);
+        console.error('Validation failed:', info);
       });
   };
-  
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -84,8 +84,15 @@ const AddParameters = ({ edit }) => {
         onCancel={handleCancel}
       >
         <section className="grid grid-cols-2">
-          <ParamForm form={form} isRangeTypeSectionVisible={isRangeTypeSectionVisible} onParamSelect={handleParamSelect} />
-          <InputForm edit={false} isRangeTypeSectionVisible={isRangeTypeSectionVisible} />
+          <ParamForm
+            form={form}
+            isRangeTypeSectionVisible={isRangeTypeSectionVisible}
+            onParamSelect={handleParamSelect}
+          />
+          <InputForm
+            edit={false}
+            isRangeTypeSectionVisible={isRangeTypeSectionVisible}
+          />
         </section>
       </Modal>
     </div>
@@ -93,7 +100,6 @@ const AddParameters = ({ edit }) => {
 };
 
 export default AddParameters;
-
 
 const { TextArea } = Input;
 
@@ -126,8 +132,8 @@ const ParamForm = ({ form, onParamSelect, isRangeTypeSectionVisible }) => {
       }));
       setOptions(searchResults);
     } catch (error) {
-      console.error("Error searching parameters:", error);
-      errorAlert2("Failed to fetch search results. Please try again.");
+      console.error('Error searching parameters:', error);
+      errorAlert2('Failed to fetch search results. Please try again.');
       setOptions([]);
     }
   };
@@ -141,21 +147,21 @@ const ParamForm = ({ form, onParamSelect, isRangeTypeSectionVisible }) => {
     // Pre-populate form fields with selected data
     form.setFieldsValue({
       name: selectedData?.name,
-      description: selectedData?.description || "",
-      remedy: selectedData?.remedy?.join("\n") || "",
+      description: selectedData?.description || '',
+      remedy: selectedData?.remedy?.join('\n') || '',
       aliases: selectedData?.aliases || [],
       isActive: selectedData?.isActive || true,
-      subText: selectedData?.subText || "", // Pre-populate the "Sub Text under Param" field
+      subText: selectedData?.subText || '', // Pre-populate the "Sub Text under Param" field
     });
 
     // Update formData with the selected parameter data
     setFormData({
       name: selectedData?.name,
-      description: selectedData?.description || "",
-      remedy: selectedData?.remedy?.join("\n") || "",
+      description: selectedData?.description || '',
+      remedy: selectedData?.remedy?.join('\n') || '',
       aliases: selectedData?.aliases || [],
       isActive: selectedData?.isActive || true,
-      subText: selectedData?.subText || "", // Store the subText
+      subText: selectedData?.subText || '', // Store the subText
     });
 
     // Handle bioRefValue separately if you have a custom form component for it
@@ -181,8 +187,8 @@ const ParamForm = ({ form, onParamSelect, isRangeTypeSectionVisible }) => {
 
   const handleAliasesChange = (value) => {
     const formattedValues = value
-      .join(",")
-      .split(",")
+      .join(',')
+      .split(',')
       .map((v) => v.trim())
       .filter((v) => v); // Removes any empty strings
 
@@ -204,7 +210,7 @@ const ParamForm = ({ form, onParamSelect, isRangeTypeSectionVisible }) => {
       <Form.Item
         label="Parameter Name"
         name="name"
-        rules={[{ required: true, message: "Please enter a parameter name" }]}
+        rules={[{ required: true, message: 'Please enter a parameter name' }]}
       >
         <AutoComplete
           options={options}
@@ -241,10 +247,10 @@ const ParamForm = ({ form, onParamSelect, isRangeTypeSectionVisible }) => {
       <Form.Item label="Parameter Aliases" name="aliases">
         <Select
           mode="tags"
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
           placeholder="Add or Select Aliases"
           onChange={handleAliasesChange}
-          tokenSeparators={[","]}
+          tokenSeparators={[',']}
           disabled={!isRangeTypeSectionVisible}
         />
       </Form.Item>

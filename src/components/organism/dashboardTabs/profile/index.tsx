@@ -1,15 +1,15 @@
-import { useEffect } from "react";
-import { FaCheckCircle } from "react-icons/fa";
-import { useProfileValue } from "@components/common/constants/recoilValues";
-import { usePersistedBranchState } from "@components/common/recoil/hooks/usePersistedState";
-import { useInvalidateQuery } from "@utils/reactQuery";
+import { useEffect } from 'react';
+import { FaCheckCircle } from 'react-icons/fa';
+import { useProfileValue } from '@components/common/constants/recoilValues';
+import { usePersistedBranchState } from '@components/common/recoil/hooks/usePersistedState';
+import { useInvalidateQuery } from '@utils/reactQuery';
 
 const ProfileView = () => {
   const profileValue = useProfileValue();
   const invalidateQuery = useInvalidateQuery();
 
   useEffect(() => {
-    invalidateQuery("diagnosticCenter");
+    invalidateQuery('diagnosticCenter');
   }, [invalidateQuery]);
 
   return (

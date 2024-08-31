@@ -1,12 +1,12 @@
-import React from "react";
-import { TestToggleProps } from "../../../utils/types";
+import React from 'react';
+import { TestToggleProps } from '../../../utils/types';
 
 export const TestToggle: React.FC<TestToggleProps> = ({
   showTest,
   setShowTest,
 }) => {
-  const toggleButtonText = showTest ? "View Test" : "Add Test";
-  const buttonColor = showTest ? "bg-green-800" : "bg-blue-500";
+  const toggleButtonText = showTest ? 'View Test' : 'Add Test';
+  const buttonColor = showTest ? 'bg-green-800' : 'bg-blue-500';
 
   const handleToggle = () => {
     setShowTest(!showTest);

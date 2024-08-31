@@ -1,16 +1,16 @@
-import React from "react";
-import { View, StyleSheet } from "@react-pdf/renderer";
-import TableHeader from "./TableHeader";
+import React from 'react';
+import { View, StyleSheet } from '@react-pdf/renderer';
+import TableHeader from './TableHeader';
 
 // Styles for the PDF table
 const styles = StyleSheet.create({
   tableContainer: {
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
     marginTop: 24,
     borderWidth: 1,
-    borderColor: "#bff0fd",
+    borderColor: '#bff0fd',
   },
 });
 

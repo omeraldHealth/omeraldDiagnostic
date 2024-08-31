@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import {
   BodyText_1,
   BodyText_2,
   HeaderText_2,
   TitleText_2,
-} from "@components/atoms/font";
-import { FaTrophy, FaHandSparkles, FaSun } from "react-icons/fa";
-import styles from "./landing.module.css";
+} from '@components/atoms/font';
+import { FaTrophy, FaHandSparkles, FaSun } from 'react-icons/fa';
+import styles from './landing.module.css';
 
 // Define a type for the help business data structure
 type HelpBusinessItem = {
@@ -18,22 +18,22 @@ type HelpBusinessItem = {
 // Data for the Help Business section
 const helpBusiness: HelpBusinessItem[] = [
   {
-    title: "Streamlined Operations",
+    title: 'Streamlined Operations',
     description:
       "Omerald's software simplifies the process of selecting tests, generating reports, and updating branding information, reducing overhead costs and improving productivity",
-    icon: <FaTrophy className="text-btnPrimary-600" size={"40px"} />,
+    icon: <FaTrophy className="text-btnPrimary-600" size={'40px'} />,
   },
   {
-    title: "Enhanced Customer Experience",
+    title: 'Enhanced Customer Experience',
     description:
       "Omerald's efficient software solution provides a seamless experience for customers, with simplified test selection, report generation, and sharing.",
-    icon: <FaHandSparkles className="text-btnPrimary-600" size={"40px"} />,
+    icon: <FaHandSparkles className="text-btnPrimary-600" size={'40px'} />,
   },
   {
-    title: "Improved Business Growth",
+    title: 'Improved Business Growth',
     description:
       "Omerald's  solution accelerates business growth for diagnostic centers, with branding updates and website creation to attract new customers and retain existing ones.",
-    icon: <FaSun className="text-btnPrimary-600" size={"40px"} />,
+    icon: <FaSun className="text-btnPrimary-600" size={'40px'} />,
   },
 ];
 
@@ -44,7 +44,7 @@ const helpBusiness: HelpBusinessItem[] = [
 export function HelpYourBusiness(): React.ReactElement {
   return (
     <div
-      className={`h-auto px-[4%] sm:px-[10%] py-10 sm:py-10 text-center ${styles["helpBusiness"]}`}
+      className={`h-auto px-[4%] sm:px-[10%] py-10 sm:py-10 text-center ${styles['helpBusiness']}`}
     >
       {/* Header */}
       <div className="sm:mt-10 sm:py-4 lg:py-8">

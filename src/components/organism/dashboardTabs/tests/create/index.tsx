@@ -1,8 +1,8 @@
-import { Steps } from "antd";
-import { useState } from "react";
-import TestDetailTab from "./testDetail";
-import { ParameterComp } from "../parameters";
-import TestSummary from "../summary";
+import { Steps } from 'antd';
+import { useState } from 'react';
+import TestDetailTab from './testDetail';
+import { ParameterComp } from '../parameters';
+import TestSummary from '../summary';
 
 export const AddTest = ({ handleShowTest }) => {
   const [currentStep, setStep] = useState(0);
@@ -12,11 +12,11 @@ export const AddTest = ({ handleShowTest }) => {
 
   const steps = [
     {
-      title: "Choose Test Type",
+      title: 'Choose Test Type',
       content: <TestDetailTab handleNext={handleNext} />,
     },
     {
-      title: "Add Parameters",
+      title: 'Add Parameters',
       content: (
         <ParameterComp
           handleNext={handleNext}
@@ -25,7 +25,7 @@ export const AddTest = ({ handleShowTest }) => {
       ),
     },
     {
-      title: "Test Summary",
+      title: 'Test Summary',
       content: (
         <TestSummary
           handlePrevious={handlePrevious}

@@ -1,9 +1,9 @@
-import React from "react";
-import { Button, Form, Input } from "antd";
-import LogoUploader from "@components/atoms/fileUploder/logoUploaders";
-import { useSelector } from "react-redux";
-import { FormType } from "@utils/types/molecules/forms.interface";
-import { useUser } from "@clerk/clerk-react";
+import React from 'react';
+import { Button, Form, Input } from 'antd';
+import LogoUploader from '@components/atoms/fileUploder/logoUploaders';
+import { useSelector } from 'react-redux';
+import { FormType } from '@utils/types/molecules/forms.interface';
+import { useUser } from '@clerk/clerk-react';
 
 //@ts-ignore
 export const ProfileForm = ({
@@ -41,7 +41,7 @@ export const ProfileForm = ({
       >
         {formProps.map((form, index) => (
           <>
-            {form.type === "text" && (
+            {form.type === 'text' && (
               <Form.Item
                 key={index}
                 className="mb-6 font-bold text-lg"
@@ -61,7 +61,7 @@ export const ProfileForm = ({
                 />
               </Form.Item>
             )}
-            {form.type === "email" && (
+            {form.type === 'email' && (
               <Form.Item
                 key={index}
                 className="mb-6 font-bold text-lg"
@@ -70,7 +70,7 @@ export const ProfileForm = ({
                 rules={[
                   {
                     pattern: form?.pattern,
-                    type: "email",
+                    type: 'email',
                     message: `Please input ${form.label}`,
                   },
                 ]}
@@ -81,7 +81,7 @@ export const ProfileForm = ({
                 />
               </Form.Item>
             )}
-            {form.type === "logo" && (
+            {form.type === 'logo' && (
               <Form.Item
                 key={index}
                 className="mb-6 w-[20vw]"

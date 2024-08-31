@@ -1,9 +1,9 @@
-import { useState, Fragment } from "react";
-import { useRecoilState } from "recoil";
-import { dashTabs } from "@components/common/recoil/dashboard";
-import { classNames, privateRoutes } from "../../../utils/static/static";
-import Image from "next/image";
-import logo from "../../../public/logo.png";
+import { useState, Fragment } from 'react';
+import { useRecoilState } from 'recoil';
+import { dashTabs } from '@components/common/recoil/dashboard';
+import { classNames, privateRoutes } from '../../../utils/static/static';
+import Image from 'next/image';
+import logo from '../../../public/logo.png';
 
 export default function Sidebar() {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -18,7 +18,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`side-bar lg:block min-h-screen w-[70%] sm:w-[40%] md:w-[40%] xl:w-[100%] bg-blue-900 relative p-4 sm:pl-8 pr-0 shrink-0 ${showSidebar ? "" : "hidden"}`}
+      className={`side-bar lg:block min-h-screen w-[70%] sm:w-[40%] md:w-[40%] xl:w-[100%] bg-blue-900 relative p-4 sm:pl-8 pr-0 shrink-0 ${showSidebar ? '' : 'hidden'}`}
       aria-label="Sidebar"
     >
       <div className="mb-4">
@@ -34,13 +34,13 @@ export default function Sidebar() {
               onClick={() => handleClick(item)}
               className={classNames(
                 item.name === dashTab
-                  ? "bg-white text-gray-400 border-0 my-6"
-                  : "text-white hover:bg-white hover:text-gray-600 hover:bg-opacity-75",
-                "group flex items-center px-6 py-2 text-sm font-medium rounded-l-md my-6",
+                  ? 'bg-white text-gray-400 border-0 my-6'
+                  : 'text-white hover:bg-white hover:text-gray-600 hover:bg-opacity-75',
+                'group flex items-center px-6 py-2 text-sm font-medium rounded-l-md my-6',
               )}
             >
               <item.icon
-                className={`mr-3 flex-shrink-0 h-6 w-6 ${item.name === dashTab ? "text-black" : "text-white"}`}
+                className={`mr-3 flex-shrink-0 h-6 w-6 ${item.name === dashTab ? 'text-black' : 'text-white'}`}
                 aria-hidden="true"
               />
               {item.name}
@@ -49,14 +49,14 @@ export default function Sidebar() {
         ))}
       </div>
       <p className="text-sm text-center text-green-900 font-semi-bold absolute bottom-10">
-        Copyright{" "}
+        Copyright{' '}
         <a
           href="https://omerald.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
           @Omerald
-        </a>{" "}
+        </a>{' '}
         2023. <br />
         All Rights Reserved.
       </p>

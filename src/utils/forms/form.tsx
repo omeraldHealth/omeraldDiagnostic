@@ -1,30 +1,30 @@
-import { EyeIcon, PencilIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { Image, Modal, Popover, Space, Tag } from "antd";
-import moment from "moment";
-import dayjs from "dayjs";
+import { EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/20/solid';
+import { Image, Modal, Popover, Space, Tag } from 'antd';
+import moment from 'moment';
+import dayjs from 'dayjs';
 
 const { confirm } = Modal;
 
 export const ActivityColumns = [
   {
-    key: "sdas",
-    title: "Activity",
-    dataIndex: "activity",
+    key: 'sdas',
+    title: 'Activity',
+    dataIndex: 'activity',
     render: (text: any) => <a className="text-blue-800 font-medium">{text}</a>,
     sorter: (a: any, b: any) => a.activity.length - b.activity.length,
   },
   {
-    key: "user",
-    title: "Activity By",
-    dataIndex: "user",
+    key: 'user',
+    title: 'Activity By',
+    dataIndex: 'user',
     render: (text: any) => <a>{text?.name}</a>,
     sorter: (a: any, b: any) => a.user.length - b.user.length,
   },
   {
-    key: "updatedTime",
-    title: "Activity Time",
-    dataIndex: "updatedTime",
-    render: (text: any) => <a>{moment(text).format("DD/MM/yyyy HH:mm:ss")}</a>,
+    key: 'updatedTime',
+    title: 'Activity Time',
+    dataIndex: 'updatedTime',
+    render: (text: any) => <a>{moment(text).format('DD/MM/yyyy HH:mm:ss')}</a>,
     sorter: (a: any, b: any) =>
       new Date(a?.updatedTime) - new Date(b?.updatedTime),
   },
@@ -32,29 +32,29 @@ export const ActivityColumns = [
 
 export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
   {
-    title: "Pathologist Name",
-    dataIndex: "name",
-    key: "name",
+    title: 'Pathologist Name',
+    dataIndex: 'name',
+    key: 'name',
     render: (text: any) => <a className="text-blue-800 font-medium">{text}</a>,
     sorter: (a: any, b: any) => a.name.length - b.name.length,
   },
   {
-    title: "Pathologist Designation",
-    dataIndex: "designation",
-    key: "designation",
+    title: 'Pathologist Designation',
+    dataIndex: 'designation',
+    key: 'designation',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.designation.length - b.designation.length,
   },
   {
-    title: "Pathologist Signature",
-    dataIndex: "signature",
-    key: "signature",
+    title: 'Pathologist Signature',
+    dataIndex: 'signature',
+    key: 'signature',
     sorter: (a: any, b: any) => a.signature.length - b.signature.length,
     render: (text: any) => (
       <span className="w-[20px] h-[20px]">
         {text ? (
           <span className="object-cover border rounded">
-            {" "}
+            {' '}
             <Image width={220} height={70} src={text} />
           </span>
         ) : (
@@ -64,9 +64,9 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
     ),
   },
   {
-    title: "Action",
-    dataIndex: "name",
-    key: "name  ",
+    title: 'Action',
+    dataIndex: 'name',
+    key: 'name  ',
     render: (text: any, record: any) => (
       <Space size="middle">
         <a>
@@ -74,8 +74,8 @@ export const PathologistColumns = (handleEdit: any, handleRemove: any) => [
             className="w-4 text-red-500"
             onClick={() => {
               confirm({
-                title: "Do you want to delete this pathologist?",
-                content: "The action cannot be undone.",
+                title: 'Do you want to delete this pathologist?',
+                content: 'The action cannot be undone.',
                 onOk() {
                   handleRemove(record?._id);
                 },
@@ -98,37 +98,37 @@ export const BranchColumns = (
   currentBranch: any,
 ) => [
   {
-    title: "Branch Name",
-    dataIndex: "branchName",
-    key: "branchName",
+    title: 'Branch Name',
+    dataIndex: 'branchName',
+    key: 'branchName',
     render: (text: any) => <a className="text-blue-800 font-medium">{text}</a>,
     sorter: (a: any, b: any) => a.branchName.length - b.branchName.length,
   },
   {
-    title: "Branch Email",
-    dataIndex: "branchEmail",
-    key: "branchEmail",
+    title: 'Branch Email',
+    dataIndex: 'branchEmail',
+    key: 'branchEmail',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.branchEmail.length - b.branchEmail.length,
   },
   {
-    title: "Branch Contact",
-    dataIndex: "branchContact",
-    key: "branchContact",
+    title: 'Branch Contact',
+    dataIndex: 'branchContact',
+    key: 'branchContact',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.branchContact.length - b.branchContact.length,
   },
   {
-    title: "Branch Address",
-    dataIndex: "branchAddress",
-    key: "branchAddress",
+    title: 'Branch Address',
+    dataIndex: 'branchAddress',
+    key: 'branchAddress',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.branchAddress.length - b.branchAddress.length,
   },
   {
-    title: "Action",
-    dataIndex: "branchAddress",
-    key: "branchAddress  ",
+    title: 'Action',
+    dataIndex: 'branchAddress',
+    key: 'branchAddress  ',
     render: (_, record: any, index: any) => (
       <Space size="middle">
         {/* {(record?.branchContact !== profile?.phoneNumber) ? 
@@ -144,8 +144,8 @@ export const BranchColumns = (
                 className="w-4 text-red-500"
                 onClick={() => {
                   confirm({
-                    title: "Do you want to delete this branch?",
-                    content: "The action cannot be undone.",
+                    title: 'Do you want to delete this branch?',
+                    content: 'The action cannot be undone.',
                     onOk() {
                       handleRemove(record?._id);
                     },
@@ -165,39 +165,39 @@ export const EmployeeColumns = (
   profile: any,
 ) => [
   {
-    title: "Operator Name",
-    dataIndex: "managerName",
-    key: "managerName",
+    title: 'Operator Name',
+    dataIndex: 'managerName',
+    key: 'managerName',
     render: (text: any) => <a className="text-blue-800 font-medium">{text}</a>,
     sorter: (a: any, b: any) => a.managerName.length - b.managerName.length,
   },
   {
-    title: "Operator Role",
-    dataIndex: "managerRole",
-    key: "managerRole",
+    title: 'Operator Role',
+    dataIndex: 'managerRole',
+    key: 'managerRole',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.managerRole.length - b.managerRole.length,
     filters: [
-      { text: "Admin", value: "Admin" },
-      { text: "Manager", value: "Manager" },
-      { text: "Operator", value: "Operator" },
-      { text: "Spoc", value: "Spoc" },
+      { text: 'Admin', value: 'Admin' },
+      { text: 'Manager', value: 'Manager' },
+      { text: 'Operator', value: 'Operator' },
+      { text: 'Spoc', value: 'Spoc' },
     ],
     onFilter: (value: string, record: any) =>
       record.managerRole.indexOf(value) === 0,
   },
   {
-    title: "Operator Contact",
-    dataIndex: "managerContact",
-    key: "managerContact",
+    title: 'Operator Contact',
+    dataIndex: 'managerContact',
+    key: 'managerContact',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) =>
       a.managerContact.length - b.managerContact.length,
   },
   {
-    title: "Action",
-    dataIndex: "managerSignature",
-    key: "managerSignature  ",
+    title: 'Action',
+    dataIndex: 'managerSignature',
+    key: 'managerSignature  ',
     render: (i: any, record: any, index: any) => (
       <Space size="middle">
         {/* {(record?.managerRole !== "owner") && (
@@ -205,16 +205,16 @@ export const EmployeeColumns = (
             <PencilIcon onClick={() => handleEdit(record)} className='w-4 text-gray-900' />
           </a>
         )} */}
-        {record?.managerRole !== "owner" &&
+        {record?.managerRole !== 'owner' &&
           record?.managerContact !== profile?.phoneNumber && (
             <a>
               <TrashIcon
                 onClick={() => {
                   confirm({
-                    title: "Do you want to delete this employee?",
-                    content: "The action cannot be undone.",
+                    title: 'Do you want to delete this employee?',
+                    content: 'The action cannot be undone.',
                     onOk() {
-                      handleRemove("managersDetail", record);
+                      handleRemove('managersDetail', record);
                     },
                   });
                 }}
@@ -242,14 +242,14 @@ const getPopOver = (param: any) => {
         <strong>Name</strong>: {param?.name}
       </p>
       <p
-        style={{ width: 300, wordWrap: "break-word", whiteSpace: "pre-wrap" }}
+        style={{ width: 300, wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}
         className="w-10 overflow-hidden whitespace-nowrap"
       >
         <strong>Description</strong>: {param?.description}
       </p>
 
       <p>
-        <strong>Aliases</strong>: {param?.aliases?.join(",")}
+        <strong>Aliases</strong>: {param?.aliases?.join(',')}
       </p>
       <p>
         <strong>IsActive</strong>: {param?.isActive}
@@ -278,37 +278,37 @@ export const TestTableColumns: (
   profile: any,
 ) => TestTableColumn[] = (handleEdit, handleRemove) => [
   {
-    key: "testName",
-    title: "Test Name",
-    dataIndex: "testName",
+    key: 'testName',
+    title: 'Test Name',
+    dataIndex: 'testName',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) =>
       a.sampleType?.testName?.length - b.sampleType?.testName?.length,
   },
   {
-    key: "sampleName",
-    title: "Sample Name",
-    dataIndex: "sampleName",
+    key: 'sampleName',
+    title: 'Sample Name',
+    dataIndex: 'sampleName',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) =>
       a.sampleType?.sampleName?.length - b.sampleType?.sampleName?.length,
   },
   {
-    key: "parameter",
-    title: "Parameters",
-    dataIndex: "parameters",
+    key: 'parameter',
+    title: 'Parameters',
+    dataIndex: 'parameters',
     render: (parameters: any, record: any) => (
       <div
         style={{
-          maxWidth: "20vw",
-          maxHeight: "calc(3 * 20px + 2px)",
-          overflowY: "auto",
+          maxWidth: '20vw',
+          maxHeight: 'calc(3 * 20px + 2px)',
+          overflowY: 'auto',
         }}
       >
         <div
           style={{
-            display: "grid",
-            gap: "20px",
+            display: 'grid',
+            gap: '20px',
           }}
         >
           {parameters?.map((param: any, index: any) => (
@@ -325,9 +325,9 @@ export const TestTableColumns: (
     ),
   },
   {
-    key: "isActive",
-    title: "Status",
-    dataIndex: "isActive",
+    key: 'isActive',
+    title: 'Status',
+    dataIndex: 'isActive',
     sorter: (a: any, b: any) =>
       a.sampleType?.keywords.length - b.sampleType?.keywords.length,
     render: (text: any) => {
@@ -339,9 +339,9 @@ export const TestTableColumns: (
     },
   },
   {
-    key: "action",
-    title: "Action",
-    dataIndex: "action",
+    key: 'action',
+    title: 'Action',
+    dataIndex: 'action',
     render: (text: any, record: any) => (
       <Space size="middle">
         <a className="flex gap-2">
@@ -364,37 +364,37 @@ export const TestTableColumns: (
 
 export const ParameterColumns = [
   {
-    key: "keyword",
-    title: "Parameter",
-    dataIndex: "keyword",
+    key: 'keyword',
+    title: 'Parameter',
+    dataIndex: 'keyword',
     render: (text: any) => <a className="text-blue-800 font-medium">{text}</a>,
     sorter: (a: any, b: any) => a.keyword.length - b.keyword.length,
   },
   {
-    key: "minRange",
-    title: "Min Range",
-    dataIndex: "minRange",
+    key: 'minRange',
+    title: 'Min Range',
+    dataIndex: 'minRange',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.minRange.length - b.minRange.length,
   },
   {
-    key: "maxRange",
-    title: "Max Range",
-    dataIndex: "maxRange",
+    key: 'maxRange',
+    title: 'Max Range',
+    dataIndex: 'maxRange',
     render: (text: any) => <a>{text}</a>,
     sorter: (a: any, b: any) => a.maxRange.length - b.maxRange.length,
   },
   {
-    key: "unit",
-    title: "Unit",
-    dataIndex: "unit",
+    key: 'unit',
+    title: 'Unit',
+    dataIndex: 'unit',
     sorter: (a: any, b: any) => a.unit.length - b.unit.length,
     render: (text: any) => <a>{text}</a>,
   },
   {
-    key: "aliases",
-    title: "Aliases",
-    dataIndex: "aliases",
+    key: 'aliases',
+    title: 'Aliases',
+    dataIndex: 'aliases',
     sorter: (a: any, b: any) => a.aliases.length - b.aliases.length,
     render: (tags: any) => {
       if (!tags || tags?.length < 1) {
@@ -409,14 +409,14 @@ export const ParameterColumns = [
           {displayTags.length > 0 && (
             <>
               {displayTags.map((tag) => (
-                <Tag color={"green"} key={tag}>
+                <Tag color={'green'} key={tag}>
                   {tag}
                 </Tag>
               ))}
               {remainingTags.length > 0 && (
                 <>
-                  <Tag color={"green"}>...</Tag>
-                  <Tag color={"green"}>{remainingTags.length} more</Tag>
+                  <Tag color={'green'}>...</Tag>
+                  <Tag color={'green'}>{remainingTags.length} more</Tag>
                 </>
               )}
             </>
@@ -439,10 +439,10 @@ export const ReportTableColumns: (
   //   // sortDirections: ['descend'],
   // },
   {
-    key: "patient",
-    title: "Patient Name",
-    dataIndex: "patient",
-    className: "w-[10vw]",
+    key: 'patient',
+    title: 'Patient Name',
+    dataIndex: 'patient',
+    className: 'w-[10vw]',
     sorter: (a, b) => a.userName.length - b.userName.length,
     // sortDirections: ['descend'],
     render(patient, record) {
@@ -450,9 +450,9 @@ export const ReportTableColumns: (
     },
   },
   {
-    key: "patient",
-    title: "Email",
-    dataIndex: "patient",
+    key: 'patient',
+    title: 'Email',
+    dataIndex: 'patient',
     // defaultSortOrder: 'descend',
     sorter: (a, b) => a.email - b.email,
     render(patient, record) {
@@ -460,9 +460,9 @@ export const ReportTableColumns: (
     },
   },
   {
-    key: "patient",
-    title: "Contact",
-    dataIndex: "patient",
+    key: 'patient',
+    title: 'Contact',
+    dataIndex: 'patient',
     // defaultSortOrder: 'descend',
     sorter: (a, b) => a.userId - b.userId,
     render(patient, record) {
@@ -470,21 +470,21 @@ export const ReportTableColumns: (
     },
   },
   {
-    key: "reportData",
-    title: "Report Name",
-    dataIndex: "reportData",
+    key: 'reportData',
+    title: 'Report Name',
+    dataIndex: 'reportData',
     sorter: (a, b) => a.testName.length - b.testName.length,
     render(reportData, record) {
       return <p>{reportData?.reportName}</p>;
     },
   },
   {
-    key: "reportDate",
-    title: "Report Date",
-    dataIndex: "reportDate",
-    render: (date: string) => dayjs(date).format("MMM D, YYYY"),
+    key: 'reportDate',
+    title: 'Report Date',
+    dataIndex: 'reportDate',
+    render: (date: string) => dayjs(date).format('MMM D, YYYY'),
     // sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime(),
-    defaultSortOrder: ["ascend"],
+    defaultSortOrder: ['ascend'],
   },
   // {
   //   key:"updatedAt",
@@ -494,9 +494,9 @@ export const ReportTableColumns: (
   //   sorter: (a, b) => new Date(a.reportDate).getTime() - new Date(b.reportDate).getTime()
   // },
   {
-    key: "click",
-    title: "View",
-    dataIndex: "isManualReport",
+    key: 'click',
+    title: 'View',
+    dataIndex: 'isManualReport',
     render: (stat: string, report: any) => (
       <>
         {report?.reportData.url ? (
@@ -521,9 +521,9 @@ export const ReportTableColumns: (
     ),
   },
   {
-    key: "share",
-    title: "Delete",
-    dataIndex: "userName",
+    key: 'share',
+    title: 'Delete',
+    dataIndex: 'userName',
     render: (userName: string, record) => (
       <>
         <div className="flex justifty-between align-middle items-center h-[1vh]">

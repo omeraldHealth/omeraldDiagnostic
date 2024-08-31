@@ -1,11 +1,11 @@
-const { atom } = require("recoil");
+const { atom } = require('recoil');
 
 export const userState = atom({
-  key: "user",
+  key: 'user',
   default: {},
 });
 
 export const phoneNumberState = atom({
-  key: "contact",
+  key: 'contact',
   default: {},
 });

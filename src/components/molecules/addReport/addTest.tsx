@@ -1,4 +1,4 @@
-import { testDetailsState } from "@components/common/recoil/testDetails";
+import { testDetailsState } from '@components/common/recoil/testDetails';
 import {
   Button,
   Col,
@@ -18,11 +18,11 @@ import {
   Table,
   Tabs,
   Tag,
-} from "antd";
-import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { testDataState } from "../../common/recoil/testDetails/test";
-import { FaSearchMinus } from "react-icons/fa";
+} from 'antd';
+import { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { testDataState } from '../../common/recoil/testDetails/test';
+import { FaSearchMinus } from 'react-icons/fa';
 import {
   ArrowDownIcon,
   MinusCircleIcon,
@@ -30,23 +30,23 @@ import {
   PlusCircleIcon,
   PlusIcon,
   TrashIcon,
-} from "@heroicons/react/20/solid";
-import { useForm } from "antd/es/form/Form";
-import { useUpdateDiagnostic } from "@utils/reactQuery";
-import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
-import { profileState } from "@components/common/recoil/profile";
+} from '@heroicons/react/20/solid';
+import { useForm } from 'antd/es/form/Form';
+import { useUpdateDiagnostic } from '@utils/reactQuery';
+import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { profileState } from '@components/common/recoil/profile';
 import {
   useCurrentBranchValue,
   useParamValue,
   useReportValue,
   useTestDataValue,
-} from "@components/common/constants/recoilValues";
-import { SuccessTest } from "../addTest/successTest";
-import { paramState } from "@components/common/recoil/testDetails/param";
-import axios from "axios";
-import { getAdminReportTypesApi } from "@utils/index";
-import { reportState } from "@components/common/recoil/report";
-import { branchState } from "@components/common/recoil/branch/branch";
+} from '@components/common/constants/recoilValues';
+import { SuccessTest } from '../addTest/successTest';
+import { paramState } from '@components/common/recoil/testDetails/param';
+import axios from 'axios';
+import { getAdminReportTypesApi } from '@utils/index';
+import { reportState } from '@components/common/recoil/report';
+import { branchState } from '@components/common/recoil/branch/branch';
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
@@ -63,7 +63,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
   const updateDiagnostic = useUpdateDiagnostic(
     {
       onSuccess: (data) => {
-        successAlert("test updated successfully");
+        successAlert('test updated successfully');
         setProfile(data?.data);
 
         const updatedBranches = data?.data?.branches.filter((branch) => {
@@ -77,7 +77,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
         next();
       },
       onError: () => {
-        errorAlert("Error updating tests");
+        errorAlert('Error updating tests');
         // setLoading(false)
       },
     },
@@ -113,7 +113,7 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
         const updatedProfile = { data: { branches: updatedBranches } };
         updateDiagnostic.mutate(updatedProfile);
       } catch (error) {
-        console.error("Error logging activity:", error);
+        console.error('Error logging activity:', error);
       }
     } else {
       let SampleType = {
@@ -140,22 +140,22 @@ export const AddTestComponent: React.FC<any> = ({ setTest, edit }) => {
         const updatedProfile = { data: { branches: updatedBranches } };
         updateDiagnostic.mutate(updatedProfile);
       } catch (error) {
-        console.error("Error logging activity:", error);
+        console.error('Error logging activity:', error);
       }
     }
   };
 
   const steps = [
     {
-      title: "Choose Test Type",
+      title: 'Choose Test Type',
       content: <TestDetail next={next} />,
     },
     {
-      title: "Add Parameters",
+      title: 'Add Parameters',
       content: <TestParams data={testDetailState?.parameters} />,
     },
     {
-      title: "Test Summary",
+      title: 'Test Summary',
       content: (
         <SuccessTest
           handleSuccess={() => {
@@ -320,7 +320,7 @@ const OmeraldTestDetails: React.FC<any> = ({ next }: any) => {
         setTestDetail(updatedTestDetailState);
       } else {
         // Handle the case where `selectedReport` is empty
-        console.error("No test reports selected.");
+        console.error('No test reports selected.');
       }
     }
   };
@@ -383,11 +383,11 @@ export const getContent = (bioRefRange) => {
   // Helper function to format range string based on available min and max values
   const formatRange = (min, max, unit) => {
     if (min && max) {
-      return `${min} > and < ${max} ${unit || ""}`;
+      return `${min} > and < ${max} ${unit || ''}`;
     } else if (min) {
-      return `> ${min} ${unit || ""}`;
+      return `> ${min} ${unit || ''}`;
     } else if (max) {
-      return `< ${max} ${unit || ""}`;
+      return `< ${max} ${unit || ''}`;
     }
   };
 
@@ -399,7 +399,7 @@ export const getContent = (bioRefRange) => {
       bioRefRange.advanceRange?.customRange?.length > 0);
 
   return (
-    <div style={{ maxHeight: "50vh", overflowY: "auto", padding: "0 10px" }}>
+    <div style={{ maxHeight: '50vh', overflowY: 'auto', padding: '0 10px' }}>
       {/* Basic Range */}
       {bioRefRange.basicRange &&
         bioRefRange.basicRange.map((basic, basicIndex) => (
@@ -430,7 +430,7 @@ export const getContent = (bioRefRange) => {
                   <div key={genderIndex}>
                     <p>Gender Range:</p>
                     <p className="ml-4">{`${gender?.genderRangeType} Range: ${formatRange(gender.min, gender.max, gender.unit)}`}</p>
-                    {gender?.genderRangeType === "female" && gender.details && (
+                    {gender?.genderRangeType === 'female' && gender.details && (
                       <div className="ml-6">
                         <p>Details:</p>
                         <div className="ml-6">
@@ -440,7 +440,7 @@ export const getContent = (bioRefRange) => {
                             <>
                               <p>Pregnant: Yes</p>
                               {gender.details.trimester &&
-                                gender.details.trimester?.type !== "none" && (
+                                gender.details.trimester?.type !== 'none' && (
                                   <p className="ml-6">
                                     Trimester: {gender.details.trimester?.type}
                                   </p>
@@ -523,7 +523,7 @@ const ParameterUnitsColumn = ({ data }) => {
         visible={visibleUnits.length > 0}
         onVisibleChange={handlePopoverVisibleChange}
       >
-        <Tag color="green" style={{ cursor: "pointer" }}>
+        <Tag color="green" style={{ cursor: 'pointer' }}>
           Show Units
         </Tag>
       </Popover>
@@ -591,66 +591,66 @@ const TestParams: React.FC<any> = ({ data = [] }: any) => {
 
   const parameterColumns = [
     {
-      title: "Parameter",
-      dataIndex: "name",
-      key: "name",
+      title: 'Parameter',
+      dataIndex: 'name',
+      key: 'name',
       ellipsis: true,
       width: 150,
       sorter: (a, b) => a.name.localeCompare(b.name),
       render: (text) => (
         <div
-          style={{ width: 150, wordWrap: "break-word", whiteSpace: "pre-wrap" }}
+          style={{ width: 150, wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}
         >
           {text}
         </div>
       ),
     },
     {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
       width: 100,
       render: (text) => (
         <div
-          style={{ width: 200, wordWrap: "break-word", whiteSpace: "pre-wrap" }}
+          style={{ width: 200, wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}
           dangerouslySetInnerHTML={{ __html: text }}
         ></div>
       ),
     },
     {
-      title: "Remedy",
-      dataIndex: "remedy",
-      key: "remedy",
+      title: 'Remedy',
+      dataIndex: 'remedy',
+      key: 'remedy',
       width: 100,
       render: (text) => (
         <div
           style={{
-            maxHeight: "20vh",
-            maxWidth: "30vw",
-            minWidth: "20vw",
-            overflowY: "auto", // Enable vertical scrolling
-            wordWrap: "break-word",
-            whiteSpace: "pre-wrap",
-            padding: "4px", // Optional: adds padding inside the container
+            maxHeight: '20vh',
+            maxWidth: '30vw',
+            minWidth: '20vw',
+            overflowY: 'auto', // Enable vertical scrolling
+            wordWrap: 'break-word',
+            whiteSpace: 'pre-wrap',
+            padding: '4px', // Optional: adds padding inside the container
           }}
           dangerouslySetInnerHTML={{ __html: text }}
         ></div>
       ),
     },
     {
-      title: "Unit",
-      dataIndex: "units",
-      key: "units",
+      title: 'Unit',
+      dataIndex: 'units',
+      key: 'units',
       width: 100,
       render: (text, record) => <ParameterUnitsColumn data={record} />,
     },
     {
-      title: "Alias",
-      dataIndex: "aliases",
-      key: "aliases",
+      title: 'Alias',
+      dataIndex: 'aliases',
+      key: 'aliases',
       width: 250,
       filterIcon: (filtered) => (
-        <FaSearchMinus style={{ color: filtered ? "#1890ff" : undefined }} />
+        <FaSearchMinus style={{ color: filtered ? '#1890ff' : undefined }} />
       ),
       filterDropdown: ({
         setSelectedKeys,
@@ -666,7 +666,7 @@ const TestParams: React.FC<any> = ({ data = [] }: any) => {
               setSelectedKeys(e.target.value ? [e.target.value] : [])
             }
             // onPressEnter={() => handleSearch(selectedKeys, confirm)}
-            style={{ marginBottom: 8, display: "block" }}
+            style={{ marginBottom: 8, display: 'block' }}
           />
           <Space>
             {/* <Button type="primary" onClick={() => handleSearch(selectedKeys, confirm)}>
@@ -701,9 +701,9 @@ const TestParams: React.FC<any> = ({ data = [] }: any) => {
       },
     },
     {
-      title: "Bio Ref",
-      dataIndex: "bioRefRange",
-      key: "bioRefRange",
+      title: 'Bio Ref',
+      dataIndex: 'bioRefRange',
+      key: 'bioRefRange',
       width: 100,
       render: (bioRefRange, record) => {
         let moreDots = false;
@@ -725,26 +725,26 @@ const TestParams: React.FC<any> = ({ data = [] }: any) => {
       },
     },
     {
-      title: "Status",
-      key: "isActive",
-      dataIndex: "isActive",
+      title: 'Status',
+      key: 'isActive',
+      dataIndex: 'isActive',
       filters: [
-        { text: "Active", value: true },
-        { text: "Inactive", value: false },
+        { text: 'Active', value: true },
+        { text: 'Inactive', value: false },
       ],
       onFilter: (value, record) => record.isActive === value,
       render: (active) => (
         <span>
-          <Tag color={active ? "green" : "red"}>
-            {active ? "Active" : "Inactive"}
+          <Tag color={active ? 'green' : 'red'}>
+            {active ? 'Active' : 'Inactive'}
           </Tag>
         </span>
       ),
     },
     {
-      title: "Action",
-      dataIndex: "name",
-      key: "name  ",
+      title: 'Action',
+      dataIndex: 'name',
+      key: 'name  ',
       render: (text: any, record: any) => (
         <Space size="middle">
           <a
@@ -772,10 +772,10 @@ const TestParams: React.FC<any> = ({ data = [] }: any) => {
           pageSize: 10,
           showQuickJumper: true,
           showSizeChanger: true,
-          pageSizeOptions: [`${10}` || "4", "10", "20", "50", "100"],
+          pageSizeOptions: [`${10}` || '4', '10', '20', '50', '100'],
           // onShowSizeChange: (current, size) => setPageSize(size), // Update the page size
         }}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: 'max-content' }}
       />
       <span className="flex justify-end">
         {/* <a className="bg-green-800 rounded p-2 text-white" href="#"><p className="flex text-xs"><PlusCircleIcon className="w-4 mx-2" /> Add Param </p></a> */}
@@ -827,10 +827,10 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
   const paramData = useParamValue();
 
   const [sampleType, setSampleType] = useState();
-  const [gender, setGender] = useState("male");
+  const [gender, setGender] = useState('male');
   const [ageRange, setAgeRange] = useState([]);
 
-  const [rangeType, setRangeType] = useState("basic");
+  const [rangeType, setRangeType] = useState('basic');
   const [basicRange, setBasicRange] = useState([]);
   const [advanceRange, setAdvanceRange] = useState([]);
   const [form] = Form.useForm();
@@ -849,17 +849,17 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
         min: item?.min,
         max: item?.max,
         unit: item?.unit,
-        key: item[keyType] || "", // Use the keyType (ageRangeType or genderRangeType) for the key
+        key: item[keyType] || '', // Use the keyType (ageRangeType or genderRangeType) for the key
       }));
     };
 
     // Format the ageRange data
-    const ageRangesFormatted = formatRangeData(ageRange, "ageRangeType");
+    const ageRangesFormatted = formatRangeData(ageRange, 'ageRangeType');
 
     // Format the genderRange data
     const genderRangesFormatted = formatRangeData(
       genderRange,
-      "genderRangeType",
+      'genderRangeType',
     );
 
     // Combine both arrays
@@ -882,26 +882,26 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
 
   const updateDiagnostic = useUpdateDiagnostic({
     onSuccess: (data) => {
-      successAlert("Profile updated successfully");
+      successAlert('Profile updated successfully');
       setProfile(data?.data);
       handleOk();
     },
     onError: () => {
-      errorAlert("Error updating profile");
+      errorAlert('Error updating profile');
     },
   });
 
   const handleSubmitBioRange = (data) => {
     let object = {};
 
-    if (rangeType === "basic") {
-      object.rangeType = "basic";
+    if (rangeType === 'basic') {
+      object.rangeType = 'basic';
       object.min = Number(basicRange.min);
       object.max = Number(basicRange.max);
 
       // Check if a basic range exists and update it
       const basicIndex = bioRange.findIndex(
-        (range) => range.rangeType === "basic",
+        (range) => range.rangeType === 'basic',
       );
       if (basicIndex !== -1) {
         bioRange[basicIndex] = object; // Update existing basic range
@@ -914,7 +914,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
 
     setBioRange([...bioRange]);
     setAdvanceRange([]);
-    setRangeType("basic");
+    setRangeType('basic');
     setAddRange(false);
   };
 
@@ -1006,7 +1006,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
 
   const convertCommaSeparatedValues = (commaSeparatedValues) => {
     return commaSeparatedValues
-      .flatMap((value) => value.split(",").map((tag) => tag.trim()))
+      .flatMap((value) => value.split(',').map((tag) => tag.trim()))
       .filter((tag) => tag.length > 0); // Remove empty tags, if any
   };
 
@@ -1020,7 +1020,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
       visible={isModalVisible}
       onOk={handleSubmit}
       onCancel={handleCancel}
-      style={{ padding: 0, minWidth: "50%" }}
+      style={{ padding: 0, minWidth: '50%' }}
       footer={[
         <Button key="back" onClick={handleCancel}>
           Cancel
@@ -1037,7 +1037,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
               name="name"
               label="Name"
               rules={[
-                { required: true, message: "Please input the parameter name!" },
+                { required: true, message: 'Please input the parameter name!' },
               ]}
             >
               <Input placeholder="Enter Parameter Name" className="w-full" />
@@ -1053,7 +1053,7 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
             <Form.Item name="aliases" label="Aliases" initialValue={tags}>
               <Select
                 mode="tags"
-                placeholder={"Enter Aliases"}
+                placeholder={'Enter Aliases'}
                 maxTagCount={15}
                 onChange={handleInputChange}
               ></Select>
@@ -1069,14 +1069,14 @@ const ParameterModal = ({ isModalVisible, handleOk, handleCancel, edit }) => {
             </Form.Item>
           </section>
           <section>
-            <Form.Item name={"unit"} label="">
+            <Form.Item name={'unit'} label="">
               <Row>
                 <Col span={24}>
                   <section className="flex justify-between items-center mx-3">
                     <p
                       level={5}
                       className="p-0 m-0"
-                      style={{ fontWeight: "normal" }}
+                      style={{ fontWeight: 'normal' }}
                     >
                       Add Bio Ref Ranges
                     </p>
@@ -1172,8 +1172,8 @@ const InputForm = ({
 
       const updatedRanges = currentRanges.map((range) => {
         // Determine the type (ageRange or genderRange) and the key (ageRangeType or genderRangeType)
-        const type = data?.ageRange ? "ageRange" : "genderRange";
-        const keyType = data?.ageRange ? "ageRangeType" : "genderRangeType";
+        const type = data?.ageRange ? 'ageRange' : 'genderRange';
+        const keyType = data?.ageRange ? 'ageRangeType' : 'genderRangeType';
 
         // Check if the range and data[type] are defined
         if (range[type] && data[type]) {
@@ -1212,7 +1212,7 @@ const InputForm = ({
             <Col span={24}>
               <section className="mb-4">
                 <Radio.Group
-                  defaultValue={"basic"}
+                  defaultValue={'basic'}
                   onChange={(range) => {
                     setRangeType(range.target.value);
                   }}
@@ -1222,7 +1222,7 @@ const InputForm = ({
                 </Radio.Group>
               </section>
             </Col>
-            {rangeType === "basic" ? (
+            {rangeType === 'basic' ? (
               <BasicRangeInput handleBasicUnit={handleBasicUnit} />
             ) : (
               <AdvanceRangeInput
@@ -1232,7 +1232,7 @@ const InputForm = ({
           </Row>
         </Col>
       </Row>
-      {rangeType === "basic" && (
+      {rangeType === 'basic' && (
         <Row>
           <Col>
             <Form.Item>
@@ -1247,7 +1247,7 @@ const InputForm = ({
               <Button
                 htmlType="button"
                 onClick={() => {
-                  setRangeType("basic");
+                  setRangeType('basic');
                   setAddRange(false);
                 }}
               >
@@ -1269,14 +1269,14 @@ const AdvanceRangeInput = ({ handleAdvanceRangeSubmit }) => {
 
   const advanceRangeOptions = {
     ageRange: [
-      { key: "adult", label: "Adult" },
-      { key: "senior", label: "Senior" },
-      { key: "pediatric", label: "Pediatric" },
+      { key: 'adult', label: 'Adult' },
+      { key: 'senior', label: 'Senior' },
+      { key: 'pediatric', label: 'Pediatric' },
     ],
     genderRange: [
-      { key: "male", label: "Male" },
-      { key: "female", label: "Female" },
-      { key: "other", label: "Other" },
+      { key: 'male', label: 'Male' },
+      { key: 'female', label: 'Female' },
+      { key: 'other', label: 'Other' },
     ],
   };
 
@@ -1307,7 +1307,7 @@ const AdvanceRangeInput = ({ handleAdvanceRangeSubmit }) => {
           key={key}
           title={
             key.charAt(0).toUpperCase() +
-            key.slice(1).replace("Range", " Range")
+            key.slice(1).replace('Range', ' Range')
           }
         >
           {renderSubMenuItems(values)}
@@ -1326,7 +1326,7 @@ const AdvanceRangeInput = ({ handleAdvanceRangeSubmit }) => {
         </Dropdown>
       </section>
 
-      {selectedOption.category === "ageRange" && (
+      {selectedOption.category === 'ageRange' && (
         <AgeRangeForm
           key={selectedOption.choice}
           ageRangeType={selectedOption.choice}
@@ -1334,7 +1334,7 @@ const AdvanceRangeInput = ({ handleAdvanceRangeSubmit }) => {
           onFinish={handleSubmit}
         />
       )}
-      {selectedOption.category === "genderRange" && (
+      {selectedOption.category === 'genderRange' && (
         <GenderRangeForm
           key={selectedOption.choice}
           genderRangeType={selectedOption.choice}
@@ -1349,7 +1349,7 @@ const AdvanceRangeInput = ({ handleAdvanceRangeSubmit }) => {
 const DisplayValues = ({ basicRange, advanceRange, handleRemove }) => {
   return (
     <div className="px-3 my-3">
-      <strong style={{ display: "block", marginBottom: "8px" }}>
+      <strong style={{ display: 'block', marginBottom: '8px' }}>
         Basic Range
       </strong>
       <List
@@ -1373,7 +1373,7 @@ const DisplayValues = ({ basicRange, advanceRange, handleRemove }) => {
         )}
       />
       <strong
-        style={{ display: "block", marginBottom: "8px", marginTop: "16px" }}
+        style={{ display: 'block', marginBottom: '8px', marginTop: '16px' }}
       >
         Advance Range
       </strong>
@@ -1385,10 +1385,10 @@ const DisplayValues = ({ basicRange, advanceRange, handleRemove }) => {
               <div className="flex flex-col w-full">
                 <p className="capitalize font-bold text-green-900">
                   {item?.key}
-                </p>{" "}
+                </p>{' '}
                 {/* Key as header */}
                 <div className="grid grid-cols-4 gap-12 mt-2">
-                  {" "}
+                  {' '}
                   {/* Grid with 3 columns */}
                   <div className="w-auto col-span-2  ">
                     <p className="font-semibold">Unit:</p>
@@ -1440,14 +1440,14 @@ const BasicRangeInput = ({ handleBasicUnit }) => {
   // Custom validator for Min and Max fields
   const requiredMinOrMax = ({ getFieldValue }) => ({
     validator(_, value) {
-      const basicRanges = getFieldValue("basicRanges") || [];
+      const basicRanges = getFieldValue('basicRanges') || [];
       const isValid = basicRanges.every(
         (range) => range.min !== undefined || range.max !== undefined,
       );
 
       return isValid
         ? Promise.resolve()
-        : Promise.reject(new Error("Either Min or Max is required"));
+        : Promise.reject(new Error('Either Min or Max is required'));
     },
   });
 
@@ -1464,20 +1464,20 @@ const BasicRangeInput = ({ handleBasicUnit }) => {
             {fields.map(({ key, name, ...restField }) => (
               <Space
                 key={key}
-                style={{ display: "flex", marginBottom: 8 }}
+                style={{ display: 'flex', marginBottom: 8 }}
                 align="baseline"
               >
                 <Form.Item
                   {...restField}
-                  name={[name, "unit"]}
+                  name={[name, 'unit']}
                   label="Unit"
-                  rules={[{ required: true, message: "Please enter unit" }]}
+                  rules={[{ required: true, message: 'Please enter unit' }]}
                 >
                   <Input placeholder="Unit" />
                 </Form.Item>
                 <Form.Item
                   {...restField}
-                  name={[name, "min"]}
+                  name={[name, 'min']}
                   label="Min"
                   rules={[requiredMinOrMax]}
                 >
@@ -1485,7 +1485,7 @@ const BasicRangeInput = ({ handleBasicUnit }) => {
                 </Form.Item>
                 <Form.Item
                   {...restField}
-                  name={[name, "max"]}
+                  name={[name, 'max']}
                   label="Max"
                   rules={[requiredMinOrMax]}
                 >
@@ -1544,9 +1544,9 @@ const AgeRangeForm = ({ onFinish, ageRangeType }) => {
   // Custom validator for Min and Max fields
   const requiredMinOrMax = ({ getFieldValue }) => ({
     validator(_, value) {
-      const ageRange = getFieldValue("ageRange") || {};
+      const ageRange = getFieldValue('ageRange') || {};
       if (!ageRange.min && !ageRange.max) {
-        return Promise.reject(new Error("Either Min or Max is required"));
+        return Promise.reject(new Error('Either Min or Max is required'));
       }
       return Promise.resolve();
     },
@@ -1557,12 +1557,12 @@ const AgeRangeForm = ({ onFinish, ageRangeType }) => {
       <div style={{ marginBottom: 16 }}>
         <h3>Add Age Range for {ageRangeType}</h3>
       </div>
-      <Space style={{ display: "flex", marginBottom: 8 }}>
+      <Space style={{ display: 'flex', marginBottom: 8 }}>
         <Form.Item
-          name={["ageRange", "unit"]}
+          name={['ageRange', 'unit']}
           label="Unit"
           rules={[
-            { required: true, message: "Please enter unit" },
+            { required: true, message: 'Please enter unit' },
             // {
             //   pattern: /^(?=[a-zA-Z])([a-zA-Z0-9 !@#$%^&*()-_=+{}\[\]:;'"<>,./?])*/,
             //   message: 'Please enter a valid unit (alpha, alphanumeric, or alpha-special characters, starting with alpha)',
@@ -1572,14 +1572,14 @@ const AgeRangeForm = ({ onFinish, ageRangeType }) => {
           <Input placeholder="Unit" />
         </Form.Item>
         <Form.Item
-          name={["ageRange", "min"]}
+          name={['ageRange', 'min']}
           label="Min"
           rules={[requiredMinOrMax]}
         >
           <Input type="number" placeholder="Min" />
         </Form.Item>
         <Form.Item
-          name={["ageRange", "max"]}
+          name={['ageRange', 'max']}
           label="Max"
           rules={[requiredMinOrMax]}
         >
@@ -1602,7 +1602,7 @@ const AgeRangeForm = ({ onFinish, ageRangeType }) => {
 const GenderRangeForm = ({ onFinish, genderRangeType }) => {
   const [form] = Form.useForm();
   const [isFormVisible, setIsFormVisible] = useState(true);
-  const [selectedDetails, setSelectedDetails] = useState("");
+  const [selectedDetails, setSelectedDetails] = useState('');
 
   const handleSubmit = (values) => {
     let submittedValues = {
@@ -1610,9 +1610,9 @@ const GenderRangeForm = ({ onFinish, genderRangeType }) => {
       genderRangeType,
       details: {},
     };
-    if (genderRangeType === "female") {
+    if (genderRangeType === 'female') {
       submittedValues.details[selectedDetails] = true;
-      if (selectedDetails === "pregnant") {
+      if (selectedDetails === 'pregnant') {
         submittedValues.details.trimester = values.genderRange.trimester;
       }
     }
@@ -1635,11 +1635,11 @@ const GenderRangeForm = ({ onFinish, genderRangeType }) => {
   // Custom validator for Min and Max fields
   const requiredMinOrMax = ({ getFieldValue }) => ({
     validator(_, value) {
-      const { min, max } = getFieldValue(["genderRange"]) || {};
+      const { min, max } = getFieldValue(['genderRange']) || {};
       if (min !== undefined || max !== undefined) {
         return Promise.resolve();
       }
-      return Promise.reject(new Error("Either Min or Max is required"));
+      return Promise.reject(new Error('Either Min or Max is required'));
     },
   });
 
@@ -1650,28 +1650,28 @@ const GenderRangeForm = ({ onFinish, genderRangeType }) => {
           Add Gender Range for {genderRangeType} {femaleRecordType}
         </h3>
       </div>
-      {genderRangeType === "female" && (
-        <Space style={{ display: "flex", marginBottom: 16 }}>
+      {genderRangeType === 'female' && (
+        <Space style={{ display: 'flex', marginBottom: 16 }}>
           <DetailsDropdown onChange={handleOnChange} />
         </Space>
       )}
-      <Space style={{ display: "flex", marginBottom: 8 }}>
+      <Space style={{ display: 'flex', marginBottom: 8 }}>
         <Form.Item
-          name={["genderRange", "unit"]}
+          name={['genderRange', 'unit']}
           label="Unit"
-          rules={[{ required: true, message: "Please enter unit" }]}
+          rules={[{ required: true, message: 'Please enter unit' }]}
         >
           <Input placeholder="Unit" />
         </Form.Item>
         <Form.Item
-          name={["genderRange", "min"]}
+          name={['genderRange', 'min']}
           label="Min"
           rules={[requiredMinOrMax]}
         >
           <Input type="number" placeholder="Min" />
         </Form.Item>
         <Form.Item
-          name={["genderRange", "max"]}
+          name={['genderRange', 'max']}
           label="Max"
           rules={[requiredMinOrMax]}
         >
@@ -1720,7 +1720,7 @@ const DetailsDropdown = ({ onChange }) => {
       <a className="ant-dropdown-link flex" onClick={(e) => e.preventDefault()}>
         {selectedType
           ? selectedType.charAt(0).toUpperCase() + selectedType.slice(1)
-          : "Select a type"}{" "}
+          : 'Select a type'}{' '}
         <ArrowDownIcon className="w-5" />
       </a>
     </Dropdown>

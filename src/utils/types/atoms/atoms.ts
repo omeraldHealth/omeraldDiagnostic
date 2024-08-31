@@ -1,4 +1,4 @@
-import { ReactNode, SVGProps } from "react";
+import { ReactNode, SVGProps } from 'react';
 
 export interface LogoProps {
   width: number;
@@ -57,4 +57,4 @@ export interface DashCardTyes {
   value: number;
 }
 
-export const DIAGNOSTIC_PROFILE = "DIAGNOSTIC_PROFILE";
+export const DIAGNOSTIC_PROFILE = 'DIAGNOSTIC_PROFILE';

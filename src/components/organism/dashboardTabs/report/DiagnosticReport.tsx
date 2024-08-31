@@ -1,9 +1,9 @@
-import { Descriptions, Image, Tag } from "antd";
-import React from "react";
-import PatientInfo from "./patientInfo";
-import Footer from "./footer";
-import Header from "./header";
-import LabReportTable from "./table";
+import { Descriptions, Image, Tag } from 'antd';
+import React from 'react';
+import PatientInfo from './patientInfo';
+import Footer from './footer';
+import Header from './header';
+import LabReportTable from './table';
 
 const DiagnosticReport = ({ report, isTest }) => {
   return (
@@ -26,7 +26,7 @@ const DiagnosticReport = ({ report, isTest }) => {
       {/* Report Title */}
       <div className="border-y p-4 border-gray-300 text-center">
         <h2 className="font-bold text-2xl">
-          {report?.reportData?.reportName || report?.testName || "Report Name"}
+          {report?.reportData?.reportName || report?.testName || 'Report Name'}
         </h2>
       </div>
 
@@ -44,7 +44,6 @@ const DiagnosticReport = ({ report, isTest }) => {
 };
 
 export default DiagnosticReport;
-
 
 // import { Descriptions, Image, Tag } from "antd";
 // import React from "react";

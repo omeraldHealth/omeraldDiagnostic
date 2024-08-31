@@ -1,6 +1,6 @@
-import { useUser } from "@clerk/clerk-react";
-import { getDiagnosticUserApi } from "@utils/index";
-import { Button, Steps } from "antd";
+import { useUser } from '@clerk/clerk-react';
+import { getDiagnosticUserApi } from '@utils/index';
+import { Button, Steps } from 'antd';
 import {
   useCreateDiagnostic,
   useCreateDiagnosticBranch,
@@ -8,19 +8,19 @@ import {
   useInvalidateQuery,
   useQueryGetData,
   useUpdateUser,
-} from "@utils/reactQuery";
-import { successAlert, warningAlert } from "@components/atoms/alerts/alert";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { OnboardingForm } from "./onboardForm";
-import { OnboardingSummary } from "./summary";
-import { useUserValues } from "@components/common/constants/recoilValues";
-import { userState } from "@components/common/recoil/user";
-import { useSetRecoilState } from "recoil";
+} from '@utils/reactQuery';
+import { successAlert, warningAlert } from '@components/atoms/alerts/alert';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { OnboardingForm } from './onboardForm';
+import { OnboardingSummary } from './summary';
+import { useUserValues } from '@components/common/constants/recoilValues';
+import { userState } from '@components/common/recoil/user';
+import { useSetRecoilState } from 'recoil';
 import {
   usePersistedBranchState,
   usePersistedDCState,
-} from "@components/common/recoil/hooks/usePersistedState";
+} from '@components/common/recoil/hooks/usePersistedState';
 
 const OnboardNewComponents: React.FC = () => {
   const [formData, setFormData] = useState({});
@@ -45,30 +45,30 @@ const OnboardNewComponents: React.FC = () => {
 
   const updateUser = useUpdateUser({
     onSuccess: (resp) => {
-      successAlert("User Updated Succesfully");
+      successAlert('User Updated Succesfully');
       refetch();
       if (!isLoading && resp?.data?._id) {
         setUserRecoil(resp?.data);
-        invalidateQuery("userData");
-        invalidateQuery("diagnosticCenter");
-        router.push("/chooseDc");
+        invalidateQuery('userData');
+        invalidateQuery('diagnosticCenter');
+        router.push('/chooseDc');
       }
     },
     onError: (err) => {
-      warningAlert("Error updating user" + err);
+      warningAlert('Error updating user' + err);
     },
   });
 
   const createDiagProfile = useCreateDiagnostic({
     onSuccess: (data) => {
       if (data?.status === 201 && data?.data?._id) {
-        successAlert("Profile Created Succesfully");
+        successAlert('Profile Created Succesfully');
         let newDiagnosticCenters = {
           diagnostic: data?.data?._id,
           branches: [
             {
               branchId: data?.data?.branches[0]?._id,
-              roleName: "owner",
+              roleName: 'owner',
             },
           ],
         };
@@ -83,7 +83,7 @@ const OnboardNewComponents: React.FC = () => {
       }
     },
     onError: (err) => {
-      warningAlert("Error creating profile" + err.message);
+      warningAlert('Error creating profile' + err.message);
     },
   });
 
@@ -126,7 +126,7 @@ const OnboardNewComponents: React.FC = () => {
 
   const steps = [
     {
-      title: "Diagnostic Details",
+      title: 'Diagnostic Details',
       content: (
         <div className="min-h-[40vh] w-full">
           <OnboardingForm
@@ -138,7 +138,7 @@ const OnboardNewComponents: React.FC = () => {
       ),
     },
     {
-      title: "Summary",
+      title: 'Summary',
       content: (
         <div className="min-h-[40vh]">
           <OnboardingSummary formData={formData} />

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { FormControl, FormLabel, Stack, Textarea } from "@chakra-ui/react";
-import { Button, Input } from "antd";
-import { initialContactFormData } from "@utils/constants";
+import React, { useState } from 'react';
+import { FormControl, FormLabel, Stack, Textarea } from '@chakra-ui/react';
+import { Button, Input } from 'antd';
+import { initialContactFormData } from '@utils/constants';
 
 const ContactPageForm = ({ handleSubmit }) => {
   const [formData, setFormData] = useState(initialContactFormData);

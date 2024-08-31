@@ -1,21 +1,21 @@
-import { FormControl, FormLabel, Input, Stack } from "@chakra-ui/react";
-import { errorAlert2, successAlert } from "@components/atoms/alerts/alert";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
+import { FormControl, FormLabel, Input, Stack } from '@chakra-ui/react';
+import { errorAlert2, successAlert } from '@components/atoms/alerts/alert';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
 import {
   useGetDcBranch,
   useInvalidateQuery,
   useUpdateBranch,
   useUpdateDiagnostic,
-} from "@utils/reactQuery";
-import { Button } from "antd";
-import { useEffect, useState } from "react";
+} from '@utils/reactQuery';
+import { Button } from 'antd';
+import { useEffect, useState } from 'react';
 
 const UpdateBranch = ({ handleEditBranch, branchId }) => {
   const [formData, setFormData] = useState({
-    branchName: "",
-    branchEmail: "",
-    branchContact: "",
-    branchAddress: "",
+    branchName: '',
+    branchEmail: '',
+    branchContact: '',
+    branchAddress: '',
   });
   const { data: branchData, isLoading } = useGetDcBranch({
     selectedBranchId: branchId,
@@ -45,10 +45,10 @@ const UpdateBranch = ({ handleEditBranch, branchId }) => {
 
   const handleCancel = () => {
     setFormData({
-      branchName: "",
-      branchEmail: "",
-      branchContact: "",
-      branchAddress: "",
+      branchName: '',
+      branchEmail: '',
+      branchContact: '',
+      branchAddress: '',
     });
     handleEditBranch(false);
   };
@@ -61,16 +61,16 @@ const UpdateBranch = ({ handleEditBranch, branchId }) => {
       !formData.branchContact ||
       !formData.branchAddress
     ) {
-      return errorAlert2("Please fill in all required fields");
+      return errorAlert2('Please fill in all required fields');
     }
     updateBranch.mutate(
       { recordId: branchId, data: { ...formData } },
       {
         onSuccess: (resp) => {
           if (resp?.data) {
-            successAlert("Updated Branch");
-            logActivity({ activity: "Updated Branch" });
-            invalidateQuery("diagnosticCenter");
+            successAlert('Updated Branch');
+            logActivity({ activity: 'Updated Branch' });
+            invalidateQuery('diagnosticCenter');
             handleEditBranch(false);
           }
         },

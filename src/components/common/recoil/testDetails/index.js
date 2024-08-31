@@ -1,16 +1,16 @@
-const { atom } = require("recoil");
+const { atom } = require('recoil');
 
 export const testDetailsState = atom({
-  key: "testDetailsState",
+  key: 'testDetailsState',
   default: {},
 });
 
 export const editTestState = atom({
-  key: "editTest",
+  key: 'editTest',
   default: false,
 });
 
 export const editTestIdState = atom({
-  key: "editTestId",
-  default: "false",
+  key: 'editTestId',
+  default: 'false',
 });

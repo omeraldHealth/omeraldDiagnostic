@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Radio } from "antd";
-import { BodyText_3 } from "@components/atoms/font";
+import React, { useEffect, useState } from 'react';
+import { Radio } from 'antd';
+import { BodyText_3 } from '@components/atoms/font';
 import {
   customTestForm,
   selectForm,
   templateTestForm,
-} from "@utils/types/molecules/forms.interface";
-import { useRecoilState } from "recoil";
-import { testDetailsState } from "@components/common/recoil/testDetails/index";
-import DynamicFormGenerator from "../../common/form/dynamicForm";
-import _ from "lodash";
-import { useQueryGetData } from "@utils/reactQuery";
-import { getAdminReportTypesApi } from "@utils/index";
-import { useBooleanValue } from "@components/common/constants/recoilValues";
-import { warningAlert } from "@components/atoms/alerts/alert";
+} from '@utils/types/molecules/forms.interface';
+import { useRecoilState } from 'recoil';
+import { testDetailsState } from '@components/common/recoil/testDetails/index';
+import DynamicFormGenerator from '../../common/form/dynamicForm';
+import _ from 'lodash';
+import { useQueryGetData } from '@utils/reactQuery';
+import { getAdminReportTypesApi } from '@utils/index';
+import { useBooleanValue } from '@components/common/constants/recoilValues';
+import { warningAlert } from '@components/atoms/alerts/alert';
 
 interface TestDetailProps {
   handleSteps: () => void;
@@ -27,7 +27,7 @@ const formArrays = {
 export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
   const [selectedValue, setSelectedValue] = useState<boolean>(false);
   const [testDetailState, setTestDetail] = useRecoilState(testDetailsState);
-  const reportType = useQueryGetData("reportTypes", getAdminReportTypesApi);
+  const reportType = useQueryGetData('reportTypes', getAdminReportTypesApi);
   const [reportList, setReportList] = useState<any[]>(
     reportType.data?.data || [],
   );
@@ -44,17 +44,17 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
         const keyword = {
           keyword: name,
           aliases: aliases,
-          minRange: "",
-          maxRange: "",
-          unit: "",
+          minRange: '',
+          maxRange: '',
+          unit: '',
           _id: _id,
         };
 
         if (bioRefRange && bioRefRange.length > 0) {
           const { min, max } = bioRefRange[0];
 
-          keyword.minRange = min !== undefined ? min.toString() : "";
-          keyword.maxRange = max !== undefined ? max.toString() : "";
+          keyword.minRange = min !== undefined ? min.toString() : '';
+          keyword.maxRange = max !== undefined ? max.toString() : '';
         }
 
         return keyword;
@@ -74,7 +74,7 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
         (item: any) => item._id === value?.testName,
       )[0];
       let testType = {
-        testName: filteredReport?.name || "",
+        testName: filteredReport?.name || '',
         keywords: transformData(filteredReport?.parameters),
       };
 
@@ -83,11 +83,11 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
 
         // Now, testDetailState will be updated, and you can check its value
         if (testDetailState?.sampleName) {
-          warningAlert("Error with predefined reports");
+          warningAlert('Error with predefined reports');
           handleSteps();
         }
       } else {
-        warningAlert("Error with predefined reports");
+        warningAlert('Error with predefined reports');
       }
     }
   };
@@ -121,7 +121,7 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
           {selectedValue ? (
             <DynamicFormGenerator
               formProps={formArrays?.templatedForm || selectForm}
-              buttonText={"Continue"}
+              buttonText={'Continue'}
               handleSubmit={handleFormSubmit}
               defaultValues={defaultValue}
               handleSearch={handleSearch}
@@ -134,14 +134,14 @@ export const TestDetail: React.FC<TestDetailProps> = ({ handleSteps }) => {
                   <DynamicFormGenerator
                     defaultValues={defaultValue}
                     formProps={formArrays?.customForm || selectForm}
-                    buttonText={"Continue"}
+                    buttonText={'Continue'}
                     handleSubmit={handleFormSubmit}
                   />
                 )
               ) : (
                 <DynamicFormGenerator
                   formProps={formArrays?.customForm || selectForm}
-                  buttonText={"Continue" || ""}
+                  buttonText={'Continue' || ''}
                   handleSubmit={handleFormSubmit}
                 />
               )}

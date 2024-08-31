@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { Button, Input, Select, Space, Table, Tag } from "antd";
-import { PencilIcon } from "@heroicons/react/20/solid";
-import { FaSave, FaSearchMinus } from "react-icons/fa";
-import { useRecoilState } from "recoil";
-import { reportDataState } from "@components/common/recoil/report/reportData";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { Button, Input, Select, Space, Table, Tag } from 'antd';
+import { PencilIcon } from '@heroicons/react/20/solid';
+import { FaSave, FaSearchMinus } from 'react-icons/fa';
+import { useRecoilState } from 'recoil';
+import { reportDataState } from '@components/common/recoil/report/reportData';
+import { toast } from 'react-toastify';
 import {
   errorAlert,
   successAlert,
   warningAlert,
   warningAlert2,
-} from "@components/atoms/alerts/alert";
-import { success } from "@styles/styleTemplate/color";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
+} from '@components/atoms/alerts/alert';
+import { success } from '@styles/styleTemplate/color';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
 
 const { Option } = Select;
 
@@ -20,29 +20,29 @@ const flattenBioRefTypes = (input) => {
   const bioRefTypes = {
     basicRange: [
       {
-        key: "basic1",
+        key: 'basic1',
         min: 0,
         max: 100,
-        unit: "mg/dL",
-        label: "Basic Range 1",
+        unit: 'mg/dL',
+        label: 'Basic Range 1',
       },
     ],
     advanceRange: {
       ageRange: [
         {
-          key: "pediatric",
+          key: 'pediatric',
           min: 0,
           max: 18,
-          unit: "years",
-          label: "Pediatric",
+          unit: 'years',
+          label: 'Pediatric',
         },
-        { key: "adult", min: 19, max: 64, unit: "years", label: "Adult" },
-        { key: "senior", min: 65, max: 100, unit: "years", label: "Senior" },
+        { key: 'adult', min: 19, max: 64, unit: 'years', label: 'Adult' },
+        { key: 'senior', min: 65, max: 100, unit: 'years', label: 'Senior' },
       ],
       genderRange: [
-        { key: "male", min: 0, max: 100, unit: "years", label: "Male" },
-        { key: "female", min: 0, max: 100, unit: "years", label: "Female" },
-        { key: "other", min: 0, max: 100, unit: "years", label: "Other" },
+        { key: 'male', min: 0, max: 100, unit: 'years', label: 'Male' },
+        { key: 'female', min: 0, max: 100, unit: 'years', label: 'Female' },
+        { key: 'other', min: 0, max: 100, unit: 'years', label: 'Other' },
       ],
     },
   };
@@ -58,7 +58,7 @@ const flattenBioRefTypes = (input) => {
           item.max === inputItem.max &&
           item.unit === inputItem.unit
         ) {
-          options.push({ ...item, group: "Basic Range" });
+          options.push({ ...item, group: 'Basic Range' });
         }
       });
     });
@@ -71,12 +71,12 @@ const flattenBioRefTypes = (input) => {
         bioRefTypes.advanceRange[group].forEach((item) => {
           input.advanceRange[group].forEach((inputItem) => {
             const isMatch =
-              (group === "ageRange" &&
+              (group === 'ageRange' &&
                 item.key === inputItem.ageRangeType &&
                 item.min === inputItem.min &&
                 item.max === inputItem.max &&
                 item.unit === inputItem.unit) ||
-              (group === "genderRange" &&
+              (group === 'genderRange' &&
                 item.key === inputItem.genderRangeType &&
                 item.min === inputItem.min &&
                 item.max === inputItem.max &&
@@ -98,13 +98,13 @@ const flattenBioRefTypes = (input) => {
 
 const BioRefDropDown = ({ record, editState, handleValueChange }) => {
   const options = flattenBioRefTypes(record?.bioRefRange);
-  console.log("record", record);
+  console.log('record', record);
   return (
     <div className="flex space-x-2">
       <Select
         className="w-1/2"
         placeholder="Select Type"
-        onChange={(value) => handleValueChange("type", value)}
+        onChange={(value) => handleValueChange('type', value)}
         defaultValue={record.bioRefRange?.value?.type}
         disabled={!editState.isEditing}
       >
@@ -117,7 +117,7 @@ const BioRefDropDown = ({ record, editState, handleValueChange }) => {
       <Input
         className="w-1/2"
         placeholder="Enter Value"
-        onChange={(e) => handleValueChange("value", e.target.value)}
+        onChange={(e) => handleValueChange('value', e.target.value)}
         defaultValue={record.bioRefRange?.value?.value}
         disabled={!editState.isEditing}
       />
@@ -184,27 +184,27 @@ export const ManualReport = ({ next }) => {
 
   const parameterColumns = [
     {
-      title: "Parameter",
-      dataIndex: "name",
-      key: "name",
+      title: 'Parameter',
+      dataIndex: 'name',
+      key: 'name',
       ellipsis: true,
       width: 150,
       sorter: (a, b) => a.name.localeCompare(b.name),
       render: (text) => (
         <div
-          style={{ width: 150, wordWrap: "break-word", whiteSpace: "pre-wrap" }}
+          style={{ width: 150, wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}
         >
           {text}
         </div>
       ),
     },
     {
-      title: "Alias",
-      dataIndex: "aliases",
-      key: "aliases",
+      title: 'Alias',
+      dataIndex: 'aliases',
+      key: 'aliases',
       width: 250,
       filterIcon: (filtered) => (
-        <FaSearchMinus style={{ color: filtered ? "#1890ff" : undefined }} />
+        <FaSearchMinus style={{ color: filtered ? '#1890ff' : undefined }} />
       ),
       filterDropdown: ({
         setSelectedKeys,
@@ -219,7 +219,7 @@ export const ManualReport = ({ next }) => {
             onChange={(e) =>
               setSelectedKeys(e.target.value ? [e.target.value] : [])
             }
-            style={{ marginBottom: 8, display: "block" }}
+            style={{ marginBottom: 8, display: 'block' }}
           />
           <Button onClick={() => clearFilters && clearFilters()}>Reset</Button>
         </div>
@@ -239,9 +239,9 @@ export const ManualReport = ({ next }) => {
       ),
     },
     {
-      title: "Bio Reference Values",
-      dataIndex: "bioRefValue",
-      key: "bioRefValue",
+      title: 'Bio Reference Values',
+      dataIndex: 'bioRefValue',
+      key: 'bioRefValue',
       render: (text, record) => (
         <BioRefDropDown
           record={record}
@@ -253,8 +253,8 @@ export const ManualReport = ({ next }) => {
       ),
     },
     {
-      title: "Actions",
-      key: "actions",
+      title: 'Actions',
+      key: 'actions',
       render: (_, record) =>
         editStates[record._id]?.isEditing ? (
           <a onClick={() => saveData(record._id)}>
@@ -277,17 +277,17 @@ export const ManualReport = ({ next }) => {
           pageSize: 10,
           showQuickJumper: true,
           showSizeChanger: true,
-          pageSizeOptions: ["10", "20", "50", "100"],
+          pageSizeOptions: ['10', '20', '50', '100'],
         }}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: 'max-content' }}
       />
       <Button
         onClick={() => {
           if (checkIfValueExist(reportData?.parsedData?.parameters)) {
-            successAlert("All values updated successfully");
+            successAlert('All values updated successfully');
             next();
           } else {
-            warningAlert2("Please enter values for all params");
+            warningAlert2('Please enter values for all params');
           }
         }}
         type="primary"

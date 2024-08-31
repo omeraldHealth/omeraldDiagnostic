@@ -1,11 +1,11 @@
-import { errorAlert2 } from "@components/atoms/alerts/alert";
-import { testDetailsState } from "@components/common/recoil/testDetails";
-import { paramState } from "@components/common/recoil/testDetails/param";
-import { bioRefState } from "@components/common/recoil/testDetails/test";
-import { Form, Input, Modal, Select, Switch } from "antd";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import InputForm from "./bioRef";
+import { errorAlert2 } from '@components/atoms/alerts/alert';
+import { testDetailsState } from '@components/common/recoil/testDetails';
+import { paramState } from '@components/common/recoil/testDetails/param';
+import { bioRefState } from '@components/common/recoil/testDetails/test';
+import { Form, Input, Modal, Select, Switch } from 'antd';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import InputForm from './bioRef';
 
 const UpdateParam = ({ handleHide }) => {
   const [isModalVisible, setIsModalVisible] = useState(true);
@@ -25,7 +25,7 @@ const UpdateParam = ({ handleHide }) => {
         };
 
         if (!parameters?.name) {
-          errorAlert2("Please add valid param name");
+          errorAlert2('Please add valid param name');
           return;
         }
         const updatedTest = {
@@ -68,7 +68,7 @@ const UpdateParam = ({ handleHide }) => {
         title="Add Parameters"
         visible={true}
         onOk={handleOk}
-        width={"50vw"}
+        width={'50vw'}
         onCancel={handleCancel}
       >
         <section className="grid grid-cols-2">
@@ -101,8 +101,8 @@ const ParamForm = () => {
 
   const handleAliasesChange = (value) => {
     const formattedValues = value
-      .join(",")
-      .split(",")
+      .join(',')
+      .split(',')
       .map((v) => v.trim())
       .filter((v) => v); // Removes any empty strings
     setFormData((prevData) => ({
@@ -126,7 +126,7 @@ const ParamForm = () => {
       <Form.Item
         label="Parameter Name"
         name="name"
-        rules={[{ required: true, message: "Please enter a parameter name" }]}
+        rules={[{ required: true, message: 'Please enter a parameter name' }]}
       >
         <Input placeholder="Add Parameter Name" />
       </Form.Item>
@@ -142,10 +142,10 @@ const ParamForm = () => {
       <Form.Item label="Parameter Aliases" name="aliases">
         <Select
           mode="tags"
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
           placeholder="Add or Select Aliases"
           onChange={handleAliasesChange}
-          tokenSeparators={[","]}
+          tokenSeparators={[',']}
         />
       </Form.Item>
 

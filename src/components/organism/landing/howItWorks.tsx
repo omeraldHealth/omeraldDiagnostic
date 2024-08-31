@@ -1,7 +1,7 @@
-import React from "react";
-import { SignInButton } from "@components/atoms/buttons/button";
-import Link from "next/link";
-import styles from "./landing.module.css";
+import React from 'react';
+import { SignInButton } from '@components/atoms/buttons/button';
+import Link from 'next/link';
+import styles from './landing.module.css';
 
 type HowItWorksSectionProps = {
   title: string;
@@ -23,7 +23,7 @@ export function HowItWorks({
   return (
     <div className="py-[3vh] lg:pt-[10vh]">
       <div
-        className={`h-auto px-[7%] lg:px-[10%] text-center lg:grid grid-rows-2 ${styles["howItWorks"]}`}
+        className={`h-auto px-[7%] lg:px-[10%] text-center lg:grid grid-rows-2 ${styles['howItWorks']}`}
       >
         <section className="flex lg:grid grid-cols-3 justify-between lg:h-[40vh]">
           {/* Section 1 */}
@@ -51,8 +51,8 @@ export function HowItWorks({
           <section
             className={
               section3.isHidden
-                ? "hidden lg:block"
-                : "text-left xl:pl-[20%] pr-[20%] pt-[20%]"
+                ? 'hidden lg:block'
+                : 'text-left xl:pl-[20%] pr-[20%] pt-[20%]'
             }
           >
             <p className="text-[16px] font-[600] my-2">{section3.title}</p>
@@ -77,8 +77,8 @@ export function HowItWorks({
           <section
             className={
               section3.isHidden
-                ? "block lg:hidden my-6 lg:my-0 text-left lg:pl-[20%] lg:pr-[20%] lg:pt-[20%]"
-                : ""
+                ? 'block lg:hidden my-6 lg:my-0 text-left lg:pl-[20%] lg:pr-[20%] lg:pt-[20%]'
+                : ''
             }
           >
             <p className="text-[16px] font-[600] my-2">{section3.title}</p>

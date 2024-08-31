@@ -2,10 +2,10 @@ import {
   useEditTestIdValues,
   useEditTestValues,
   useTestDetailValue,
-} from "@components/common/constants/recoilValues";
-import React, { useEffect } from "react";
-import { ViewParameters } from "./parameters/view";
-import { Button } from "antd";
+} from '@components/common/constants/recoilValues';
+import React, { useEffect } from 'react';
+import { ViewParameters } from './parameters/view';
+import { Button } from 'antd';
 import {
   useCreateTest,
   useGetDcBranch,
@@ -14,22 +14,25 @@ import {
   useUpdateBranch,
   useUpdateDiagnostic,
   useUpdateTest,
-} from "@utils/reactQuery";
+} from '@utils/reactQuery';
 import {
   errorAlert,
   successAlert,
   warningAlert2,
-} from "@components/atoms/alerts/alert";
-import { usePersistedBranchState, usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
-import { useSetRecoilState } from "recoil";
-import { branchState } from "@components/common/recoil/branch/branch";
+} from '@components/atoms/alerts/alert';
+import {
+  usePersistedBranchState,
+  usePersistedDCState,
+} from '@components/common/recoil/hooks/usePersistedState';
+import { useSetRecoilState } from 'recoil';
+import { branchState } from '@components/common/recoil/branch/branch';
 import {
   editTestIdState,
   editTestState,
   testDetailsState,
-} from "@components/common/recoil/testDetails";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
-import { ViewComponent } from "./components/viewComponents";
+} from '@components/common/recoil/testDetails';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
+import { ViewComponent } from './components/viewComponents';
 
 export default function TestSummary({ handlePrevious, handleShowTest }) {
   const testDetails = useTestDetailValue();
@@ -50,7 +53,7 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
   const setEditTest = useSetRecoilState(editTestState);
   const setEditTestId = useSetRecoilState(editTestIdState);
   const testDetail = useSetRecoilState(testDetailsState);
-  const logActivity = useActivityLogger()
+  const logActivity = useActivityLogger();
 
   useEffect(() => {
     refetch();
@@ -71,20 +74,22 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
                 { data: { tests: updatedTestIds }, recordId: selectedDc },
                 {
                   onSuccess: (resp) => {
-                    successAlert("Test added successfully");
-                    invalidateQuery("diagnosticBranch");
-                    logActivity({ activity: "Created Test " + testDetails?.testName || "" });
+                    successAlert('Test added successfully');
+                    invalidateQuery('diagnosticBranch');
+                    logActivity({
+                      activity: 'Created Test ' + testDetails?.testName || '',
+                    });
                     handleShowTest(false);
                   },
                   onError: () => {
-                    errorAlert("Adding test failed");
+                    errorAlert('Adding test failed');
                   },
                 },
               );
             }
           },
           onError: (res) => {
-            errorAlert("Adding test failed");
+            errorAlert('Adding test failed');
           },
         },
       );
@@ -96,13 +101,15 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
         {
           onSuccess: (resp) => {
             if (resp.status == 200) {
-              warningAlert2("Test updated successfully");
-              invalidateQuery("diagnosticCenter");  
-              invalidateQuery("diagnosticBranch");  
+              warningAlert2('Test updated successfully');
+              invalidateQuery('diagnosticCenter');
+              invalidateQuery('diagnosticBranch');
               handleShowTest(false);
               setEditTest(false);
               setEditTestId(null);
-              logActivity({ activity: "Updated Test " + testDetails?.testName || "" });
+              logActivity({
+                activity: 'Updated Test ' + testDetails?.testName || '',
+              });
               testDetail({});
             }
           },
@@ -116,14 +123,14 @@ export default function TestSummary({ handlePrevious, handleShowTest }) {
       <b>Test Details Summary</b>
       <section className="my-5 text-gray-600">
         <p className="mb-10">
-          Name: <span className="font-bold">{testDetails?.testName}</span>{" "}
+          Name: <span className="font-bold">{testDetails?.testName}</span>{' '}
         </p>
         <p className="mb-10">
-          Sample: <span className="font-bold">{testDetails?.sampleName}</span>{" "}
+          Sample: <span className="font-bold">{testDetails?.sampleName}</span>{' '}
         </p>
       </section>
       <ViewParameters />
-      <ViewComponent component={testDetails?.components}/>
+      <ViewComponent component={testDetails?.components} />
       <Button className="mt-4" onClick={handleSubmit} type="primary">
         Submit
       </Button>

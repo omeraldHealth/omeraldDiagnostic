@@ -1,40 +1,40 @@
-import { useRecoilValue } from "recoil";
-import { profileState } from "../recoil/profile";
-import { operatorState } from "../recoil/operator";
-import { branchState } from "../recoil/branch/branch";
-import { dashTabs } from "../recoil/dashboard";
-import { booleanState } from "../recoil/booleanAtom";
+import { useRecoilValue } from 'recoil';
+import { profileState } from '../recoil/profile';
+import { operatorState } from '../recoil/operator';
+import { branchState } from '../recoil/branch/branch';
+import { dashTabs } from '../recoil/dashboard';
+import { booleanState } from '../recoil/booleanAtom';
 import {
   editTestIdState,
   editTestState,
   testDetailsState,
-} from "../recoil/testDetails";
-import { reportState } from "../recoil/report";
-import { logoStateData } from "../recoil/logo";
-import { paramState } from "../recoil/testDetails/param";
-import { userState } from "../recoil/user";
-import { bioRefState } from "../recoil/testDetails/test";
-import { reportDataState } from "../recoil/report/reportData";
+} from '../recoil/testDetails';
+import { reportState } from '../recoil/report';
+import { logoStateData } from '../recoil/logo';
+import { paramState } from '../recoil/testDetails/param';
+import { userState } from '../recoil/user';
+import { bioRefState } from '../recoil/testDetails/test';
+import { reportDataState } from '../recoil/report/reportData';
 
 export const ROUTES_WITHOUT_SIDEBAR = [
-  "/",
-  "/404",
-  "/contact",
-  "/verifyUser",
-  "/signIn",
-  "/signUp",
-  "/onboard",
-  "/info/features",
-  "/info/knowledge",
-  "/info/pricing",
-  "/info/blog",
-  "/info/about",
-  "/info/faq",
-  "/info/consent",
-  "/info/disclaimer",
-  "/info/terms",
-  "/info/privacy",
-  "/chooseDc",
+  '/',
+  '/404',
+  '/contact',
+  '/verifyUser',
+  '/signIn',
+  '/signUp',
+  '/onboard',
+  '/info/features',
+  '/info/knowledge',
+  '/info/pricing',
+  '/info/blog',
+  '/info/about',
+  '/info/faq',
+  '/info/consent',
+  '/info/disclaimer',
+  '/info/terms',
+  '/info/privacy',
+  '/chooseDc',
 ];
 
 export const useProfileValue = () => useRecoilValue(profileState);

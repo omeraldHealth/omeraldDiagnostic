@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import React, { useState } from 'react';
+import { useRecoilState } from 'recoil';
 import {
   useCurrentBranchValue,
   useLogoValue,
   useManagerValue,
-} from "@components/common/constants/recoilValues";
-import { profileForm } from "@utils/types/molecules/forms.interface";
-import { profileState } from "@components/common/recoil/profile";
-import { logoStateData } from "@components/common/recoil/logo";
-import DynamicFormGenerator from "../../common/form/dynamicForm";
-import { Switch } from "antd";
-import { useUpdateDiagnostic } from "@utils/reactQuery";
+} from '@components/common/constants/recoilValues';
+import { profileForm } from '@utils/types/molecules/forms.interface';
+import { profileState } from '@components/common/recoil/profile';
+import { logoStateData } from '@components/common/recoil/logo';
+import DynamicFormGenerator from '../../common/form/dynamicForm';
+import { Switch } from 'antd';
+import { useUpdateDiagnostic } from '@utils/reactQuery';
 import {
   errorAlert,
   successAlert,
   warningAlert2,
-} from "@components/atoms/alerts/alert";
-import { delay } from "lodash";
+} from '@components/atoms/alerts/alert';
+import { delay } from 'lodash';
 
 // Profile Summary Component
 export const ProfileSummaryComponent: React.FC<any> = ({
@@ -46,7 +46,7 @@ const ProfileSummaryCard: React.FC<any> = ({ title, value, link }) => {
       )}
       {link && (
         <p className="text-blue-800 font-bold text-sm">
-          {title} URL:{" "}
+          {title} URL:{' '}
           <a href={link} className="text-blue-900 font-light">
             {link}
           </a>
@@ -74,7 +74,7 @@ const ProfileSummary: React.FC<any> = ({ profile, style }) => {
               src={profileLogo}
               alt="logo"
               className="w-[5vw] h-[5vw] rounded-full border-2"
-              style={{ borderRadius: "50%" }}
+              style={{ borderRadius: '50%' }}
             />
           )}
           <section className="grid grid-cols-2 w-[70%]">
@@ -90,12 +90,12 @@ const ProfileSummary: React.FC<any> = ({ profile, style }) => {
               />
               <ProfileSummaryCard
                 title="Facebook"
-                value={""}
+                value={''}
                 link={profile?.brandDetails?.facebookUrl}
               />
               <ProfileSummaryCard
                 title="Instagram"
-                value={""}
+                value={''}
                 link={profile?.brandDetails?.instaUrl}
               />
             </aside>
@@ -129,13 +129,13 @@ const ProfileSummary: React.FC<any> = ({ profile, style }) => {
 const ProfileView: React.FC<any> = ({ style }) => {
   const [edit, setEdit] = useState<boolean>(false);
   const [profile, setProfile] = useRecoilState(profileState);
-  const selectedBranch = JSON.parse(localStorage.getItem("selectedBranch"));
+  const selectedBranch = JSON.parse(localStorage.getItem('selectedBranch'));
 
   const updateDiagnostic = useUpdateDiagnostic(
     {
       onSuccess: (data) => {
         if (data?.status == 200) {
-          warningAlert2("Profile updated successfully");
+          warningAlert2('Profile updated successfully');
           setProfile(data?.data);
         }
 
@@ -144,7 +144,7 @@ const ProfileView: React.FC<any> = ({ style }) => {
         }, 500);
       },
       onError: () => {
-        errorAlert("Error updating profile");
+        errorAlert('Error updating profile');
       },
     },
     profile?._id,
@@ -162,7 +162,7 @@ const ProfileView: React.FC<any> = ({ style }) => {
       <>
         <span className="flex justify-end">
           <Switch
-            style={{ fontSize: "10px" }}
+            style={{ fontSize: '10px' }}
             checkedChildren="Edit"
             unCheckedChildren="View"
             checked={edit}
@@ -184,19 +184,19 @@ const ProfileView: React.FC<any> = ({ style }) => {
             <section className="grid sm:grid-cols-3 grid-cols-1 gap-0 lg:gap-[1vw] w-[100%]">
               <aside>
                 <p className="my-8 font-bold text-sm">
-                  {"Diagnostic Center Name: "}
+                  {'Diagnostic Center Name: '}
                   <span className="text-black font-light">
                     {profile?.centerName}
                   </span>
                 </p>
                 <p className="my-8 font-bold text-sm">
-                  {"Email: "}
+                  {'Email: '}
                   <span className="text-black font-light lowercase">
                     {profile?.email}
                   </span>
                 </p>
                 <p className="my-8 font-bold text-sm">
-                  {"Contact: "}
+                  {'Contact: '}
                   <span className="text-black font-light">
                     {profile?.phoneNumber}
                   </span>
@@ -204,25 +204,25 @@ const ProfileView: React.FC<any> = ({ style }) => {
               </aside>
               <aside>
                 <p className="my-8 font-bold text-sm">
-                  {"Branch Name: "}
+                  {'Branch Name: '}
                   <span className="text-black font-light">
                     {selectedBranch?.branchName}
                   </span>
                 </p>
                 <p className="my-8 font-bold text-sm">
-                  {"Branch Email: "}
+                  {'Branch Email: '}
                   <span className="text-black font-light lowercase">
                     {selectedBranch?.branchEmail}
                   </span>
                 </p>
                 <p className="my-8 font-bold text-sm">
-                  {"Branch Contact: "}
+                  {'Branch Contact: '}
                   <span className="text-black font-light">
                     {selectedBranch?.branchContact}
                   </span>
                 </p>
                 <p className="my-8 font-bold text-sm">
-                  {"Branch Address "}
+                  {'Branch Address '}
                   <span className="text-black font-light">
                     {selectedBranch?.branchAddress}
                   </span>

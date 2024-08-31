@@ -1,6 +1,6 @@
-import React from "react";
-import { CheckBadgeIcon } from "@heroicons/react/20/solid";
-import { successUpload } from "@utils/index";
+import React from 'react';
+import { CheckBadgeIcon } from '@heroicons/react/20/solid';
+import { successUpload } from '@utils/index';
 
 interface SuccessTestProps {
   handleSuccess: () => void;

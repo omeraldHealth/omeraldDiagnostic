@@ -1,6 +1,6 @@
-const { atom } = require("recoil");
+const { atom } = require('recoil');
 
 export const booleanState = atom({
-  key: "booleanState",
+  key: 'booleanState',
   default: false,
 });

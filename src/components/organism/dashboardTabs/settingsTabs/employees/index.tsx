@@ -1,35 +1,35 @@
 // @ts-nocheck
 
-import { errorAlert, warningAlert2 } from "@components/atoms/alerts/alert";
+import { errorAlert, warningAlert2 } from '@components/atoms/alerts/alert';
 import {
   useCurrentBranchValue,
   useProfileValue,
-} from "@components/common/constants/recoilValues";
+} from '@components/common/constants/recoilValues';
 import {
   usePersistedBranchState,
   usePersistedDCState,
-} from "@components/common/recoil/hooks/usePersistedState";
+} from '@components/common/recoil/hooks/usePersistedState';
 import {
   useInvalidateQuery,
   useUpdateBranch,
   useUpdateDiagnostic,
   useUpdateUser,
-} from "@utils/reactQuery";
-import { Switch } from "antd";
-import { useEffect, useState } from "react";
-import { removeBranchById } from "../utils/functions";
-import { CommonSettingTable } from "../utils/table";
-import { BRANCH_EMPLOYEE_COLUMNS } from "../utils/tabs";
-import AddEmployee from "./create";
-import UpdateEmployee from "./create/update";
-import { useActivityLogger } from "@components/common/logger.tsx/activity";
+} from '@utils/reactQuery';
+import { Switch } from 'antd';
+import { useEffect, useState } from 'react';
+import { removeBranchById } from '../utils/functions';
+import { CommonSettingTable } from '../utils/table';
+import { BRANCH_EMPLOYEE_COLUMNS } from '../utils/tabs';
+import AddEmployee from './create';
+import UpdateEmployee from './create/update';
+import { useActivityLogger } from '@components/common/logger.tsx/activity';
 
 export const EmployeesTab = () => {
   const [addBranch, setAddBranch] = useState(false);
   const [selectedDc] = usePersistedDCState();
   const [selectedBranch] = usePersistedBranchState();
   const [isEdit, setIsEdit] = useState(false);
-  const [operatorId, setOperatorId] = useState("");
+  const [operatorId, setOperatorId] = useState('');
   const currentBranch = useCurrentBranchValue();
   const profileValue = useProfileValue();
   const updateBranch = useUpdateBranch({});
@@ -38,7 +38,7 @@ export const EmployeesTab = () => {
   const logActivity = useActivityLogger();
 
   useEffect(() => {
-    invalidateQuery("diagnosticBranch");
+    invalidateQuery('diagnosticBranch');
   }, []);
 
   const handleSwitch = (checked: boolean) => setAddBranch(checked);
@@ -68,9 +68,9 @@ export const EmployeesTab = () => {
       {
         onSuccess: (resp) => {
           if (resp.status === 200) {
-            warningAlert2("Deleted Employee successfully");
-            logActivity({ activity: "Delete Employee " + record?.userName });
-            invalidateQuery("diagnosticBranch");
+            warningAlert2('Deleted Employee successfully');
+            logActivity({ activity: 'Delete Employee ' + record?.userName });
+            invalidateQuery('diagnosticBranch');
           }
           removeBranchFromUser(record);
         },
@@ -92,12 +92,12 @@ export const EmployeesTab = () => {
       {
         onSuccess: (resp) => {
           if (resp.status === 200) {
-            invalidateQuery("userData");
-            invalidateQuery("diagnosticCenter");
+            invalidateQuery('userData');
+            invalidateQuery('diagnosticCenter');
             // logActivity({activity: "Delete User "+record?.userName})
           }
         },
-        onError: () => errorAlert("Updating Employee failed"),
+        onError: () => errorAlert('Updating Employee failed'),
       },
     );
   };
@@ -113,7 +113,7 @@ export const EmployeesTab = () => {
       <section className="my-2 py-2 flex justify-end">
         <Switch
           checked={addBranch}
-          style={{ backgroundColor: "orange" }}
+          style={{ backgroundColor: 'orange' }}
           onChange={handleSwitch}
           checkedChildren="Add"
           unCheckedChildren="View"

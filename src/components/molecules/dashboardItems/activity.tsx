@@ -1,36 +1,40 @@
-import { UserCircleIcon } from "@heroicons/react/20/solid";
-import moment from "moment";
-import React, { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { profileState } from "../../common/recoil/profile";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
-import { dashTabs } from "@components/common/recoil/dashboard";
-import { settingTabState } from "@components/common/recoil/settings";
-import { usePersistedBranchState } from "@components/common/recoil/hooks/usePersistedState";
-import { useGetDcBranch } from "@utils/reactQuery";
-import { Loader } from "@components/atoms/loader/loader";
+import { UserCircleIcon } from '@heroicons/react/20/solid';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { profileState } from '../../common/recoil/profile';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { dashTabs } from '@components/common/recoil/dashboard';
+import { settingTabState } from '@components/common/recoil/settings';
+import { usePersistedBranchState } from '@components/common/recoil/hooks/usePersistedState';
+import { useGetDcBranch } from '@utils/reactQuery';
+import { Loader } from '@components/atoms/loader/loader';
 
 interface DashActivityProps {}
 
 const DashActivity: React.FC<DashActivityProps> = () => {
   const [activities, setActivities] = useState();
-  const [selectedBranch] = usePersistedBranchState()
-  const { data: branchData, isLoading, refetch } = useGetDcBranch({ selectedBranchId: selectedBranch })
+  const [selectedBranch] = usePersistedBranchState();
+  const {
+    data: branchData,
+    isLoading,
+    refetch,
+  } = useGetDcBranch({ selectedBranchId: selectedBranch });
 
   useEffect(() => {
-    refetch()
-  },[])
-  
+    refetch();
+  }, []);
+
   useEffect(() => {
     if (!isLoading && branchData?.data) {
-       const sortedActivities = [...branchData?.data?.activities].sort(
-          // @ts-ignore
-          (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
-       );
-       setActivities(sortedActivities)
+      const sortedActivities = [...branchData?.data?.activities].sort(
+        // @ts-ignore
+        (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
+      );
+      setActivities(sortedActivities);
     }
-  }, [isLoading])
-  
+  }, [isLoading]);
+
   // const currentBranch = useCurrentBranchValue();
   // // @ts-ignore
   // const activities = currentBranch && currentBranch?.activities;
@@ -40,7 +44,6 @@ const DashActivity: React.FC<DashActivityProps> = () => {
   //   (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
   // );
 
-  
   return (
     <section className="w-[94vw] sm:w-[60vw] lg:w-[35vw] xl:w-[30vw] h-[100%] shadow-xl bg-white rounded-sm px-4 py-2 mb-10 sm:mb-0">
       <section className="">
@@ -50,7 +53,7 @@ const DashActivity: React.FC<DashActivityProps> = () => {
         </p>
       </section>
       <section className="max-h-[35vh] overflow-auto my-4 sm:my-2">
-        {activities?.length  > 0 ? (
+        {activities?.length > 0 ? (
           <ActivityItem activityList={activities} />
         ) : (
           <p className="text-light text-sm text-gray-600 mt-8">
@@ -92,7 +95,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ activityList }) => {
                     {moment
                       .utc(DateConverter(activity.updatedTime))
                       .local()
-                      .startOf("seconds")
+                      .startOf('seconds')
                       .fromNow()}
                   </span>
                 ) : (
@@ -100,7 +103,7 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ activityList }) => {
                     {moment
                       .utc(DateConverter(date.toString()))
                       .local()
-                      .startOf("seconds")
+                      .startOf('seconds')
                       .fromNow()}
                   </span>
                 )}
@@ -111,8 +114,8 @@ const ActivityItem: React.FC<ActivityItemProps> = ({ activityList }) => {
       })}
       <a
         onClick={() => {
-          setDashTab("Settings");
-          setActiveKey("2");
+          setDashTab('Settings');
+          setActiveKey('2');
         }}
         href="#"
         className="font-light text-xs text-blue-700"

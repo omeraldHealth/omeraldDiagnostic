@@ -1,5 +1,5 @@
-import React from "react";
-import { TitleText } from "@components/atoms/font";
+import React from 'react';
+import { TitleText } from '@components/atoms/font';
 
 interface PartnersProps {
   customerLogos: Object;
@@ -7,8 +7,8 @@ interface PartnersProps {
 
 const customerLogo = [
   {
-    url: "",
-    meta: "",
+    url: '',
+    meta: '',
   },
 ];
 

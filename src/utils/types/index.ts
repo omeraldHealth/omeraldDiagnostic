@@ -1,4 +1,4 @@
-import { ColumnsType } from "antd/es/table";
+import { ColumnsType } from 'antd/es/table';
 
 export type BlogDataType = {
   title: string;

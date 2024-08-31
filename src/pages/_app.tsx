@@ -1,13 +1,13 @@
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ToastContainer } from "react-toastify";
-import { ClerkProvider } from "@clerk/nextjs";
-import { ChakraProvider } from "@chakra-ui/react";
-import { GlobalStyle } from "@styles/index";
-import { useEffect, useState } from "react";
-import { RecoilRoot } from "recoil";
-import { AppProps } from "next/app";
-import "@styles/tailwind.css";
-import ErrorBoundary from "../components/common/footer/error";
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ToastContainer } from 'react-toastify';
+import { ClerkProvider } from '@clerk/nextjs';
+import { ChakraProvider } from '@chakra-ui/react';
+import { GlobalStyle } from '@styles/index';
+import { useEffect, useState } from 'react';
+import { RecoilRoot } from 'recoil';
+import { AppProps } from 'next/app';
+import '@styles/tailwind.css';
+import ErrorBoundary from '../components/common/footer/error';
 
 const queryClient = new QueryClient({
   defaultOptions: {

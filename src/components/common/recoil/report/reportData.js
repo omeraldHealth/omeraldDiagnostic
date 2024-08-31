@@ -1,6 +1,6 @@
-const { atom } = require("recoil");
+const { atom } = require('recoil');
 
 export const reportDataState = atom({
-  key: "reportDataState",
+  key: 'reportDataState',
   default: {},
 });

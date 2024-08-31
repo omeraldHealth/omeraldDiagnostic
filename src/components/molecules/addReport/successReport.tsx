@@ -1,7 +1,7 @@
-import React from "react";
-import { CheckBadgeIcon } from "@heroicons/react/20/solid";
-import { successUpload } from "@utils/index";
-import { useProfileValue } from "@components/common/constants/recoilValues";
+import React from 'react';
+import { CheckBadgeIcon } from '@heroicons/react/20/solid';
+import { successUpload } from '@utils/index';
+import { useProfileValue } from '@components/common/constants/recoilValues';
 
 interface SuccessReportProps {
   setAddReports: React.Dispatch<React.SetStateAction<boolean>>;

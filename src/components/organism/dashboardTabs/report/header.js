@@ -1,9 +1,9 @@
-import { PhoneFilled } from "@ant-design/icons";
-import { Image } from "antd";
-import { EnvelopeIcon } from "@heroicons/react/20/solid";
+import { PhoneFilled } from '@ant-design/icons';
+import { Image } from 'antd';
+import { EnvelopeIcon } from '@heroicons/react/20/solid';
 
 const logo =
-  "https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png";
+  'https://res.cloudinary.com/drjut62wv/image/upload/v1677945620/omerald/diagnosticCenter/onlyOmeraldLogo_kwbcj8.png';
 
 const Header = () => {
   return (
@@ -30,8 +30,8 @@ const Header = () => {
         </div>
       </div>
       <p className="text-lg ml-[9%]">
-        #3-1-325/2, 3rd Floor, Near AK Bhavan Hall,<br/> Nimboliadda, Kachiguda,
-        Hyderabad, Telangana - 500027
+        #3-1-325/2, 3rd Floor, Near AK Bhavan Hall,
+        <br /> Nimboliadda, Kachiguda, Hyderabad, Telangana - 500027
       </p>
     </div>
   );

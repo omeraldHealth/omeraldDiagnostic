@@ -1,6 +1,6 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const createDC = atom<boolean>({
-  key: "createDCState",
+  key: 'createDCState',
   default: false,
 });

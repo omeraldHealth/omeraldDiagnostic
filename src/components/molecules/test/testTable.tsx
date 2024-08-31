@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { Modal } from "antd";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
-import { DashboardTable } from "../dashboardItems/data-table";
-import { TestTableColumns } from "@utils/forms/form";
-import { useUpdateDiagnostic } from "@utils/reactQuery";
-import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { profileState } from "@components/common/recoil/profile";
-import { AddTestComponent } from "../addReport/addTest";
-import { testDetailsState } from "@components/common/recoil/testDetails";
-import { booleanState } from "@components/common/recoil/booleanAtom";
+import React, { useState } from 'react';
+import { Modal } from 'antd';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { DashboardTable } from '../dashboardItems/data-table';
+import { TestTableColumns } from '@utils/forms/form';
+import { useUpdateDiagnostic } from '@utils/reactQuery';
+import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { profileState } from '@components/common/recoil/profile';
+import { AddTestComponent } from '../addReport/addTest';
+import { testDetailsState } from '@components/common/recoil/testDetails';
+import { booleanState } from '@components/common/recoil/booleanAtom';
 import {
   EditTestsProps,
   TestTableProps,
   ViewTestProps,
-} from "../../../utils/types";
-import { Spinner } from "@components/atoms/loader";
-import { testDataState } from "@components/common/recoil/testDetails/test";
-import { branchState } from "@components/common/recoil/branch/branch";
+} from '../../../utils/types';
+import { Spinner } from '@components/atoms/loader';
+import { testDataState } from '@components/common/recoil/testDetails/test';
+import { branchState } from '@components/common/recoil/branch/branch';
 
 export const TestTable: React.FC<TestTableProps> = () => {
   const [editTest, setEditTest] = useState(false);
@@ -41,7 +41,7 @@ export const TestTable: React.FC<TestTableProps> = () => {
   const updateDiagnostic = useUpdateDiagnostic(
     {
       onSuccess: (data) => {
-        successAlert("Profile updated successfully");
+        successAlert('Profile updated successfully');
         setProfile(data?.data);
         // updateCurrentBranch(data?.data)
         const updatedBranches = data?.data?.branches.filter((branch) => {
@@ -54,7 +54,7 @@ export const TestTable: React.FC<TestTableProps> = () => {
         setLoading(false);
       },
       onError: (error) => {
-        errorAlert("Error updating profile");
+        errorAlert('Error updating profile');
         setLoading(false);
       },
     },
@@ -80,7 +80,7 @@ export const TestTable: React.FC<TestTableProps> = () => {
       const updatedProfile = { data: { branches: updatedBranches } };
       updateDiagnostic.mutate(updatedProfile);
     } catch (error) {
-      console.error("Error logging activity:", error);
+      console.error('Error logging activity:', error);
     }
     // const updateData = currentBranch?.tests.filter((item: any) => item?._id !== record._id);
     // updateDiagnostic.mutate({ data: { id: profile?._id, tests: updateData } });

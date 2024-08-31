@@ -1,5 +1,5 @@
-import React from "react";
-import { giftBoxImage } from "@utils/index";
+import React from 'react';
+import { giftBoxImage } from '@utils/index';
 
 export const Billing = () => {
   return (

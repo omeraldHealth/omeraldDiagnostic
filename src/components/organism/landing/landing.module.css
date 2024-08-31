@@ -3,7 +3,7 @@
   width: 100%;
   height: auto;
   min-height: 80vh;
-  background-image: url("../../../public/background.jpg");
+  background-image: url('../../../public/background.jpg');
   background-size: cover;
   background-position-y: 0.5%;
   padding-top: 3vh;
@@ -11,7 +11,7 @@
 
 /* Styles for howItWorks section */
 .howItWorks {
-  background-image: url("../../../public/background.jpg");
+  background-image: url('../../../public/background.jpg');
   background-size: cover;
   background-position-y: 18.2%;
 }
@@ -21,19 +21,19 @@
   background-color: #ebf3ff;
   border: 1px solid rgb(222, 222, 222);
   background: linear-gradient(#ebf3ff, rgba(255, 255, 255, 0.5)),
-    url("https://res.cloudinary.com/drjut62wv/image/upload/v1677408002/omerald/diagnosticCenter/undraw_business_deal_re_up4u_kxbvcg.svg");
+    url('https://res.cloudinary.com/drjut62wv/image/upload/v1677408002/omerald/diagnosticCenter/undraw_business_deal_re_up4u_kxbvcg.svg');
 }
 
 /* Styles for helpBusiness section */
 .helpBusiness {
-  background-image: url("../../../public/background.jpg");
+  background-image: url('../../../public/background.jpg');
   background-size: cover;
   background-position-y: 30%;
 }
 
 /* Styles for contactUs section */
 .contactUs {
-  background-image: url("../../../public/background.jpg");
+  background-image: url('../../../public/background.jpg');
   background-size: 100%;
   background-repeat: no-repeat;
   background-position-x: center;

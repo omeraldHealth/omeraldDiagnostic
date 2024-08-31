@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { ReportToggle } from "@components/molecules/test/reportToggle";
-import { DashboardTable } from "@components/molecules/dashboardItems/data-table";
-import { ReportTableColumns } from "@utils/forms/form";
-import { useDeleteReports, useQueryGetData } from "@utils/reactQuery";
-import { getDiagReportsApi } from "@utils/index";
-import { AddReportComponent } from "../../molecules/addReport/addReport";
-import { errorAlert, successAlert } from "@components/atoms/alerts/alert";
-import { useCurrentBranchValue } from "@components/common/constants/recoilValues";
-import { Switch } from "antd";
-import PreviewComponent from "./previewReport";
+import React, { useState } from 'react';
+import { ReportToggle } from '@components/molecules/test/reportToggle';
+import { DashboardTable } from '@components/molecules/dashboardItems/data-table';
+import { ReportTableColumns } from '@utils/forms/form';
+import { useDeleteReports, useQueryGetData } from '@utils/reactQuery';
+import { getDiagReportsApi } from '@utils/index';
+import { AddReportComponent } from '../../molecules/addReport/addReport';
+import { errorAlert, successAlert } from '@components/atoms/alerts/alert';
+import { useCurrentBranchValue } from '@components/common/constants/recoilValues';
+import { Switch } from 'antd';
+import PreviewComponent from './previewReport';
 
 export default function ReportsTab() {
   const [showReport, setShowReport] = useState(false);
   const { data: reports, refetch } = useQueryGetData(
-    "reports",
+    'reports',
     getDiagReportsApi,
   );
-  const [id, setDeleteId] = useState("");
+  const [id, setDeleteId] = useState('');
   const [previewRecord, setPreviewRecord] = useState({});
   const currentBranch = useCurrentBranchValue();
   const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
@@ -26,11 +26,11 @@ export default function ReportsTab() {
 
   const deleteMutation = useDeleteReports(id, {
     onSuccess: (data) => {
-      successAlert("Deleted Report");
+      successAlert('Deleted Report');
       refetch();
     },
     onError: (error) => {
-      errorAlert("Error Deleting Report");
+      errorAlert('Error Deleting Report');
     },
   });
 
@@ -48,7 +48,7 @@ export default function ReportsTab() {
     <div className="p-0 h-auto bg-signBanner">
       <span className="flex justify-end">
         <Switch
-          style={{ fontSize: "10px" }}
+          style={{ fontSize: '10px' }}
           checkedChildren="Add"
           unCheckedChildren="View"
           checked={showReport}

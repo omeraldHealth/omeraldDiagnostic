@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId } from 'mongodb';
 
 export interface UserQueryInterface {
   phoneNumber: string;
@@ -93,7 +93,7 @@ export interface ReportDetailsInterface {
   reportUrl?: string;
   doctorName?: string;
   isManualReport: boolean;
-  status: "parsed" | "parsing";
+  status: 'parsed' | 'parsing';
   // parsedData?: ReportParamsDataInterface[];
 }
 
@@ -125,4 +125,4 @@ export const initialAuthContext: AuthContextInterface = {
   setActiveBranch: async () => {},
 };
 
-export const allowedPaths: string[] = ["/", "/signIn", "/404"];
+export const allowedPaths: string[] = ['/', '/signIn', '/404'];

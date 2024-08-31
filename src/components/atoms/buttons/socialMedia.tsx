@@ -1,12 +1,12 @@
-import React, { FC } from "react";
-import Link from "next/link";
+import React, { FC } from 'react';
+import Link from 'next/link';
 import {
   FaFacebook,
   FaTwitter,
   FaInstagram,
   FaYoutube,
   IconType,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
 interface SocialIcon {
   key: string;
@@ -15,10 +15,10 @@ interface SocialIcon {
 }
 
 const socialIcons: SocialIcon[] = [
-  { key: "facebook", url: "", component: <FaFacebook /> },
-  { key: "twitter", url: "", component: <FaTwitter /> },
-  { key: "instagram", url: "", component: <FaInstagram /> },
-  { key: "youtube", url: "", component: <FaYoutube /> },
+  { key: 'facebook', url: '', component: <FaFacebook /> },
+  { key: 'twitter', url: '', component: <FaTwitter /> },
+  { key: 'instagram', url: '', component: <FaInstagram /> },
+  { key: 'youtube', url: '', component: <FaYoutube /> },
 ];
 
 export const SocialMediaIcons: FC = () => {

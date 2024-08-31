@@ -1,6 +1,6 @@
-import React from "react";
-import { Tag } from "antd";
-import { DashboardTable } from "../dashboardItems/data-table";
+import React from 'react';
+import { Tag } from 'antd';
+import { DashboardTable } from '../dashboardItems/data-table';
 
 interface Keyword {
   keyword: string;
@@ -21,39 +21,39 @@ interface AddKeywordProps {
 export const AddKeyword: React.FC<AddKeywordProps> = ({ selectedTest }) => {
   const columns = [
     {
-      key: "keyword",
-      title: "Parameter",
-      dataIndex: "keyword",
+      key: 'keyword',
+      title: 'Parameter',
+      dataIndex: 'keyword',
       render: (text: string) => (
         <a className="text-blue-800 font-medium">{text}</a>
       ),
       sorter: (a: Keyword, b: Keyword) => a.keyword.length - b.keyword.length,
     },
     {
-      key: "minRange",
-      title: "Min Range",
-      dataIndex: "minRange",
+      key: 'minRange',
+      title: 'Min Range',
+      dataIndex: 'minRange',
       render: (text: string) => <a>{text}</a>,
       sorter: (a: Keyword, b: Keyword) => a.minRange.length - b.minRange.length,
     },
     {
-      key: "maxRange",
-      title: "Max Range",
-      dataIndex: "maxRange",
+      key: 'maxRange',
+      title: 'Max Range',
+      dataIndex: 'maxRange',
       render: (text: string) => <a>{text}</a>,
       sorter: (a: Keyword, b: Keyword) => a.maxRange.length - b.maxRange.length,
     },
     {
-      key: "unit",
-      title: "Unit",
-      dataIndex: "unit",
+      key: 'unit',
+      title: 'Unit',
+      dataIndex: 'unit',
       sorter: (a: Keyword, b: Keyword) => a.unit.length - b.unit.length,
       render: (text: string) => <a>{text}</a>,
     },
     {
-      key: "aliases",
-      title: "Aliases",
-      dataIndex: "aliases",
+      key: 'aliases',
+      title: 'Aliases',
+      dataIndex: 'aliases',
       sorter: (a: Keyword, b: Keyword) => a.aliases.length - b.aliases.length,
       render: (tags: string[]) => {
         if (!tags || tags.length < 1) {
@@ -68,14 +68,14 @@ export const AddKeyword: React.FC<AddKeywordProps> = ({ selectedTest }) => {
             {displayTags.length > 0 && (
               <>
                 {displayTags.map((tag) => (
-                  <Tag color={"green"} key={tag}>
+                  <Tag color={'green'} key={tag}>
                     {tag}
                   </Tag>
                 ))}
                 {remainingTags.length > 0 && (
                   <>
-                    <Tag color={"green"}>...</Tag>
-                    <Tag color={"green"}>{remainingTags.length} more</Tag>
+                    <Tag color={'green'}>...</Tag>
+                    <Tag color={'green'}>{remainingTags.length} more</Tag>
                   </>
                 )}
               </>

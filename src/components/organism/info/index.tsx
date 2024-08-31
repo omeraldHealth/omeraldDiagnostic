@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Spinner } from "@components/atoms/loader";
-import { getDiagnosticSetting } from "@utils/index";
-import { useGetDcProfile, useGetDcSettings } from "@utils/reactQuery";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Spinner } from '@components/atoms/loader';
+import { getDiagnosticSetting } from '@utils/index';
+import { useGetDcProfile, useGetDcSettings } from '@utils/reactQuery';
 
 interface InfoPageProps {
   detail: string;
 }
 
 export const InfoPage: React.FC<InfoPageProps> = ({ detail }) => {
-  const [formValues, setFormValues] = useState({ description: "" });
+  const [formValues, setFormValues] = useState({ description: '' });
   const { data: settingsData, isLoading, refetch } = useGetDcSettings();
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export const InfoPage: React.FC<InfoPageProps> = ({ detail }) => {
             <div
               className="description-container"
               dangerouslySetInnerHTML={{
-                __html: formValues?.description || "No description available.",
+                __html: formValues?.description || 'No description available.',
               }}
             />
           </>

@@ -1,22 +1,22 @@
-import { FormControl, FormLabel, Input, Stack, Switch } from "@chakra-ui/react";
-import { errorAlert2 } from "@components/atoms/alerts/alert";
-import { Loader } from "@components/atoms/loader/loader";
+import { FormControl, FormLabel, Input, Stack, Switch } from '@chakra-ui/react';
+import { errorAlert2 } from '@components/atoms/alerts/alert';
+import { Loader } from '@components/atoms/loader/loader';
 import {
   useEditTestValues,
   useTestDetailValue,
-} from "@components/common/constants/recoilValues";
-import { testDetailsState } from "@components/common/recoil/testDetails";
-import { useGetAdminReports } from "@utils/reactQuery";
-import { Button, Radio, Select } from "antd";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+} from '@components/common/constants/recoilValues';
+import { testDetailsState } from '@components/common/recoil/testDetails';
+import { useGetAdminReports } from '@utils/reactQuery';
+import { Button, Radio, Select } from 'antd';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 
 function TestDetailTab({ handleNext }) {
   const testDetail = useTestDetailValue();
 
   const handleSubmit = () => {
     if (!testDetail?.testName?.trim() || !testDetail?.sampleName?.trim()) {
-      errorAlert2("Please add a valid test and sample name");
+      errorAlert2('Please add a valid test and sample name');
       return;
     }
     handleNext();
@@ -70,8 +70,8 @@ const TestDetailHeader: React.FC<any> = ({
 
 const CustomTestDetails: React.FC<any> = ({ handleNext }) => {
   const [formData, setFormData] = useState({
-    testName: "",
-    sampleName: "",
+    testName: '',
+    sampleName: '',
     isActive: true,
   });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
@@ -98,7 +98,7 @@ const CustomTestDetails: React.FC<any> = ({ handleNext }) => {
   ) => {
     const { name, type, checked, value } = event.target;
 
-    const inputValue = type === "checkbox" ? checked : value;
+    const inputValue = type === 'checkbox' ? checked : value;
 
     setFormData((prevFormData) => {
       const updatedFormData = {
@@ -159,15 +159,15 @@ const CustomTestDetails: React.FC<any> = ({ handleNext }) => {
 
 const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
   const [formData, setFormData] = useState({
-    testName: "",
-    sampleName: "",
+    testName: '',
+    sampleName: '',
     parameters: [],
     isActive: true,
   });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
 
   const { data: adminReports, isLoading } = useGetAdminReports();
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
   const { Option } = Select;
 
   useEffect(() => {
@@ -175,12 +175,12 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
       const defaultValue = adminReports?.data[0];
       const updatedFormData = {
         ...formData,
-        sampleName: defaultValue?.name || "",
+        sampleName: defaultValue?.name || '',
         parameters: defaultValue?.parameters || [],
       };
       setFormData(updatedFormData);
       setTestDetail(updatedFormData);
-      setSelectedValue(defaultValue?.name || "");
+      setSelectedValue(defaultValue?.name || '');
     }
   }, [isLoading, adminReports]);
 
@@ -205,7 +205,7 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
   ) => {
     const { name, type, checked, value } = event.target;
 
-    const inputValue = type === "checkbox" ? checked : value;
+    const inputValue = type === 'checkbox' ? checked : value;
 
     setFormData((prevFormData) => {
       const updatedFormData = {
@@ -227,8 +227,10 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
       {isLoading ? (
         <Loader />
       ) : (
-          <>
-             { adminReports.data?.length===0 ?<p>No Tests Found, Please create custom tests</p>:
+        <>
+          {adminReports.data?.length === 0 ? (
+            <p>No Tests Found, Please create custom tests</p>
+          ) : (
             <form className="space-y-4 w-[20%]">
               <Stack spacing={4}>
                 <FormControl className="my-1" id="testName" isRequired>
@@ -246,11 +248,13 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
                     showSearch
                     value={selectedValue}
                     placeholder="Select an option"
-                    style={{ width: "10vw" }}
+                    style={{ width: '10vw' }}
                     onChange={handleDropChange}
                     optionFilterProp="children"
                     filterOption={(input, option) =>
-                      option?.children.toLowerCase().includes(input.toLowerCase())
+                      option?.children
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
                     }
                   >
                     {adminReports?.data?.map((option) => (
@@ -273,8 +277,8 @@ const OmeraldTestReports: React.FC<any> = ({ handleNext }) => {
                 Next
               </Button>
             </form>
-          }
-          </>
+          )}
+        </>
       )}
     </section>
   );
