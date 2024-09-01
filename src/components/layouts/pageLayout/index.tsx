@@ -24,12 +24,8 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
   showNavbar = true,
   showFooter = true,
 }) => {
-  const { pathname } = useRouter();
-
-  const shouldShowNavbar =
-    showNavbar && ROUTES_WITHOUT_SIDEBAR.includes(pathname);
-  const shouldShowFooter =
-    showFooter && ROUTES_WITHOUT_SIDEBAR.includes(pathname);
+  const shouldShowNavbar = showNavbar;
+  const shouldShowFooter = showFooter;
 
   return (
     <div className="flex flex-col min-h-screen">

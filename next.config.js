@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -62,8 +63,21 @@ const nextConfig = {
   },
 };
 
+const withAntdLess = require('next-plugin-antd-less');({
+  modifyVars: {
+    '@primary-color': 'green', 
+  },
+  lessVarsFilePath: './src/styles/theme.less', 
+  lessVarsFilePathAppendToEndOfContent: false,
+
+  // Other Next.js config options here
+  webpack(config) {
+    return config;
+  },
+});
+
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = withAntdLess(withBundleAnalyzer(nextConfig));

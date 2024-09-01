@@ -21,6 +21,16 @@ export const ROUTES_WITHOUT_SIDEBAR: string[] = [
   '/chooseDc',
 ];
 
+export const routeToKeyMapper: { [key: string]: keyof any } = {
+  faq: 'FAQs',
+  privacy: 'Privacy_Policy',
+  terms: 'Terms_Of_Service',
+  consent: 'Platform_Consent',
+  disclaimer: 'Disclaimer',
+  support: 'Customer_Support',
+  // Add more mappings as needed
+};
+
 export const navigation: NavigationInterface = {
   legal: [
     { name: 'Terms of Service', href: '/info/terms' },

@@ -12,9 +12,9 @@ export default function LogoComponent() {
           width={70} // Adjusted width for better alignment
           height={70} // Adjusted height for better alignment
           quality={100}
-          priority={true}
+          priority={true} // `priority` is a valid prop for Next.js `Image` component
         />
-        <span className="ml-2 font-extrabold text-green-900 tracking-widest font-bold tracking-wide hidden sm:inline-block">
+        <span className="ml-2 font-extrabold text-green-900 tracking-widest hidden sm:inline-block">
           OMERALD DIAGNOSTICS
         </span>
       </Link>

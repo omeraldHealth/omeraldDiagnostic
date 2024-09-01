@@ -4,7 +4,7 @@ import React from 'react';
 
 const About = () => {
   return (
-    <PageLayout tabDescription="Home page" tabName="Diagnostic Omerald | Home">
+    <PageLayout tabDescription="Home page" tabName="Diagnostic Omerald | About">
       <div className="min-w-full px-2 sm:px-[10vw] container mx-auto bg-white">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <section className="block lg:hidden flex items-center justify-center">
