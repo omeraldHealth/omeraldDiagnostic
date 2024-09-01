@@ -1,6 +1,6 @@
-export { default as GlobalStyle } from '@styles/globals';
-export { default as theme } from '@styles/themes/default.theme';
-import * as Colors from './styleTemplate/color';
-import * as Typography from './styleTemplate/typography';
+import * as Colors from '../../src2/styles/styleTemplate/color';
+import * as Typography from '../../src2/styles/styleTemplate/typography';
+import * as GlobalStyle from "./globals" 
+import * as Tailwind from "./tailwind.css"
 
-export { Colors, Typography };
+export { Colors, Typography, GlobalStyle, Tailwind };

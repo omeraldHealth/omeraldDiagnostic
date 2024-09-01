@@ -8,7 +8,8 @@ const nextConfig = {
       'omerald-diag-preprod.s3.amazonaws.com',
       'omerald-*.s3.amazonaws.com',
       'diagnostic.omerald.com',
-      'omerald-diag-prod.s3.amazonaws.com'
+      'omerald-diag-prod.s3.amazonaws.com',
+      'res.cloudinary.com'
     ],
   },
   eslint: {
@@ -41,10 +42,10 @@ const nextConfig = {
   async rewrites() {
     return [
       // Rewrite everything to `pages/index`
-      {
-        source: '/:any*',
-        destination: '/',
-      },
+      // {
+      //   source: '/:any*',
+      //   destination: '/',
+      // },
     ];
   },
   serverRuntimeConfig: {
@@ -54,9 +55,6 @@ const nextConfig = {
   publicRuntimeConfig: {
     // Will be available on both server and client
     SSR: false,
-  },
-  future: {
-    webpack5: true,
   },
   webpack(config) {
     config.optimization.splitChunks.maxSize = 200000;
