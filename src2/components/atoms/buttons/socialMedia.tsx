@@ -1,11 +1,6 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import {
-  FaFacebook,
-  FaTwitter,
-  FaInstagram,
-  FaYoutube,
-} from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram, FaYoutube } from 'react-icons/fa';
 
 interface SocialIcon {
   key: string;

@@ -1,13 +1,13 @@
 export interface NavigationItem {
-    name: string;
-    href: string;
+  name: string;
+  href: string;
 }
 
 export interface NavigationInterface {
-    support: NavigationItem[];
-    company: NavigationItem[];
-    legal: NavigationItem[];
-    social: NavigationItem[];
+  support: NavigationItem[];
+  company: NavigationItem[];
+  legal: NavigationItem[];
+  social: NavigationItem[];
 }
 
 export interface PageLayoutProps {

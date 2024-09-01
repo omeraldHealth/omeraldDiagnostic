@@ -13,6 +13,7 @@ const navLinks = [
 export function Navbar() {
   const { session } = useSession();
   const router = useRouter();
+  const currentPath = router.pathname;
 
   const handleDashboard = () => {
     router.push('/verifyUser');
@@ -37,11 +38,13 @@ export function Navbar() {
       {/* User Buttons */}
       <div className="flex items-center space-x-4">
         {session?.status !== 'active' ? (
-          <Link href="/signIn">
-            <span className="bg-orange-400 px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base text-white rounded-md">
-              Sign In
-            </span>
-          </Link>
+          currentPath !== '/signIn' && (
+            <Link href="/signIn">
+              <span className="bg-orange-400 px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base text-white rounded-md">
+                Sign In
+              </span>
+            </Link>
+          )
         ) : (
           <section className="flex gap-3 md:gap-4 items-center">
             <UserButton afterSignOutUrl="/signIn" />

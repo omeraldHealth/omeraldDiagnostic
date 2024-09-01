@@ -10,7 +10,7 @@ module.exports = {
     'prettier/prettier': 'error', // Enforces Prettier formatting
     'react/prop-types': 'off', // Turns off prop-types since TypeScript is used
     'react/react-in-jsx-scope': 'off', // No need to import React in React 17+
-    
+
     // TypeScript-specific rules
     '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }], // Warns on unused vars, but ignores ones with a leading underscore
     '@typescript-eslint/explicit-module-boundary-types': 'off', // Turns off requirement to define return types for functions

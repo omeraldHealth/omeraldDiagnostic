@@ -9,7 +9,7 @@ export default function LogoComponent() {
         <Image
           src={logoIcon}
           alt="Logo"
-          width={70}  // Adjusted width for better alignment
+          width={70} // Adjusted width for better alignment
           height={70} // Adjusted height for better alignment
           quality={100}
           priority={true}

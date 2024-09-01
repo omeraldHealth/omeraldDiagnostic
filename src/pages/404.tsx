@@ -2,9 +2,12 @@ import { PageLayout } from '@/components/layouts/pageLayout';
 import Link from 'next/link';
 import React from 'react';
 
-function NotFound() {
+export default function NotFound() {
   return (
-    <PageLayout tabDescription="Omerald Page not found" tabName="Diagnostic Omerald | 404">
+    <PageLayout
+      tabDescription="Omerald Page not found"
+      tabName="Diagnostic Omerald | 404"
+    >
       <div className="min-h-[70vh] via-purple-500 to-pink-500 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-9xl font-extrabold text-orange-400 tracking-widest">
@@ -29,5 +32,3 @@ function NotFound() {
     </PageLayout>
   );
 }
-
-export default NotFound;

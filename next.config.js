@@ -9,7 +9,7 @@ const nextConfig = {
       'omerald-*.s3.amazonaws.com',
       'diagnostic.omerald.com',
       'omerald-diag-prod.s3.amazonaws.com',
-      'res.cloudinary.com'
+      'res.cloudinary.com',
     ],
   },
   eslint: {

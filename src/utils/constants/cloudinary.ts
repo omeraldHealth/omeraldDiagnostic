@@ -1,5 +1,8 @@
-export const logoIcon: string = 'https://res.cloudinary.com/drjut62wv/image/upload/v1657025892/omerald/logo/Omerald_575X575-removebg-preview_vhtzp8.png'
+export const logoIcon: string =
+  'https://res.cloudinary.com/drjut62wv/image/upload/v1657025892/omerald/logo/Omerald_575X575-removebg-preview_vhtzp8.png';
 export const logoRectUrl: string = `https://res.cloudinary.com/drjut62wv/image/upload/v1654278040/omerald/logo/logo-nobg_uc4ysj.png`;
+export const landingBannerUrl: string =
+  'https://res.cloudinary.com/drjut62wv/image/upload/v1725198513/omerald/diagnosticCenter/landingBanner.jpg';
 
 export const reviewPerson: string = `https://res.cloudinary.com/drjut62wv/image/upload/v1677367970/omerald/diagnosticCenter/undraw_my_notifications_re_ehmk_iuwaxz.svg`;
 export const partners: string[] = [
@@ -29,4 +32,3 @@ export const errorImage: string =
   'https://res.cloudinary.com/drjut62wv/image/upload/v1678160767/omerald/diagnosticCenter/undraw_fixing_bugs_w7gi_ugllbk.svg';
 export const aboutImage: string =
   'https://res.cloudinary.com/drjut62wv/image/upload/v1720789401/1_nhj86g.png';
-

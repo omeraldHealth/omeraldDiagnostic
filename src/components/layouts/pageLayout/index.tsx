@@ -17,7 +17,6 @@ const Footer = dynamic(
   { loading: () => <ComponentLoader /> },
 );
 
-
 export const PageLayout: React.FC<PageLayoutProps> = ({
   tabName,
   tabDescription,
@@ -27,8 +26,10 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
 }) => {
   const { pathname } = useRouter();
 
-  const shouldShowNavbar = showNavbar && ROUTES_WITHOUT_SIDEBAR.includes(pathname);
-  const shouldShowFooter = showFooter && ROUTES_WITHOUT_SIDEBAR.includes(pathname);
+  const shouldShowNavbar =
+    showNavbar && ROUTES_WITHOUT_SIDEBAR.includes(pathname);
+  const shouldShowFooter =
+    showFooter && ROUTES_WITHOUT_SIDEBAR.includes(pathname);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -47,14 +48,14 @@ export const PageLayout: React.FC<PageLayoutProps> = ({
       )}
 
       <main className="flex-grow flex flex-col justify-center items-center bg-gray-50">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {children}
         </div>
       </main>
 
       {shouldShowFooter && (
         <footer className="bg-white mt-8">
-            <Footer />
+          <Footer />
         </footer>
       )}
     </div>

@@ -7,7 +7,7 @@ import { AppProps } from 'next/app';
 import { useEffect, useState } from 'react';
 import { PageLoader } from '@/components/common/pageLoader';
 import GlobalStyle from '@/styles/globals';
-import "../styles/tailwind.css";
+import '../styles/index.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,16 +29,19 @@ export default function App({ Component, pageProps }: AppProps) {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) return <PageLoader/>;
+  if (!isMounted) return <PageLoader />;
 
   return (
     <QueryClientProvider client={queryClient}>
       <RecoilRoot>
-        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY} {...pageProps}>
+        <ClerkProvider
+          publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+          {...pageProps}
+        >
           <ToastContainer />
           <GlobalStyle />
           <ChakraProvider>
-              <Component {...pageProps} />
+            <Component {...pageProps} />
           </ChakraProvider>
         </ClerkProvider>
       </RecoilRoot>
