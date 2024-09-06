@@ -1,7 +1,7 @@
 import { PageLoader } from '@/components/common/pageLoader';
 import { PageLayout } from '@/components/layouts/pageLayout';
 import { useUserVerification } from '@/hooks/user';
-import { verifyUser } from 'dummy/utils/urls/files';
+import { verifyUser } from '@/utils/constants/cloudinary';
 
 const VerifyUser = () => {
   const { isLoading } = useUserVerification();
@@ -14,7 +14,7 @@ const VerifyUser = () => {
       {isLoading ? (
         <PageLoader />
       ) : (
-        <div className="h-[80vh] p-4 py-10 text-center m-auto flex justify-center">
+        <div className="h-[50vh] p-4 py-10 text-center m-auto flex justify-center">
           <section className="my-10">
             <div className="bg-container w-[45vw] m-auto">
               <img src={verifyUser} alt="Verification" />

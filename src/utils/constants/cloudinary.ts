@@ -32,3 +32,7 @@ export const errorImage: string =
   'https://res.cloudinary.com/drjut62wv/image/upload/v1678160767/omerald/diagnosticCenter/undraw_fixing_bugs_w7gi_ugllbk.svg';
 export const aboutImage: string =
   'https://res.cloudinary.com/drjut62wv/image/upload/v1720789401/1_nhj86g.png';
+export const verifyUser: string =
+  "https://res.cloudinary.com/drjut62wv/image/upload/v1725206980/omerald/diagnosticCenter/verifyUser_juvmts.gif"
+  export const verifyProfileImage: string =
+  "https://res.cloudinary.com/drjut62wv/image/upload/v1725206979/omerald/diagnosticCenter/verifyProfile_jeaxy6.png"

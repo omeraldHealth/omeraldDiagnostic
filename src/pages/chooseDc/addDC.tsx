@@ -1,18 +1,15 @@
-import { Button } from '@chakra-ui/react';
+
+import { Button } from 'antd';
 import { FaPlusCircle } from 'react-icons/fa';
 
 const AddDC: React.FC<any> = ({ handleCardClick }) => (
-  <div className="w-[20vw] my-10">
+  <div className=" my-10">
     <Button
+      type='default'  
       onClick={handleCardClick}
-      variant="outline"
-      color={'orange'}
-      size="sm"
-      border={'1px'}
-      className="w-[20vw] text-sm font-light bg-green-500 border-4"
-      spinnerPlacement="end"
+      className='w-[16vw] m-auto'
     >
-      Create New DC{' '}
+      Create New DC
       <FaPlusCircle
         style={{ color: 'green' }}
         className="mx-2 text-green-400"

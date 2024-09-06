@@ -56,7 +56,7 @@ export const getAdminReportTypesApi =
 export const getDiagnosticLandingData =
   adminBackendApiPath + '/api/v1/diagnosticLanding/getDiagLanding';
 export const getDiagnosticSetting =
-  adminBackendApiPath + '/api/v1/diagSettings/getDiagnosticSetting';
+  adminBackendApiPath + '/api/diagnosticSetting/getAllDiagnosticSetting';
 export const getAdminApiGetToken =
   adminBackendApiPath + '/api/v1/auth/getAuthToken';
 

@@ -30,3 +30,7 @@ export const selectedBranchState = atom<string>({
   default : ''
 })
 
+export const unSelectedDcState = atom<boolean>({
+  key: 'unSelectedDc',
+  default : false
+})
