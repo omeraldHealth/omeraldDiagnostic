@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Form, Input, Button } from 'antd';
 import { PageLayout } from '@/components/layouts/pageLayout';
-import { initialContactFormData } from 'src2/utils/constants';
+import { initialContactFormData } from 'dummy/utils/constants';
 const { TextArea } = Input;
 interface ContactProps {}
 

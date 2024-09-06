@@ -1,7 +1,7 @@
 import { PageLoader } from '@/components/common/pageLoader';
 import { PageLayout } from '@/components/layouts/pageLayout';
 import { useUserVerification } from '@/hooks/user';
-import { verifyUser } from 'src2/utils/urls/files';
+import { verifyUser } from 'dummy/utils/urls/files';
 
 const VerifyUser = () => {
   const { isLoading } = useUserVerification();

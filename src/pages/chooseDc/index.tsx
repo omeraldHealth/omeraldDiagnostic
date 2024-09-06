@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import { Button, Spin } from 'antd';
-import verifyProfile from '@public/verifyProfile.png';
+// import verifyProfile from '@public/verifyProfile.png';
 import DiagnosticCard from './diagCard';
 import AddDC from './addDC';
 import { useUserRecoilValue } from '@/utils/recoil/values';
 import { usePersistedDCState } from '@/hooks/localstorage';
+import { errorAlert } from '@/components/common/alerts';
 
 const ChooseDc: React.FC = () => {
   const router = useRouter();
@@ -35,7 +35,7 @@ const ChooseDc: React.FC = () => {
   }, [userValue, selectedDc]);
 
   const handleCreateDC = () => {
-    setCreateDCRecoil(true);
+    // setCreateDCRecoil(true);
     router.push('/onboard');
   };
 
@@ -62,11 +62,11 @@ const ChooseDc: React.FC = () => {
       <section className="w-full lg:w-3/5 mx-auto my-8 p-6 bg-white shadow-xl rounded-md">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="flex justify-center">
-            {verifyProfile?.src ? (
+            {/* {verifyProfile?.src ? (
               <img src={verifyProfile.src} alt="Verification" className="w-full max-w-xs" />
             ) : (
               <Spin />
-            )}
+            )} */}
           </div>
           <div className="text-center">
             <h2 className="font-bold text-2xl text-purple-900 mb-6">
