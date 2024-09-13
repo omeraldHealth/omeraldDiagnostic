@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, UseQueryOptions } from 'react-query';
-import { getDiagnosticUserApi, getDiagnosticSetting } from '@/utils/api/index';
+import { getDiagnosticUserApi, getDiagnosticSetting, getDiagProfileByIdApi, getDiagBranchByIdApi } from '@/utils/api/index';
 import axios from 'axios';
 
 export function useQueryGetData<T>(
@@ -19,6 +19,22 @@ export function useGetUser({ userPhoneNumber }: any) {
   return useQueryGetData('userData', getDiagnosticUserApi + userPhoneNumber, {
     enabled: !!userPhoneNumber,
   });
+}
+
+export function useGetDcProfile({ selectedCenterId }: any) {
+  return useQueryGetData(
+    'diagnosticCenter',
+    getDiagProfileByIdApi + selectedCenterId,
+    { enabled: !!selectedCenterId },
+  );
+}
+
+export function useGetDcBranch({ selectedBranchId }: any) {
+  return useQueryGetData(
+    'diagnosticBranch',
+    getDiagBranchByIdApi + selectedBranchId,
+    { enabled: !!selectedBranchId },
+  );
 }
 
 export function useInvalidateQuery() {

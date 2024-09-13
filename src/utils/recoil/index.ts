@@ -1,5 +1,23 @@
 import { atom } from 'recoil';
-import { UserInfo } from '../interface/getData';
+import { BranchDetailInterface, ProfileDetailsInterface, UserInfo } from '../interface/getData';
+
+export const profileState = atom<ProfileDetailsInterface>({
+  key: 'profileState',
+  default: {
+    centerName: { type: '' },
+    phoneNumber: { type: '' },
+    ownerId: { type: '' },
+    brandingInfo: { type: {} },
+    branches: { type: [{}] },
+    email: { type: '' },
+    updatedAt: { type: new Date() },
+  },
+});
+
+export const branchState = atom<BranchDetailInterface[]>({
+  key: 'branchState',
+  default: [],
+});
 
 export const userDataState = atom<UserInfo>({
   key: 'userState',
@@ -8,7 +26,10 @@ export const userDataState = atom<UserInfo>({
     phoneNumber: '', // Initialize as an empty string
     diagnosticCenters: [
       {
-        diagnostic: '', // Empty string as a placeholder for the diagnostic center ID
+        diagnostic: {
+          centerName: "",
+          _id: ""
+        }, // Empty string as a placeholder for the diagnostic center ID
         branches: [
           {
             branchId: '', // Empty string as a placeholder for the branch ID
@@ -34,3 +55,8 @@ export const unSelectedDcState = atom<boolean>({
   key: 'unSelectedDc',
   default : false
 })
+
+export const dashTabs = atom<string>({
+  key: 'dashboardTab',
+  default: 'Dashboard',
+});

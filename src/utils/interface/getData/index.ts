@@ -45,3 +45,22 @@ export interface UserInfo {
   phoneNumber: string;
   diagnosticCenters: DiagnosticCenter[];
 }
+
+export interface ProfileDetailsInterface {
+  centerName: { type: string };
+  phoneNumber: { type: string };
+  ownerId: { type: string };
+  brandingInfo: { type: Object };
+  branches: { type: [Object] };
+  email: { type: string };
+  updatedAt: { type: Date };
+}
+
+export interface BranchDetailInterface {
+  branchName: string;
+  branchEmail: string;
+  branchAddress: string;
+  branchContact: string;
+  branchManager: string;
+}
+

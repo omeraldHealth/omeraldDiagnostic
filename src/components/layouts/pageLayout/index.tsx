@@ -1,10 +1,8 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { ComponentLoader } from '@/components/common/componentLoader';
 import { logoIcon } from '@/utils/constants/cloudinary';
-import { ROUTES_WITHOUT_SIDEBAR } from '@/utils/paths';
 import { PageLayoutProps } from '@/utils/interface/ui';
 
 // Dynamic imports with loading spinner
