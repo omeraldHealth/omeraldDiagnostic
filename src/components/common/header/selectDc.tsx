@@ -1,16 +1,22 @@
 
 import { unSelectedDcState } from '@/utils/recoil';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { PageLoader } from '../pageLoader';
 
 const SelectedDC = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const setUnselectDc = useSetRecoilState(unSelectedDcState);
 
   const toggleModal = () => {
     setUnselectDc(true);
+    setLoading(true)
     router.push('/chooseDc');
   };
+
+
 
   return (
     <div className="flex items-center">
@@ -39,6 +45,7 @@ const SelectedDC = () => {
           />
         </svg>
       </button>
+      {loading && <PageLoader/>}
     </div>
   );
 };

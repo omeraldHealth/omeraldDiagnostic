@@ -60,3 +60,8 @@ export const dashTabs = atom<string>({
   key: 'dashboardTab',
   default: 'Dashboard',
 });
+
+export const sidebarOpenState = atom<boolean>({
+  key: 'sidebarState',
+  default: false,
+});

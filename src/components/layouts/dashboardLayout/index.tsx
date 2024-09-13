@@ -1,4 +1,5 @@
 import { PageLoader } from '@/components/common/pageLoader';
+import { DashboardSideBar } from '@/components/common/sidebar';
 import { DashboardHeader } from '@/components/header/dashNavbar';
 import { usePersistedBranchState, usePersistedDCState } from '@/hooks/localstorage';
 import { logoIcon } from '@/utils/constants/cloudinary';
@@ -97,7 +98,7 @@ export function DashboardLayout({
         <meta name="description" content={tabDescription} />
         <link rel="icon" href={logoIcon} />
       </Head>
-
+        <DashboardSideBar />
         <div className="xl:pl-64 flex flex-col flex-1">
           {/*@ts-ignore */}
           {isValidProfile && <DashboardHeader />}

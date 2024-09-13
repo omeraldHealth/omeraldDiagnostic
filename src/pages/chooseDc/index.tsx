@@ -26,7 +26,7 @@ const ChooseDc: React.FC = () => {
 
     const diagnosticCenters = userValue?.diagnosticCenters || [];
     const singleDc = diagnosticCenters.length === 1 ? diagnosticCenters[0]?.diagnostic?._id : null;
-
+    console.log(selectedDc)
     if (selectedDc) {
       setDefaultValue(selectedDc);
       if (!unselectDc) handleSubmit();
@@ -45,7 +45,6 @@ const ChooseDc: React.FC = () => {
 
   const handleSelectDC = (value: string) => {
     setSelectedDC(value);
-    setDefaultValue(value);
   };
 
   const handleSubmit = () => {
