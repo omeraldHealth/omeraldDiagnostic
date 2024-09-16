@@ -65,3 +65,8 @@ export const sidebarOpenState = atom<boolean>({
   key: 'sidebarState',
   default: false,
 });
+
+export const settingTabState = atom<string>({
+  key: 'settingTabState',
+  default: "1",
+})

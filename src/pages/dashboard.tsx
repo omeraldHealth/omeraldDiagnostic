@@ -4,6 +4,7 @@ import { DashboardLayout } from '@/components/layouts/dashboardLayout';
 import { useRecoilValue } from 'recoil';
 import { dashTabs } from '@/utils/recoil';
 import DashboardTab from '@/components/dashboard';
+import SettingsTabLayout from '@/components/dashboard/settings';
 
 const Dashboard: React.FC = () => {
   const dashboard = useRecoilValue(dashTabs);
@@ -15,7 +16,7 @@ const Dashboard: React.FC = () => {
     // "Tests Offered": <TestTab />,
     // "View Reports": <ReportsTab />,
     // Profile: <ProfileTab />,
-    // Settings: <SettingsTab />,
+    Settings: <SettingsTabLayout />,
   };
 
   return (

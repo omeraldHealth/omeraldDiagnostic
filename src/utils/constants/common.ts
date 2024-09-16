@@ -41,3 +41,32 @@ export const privateRoutes: any[] = [
   export function classNames(...classes: (string | undefined)[]): string {
     return classes.filter(Boolean).join(" ");
   }
+
+  
+  // export const ADMIN_USER_COLUMNS = [
+  //   {
+  //     title: "Name",
+  //     dataIndex: "userName",
+  //     key: "userName",
+  //     sorter: (a, b) => a.userName.localeCompare(b.userName),
+  //   },
+  //   {
+  //     title: "PhoneNumber",
+  //     dataIndex: "phoneNumber",
+  //     key: "phoneNumber",
+  //   },
+  //   {
+  //     title: "Role",
+  //     dataIndex: "role",
+  //     key: "role",
+  //     sorter: (a, b) => a.role.localeCompare(b.role),
+  //     render: (role, record) => {
+  //       return <p className="uppercase">{role}</p>;
+  //     },
+  //   },
+  //   {
+  //     title: "Action",
+  //     dataIndex: "action",
+  //     key: "action",
+  //   },
+  // ];
