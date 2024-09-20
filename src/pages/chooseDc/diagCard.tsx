@@ -22,7 +22,6 @@ const DiagnosticCard: React.FC<DiagnosticCardProps> = ({
     if ((!defaultValue || defaultValue === "") &&  userValue?.diagnosticCenters && userValue?.diagnosticCenters?.length > 0) {
       const firstId = userValue.diagnosticCenters[0]?.diagnostic?._id;
       setSelectedValue(firstId);
-      handleCardClick?.(firstId); // Trigger callback with first value
     }
   }, [defaultValue, userValue, handleCardClick]);
 

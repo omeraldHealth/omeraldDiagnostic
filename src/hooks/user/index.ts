@@ -44,10 +44,6 @@ export const useUserVerification = () => {
     }
   }, [session?.status, isLoading, userdata, isLoaded]);
 
-  const handleCreateUser = (userObj: UserInfo) => {
-    createUserMutation.mutate({ data: userObj });
-  };
-
   const handleUserVerification = (userObj: UserInfo | null) => {
     if (!userObj) {
       const newUser: UserInfo = {
@@ -61,8 +57,8 @@ export const useUserVerification = () => {
 
     if (userObj?.diagnosticCenters?.length > 0) {
       setUserRecoil(userObj);
-      const selectedDcPresent = userObj?.diagnosticCenters?.some((dc) => dc.diagnostic._id === selectedDc)
-      if (!selectedDc || !selectedDcPresent) {
+      const selectedDcPresent = selectedDc && userObj?.diagnosticCenters?.some((dc) => dc.diagnostic._id === selectedDc)
+      if (!selectedDcPresent) {
         router.push('/chooseDc');
       } else {
         router.push('/dashboard');
@@ -71,6 +67,10 @@ export const useUserVerification = () => {
       warningAlert('Diagnostic Profiles not found, please onboard');
       router.push('/onboard');
     }
+  };
+
+  const handleCreateUser = (userObj: UserInfo) => {
+    createUserMutation.mutate({ data: userObj });
   };
 
   return {

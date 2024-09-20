@@ -8,49 +8,30 @@ import { usePersistedDCState } from '@/hooks/localstorage';
 import { errorAlert } from '@/components/common/alerts';
 import { PageLayout } from '@/components/layouts/pageLayout';
 import { verifyProfileImage } from '@/utils/constants/cloudinary';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { unSelectedDcState } from '@/utils/recoil';
 
 const ChooseDc: React.FC = () => {
   const router = useRouter();
   const userValue = useUserRecoilValue();
-  const [unselectDc, setUnselectDc] = useRecoilState(unSelectedDcState);
   const [selectedDc, setSelectedDC] = usePersistedDCState();
   const [defaultValue, setDefaultValue] = useState<string>('');
 
-  useEffect(() => {
-    if (!userValue || Object.keys(userValue)?.length === 0) {
-      router.push('/verifyUser');
-      return;
-    }
-
-    const diagnosticCenters = userValue?.diagnosticCenters || [];
-    const singleDc = diagnosticCenters.length === 1 ? diagnosticCenters[0]?.diagnostic?._id : null;
-    console.log(selectedDc)
-    if (selectedDc) {
-      setDefaultValue(selectedDc);
-      if (!unselectDc) handleSubmit();
-    } else if (singleDc) {
-      setDefaultValue(singleDc);
-      setSelectedDC(singleDc);
-    } else {
-      setDefaultValue('');
-    }
-  }, [userValue, selectedDc]);
+  useEffect(() => { 
+    const firstId = userValue.diagnosticCenters[0]?.diagnostic?._id;
+    setDefaultValue(firstId);
+  },[])
 
   const handleCreateDC = () => {
-    // setCreateDCRecoil(true);
     router.push('/onboard');
   };
 
   const handleSelectDC = (value: string) => {
+    setDefaultValue(value);
     setSelectedDC(value);
   };
 
   const handleSubmit = () => {
     if (defaultValue) {
       setSelectedDC(defaultValue);
-      setUnselectDc(false);
       router.push('/dashboard');
     } else {
       errorAlert('Please select a Diagnostic Center to proceed.');

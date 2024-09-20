@@ -4,19 +4,20 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { PageLoader } from '../pageLoader';
+import { usePersistedDCState } from '@/hooks/localstorage';
 
 const SelectedDC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const setUnselectDc = useSetRecoilState(unSelectedDcState);
+  const [selectedDc, setSelectedDc] = usePersistedDCState() 
 
   const toggleModal = () => {
     setUnselectDc(true);
+    setSelectedDc(undefined)
     setLoading(true)
     router.push('/chooseDc');
   };
-
-
 
   return (
     <div className="flex items-center">
