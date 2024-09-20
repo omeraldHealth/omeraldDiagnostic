@@ -1,6 +1,5 @@
 // @ts-nocheck
 
-import { errorAlert, warningAlert2 } from "@components/atoms/alerts/alert";
 import {
   useCurrentBranchValue,
   useProfileValue,

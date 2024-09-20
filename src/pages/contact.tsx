@@ -1,14 +1,48 @@
 'use client';
 import React, { useState } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Spin } from 'antd';
 import { PageLayout } from '@/components/layouts/pageLayout';
 import { initialContactFormData } from '@/utils/forms';
+import emailjs from 'emailjs-com';
+import { errorAlert, successAlert } from '@/components/common/alerts';
+import { PageLoader } from '@/components/common/pageLoader';
+import { useForm } from 'antd/es/form/Form';
+import { useRouter } from 'next/router';
 
 const { TextArea } = Input;
 interface ContactProps {}
 
 const Contact: React.FC<ContactProps> = () => {
   const [formData, setFormData] = useState(initialContactFormData);
+  const [loading, setLoading] = useState(false); // Loader state
+  const [form] = useForm(); 
+  const router = useRouter()
+
+  const sendEmail = () => {
+    setLoading(true); // Start loading
+    emailjs
+      .send(
+        'service_xghg0ks', // Service ID from EmailJS
+        'template_hlvw8pd', // Template ID from EmailJS
+        formData,
+        'HH5sKm-xgC4Wc-VIY' // User ID from EmailJS dashboard
+      )
+      .then(
+        (result) => {
+          successAlert('Email sent successfully! Please wait for admin to reach out');
+        },
+        (error) => {
+          errorAlert('Email sending failed!');
+          console.error('Error sending email:', error);
+        }
+      )
+      .finally(() => {
+        form.resetFields();
+        setFormData(initialContactFormData)
+        setLoading(false); // Stop loading after submission
+        router.push("/")
+      });
+  };
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -19,11 +53,7 @@ const Contact: React.FC<ContactProps> = () => {
   };
 
   const handleSubmit = (e: any) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    sendEmail();
   };
 
   return (
@@ -43,6 +73,7 @@ const Contact: React.FC<ContactProps> = () => {
                 <div className="max-w-full bg-white">
                   <section className="m-auto xl:w-[80%]">
                     <Form
+                      form={form}
                       onFinish={handleSubmit}
                       layout="vertical"
                       className="space-y-4"
@@ -64,20 +95,17 @@ const Contact: React.FC<ContactProps> = () => {
                       </Form.Item>
 
                       <Form.Item
-                        label="Description"
-                        name="description"
+                        label="email"
+                        name="email"
                         rules={[
-                          {
-                            required: true,
-                            message: 'Please add a description',
-                          },
+                          { required: true, message: 'Please add a email' },
                         ]}
                       >
                         <Input
-                          name="description"
-                          value={formData.description}
+                          name="email"
+                          value={formData.email}
                           onChange={handleChange}
-                          placeholder="Add Description"
+                          placeholder="Add email"
                           className="border-2 p-2"
                         />
                       </Form.Item>
@@ -104,12 +132,14 @@ const Contact: React.FC<ContactProps> = () => {
                           type="primary"
                           htmlType="submit"
                           block
+                          disabled={loading} // Disable button when loading
                           style={{ backgroundColor: 'green', borderColor: 'green' }}
                         >
-                          Submit
+                          {loading ? <Spin /> : 'Submit'} {/* Show loader or text */}
                         </Button>
                       </Form.Item>
                     </Form>
+                    {loading && <PageLoader />}
                   </section>
                 </div>
               </div>
