@@ -6,7 +6,7 @@ import { usePersistedBranchState } from "@/hooks/localstorage";
 import { useGetDcBranch } from "@/utils/query/getQueries";
 import { Billing } from "./billing";
 import { Activity } from "./activity";
-import { EmployeesTab } from "./employee";
+// import { EmployeesTab } from "./employee";
 
 const SettingsTabLayout = () => {
   const [activeKey, setActiveKey] = useRecoilState(settingTabState);
@@ -24,7 +24,7 @@ const SettingsTabLayout = () => {
   const tabItems = [
     { key: "1", label: "Billing", children: <Billing /> },
     { key: "2", label: "Activity", children: <Activity /> },
-    { key: "3", label: "Employee Management", children: <EmployeesTab /> },
+    // { key: "3", label: "Employee Management", children: <EmployeesTab /> },
     // { key: "4", label: "Branch Management", children: <BranchTab /> },
     // { key: "5", label: "Pathologist Management", children: <PathologistTab /> },
   ];

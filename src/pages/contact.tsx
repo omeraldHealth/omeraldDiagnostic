@@ -3,11 +3,10 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Spin } from 'antd';
 import { PageLayout } from '@/components/layouts/pageLayout';
 import { initialContactFormData } from '@/utils/forms';
-import emailjs from 'emailjs-com';
 import { errorAlert, successAlert } from '@/components/common/alerts';
 import { PageLoader } from '@/components/common/pageLoader';
-import { useForm } from 'antd/es/form/Form';
 import { useRouter } from 'next/router';
+import emailjs from "@emailjs/browser"
 
 const { TextArea } = Input;
 interface ContactProps {}
@@ -15,7 +14,6 @@ interface ContactProps {}
 const Contact: React.FC<ContactProps> = () => {
   const [formData, setFormData] = useState(initialContactFormData);
   const [loading, setLoading] = useState(false); // Loader state
-  const [form] = useForm(); 
   const router = useRouter()
 
   const sendEmail = () => {
@@ -37,7 +35,6 @@ const Contact: React.FC<ContactProps> = () => {
         }
       )
       .finally(() => {
-        form.resetFields();
         setFormData(initialContactFormData)
         setLoading(false); // Stop loading after submission
         router.push("/")
@@ -73,7 +70,6 @@ const Contact: React.FC<ContactProps> = () => {
                 <div className="max-w-full bg-white">
                   <section className="m-auto xl:w-[80%]">
                     <Form
-                      form={form}
                       onFinish={handleSubmit}
                       layout="vertical"
                       className="space-y-4"
