@@ -24,7 +24,7 @@ const Dashboard: React.FC = () => {
       tabName="Dashboard"
       tabDescription= "Diagnostic Dashboard"
     >
-      {/* {DashboardTabsMap[dashboard]} */}
+      {DashboardTabsMap[dashboard]}
     </DashboardLayout>
   );
 };

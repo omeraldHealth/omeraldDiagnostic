@@ -18,7 +18,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`side-bar lg:block min-h-screen w-[70%] sm:w-[40%] md:w-[40%] xl:w-[100%] bg-blue-900 relative p-4 sm:pl-8 pr-0 shrink-0 ${showSidebar ? "" : "hidden"}`}
+      className={`bg-gradient-to-b from-blue-700 to-gray-800 side-bar lg:block min-h-screen w-[70%] sm:w-[40%] md:w-[40%] xl:w-[100%] bg-blue-900 relative p-4 sm:pl-8 pr-0 shrink-0 ${showSidebar ? "" : "hidden"}`}
       aria-label="Sidebar"
     >
       <div className="bg-gray-200 mr-8">
@@ -48,7 +48,7 @@ export default function Sidebar() {
           </Fragment>
         ))}
       </div>
-      <p className="text-sm text-center text-green-900 font-semi-bold absolute bottom-10">
+      <p className="text-sm text-center text-white font-semi-bold absolute bottom-10">
         Copyright{" "}
         <a
           href="https://omerald.com/"
@@ -57,7 +57,7 @@ export default function Sidebar() {
         >
           @Omerald
         </a>{" "}
-        2023. <br />
+        2024. <br />
         All Rights Reserved.
       </p>
     </aside>
