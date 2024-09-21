@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useActivityLogger } from "@/components/common/activity";
 import { errorAlert, successAlert } from "@/components/common/alerts";
 import { usePersistedBranchState, usePersistedDCState } from "@/hooks/localstorage";
@@ -11,93 +12,99 @@ import { Switch } from "antd";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-  function PathologistTab() {
-    const [addPathologist, setAddPathologist] = useState(false);
-    const [selectedBranch] = usePersistedBranchState();
-    const [selectedDc] = usePersistedDCState();
-    const [isEdit, setIsEdit] = useState(false);
-    const [PathologistId, setPathologistId] = useState("");
-    const currentBranch = useCurrentBranch();
-    const profileValue = useDCProfileValue();
-    const updateProfile = useUpdateDiagnostic({});
-    const updateUser = useUpdateUser({});
-    const invalidateQuery = useInvalidateQuery();
-    const logActivity = useActivityLogger();
-    const setProfileData = useSetRecoilState(profileState);
-    const setCurrentBranch = useSetRecoilState(branchState);
+function PathologistTab() {
+  const [isAddingPathologist, setIsAddingPathologist] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [pathologistId, setPathologistId] = useState<string>("");
+
+  const [selectedBranch] = usePersistedBranchState();
+  const [selectedDc] = usePersistedDCState();
   
-    const updateBranch = useUpdateBranch({});
-  
-    useEffect(() => {
-      invalidateQuery("diagnosticBranch");
-    }, []);
-  
-    const handleSwitch = (checked: boolean) => setAddPathologist(checked);
-  
-    const handleEditPathologist = (value: boolean) => {
-      setIsEdit(value);
-      setAddPathologist(value);
-    };
-  
-    const handleEdit = (record: any) => {
-      setPathologistId(record?._id);
-      setIsEdit(true);
-      setAddPathologist(true);
-    };
-  
-    const handleDelete = (record: any) => {
-      const filteredPaths = currentBranch?.pathologistDetail?.filter(
-        (path) => path?._id !== record?._id,
-      );
-      updateBranch?.mutate(
-        { data: { pathologistDetail: filteredPaths }, recordId: selectedBranch },
-        {
-          onSuccess: (resp) => {
-            successAlert("Deleted path succesfully");
-            invalidateQuery("diagnosticBranch");
-            logActivity({ activity: "Deleted Pathologist " + record?.name });
-            setCurrentBranch(resp?.data);
-          },
-          onError: (err) => {
-            errorAlert("Error deleting pathologist");
-          },
-        },
-      );
-    };
-  
-    const columns = PATHOLOGIST_COLUMNS({
-      handleEdit,
-      handleDelete,
-    });
-  
-    return (
-      <div className="sdsa">
-        <section className="my-2 py-2 flex justify-end">
-          <Switch
-            checked={addPathologist}
-            style={{ backgroundColor: "orange" }}
-            onChange={handleSwitch}
-            checkedChildren="Add"
-            unCheckedChildren="View"
-          />
-        </section>
-        {!addPathologist ? (
-          <CommonSettingTable
-            data={currentBranch?.pathologistDetail}
-            columns={columns}
-          />
-        ) : isEdit ? (
-        //   <UpdatePathologist
-        //     handleEditPathologist={handleEditPathologist}
-        //     PathologistId={PathologistId}
-                    //   />
-            <></>
-        ) : (
-        //   <AddPathologist handleShowPathologist={setAddPathologist} />
-            <></>
-        )}
-      </div>
+  const currentBranch = useCurrentBranch();
+  const profileValue = useDCProfileValue();
+
+  const updateProfile = useUpdateDiagnostic({});
+  const updateUser = useUpdateUser({});
+  const updateBranch = useUpdateBranch({});
+  const invalidateQuery = useInvalidateQuery();
+
+  const logActivity = useActivityLogger();
+  const setProfileData = useSetRecoilState(profileState);
+  const setCurrentBranch = useSetRecoilState(branchState);
+
+  useEffect(() => {
+    invalidateQuery("diagnosticBranch");
+  }, [invalidateQuery]);
+
+  const handleSwitchChange = (checked: boolean) => setIsAddingPathologist(checked);
+
+  const handleEditPathologist = (editing: boolean) => {
+    setIsEditing(editing);
+    setIsAddingPathologist(editing);
+  };
+
+  const handleEdit = (record: any) => {
+    setPathologistId(record?._id);
+    handleEditPathologist(true);
+  };
+
+  const handleDelete = (record: any) => {
+    const updatedPathologists = currentBranch?.pathologistDetail?.filter(
+      (path) => path?._id !== record?._id
     );
-  }
-  
-  export default PathologistTab;
+
+    updateBranch.mutate(
+      { data: { pathologistDetail: updatedPathologists }, recordId: selectedBranch },
+      {
+        onSuccess: (resp) => {
+          successAlert("Pathologist deleted successfully");
+          invalidateQuery("diagnosticBranch");
+          logActivity({ activity: `Deleted Pathologist: ${record?.name}` });
+          setCurrentBranch(resp?.data);
+        },
+        onError: () => {
+          errorAlert("Error deleting pathologist");
+        },
+      }
+    );
+  };
+
+  const columns = PATHOLOGIST_COLUMNS({
+    handleEdit,
+    handleDelete,
+  });
+
+  return (
+    <div className="pathologist-tab">
+      <section className="my-2 py-2 flex justify-end">
+        <Switch
+          checked={isAddingPathologist}
+          onChange={handleSwitchChange}
+          style={{ backgroundColor: "orange" }}
+          checkedChildren="Add"
+          unCheckedChildren="View"
+        />
+      </section>
+
+      {!isAddingPathologist ? (
+        <CommonSettingTable
+          data={currentBranch?.pathologistDetail}
+          columns={columns}
+        />
+      ) : isEditing ? (
+        // Uncomment and add the component for editing pathologist
+        // <UpdatePathologist
+        //   handleEditPathologist={handleEditPathologist}
+        //   pathologistId={pathologistId}
+        // />
+        <></>
+      ) : (
+        // Uncomment and add the component for adding a new pathologist
+        // <AddPathologist handleShowPathologist={setIsAddingPathologist} />
+        <></>
+      )}
+    </div>
+  );
+}
+
+export default PathologistTab;

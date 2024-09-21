@@ -9,7 +9,6 @@ import { Activity } from './activity';
 import { EmployeesTab } from './employee';
 import BranchTab from './branch';
 import PathologistTab from './pathologist';
-// import { EmployeesTab } from "./employee";
 
 const SettingsTabLayout = () => {
   const [activeKey, setActiveKey] = useRecoilState(settingTabState);

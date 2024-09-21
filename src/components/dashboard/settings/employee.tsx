@@ -11,12 +11,14 @@ import { useEffect, useState } from "react";
 
 export const EmployeesTab = () => {
   const [addBranch, setAddBranch] = useState(false);
-  const [selectedDc] = usePersistedDCState();
-  const [selectedBranch] = usePersistedBranchState();
   const [isEdit, setIsEdit] = useState(false);
   const [operatorId, setOperatorId] = useState("");
+
+  const [selectedDc] = usePersistedDCState();
+  const [selectedBranch] = usePersistedBranchState();
   const currentBranch = useCurrentBranch();
   const profileValue = useDCProfileValue();
+
   const updateBranch = useUpdateBranch({});
   const updateUser = useUpdateUser({});
   const invalidateQuery = useInvalidateQuery();
@@ -24,7 +26,7 @@ export const EmployeesTab = () => {
 
   useEffect(() => {
     invalidateQuery("diagnosticBranch");
-  }, []);
+  }, [invalidateQuery]);
 
   const handleSwitch = (checked: boolean) => setAddBranch(checked);
 
@@ -39,27 +41,30 @@ export const EmployeesTab = () => {
     setAddBranch(true);
   };
 
-  const handleDelete = (record: any) => removeUserFromBranch(record);
+  const handleDelete = (record: any) => {
+    removeUserFromBranch(record);
+  };
 
   const removeUserFromBranch = (record: any) => {
-    const branchOperator = currentBranch?.branchOperator?.filter(
-      (op) => op?._id !== record?._id,
+    const updatedOperators = currentBranch?.branchOperator?.filter(
+      (operator) => operator?._id !== record?._id
     );
+
     updateBranch.mutate(
       {
-        data: { branchOperator },
+        data: { branchOperator: updatedOperators },
         recordId: selectedBranch,
       },
       {
         onSuccess: (resp) => {
           if (resp.status === 200) {
             warningAlert2("Deleted Employee successfully");
-            logActivity({ activity: "Delete Employee " + record?.userName });
+            logActivity({ activity: `Deleted Employee ${record?.userName}` });
             invalidateQuery("diagnosticBranch");
           }
           removeBranchFromUser(record);
         },
-      },
+      }
     );
   };
 
@@ -67,8 +72,9 @@ export const EmployeesTab = () => {
     const updatedDiagCenters = removeBranchById(
       record,
       selectedDc,
-      currentBranch?._id,
+      currentBranch?._id
     );
+
     updateUser.mutate(
       {
         data: { diagnosticCenters: updatedDiagCenters },
@@ -79,11 +85,10 @@ export const EmployeesTab = () => {
           if (resp.status === 200) {
             invalidateQuery("userData");
             invalidateQuery("diagnosticCenter");
-            // logActivity({activity: "Delete User "+record?.userName})
           }
         },
         onError: () => errorAlert("Updating Employee failed"),
-      },
+      }
     );
   };
 
@@ -94,7 +99,7 @@ export const EmployeesTab = () => {
   });
 
   return (
-    <div className="sdsa">
+    <div className="employees-tab">
       <section className="my-2 py-2 flex justify-end">
         <Switch
           checked={addBranch}
@@ -110,14 +115,13 @@ export const EmployeesTab = () => {
           columns={columns}
         />
       ) : isEdit ? (
-        // <UpdateEmployee
-        //   handleEditEmployee={handleEditEmployee}
-        //   operatorId={operatorId}
-          // />
-        <></>
+        <></> 
+        // Uncomment and use appropriate components here
+        // <UpdateEmployee handleEditEmployee={handleEditEmployee} operatorId={operatorId} />
       ) : (
-            // <AddEmployee handleShowBranch={setAddBranch} />
-            <></>
+        <></> 
+        // Uncomment and use appropriate components here
+        // <AddEmployee handleShowBranch={setAddBranch} />
       )}
     </div>
   );

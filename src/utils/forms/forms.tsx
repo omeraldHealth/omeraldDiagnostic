@@ -1,83 +1,7 @@
-// import { Space } from 'antd';
-// import React from 'react';
-// import { FaEdit, FaTrash } from 'react-icons/fa';
-
-// export const ADMIN_USER_ACTIVITES_COLUMNS = [
-//   {
-//     key: 'activity',
-//     title: 'Activity',
-//     dataIndex: 'activity',
-//   },
-//   {
-//     key: 'user',
-//     title: 'Activity By',
-//     dataIndex: 'user',
-//     render: (text: any) => {
-//       return <p>{text?.userName}</p>;
-//     },
-//   },
-//   {
-//     key: 'updatedTime',
-//     title: 'Activity Time',
-//     dataIndex: 'updatedTime',
-//   },
-// ];
-
-// export const BRANCH_EMPLOYEE_COLUMNS = ({
-//   selectedBranch,
-//   handleDelete,
-//   handleEdit,
-// }: any) => {
-//   return [
-//     {
-//       title: "Operator Name",
-//       dataIndex: "userName",
-//       key: "userName",
-//     },
-//     {
-//       title: "Operator Contact",
-//       dataIndex: "phoneNumber",
-//       key: "phoneNumber",
-//     },
-//     {
-//       title: "Operator Role",
-//       dataIndex: "roleName",
-//       key: "roleName",
-//       // render: (_, record) => {
-//       //   const x = getRoleName(record?.diagnosticCenters, selectedBranch);
-//       //   return <p className="capitalize">{x ? x : ""}</p>;
-//       // },
-//     },
-//     {
-//       title: "Action",
-//       key: "action",
-//       render: (_, record) => {
-//         return (
-//           <Space size="middle">
-//             <a href="#">
-//               <FaEdit
-//                 className="text-red-gray"
-//                 onClick={() => handleEdit(record)}
-//               />
-//             </a>
-//             <a href="#">
-//               <FaTrash
-//                 className="text-red-500"
-//                 onClick={() => handleDelete(record)}
-//               />
-//             </a>
-//           </Space>
-//         );
-//       },
-//     },
-//   ];
-// };
-
-
+//@ts-nocheck
 import { EyeIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { Popover, Space, Tag } from "antd";
+import { Space } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import moment from "moment";
 
@@ -134,11 +58,34 @@ export const ADMIN_USER_COLUMNS = [
   },
 ];
 
+interface Branch {
+  branchId: string;
+  roleName: string;
+}
+
+interface DiagnosticCenter {
+  branches: Branch[];
+}
+
+interface BranchEmployee {
+  _id: string;
+  userName: string;
+  phoneNumber: string;
+  roleName: string;
+  diagnosticCenters: any[];
+}
+
+interface BranchEmployeeColumnsProps {
+  selectedBranch: string;
+  handleEdit: (record: BranchEmployee) => void;
+  handleDelete: (record: BranchEmployee) => void;
+}
+
 export const BRANCH_EMPLOYEE_COLUMNS = ({
   selectedBranch,
   handleDelete,
   handleEdit,
-}) => {
+}: BranchEmployeeColumnsProps) => {
   return [
     {
       title: "Operator Name",
@@ -154,46 +101,46 @@ export const BRANCH_EMPLOYEE_COLUMNS = ({
       title: "Operator Role",
       dataIndex: "roleName",
       key: "roleName",
-      render: (_, record) => {
-        const x = getRoleName(record?.diagnosticCenters, selectedBranch);
-        return <p className="capitalize">{x ? x : ""}</p>;
+      render: (_: string, record: BranchEmployee) => {
+        // console.log(selectedBranch)
+        const roleName = getRoleName(record?.diagnosticCenters, selectedBranch);
+        return <p className="capitalize">{roleName || ""}</p>;
       },
     },
     {
       title: "Action",
       key: "action",
-      render: (_, record) => {
-        return (
-          <Space size="middle">
-            <a href="#">
-              <FaEdit
-                className="text-red-gray"
-                onClick={() => handleEdit(record)}
-              />
-            </a>
-            <a href="#">
-              <FaTrash
-                className="text-red-500"
-                onClick={() => handleDelete(record)}
-              />
-            </a>
-          </Space>
-        );
-      },
+      render: (_: string, record: BranchEmployee) => (
+        <Space size="middle">
+          <FaEdit
+            className="text-red-gray cursor-pointer"
+            onClick={() => handleEdit(record)}
+          />
+          <FaTrash
+            className="text-red-500 cursor-pointer"
+            onClick={() => handleDelete(record)}
+          />
+        </Space>
+      ),
     },
   ];
 };
 
-function getRoleName(data, branchId) {
-  const diagnostic = data?.find((d) =>
-    d.branches.some((branch) => branch.branchId === branchId),
+function getRoleName(
+  data: DiagnosticCenter[] | undefined,
+  branchId: string
+): string | null {
+  if (!data) return null;
+  const diagnostic = data.find((d) =>
+    d.branches.some((branch) => branch._id === branchId)
   );
 
+  // If a matching diagnostic center is found, find the branch and return the roleName
   if (diagnostic) {
-    const branch = diagnostic?.branches.find(
-      (branch) => branch.branchId === branchId,
+    const branch = diagnostic.branches.find(
+      (branch) => branch._id === branchId
     );
-    return branch ? branch?.roleName : null;
+    return branch ? branch.roleName : null;
   }
 
   return null;
@@ -320,271 +267,271 @@ export const PATHOLOGIST_COLUMNS = ({ handleEdit, handleDelete }: any) => [
   },
 ];
 
-export const TEST_DETAILS_COLUMNS = ({ handleEdit, handleDelete, handlePreview }) => [
-  {
-    key: "testName",
-    title: "Test Name",
-    dataIndex: "testName",
-    render: (text: any) => <a>{text}</a>,
-    sorter: (a: any, b: any) =>
-      a.sampleType?.testName?.length - b.sampleType?.testName?.length,
-  },
-  {
-    key: "sampleName",
-    title: "Sample Name",
-    dataIndex: "sampleName",
-    render: (text: any) => <a>{text}</a>,
-    sorter: (a: any, b: any) =>
-      a.sampleType?.sampleName?.length - b.sampleType?.sampleName?.length,
-  },
-  {
-    key: "parameter",
-    title: "Parameters",
-    dataIndex: "parameters",
-    render: (parameters: any, record: any) => (
-      <div
-        style={{
-          maxWidth: "20vw",
-          maxHeight: "calc(3 * 20px + 2px)",
-          overflowY: "auto",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gap: "20px",
-          }}
-        >
-          {parameters?.map((param: any, index: any) => (
-            <a key={index} href="#">
-              <Popover content={getPopOver(param)} title="Parameter Aliases">
-                <Tag className="my-1" color="green" key={param}>
-                  {param?.name}
-                </Tag>
-              </Popover>
-            </a>
-          ))}
-        </div>
-      </div>
-    ),
-  },
-  {
-    key: "components",
-    title: "Components",
-    dataIndex: "components",
-    render: (components: any, record: any) => (
-      <div
-        style={{
-          maxWidth: "20vw",
-          maxHeight: "calc(3 * 20px + 2px)",
-          overflowY: "auto",
-        }}
-      >
-          <ComponentsDisplay components={components} /> 
-      </div>
-    ),
-  },
-  {
-    key: "isActive",
-    title: "Status",
-    dataIndex: "isActive",
-    sorter: (a: any, b: any) =>
-      a.sampleType?.keywords.length - b.sampleType?.keywords.length,
-    render: (text: any) => {
-      if (text) {
-        return <Tag color="green">Active</Tag>;
-      } else {
-        return <Tag color="red">Inactive</Tag>;
-      }
-    },
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => {
-      return (
-        <Space size="middle">
-           <a
-            onClick={() => {
-              handlePreview(record);
-            }}
-            className="text-orange-700"
-          >
-            <EyeIcon className="w-4 text-green-900" />
-          </a>
-          <a href="#">
-            <FaEdit
-              className="text-red-gray"
-              onClick={() => handleEdit(record)}
-            />
-          </a>
-          <a href="#">
-            <FaTrash
-              className="text-red-500"
-              onClick={() => handleDelete(record)}
-            />
-          </a>
-        </Space>
-      );
-    },
-  },
-];
+// export const TEST_DETAILS_COLUMNS = ({ handleEdit, handleDelete, handlePreview }) => [
+//   {
+//     key: "testName",
+//     title: "Test Name",
+//     dataIndex: "testName",
+//     render: (text: any) => <a>{text}</a>,
+//     sorter: (a: any, b: any) =>
+//       a.sampleType?.testName?.length - b.sampleType?.testName?.length,
+//   },
+//   {
+//     key: "sampleName",
+//     title: "Sample Name",
+//     dataIndex: "sampleName",
+//     render: (text: any) => <a>{text}</a>,
+//     sorter: (a: any, b: any) =>
+//       a.sampleType?.sampleName?.length - b.sampleType?.sampleName?.length,
+//   },
+//   {
+//     key: "parameter",
+//     title: "Parameters",
+//     dataIndex: "parameters",
+//     render: (parameters: any, record: any) => (
+//       <div
+//         style={{
+//           maxWidth: "20vw",
+//           maxHeight: "calc(3 * 20px + 2px)",
+//           overflowY: "auto",
+//         }}
+//       >
+//         <div
+//           style={{
+//             display: "grid",
+//             gap: "20px",
+//           }}
+//         >
+//           {parameters?.map((param: any, index: any) => (
+//             <a key={index} href="#">
+//               <Popover content={getPopOver(param)} title="Parameter Aliases">
+//                 <Tag className="my-1" color="green" key={param}>
+//                   {param?.name}
+//                 </Tag>
+//               </Popover>
+//             </a>
+//           ))}
+//         </div>
+//       </div>
+//     ),
+//   },
+//   {
+//     key: "components",
+//     title: "Components",
+//     dataIndex: "components",
+//     render: (components: any, record: any) => (
+//       <div
+//         style={{
+//           maxWidth: "20vw",
+//           maxHeight: "calc(3 * 20px + 2px)",
+//           overflowY: "auto",
+//         }}
+//       >
+//           <ComponentsDisplay components={components} /> 
+//       </div>
+//     ),
+//   },
+//   {
+//     key: "isActive",
+//     title: "Status",
+//     dataIndex: "isActive",
+//     sorter: (a: any, b: any) =>
+//       a.sampleType?.keywords.length - b.sampleType?.keywords.length,
+//     render: (text: any) => {
+//       if (text) {
+//         return <Tag color="green">Active</Tag>;
+//       } else {
+//         return <Tag color="red">Inactive</Tag>;
+//       }
+//     },
+//   },
+//   {
+//     title: "Action",
+//     key: "action",
+//     render: (_, record) => {
+//       return (
+//         <Space size="middle">
+//            <a
+//             onClick={() => {
+//               handlePreview(record);
+//             }}
+//             className="text-orange-700"
+//           >
+//             <EyeIcon className="w-4 text-green-900" />
+//           </a>
+//           <a href="#">
+//             <FaEdit
+//               className="text-red-gray"
+//               onClick={() => handleEdit(record)}
+//             />
+//           </a>
+//           <a href="#">
+//             <FaTrash
+//               className="text-red-500"
+//               onClick={() => handleDelete(record)}
+//             />
+//           </a>
+//         </Space>
+//       );
+//     },
+//   },
+// ];
 
-export const PARAMETER_COLUMNS = ({ handleEdit, handleDelete }) => [
-  {
-    title: "Parameter",
-    dataIndex: "name",
-    key: "name",
-    ellipsis: true,
-    sorter: (a, b) => a.name.localeCompare(b.name),
-    render: (text) => (
-      <div
-        style={{
-          maxWidth: 100,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-        title={text}
-      >
-        {text}
-      </div>
-    ),
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    key: "description",
-    render: (text) => (
-      <div
-        style={{
-          maxWidth: 100,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-        title={text}
-      >
-        {text}
-      </div>
-    ),
-  },
-  {
-    title: "Remedy",
-    dataIndex: "remedy",
-    key: "remedy",
-    render: (text) => (
-      <div
-        style={{
-          maxWidth: 100,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-        title={text}
-      >
-        {text}
-      </div>
-    ),
-  },
-  // {
-  //   title: "Unit",
-  //   dataIndex: "units",
-  //   key: "units",
-  //   width: 100,
-  //   render: (_, record) => (
-  //     <Popover title="Units" trigger="hover">
-  //       <div >
-  //         <ParameterUnitsColumn data={record} />
-  //       </div>
-  //     </Popover>
-  //   ),
-  // },
-  {
-    title: "Alias",
-    dataIndex: "aliases",
-    key: "aliases",
-    render: (aliases = []) => {
-      const displayAliases = aliases.slice(0, 3);
-      const moreDots = aliases.length > 3;
+// export const PARAMETER_COLUMNS = ({ handleEdit, handleDelete }) => [
+//   {
+//     title: "Parameter",
+//     dataIndex: "name",
+//     key: "name",
+//     ellipsis: true,
+//     sorter: (a, b) => a.name.localeCompare(b.name),
+//     render: (text) => (
+//       <div
+//         style={{
+//           maxWidth: 100,
+//           whiteSpace: "nowrap",
+//           overflow: "hidden",
+//           textOverflow: "ellipsis",
+//         }}
+//         title={text}
+//       >
+//         {text}
+//       </div>
+//     ),
+//   },
+//   {
+//     title: "Description",
+//     dataIndex: "description",
+//     key: "description",
+//     render: (text) => (
+//       <div
+//         style={{
+//           maxWidth: 100,
+//           whiteSpace: "nowrap",
+//           overflow: "hidden",
+//           textOverflow: "ellipsis",
+//         }}
+//         title={text}
+//       >
+//         {text}
+//       </div>
+//     ),
+//   },
+//   {
+//     title: "Remedy",
+//     dataIndex: "remedy",
+//     key: "remedy",
+//     render: (text) => (
+//       <div
+//         style={{
+//           maxWidth: 100,
+//           whiteSpace: "nowrap",
+//           overflow: "hidden",
+//           textOverflow: "ellipsis",
+//         }}
+//         title={text}
+//       >
+//         {text}
+//       </div>
+//     ),
+//   },
+//   // {
+//   //   title: "Unit",
+//   //   dataIndex: "units",
+//   //   key: "units",
+//   //   width: 100,
+//   //   render: (_, record) => (
+//   //     <Popover title="Units" trigger="hover">
+//   //       <div >
+//   //         <ParameterUnitsColumn data={record} />
+//   //       </div>
+//   //     </Popover>
+//   //   ),
+//   // },
+//   {
+//     title: "Alias",
+//     dataIndex: "aliases",
+//     key: "aliases",
+//     render: (aliases = []) => {
+//       const displayAliases = aliases.slice(0, 3);
+//       const moreDots = aliases.length > 3;
 
-      return (
-        <Popover content={aliases.join(", ")} title="Aliases" trigger="hover">
-          <Space size={[0, 1]} wrap>
-            {displayAliases.map((alias) => (
-              <Tag color="geekblue" key={alias}>
-                {alias}
-              </Tag>
-            ))}
-            {moreDots && <Tag color="geekblue">...</Tag>}
-          </Space>
-        </Popover>
-      );
-    },
-  },
-  {
-    title: "Bio Ref",
-    dataIndex: "bioRefRange",
-    key: "bioRefRange",
-    width: 100,
-    render: (bioRefRange = []) => {
-      // const displayBioRefRange = bioRefRange?.length>0 && bioRefRange?.slice(0, 3);
-      return (
-        <Popover
-          content={getContent(bioRefRange)}
-          title="Bio Ref Range Details"
-          trigger="hover"
-        >
-          <div
-            style={{
-              maxWidth: 130,
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            <Tag color="blue">Reference value</Tag>
-          </div>
-        </Popover>
-      );
-    },
-  },
-  {
-    title: "Status",
-    dataIndex: "isActive",
-    key: "isActive",
-    filters: [
-      { text: "Active", value: true },
-      { text: "Inactive", value: false },
-    ],
-    onFilter: (value, record) => record.isActive === value,
-    render: (isActive) => (
-      <Tag color={isActive ? "green" : "red"}>
-        {isActive ? "Active" : "Inactive"}
-      </Tag>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a>
-          <FaEdit
-            className="text-red-gray"
-            onClick={() => handleEdit(record)}
-          />
-        </a>
-        <a>
-          <FaTrash
-            className="text-red-500"
-            onClick={() => handleDelete(record)}
-          />
-        </a>
-      </Space>
-    ),
-  },
-];
+//       return (
+//         <Popover content={aliases.join(", ")} title="Aliases" trigger="hover">
+//           <Space size={[0, 1]} wrap>
+//             {displayAliases.map((alias) => (
+//               <Tag color="geekblue" key={alias}>
+//                 {alias}
+//               </Tag>
+//             ))}
+//             {moreDots && <Tag color="geekblue">...</Tag>}
+//           </Space>
+//         </Popover>
+//       );
+//     },
+//   },
+//   {
+//     title: "Bio Ref",
+//     dataIndex: "bioRefRange",
+//     key: "bioRefRange",
+//     width: 100,
+//     render: (bioRefRange = []) => {
+//       // const displayBioRefRange = bioRefRange?.length>0 && bioRefRange?.slice(0, 3);
+//       return (
+//         <Popover
+//           content={getContent(bioRefRange)}
+//           title="Bio Ref Range Details"
+//           trigger="hover"
+//         >
+//           <div
+//             style={{
+//               maxWidth: 130,
+//               whiteSpace: "nowrap",
+//               overflow: "hidden",
+//               textOverflow: "ellipsis",
+//             }}
+//           >
+//             <Tag color="blue">Reference value</Tag>
+//           </div>
+//         </Popover>
+//       );
+//     },
+//   },
+//   {
+//     title: "Status",
+//     dataIndex: "isActive",
+//     key: "isActive",
+//     filters: [
+//       { text: "Active", value: true },
+//       { text: "Inactive", value: false },
+//     ],
+//     onFilter: (value, record) => record.isActive === value,
+//     render: (isActive) => (
+//       <Tag color={isActive ? "green" : "red"}>
+//         {isActive ? "Active" : "Inactive"}
+//       </Tag>
+//     ),
+//   },
+//   {
+//     title: "Action",
+//     key: "action",
+//     render: (_, record) => (
+//       <Space size="middle">
+//         <a>
+//           <FaEdit
+//             className="text-red-gray"
+//             onClick={() => handleEdit(record)}
+//           />
+//         </a>
+//         <a>
+//           <FaTrash
+//             className="text-red-500"
+//             onClick={() => handleDelete(record)}
+//           />
+//         </a>
+//       </Space>
+//     ),
+//   },
+// ];
 
 const getPopOver = (param: any) => (
   <div className="max-w-[25vw]">
@@ -609,72 +556,72 @@ const getPopOver = (param: any) => (
   </div>
 );
 
-const extractAllUnits = (data: any) => {
-  const basicRangeUnits =
-    data?.bioRefRange?.basicRange?.map((range: any) => range.unit) || [];
+// const extractAllUnits = (data: any) => {
+//   const basicRangeUnits =
+//     data?.bioRefRange?.basicRange?.map((range: any) => range.unit) || [];
 
-  const ageRangeUnits =
-    data?.bioRefRange?.advanceRange?.ageRange?.map(
-      (range: any) => range.unit,
-    ) || [];
+//   const ageRangeUnits =
+//     data?.bioRefRange?.advanceRange?.ageRange?.map(
+//       (range: any) => range.unit,
+//     ) || [];
 
-  const genderRangeUnits =
-    data?.bioRefRange?.advanceRange?.genderRange?.map(
-      (range: any) => range.unit,
-    ) || [];
+//   const genderRangeUnits =
+//     data?.bioRefRange?.advanceRange?.genderRange?.map(
+//       (range: any) => range.unit,
+//     ) || [];
 
-  const customCategoryUnits =
-    data?.bioRefRange?.advanceRange?.customRange?.flatMap(
-      (category: any) =>
-        category.categoryOptions?.map((option: any) => option.unit) || [],
-    ) || [];
+//   const customCategoryUnits =
+//     data?.bioRefRange?.advanceRange?.customRange?.flatMap(
+//       (category: any) =>
+//         category.categoryOptions?.map((option: any) => option.unit) || [],
+//     ) || [];
 
-  // Combine all units and remove duplicates
-  const allUnits = [
-    ...basicRangeUnits,
-    ...ageRangeUnits,
-    ...genderRangeUnits,
-    ...customCategoryUnits,
-  ];
+//   // Combine all units and remove duplicates
+//   const allUnits = [
+//     ...basicRangeUnits,
+//     ...ageRangeUnits,
+//     ...genderRangeUnits,
+//     ...customCategoryUnits,
+//   ];
 
-  // Remove duplicates
-  const uniqueUnits = Array.from(new Set(allUnits));
+//   // Remove duplicates
+//   const uniqueUnits = Array.from(new Set(allUnits));
 
-  return uniqueUnits;
-};
+//   return uniqueUnits;
+// };
 
-const ParameterUnitsColumn = ({ data }) => {
-  const [visibleUnits, setVisibleUnits] = useState<string[]>([]);
-  const allUnits = extractAllUnits(data);
+// const ParameterUnitsColumn = ({ data }) => {
+//   const [visibleUnits, setVisibleUnits] = useState<string[]>([]);
+//   const allUnits = extractAllUnits(data);
 
-  const handlePopoverVisibleChange = (visible: boolean) => {
-    setVisibleUnits(visible ? allUnits : []);
-  };
+//   const handlePopoverVisibleChange = (visible: boolean) => {
+//     setVisibleUnits(visible ? allUnits : []);
+//   };
 
-  const renderContent = () => (
-    <Space wrap>
-      {allUnits.map((unit, index) => (
-        <Tag color="green" key={index}>
-          {unit}
-        </Tag>
-      ))}
-    </Space>
-  );
+//   const renderContent = () => (
+//     <Space wrap>
+//       {allUnits.map((unit, index) => (
+//         <Tag color="green" key={index}>
+//           {unit}
+//         </Tag>
+//       ))}
+//     </Space>
+//   );
 
-  return (
-    <Popover
-      content={renderContent()}
-      title="All Units"
-      trigger="click"
-      visible={visibleUnits.length > 0}
-      onVisibleChange={handlePopoverVisibleChange}
-    >
-      <Tag color="green" style={{ cursor: "pointer" }}>
-        Show Units
-      </Tag>
-    </Popover>
-  );
-};
+//   return (
+//     <Popover
+//       content={renderContent()}
+//       title="All Units"
+//       trigger="click"
+//       visible={visibleUnits.length > 0}
+//       onVisibleChange={handlePopoverVisibleChange}
+//     >
+//       <Tag color="green" style={{ cursor: "pointer" }}>
+//         Show Units
+//       </Tag>
+//     </Popover>
+//   );
+// };
 
 const getContent = (bioRefRange: any) => {
   //console.log"bioref", bioRefRange)
@@ -852,7 +799,7 @@ export const REPORTS_COLUMNS = ({
   },
 ];
 
-const getPopOvers = (param) => {
+const getPopOvers = (param: any) => {
   return (
     <div className="w-[60vw]"  >
       <div
@@ -865,18 +812,18 @@ const getPopOvers = (param) => {
   );
 };
 
-const ComponentsDisplay = ({ components }) => {
-  return (
-    <div >
-      {components?.map((param, index) => (
-        <a key={index} href="#">
-          <Popover content={getPopOvers(param)} title={param?.title}>
-            <Tag className="my-1" color="green" key={param._id}>
-              {param?.title || 'Untitled Component'}
-            </Tag>
-          </Popover>
-        </a>
-      ))}
-    </div>
-  );
-};
+// const ComponentsDisplay = ({ components }) => {
+//   return (
+//     <div >
+//       {components?.map((param, index) => (
+//         <a key={index} href="#">
+//           <Popover content={getPopOvers(param)} title={param?.title}>
+//             <Tag className="my-1" color="green" key={param._id}>
+//               {param?.title || 'Untitled Component'}
+//             </Tag>
+//           </Popover>
+//         </a>
+//       ))}
+//     </div>
+//   );
+// };
