@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { useMutation } from "react-query";
-import { updateDiagnosticUserApi } from "../api";
+import { updateDiagnosticUserApi, updateDiagProfileApi } from "../api";
 
 
 
@@ -30,4 +30,10 @@ export function useUpdateUser<TData, TVariables>(
     props: UseMutationProps<TData, TVariables>,
   ) {
     return UpdateMutation("put", updateDiagnosticUserApi, props);
+}
+
+export function useUpdateDiagnostic<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return UpdateMutation("put", updateDiagProfileApi, props);
 }
