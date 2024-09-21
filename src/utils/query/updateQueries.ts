@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
-import { updateDiagnosticUserApi, updateDiagProfileApi } from '../api';
+import { updateDiagBranchApi, updateDiagnosticUserApi, updateDiagProfileApi } from '../api';
 
 interface UseMutationProps<TData, TVariables> {
   onSuccess?: (data: AxiosResponse<TData>) => void;
@@ -34,4 +34,10 @@ export function useUpdateDiagnostic<TData, TVariables>(
   props: UseMutationProps<TData, TVariables>,
 ) {
   return UpdateMutation('put', updateDiagProfileApi, props);
+}
+
+export function useUpdateBranch<TData, TVariables>(
+  props: UseMutationProps<TData, TVariables>,
+) {
+  return UpdateMutation('put', updateDiagBranchApi, props);
 }

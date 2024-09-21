@@ -8,7 +8,7 @@ export const Activity = () => {
   // @ts-ignore
   const activities = currentBranch && currentBranch?.activities;
 
-  const sortedActivities = [...activities].sort(
+  const sortedActivities = activities && [...activities].sort(
     // @ts-ignore
     (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
   );
@@ -16,7 +16,7 @@ export const Activity = () => {
   return (
     <div className="sdsa">
       <CommonSettingTable
-        data={sortedActivities}
+        data={sortedActivities || []}
         columns={ADMIN_USER_ACTIVITES_COLUMNS}
       />
     </div>

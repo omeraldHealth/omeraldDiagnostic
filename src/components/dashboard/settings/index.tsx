@@ -6,6 +6,9 @@ import { usePersistedBranchState } from '@/hooks/localstorage';
 import { useGetDcBranch } from '@/utils/query/getQueries';
 import { Billing } from './billing';
 import { Activity } from './activity';
+import { EmployeesTab } from './employee';
+import BranchTab from './branch';
+import PathologistTab from './pathologist';
 // import { EmployeesTab } from "./employee";
 
 const SettingsTabLayout = () => {
@@ -30,9 +33,9 @@ const SettingsTabLayout = () => {
   const tabItems = [
     { key: '1', label: 'Billing', children: <Billing /> },
     { key: '2', label: 'Activity', children: <Activity /> },
-    // { key: "3", label: "Employee Management", children: <EmployeesTab /> },
-    // { key: "4", label: "Branch Management", children: <BranchTab /> },
-    // { key: "5", label: "Pathologist Management", children: <PathologistTab /> },
+    { key: "3", label: "Employee Management", children: <EmployeesTab /> },
+    { key: "4", label: "Branch Management", children: <BranchTab /> },
+    { key: "5", label: "Pathologist Management", children: <PathologistTab /> },
   ];
 
   return (
