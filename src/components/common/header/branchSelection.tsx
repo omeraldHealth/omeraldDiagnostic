@@ -54,8 +54,6 @@ export function BranchSelection() {
     }, 300);
   };
 
-  console.log(selectedBranch)
-
   return (
     <section className="my-2">
 
