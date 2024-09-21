@@ -1,18 +1,15 @@
-import { Spinner } from "@components/atoms/loader";
-import { UserLayout } from "@components/templates/pageTemplate";
-import dynamic from "next/dynamic";
+import { PageLoader } from '@/components/common/pageLoader';
+import { PageLayout } from '@/components/layouts/pageLayout';
+import dynamic from 'next/dynamic';
 
-const LandingPage = dynamic(
-  () => import("@components/organism/landing/landingPage"),
-  { loading: () => <Spinner /> },
-);
+const LandingPage = dynamic(() => import('@/components/landing'), {
+  loading: () => <PageLoader />,
+});
 
 export default function Home() {
   return (
-    <UserLayout tabDescription="Home page" tabName="Diagnostic Omerald | Home">
-      <div>
-        <LandingPage />
-      </div>
-    </UserLayout>
+    <PageLayout tabDescription="Home page" tabName="Diagnostic Omerald | Home">
+      <LandingPage />
+    </PageLayout>
   );
 }

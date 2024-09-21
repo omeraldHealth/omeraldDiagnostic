@@ -1,122 +1,97 @@
-import { UserLayout } from "@components/templates/pageTemplate";
-import React, { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { createDC } from "@components/common/recoil/chooseDc";
-import { useRouter } from "next/router";
-import { useUserValues } from "@components/common/constants/recoilValues";
-import verifyProfile from "@public/verifyProfile.png";
-import DiagnosticCard from "./diagCard";
-import AddDC from "./addDC";
-import { usePersistedDCState } from "@components/common/recoil/hooks/usePersistedState";
-import { Button } from "antd";
-import { errorAlert } from "@components/atoms/alerts/alert";
-import { Spinner } from "@chakra-ui/react";
-import { unselectDcState } from "@components/common/recoil/branch/branch";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Button } from 'antd';
+import DiagnosticCard from './diagCard';
+import AddDC from './addDC';
+import { useUserRecoilValue } from '@/utils/recoil/values';
+import { usePersistedDCState } from '@/hooks/localstorage';
+import { errorAlert } from '@/components/common/alerts';
+import { PageLayout } from '@/components/layouts/pageLayout';
+import { verifyProfileImage } from '@/utils/constants/cloudinary';
+import { useSetRecoilState } from 'recoil';
+import { createDC } from '@/utils/recoil';
+import { PageLoader } from '@/components/common/pageLoader';
 
 const ChooseDc: React.FC = () => {
   const router = useRouter();
-  const userValue = useUserValues();
+  const userValue = useUserRecoilValue();
   const [selectedDc, setSelectedDC] = usePersistedDCState();
-  const [defaultValue, setDefaultValue] = useState<string>("");
-  const createDCRecoil = useSetRecoilState(createDC);
-  const [unselectDc, setUnselectDc] = useRecoilState(unselectDcState);
+  const [defaultValue, setDefaultValue] = useState<string>('');
+  const createDcState = useSetRecoilState(createDC);
+  const [loading, setLoading] = useState(true);
 
-  const handleSetDefaultValue = () => {
-    // Redirect if user data is missing
-    if (!userValue || Object.keys(userValue)?.length === 0) {
-      router.push("/verifyUser");
-      return;
-    }
-
-    //@ts-ignore
-    const hasSingleDc = userValue?.diagnosticCenters?.length === 1;
-    //@ts-ignore
-    const singleDcValue = userValue?.diagnosticCenters?.[0]?.diagnostic?._id;
-
-    if (selectedDc && selectedDc !== null) {
-      setDefaultValue(selectedDc);
-      if (!unselectDc) {
-        handleSubmit();
+  useEffect(() => {
+    if (userValue && userValue?.diagnosticCenters) {
+      const firstId = userValue.diagnosticCenters[0]?.diagnostic?._id;
+      if (firstId) {
+        setDefaultValue(firstId);
+        setLoading(false);
+      } else {
+        router.push("/verifyUser")
       }
-    } else if (hasSingleDc && singleDcValue != null) {
-      setDefaultValue(singleDcValue);
-      setSelectedDC(singleDcValue);
-    } else if (singleDcValue != null) {
-      setDefaultValue(singleDcValue);
-      setSelectedDC(singleDcValue);
     } else {
-      // Handle case where no valid DC is selected or available
-      setDefaultValue("");
+      setLoading(true); // Keep showing loader if no userValue or diagnostic centers are found
     }
-  };
+  }, [userValue]);
 
   const handleCreateDC = () => {
-    createDCRecoil(true);
-    router.push("/onboard");
+    createDcState(true);
+    router.push('/onboard');
   };
 
   const handleSelectDC = (value: string) => {
-    if (value) {
-      setSelectedDC(value);
-      setDefaultValue(value);
-    }
+    setDefaultValue(value);
+    setSelectedDC(value);
   };
 
   const handleSubmit = () => {
-    if (selectedDc || defaultValue) {
-      setSelectedDC(selectedDc || defaultValue);
-      setUnselectDc(false);
-      router.push("/dashboard");
+    if (defaultValue) {
+      setSelectedDC(defaultValue);
+      router.push('/dashboard');
     } else {
-      errorAlert("Please select DC to proceed.");
+      errorAlert('Please select a Diagnostic Center to proceed.');
     }
   };
 
-  useEffect(() => {
-    handleSetDefaultValue();
-  }, [userValue, selectedDc]); // Add selectedDc as a dependency to ensure the effect reruns if it changes
-
   return (
-    <UserLayout
-      tabDescription="Choose DC"
+    <PageLayout
+      tabDescription="Choose Diagnostic Center"
       tabName="Admin Diagnostic | Choose Diagnostic Center"
     >
-      <section className="w-[60%] my-8 m-auto grid grid-cols-2 shadow-xl">
-        <section className="text-center">
-          {verifyProfile?.src ? (
-            <img src={verifyProfile.src} alt="Verification" />
-          ) : (
-            <Spinner />
-          )}
-        </section>
-        <section className="text-center">
-          <h2 className="mt-10 font-bold text-xl text-purple-900">
-            Choose Diagnostic Center to login
-          </h2>
-          <div className="min-h-[50vh] h-auto flex justify-center mt-10">
-            <div>
-              {defaultValue && (
+      {loading && <PageLoader />}
+      {!loading && userValue?.diagnosticCenters.length > 0 && (
+        <section className="w-full lg:w-[60%] mx-auto my-8 p-6 bg-white shadow-xl rounded-md">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="flex justify-center">
+              <img src={verifyProfileImage} alt="Verification" />
+            </div>
+            <div className="text-center">
+              <h2 className="font-bold text-2xl text-purple-900 mb-6">
+                Choose a Diagnostic Center
+              </h2>
+              <div className="space-y-4 text-center">
                 <DiagnosticCard
-                  defaultValue={defaultValue}
                   handleCardClick={handleSelectDC}
                   userValue={userValue}
+                  defaultValue={defaultValue}
                 />
-              )}
-              <AddDC handleCardClick={handleCreateDC} />
-              <section className="flex justify-start">
-                <Button
-                  className="w-[5vw]"
-                  onClick={handleSubmit}
-                  type="primary"
-                >
-                  Proceed
-                </Button>
-              </section>
+                <AddDC handleCardClick={handleCreateDC} />
+                <div className="my-8">
+                  <Button
+                    className="w-full lg:w-[16vw]"
+                    onClick={handleSubmit}
+                    type="primary"
+                    style={{ backgroundColor: 'green', borderColor: 'green' }}
+                  >
+                    Proceed
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
-      </section>
-    </UserLayout>
+      )}
+    </PageLayout>
   );
 };
 

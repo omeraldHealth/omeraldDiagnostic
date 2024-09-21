@@ -1,38 +1,45 @@
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useProfileValue } from "@components/common/constants/recoilValues";
 import { useUser } from "@clerk/clerk-react";
 import { useRecoilValue } from "recoil";
-import { createDC } from "@components/common/recoil/chooseDc";
-import { OnboardNavbar } from "@components/molecules/navbar";
-import OnboardNewComponents from "@components/molecules/onboard/onboard";
-import { Spinner } from "@components/atoms/loader";
+import { useDCProfileValue } from "@/utils/recoil/values";
+import { createDC } from "@/utils/recoil";
+import { PageLoader } from "@/components/common/pageLoader";
+import { OnboardNavbar } from "@/components/header/onboardNavbar";
+import { Footer } from "@/components/footer";
+import OnboardNewComponents from "@/components/onboard";
 
 const Onboard: React.FC = (): JSX.Element => {
   const { user, isLoaded } = useUser();
   const router = useRouter();
-  const profileValue = useProfileValue();
+  const profileValue = useDCProfileValue();
   const createDcState = useRecoilValue(createDC);
 
   useEffect(() => {
-    if (user && profileValue?._id && createDcState === false) {
-      router?.push("/dashboard");
+    if (user && profileValue?._id && !createDcState) {
+      router.push("/dashboard");
     }
-  }, [profileValue, user, router]);
+  }, [profileValue, user, router, createDcState]);
+
+  if (!isLoaded) {
+    return <PageLoader />;
+  }
 
   return (
-    <div className="flex flex-col h-screen bg-white">
+      <div className="flex flex-col h-screen bg-white">
       <OnboardNavbar />
-      <section className="w-[70%] pb-[5vh] my-[7vh] h-auto mx-auto flex flex-col justify-center ">
+      <section className="w-[70%] pb-[5vh] my-[7vh] h-auto mx-auto flex flex-col justify-center">
         {user?.id ? (
-          <OnboardNewComponents />
+            <section className="min-h-[40vh]">
+              <OnboardNewComponents/>
+            </section>
         ) : (
           <p className="font-bold text-xl">
-            User not logged in, please login to onboard{" "}
+            User not logged in, please login to onboard
           </p>
         )}
-      </section>
-      {!isLoaded && <Spinner />}
+          </section>
+        <Footer/>
     </div>
   );
 };
