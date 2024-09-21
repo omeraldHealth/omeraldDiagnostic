@@ -73,8 +73,8 @@ export const useUserVerification = () => {
     }
   };
 
-  const handleCreateUser = (userObj: UserInfo) => {
-    createUserMutation.mutate({ data: userObj });
+  const handleCreateUser = (userObj: any) => {
+    createUserMutation.mutate({ ...userObj });
   };
 
   return {
