@@ -18,27 +18,25 @@ export function BranchSelection() {
   const [tabs, setTabs] = useState(dashTabs);
 
   // Alert if no valid branch is selected, and update tabs or navigate
-  useEffect(() => {
-    if (!selectedBranch && (!dcProfile || !dcProfile?.branches?.length)) {
-      errorAlert("No valid branch found. Redirecting to settings.");
-      setTabs("/settings");
-      router.push("/settings");
-    }
-  }, [selectedBranch, dcProfile, router, setTabs]);
+  // useEffect(() => {
+  //   if (!selectedBranch && (!dcProfile || !dcProfile?.branches?.length)) {
+  //     errorAlert("No valid branch found. Redirecting to settings.");
+  //     setTabs("/settings");
+  //   }
+  // }, [selectedBranch, dcProfile, router, setTabs]);
 
   // Handle branches initialization and selection
   useEffect(() => {
+    console.log(dcProfile)
     if (Array.isArray(dcProfile?.branches) && dcProfile.branches.length > 0) {
-      // Set the default branch if none is selected
-      if (!selectedBranch) {
-        setSelectedBranch(dcProfile.branches[0]._id);
-      }
-
       const formattedOptions = dcProfile.branches.map((branch) => ({
         label: branch.branchName || "Branch", // Use branchName or default to "Branch"
         value: branch._id,
       }));
       setOptions(formattedOptions);
+      if (!selectedBranch) {
+        setSelectedBranch(dcProfile.branches[0]._id);
+      }
     } else {
       setOptions([]);
     }
@@ -47,11 +45,6 @@ export function BranchSelection() {
   const handleBranchChange = (value) => {
     setLoading(true);
     setSelectedBranch(value);
-
-    // Simulate a loading delay (e.g., network delay)
-    setTimeout(() => {
-      setLoading(false);
-    }, 300);
   };
 
   return (
