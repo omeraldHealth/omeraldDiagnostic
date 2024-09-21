@@ -17,17 +17,7 @@ export function BranchSelection() {
   const router = useRouter();
   const [tabs, setTabs] = useState(dashTabs);
 
-  // Alert if no valid branch is selected, and update tabs or navigate
-  // useEffect(() => {
-  //   if (!selectedBranch && (!dcProfile || !dcProfile?.branches?.length)) {
-  //     errorAlert("No valid branch found. Redirecting to settings.");
-  //     setTabs("/settings");
-  //   }
-  // }, [selectedBranch, dcProfile, router, setTabs]);
-
-  // Handle branches initialization and selection
   useEffect(() => {
-    console.log(dcProfile)
     if (Array.isArray(dcProfile?.branches) && dcProfile.branches.length > 0) {
       const formattedOptions = dcProfile.branches.map((branch) => ({
         label: branch.branchName || "Branch", // Use branchName or default to "Branch"
