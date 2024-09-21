@@ -126,21 +126,16 @@ export const BRANCH_EMPLOYEE_COLUMNS = ({
   ];
 };
 
-function getRoleName(
-  data: DiagnosticCenter[] | undefined,
-  branchId: string
-): string | null {
-  if (!data) return null;
-  const diagnostic = data.find((d) =>
-    d.branches.some((branch) => branch._id === branchId)
+function getRoleName(data, branchId) {
+  const diagnostic = data?.find((d) =>
+    d.branches.some((branch) => branch.branchId === branchId),
   );
 
-  // If a matching diagnostic center is found, find the branch and return the roleName
   if (diagnostic) {
-    const branch = diagnostic.branches.find(
-      (branch) => branch._id === branchId
+    const branch = diagnostic?.branches.find(
+      (branch) => branch.branchId === branchId,
     );
-    return branch ? branch.roleName : null;
+    return branch ? branch?.roleName : null;
   }
 
   return null;

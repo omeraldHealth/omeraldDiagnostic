@@ -49,7 +49,7 @@ export function DashboardLayout({ tabName, tabDescription, children }: any) {
 
   useEffect(() => {
     if (session?.status !== 'active') {
-      router.push('/signin');
+      router.push('/signIn');
     }
   }, []);
 
@@ -73,17 +73,17 @@ export function DashboardLayout({ tabName, tabDescription, children }: any) {
     }
   }, [branchLoading, currentBranch]);
 
-  useEffect(() => {
-    if (selectedDc) {
-      refetch();
-    }
-  }, [selectedDc]);
+  // useEffect(() => {
+  //   if (selectedDc) {
+  //     refetch();
+  //   }
+  // }, [selectedDc]);
 
-  useEffect(() => {
-    if (selectedBranch) {
-      refBranch();
-    }
-  }, [selectedBranch]);
+  // useEffect(() => {
+  //   if (selectedBranch) {
+  //     refBranch();
+  //   }
+  // }, [selectedBranch]);
 
   //@ts-ignore
   const isValidProfile = profileData?.data?._id;

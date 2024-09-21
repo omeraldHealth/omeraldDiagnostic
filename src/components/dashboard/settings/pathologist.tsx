@@ -32,9 +32,9 @@ function PathologistTab() {
   const setProfileData = useSetRecoilState(profileState);
   const setCurrentBranch = useSetRecoilState(branchState);
 
-  useEffect(() => {
-    invalidateQuery("diagnosticBranch");
-  }, [invalidateQuery]);
+  // useEffect(() => {
+  //   invalidateQuery("diagnosticBranch");
+  // }, [invalidateQuery]);
 
   const handleSwitchChange = (checked: boolean) => setIsAddingPathologist(checked);
 

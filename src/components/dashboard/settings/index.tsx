@@ -20,13 +20,13 @@ const SettingsTabLayout = () => {
     refetch,
   } = useGetDcBranch({ selectedBranchId: selectedBranch });
 
-  useEffect(() => {
-    // @ts-ignore
-    if (branchData && !isLoading) setCurrentBranch(branchData?.data);
-  }, [branchData]);
+  // useEffect(() => {
+  //   // @ts-ignore
+  //   if (branchData && !isLoading) setCurrentBranch(branchData?.data);
+  // }, [branchData]);
 
   useEffect(() => {
-    refetch();
+    // refetch();
   }, []);
 
   const tabItems = [
