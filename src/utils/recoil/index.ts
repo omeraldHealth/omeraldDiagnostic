@@ -70,3 +70,8 @@ export const settingTabState = atom<string>({
   key: 'settingTabState',
   default: "1",
 })
+
+export const createDC = atom<boolean>({
+  key: 'createDC',
+  default: false,
+})

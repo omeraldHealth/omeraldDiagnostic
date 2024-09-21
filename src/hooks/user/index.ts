@@ -55,8 +55,12 @@ export const useUserVerification = () => {
       return;
     }
 
-    if (userObj?.diagnosticCenters?.length > 0) {
+    if (userObj) { 
       setUserRecoil(userObj);
+    }
+
+    if (userObj?.diagnosticCenters?.length > 0) {
+
       const selectedDcPresent = selectedDc && userObj?.diagnosticCenters?.some((dc) => dc.diagnostic._id === selectedDc)
       if (!selectedDcPresent) {
         router.push('/chooseDc');

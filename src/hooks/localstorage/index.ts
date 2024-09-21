@@ -16,9 +16,10 @@ export const usePersistedBranchState = () => {
   }, [setSelectedBranch]);
 
   useEffect(() => {
-    // Save the state to localStorage whenever it changes
-    if (selectedBranch !== null) {
+    if (selectedBranch !== null && selectedBranch !== undefined) {
       localStorage.setItem('selectedBranch', selectedBranch);
+    } else {
+      localStorage.removeItem('selectedBranch'); 
     }
   }, [selectedBranch]);
 
