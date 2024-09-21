@@ -15,17 +15,14 @@ const Dashboard: React.FC = () => {
     [key: string]: JSX.Element;
   } = {
     Dashboard: <DashboardTab />,
-    "Tests Offered": <TestTab />,
+    'Tests Offered': <TestTab />,
     // "View Reports": <ReportsTab />,
     Profile: <Profile />,
     Settings: <SettingsTabLayout />,
   };
 
   return (
-    <DashboardLayout
-      tabName="Dashboard"
-      tabDescription= "Diagnostic Dashboard"
-    >
+    <DashboardLayout tabName="Dashboard" tabDescription="Diagnostic Dashboard">
       {DashboardTabsMap[dashboard]}
     </DashboardLayout>
   );

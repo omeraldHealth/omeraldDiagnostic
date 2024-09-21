@@ -1,14 +1,14 @@
 //@ts-nocheck
-import React, { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
-import { DatePicker, InputNumber, Modal } from "antd";
-import { PencilSquareIcon } from "@heroicons/react/20/solid";
-import "chartjs-adapter-moment";
-import moment from "moment";
-import { useRecoilValue } from "recoil";
-import { useDCProfileValue } from "@/utils/recoil/values";
-import { branchState } from "@/utils/recoil";
-import { Spinner } from "@chakra-ui/react";
+import React, { useEffect, useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import { DatePicker, InputNumber, Modal } from 'antd';
+import { PencilSquareIcon } from '@heroicons/react/20/solid';
+import 'chartjs-adapter-moment';
+import moment from 'moment';
+import { useRecoilValue } from 'recoil';
+import { useDCProfileValue } from '@/utils/recoil/values';
+import { branchState } from '@/utils/recoil';
+import { Spinner } from '@chakra-ui/react';
 
 const { RangePicker } = DatePicker;
 
@@ -24,7 +24,7 @@ const ReportSharedVsTime2 = () => {
   const reportsList = currentBranch?.reports || [];
 
   useEffect(() => {
-    const sixMonthsAgo = moment().subtract(6, "months").toDate();
+    const sixMonthsAgo = moment().subtract(6, 'months').toDate();
     const current = moment().toDate();
     initialLoad(sixMonthsAgo, current);
     setMaxVal(profile?.reports?.length || 20);
@@ -33,7 +33,11 @@ const ReportSharedVsTime2 = () => {
   const initialLoad = (start: any, end: any) => {
     const startDate = new Date(start);
     const endDate = new Date(end);
-    const { monthYearArray, counts } = getMonthYearArray(startDate, endDate, reportsList);
+    const { monthYearArray, counts } = getMonthYearArray(
+      startDate,
+      endDate,
+      reportsList,
+    );
     setDate(monthYearArray);
     setReportCount(counts);
     setMaxVal(Math.max(...counts));
@@ -42,7 +46,11 @@ const ReportSharedVsTime2 = () => {
   const generateDateRange = (data: any) => {
     const startDate = new Date(data?.[0].$d);
     const endDate = new Date(data?.[1].$d);
-    const { monthYearArray, counts } = getMonthYearArray(startDate, endDate, reportsList);
+    const { monthYearArray, counts } = getMonthYearArray(
+      startDate,
+      endDate,
+      reportsList,
+    );
 
     setDate(monthYearArray);
     setReportCount(counts);
@@ -53,7 +61,7 @@ const ReportSharedVsTime2 = () => {
     plugins: {
       title: {
         display: true,
-        text: "Reports Shared Last 6 months",
+        text: 'Reports Shared Last 6 months',
         font: {
           size: 18,
         },
@@ -66,13 +74,13 @@ const ReportSharedVsTime2 = () => {
         min: 0,
       },
       x: {
-        type: "time",
+        type: 'time',
         time: {
-          unit: "month",
+          unit: 'month',
           displayFormats: {
-            month: "MMM YYYY",
+            month: 'MMM YYYY',
           },
-          tooltipFormat: "MMM YYYY",
+          tooltipFormat: 'MMM YYYY',
         },
         ticks: {
           maxRotation: 0,
@@ -86,16 +94,16 @@ const ReportSharedVsTime2 = () => {
     labels: date,
     datasets: [
       {
-        label: "Reports Uploaded",
-        backgroundColor: "#3184D4",
-        borderColor: "#3184D4",
+        label: 'Reports Uploaded',
+        backgroundColor: '#3184D4',
+        borderColor: '#3184D4',
         borderWidth: 2,
         data: reportCount,
       },
       {
-        label: "Reports Shared",
-        backgroundColor: "#D68006",
-        borderColor: "#D68006",
+        label: 'Reports Shared',
+        backgroundColor: '#D68006',
+        borderColor: '#D68006',
         borderWidth: 2,
         data: [], // Add relevant data for "Reports Shared"
       },
@@ -108,7 +116,7 @@ const ReportSharedVsTime2 = () => {
   };
 
   const handleCancel = () => {
-    const sixMonthsAgo = moment().subtract(6, "months").toDate();
+    const sixMonthsAgo = moment().subtract(6, 'months').toDate();
     const current = moment().toDate();
     initialLoad(sixMonthsAgo, current);
     setIsModalOpen(false);
@@ -116,8 +124,8 @@ const ReportSharedVsTime2 = () => {
 
   const disabledDate = (current: any) => {
     return (
-      (current && current < moment().subtract(6, "months").endOf("day")) ||
-      current > moment().endOf("day")
+      (current && current < moment().subtract(6, 'months').endOf('day')) ||
+      current > moment().endOf('day')
     );
   };
 
@@ -141,7 +149,9 @@ const ReportSharedVsTime2 = () => {
         cancelText="Reset"
       >
         <div className="my-4">
-          <p className="text-sm font-medium">Enter Range of report count (Between 0 to 1000)</p>
+          <p className="text-sm font-medium">
+            Enter Range of report count (Between 0 to 1000)
+          </p>
           <InputNumber
             min={1}
             max={1000}
@@ -152,7 +162,9 @@ const ReportSharedVsTime2 = () => {
         </div>
 
         <div className="my-4">
-          <p className="text-sm font-medium">Choose Date range (6 months range)</p>
+          <p className="text-sm font-medium">
+            Choose Date range (6 months range)
+          </p>
           <RangePicker
             onChange={setDateRange}
             disabledDate={disabledDate}
@@ -183,15 +195,25 @@ function getMonthYearArray(startDate: any, endDate: any, data: any) {
   const monthYearArray = [];
   const counts = [];
 
-  for (let i = 0; i <= (endYear - startYear) * 12 + (endMonth - startMonth); i++) {
+  for (
+    let i = 0;
+    i <= (endYear - startYear) * 12 + (endMonth - startMonth);
+    i++
+  ) {
     const date = new Date(startYear, startMonth + i, 1);
-    const monthYear = date.toLocaleString("default", { month: "short", year: "numeric" });
+    const monthYear = date.toLocaleString('default', {
+      month: 'short',
+      year: 'numeric',
+    });
     monthYearArray.push(monthYear);
 
     // Count reports for this month
     const count = data.filter((report: any) => {
       const reportDate = new Date(report?.reportDate);
-      return reportDate.getFullYear() === date.getFullYear() && reportDate.getMonth() === date.getMonth();
+      return (
+        reportDate.getFullYear() === date.getFullYear() &&
+        reportDate.getMonth() === date.getMonth()
+      );
     }).length;
     counts.push(count);
   }

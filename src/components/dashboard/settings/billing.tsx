@@ -1,6 +1,5 @@
-import { giftBoxImage } from "@/utils/constants/cloudinary";
-import React from "react";
-
+import { giftBoxImage } from '@/utils/constants/cloudinary';
+import React from 'react';
 
 export const Billing = () => {
   return (

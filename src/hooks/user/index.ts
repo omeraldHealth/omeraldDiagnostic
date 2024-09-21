@@ -5,7 +5,11 @@ import { useSetRecoilState } from 'recoil';
 import { userDataState } from '@/utils/recoil';
 import { useGetUser } from '@/utils/query/getQueries';
 import { useCreateUser } from '@/utils/query/createQueries';
-import { errorAlert, successAlert, warningAlert } from '@/components/common/alerts';
+import {
+  errorAlert,
+  successAlert,
+  warningAlert,
+} from '@/components/common/alerts';
 import { UserInfo } from '@/utils/interface/getData';
 import { usePersistedDCState } from '../localstorage';
 
@@ -15,7 +19,7 @@ export const useUserVerification = () => {
   const router = useRouter();
   const phone = user?.phoneNumbers?.[0]?.phoneNumber || '';
   const setUserRecoil = useSetRecoilState(userDataState);
-  const [selectedDc] = usePersistedDCState()
+  const [selectedDc] = usePersistedDCState();
 
   const { data: userD, isLoading } = useGetUser({ userPhoneNumber: phone });
   //@ts-ignore
@@ -55,13 +59,16 @@ export const useUserVerification = () => {
       return;
     }
 
-    if (userObj) { 
+    if (userObj) {
       setUserRecoil(userObj);
     }
 
     if (userObj?.diagnosticCenters?.length > 0) {
-
-      const selectedDcPresent = selectedDc && userObj?.diagnosticCenters?.some((dc) => dc.diagnostic._id === selectedDc)
+      const selectedDcPresent =
+        selectedDc &&
+        userObj?.diagnosticCenters?.some(
+          (dc) => dc.diagnostic._id === selectedDc,
+        );
       if (!selectedDcPresent) {
         router.push('/chooseDc');
       } else {

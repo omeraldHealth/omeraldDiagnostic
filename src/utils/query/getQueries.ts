@@ -1,5 +1,10 @@
 import { useQuery, useQueryClient, UseQueryOptions } from 'react-query';
-import { getDiagnosticUserApi, getDiagnosticSetting, getDiagProfileByIdApi, getDiagBranchByIdApi } from '@/utils/api/index';
+import {
+  getDiagnosticUserApi,
+  getDiagnosticSetting,
+  getDiagProfileByIdApi,
+  getDiagBranchByIdApi,
+} from '@/utils/api/index';
 import axios from 'axios';
 
 export function useQueryGetData<T>(

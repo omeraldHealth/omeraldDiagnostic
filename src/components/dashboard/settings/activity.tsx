@@ -1,7 +1,7 @@
-import { ADMIN_USER_ACTIVITES_COLUMNS } from "@/utils/forms/forms";
-import { useCurrentBranch } from "@/utils/recoil/values";
-import { CommonSettingTable } from "@/utils/table";
-import React from "react";
+import { ADMIN_USER_ACTIVITES_COLUMNS } from '@/utils/forms/forms';
+import { useCurrentBranch } from '@/utils/recoil/values';
+import { CommonSettingTable } from '@/utils/table';
+import React from 'react';
 
 export const Activity = () => {
   const currentBranch = useCurrentBranch();

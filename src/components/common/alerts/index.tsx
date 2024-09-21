@@ -9,13 +9,13 @@ const showToastIfDisplayed = (msg: string, options: ToastOptions): void => {
 };
 
 export const successAlert = (msg: string): void =>
-    showToastIfDisplayed(msg, { type: 'success' });
+  showToastIfDisplayed(msg, { type: 'success' });
 
 export const infoAlert = (msg: string): void =>
-    showToastIfDisplayed(msg, { type: 'info' });
+  showToastIfDisplayed(msg, { type: 'info' });
 
 export const warningAlert = (msg: string): void =>
-    showToastIfDisplayed(msg, { type: 'warning' });
+  showToastIfDisplayed(msg, { type: 'warning' });
 
 export const errorAlert = (msg: string): void =>
-    showToastIfDisplayed(msg, { type: 'error' });
+  showToastIfDisplayed(msg, { type: 'error' });

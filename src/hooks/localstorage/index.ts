@@ -19,7 +19,7 @@ export const usePersistedBranchState = () => {
     if (selectedBranch !== null && selectedBranch !== undefined) {
       localStorage.setItem('selectedBranch', selectedBranch);
     } else {
-      localStorage.removeItem('selectedBranch'); 
+      localStorage.removeItem('selectedBranch');
     }
   }, [selectedBranch]);
 

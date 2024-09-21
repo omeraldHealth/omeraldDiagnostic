@@ -34,8 +34,8 @@ interface Branch {
 
 interface DiagnosticCenter {
   diagnostic: {
-    centerName: string,
-    _id: string
+    centerName: string;
+    _id: string;
   };
   branches: Branch[];
 }
@@ -63,4 +63,3 @@ export interface BranchDetailInterface {
   branchContact: string;
   branchManager: string;
 }
-

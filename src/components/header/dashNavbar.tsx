@@ -7,7 +7,7 @@ import SelectedDC from '../common/header/selectDc';
 
 export function DashboardHeader() {
   const tabName = useDashboardTabs();
-    
+
   return (
     <div className={`flex justify-between items-center`}>
       <div className="flex flex-1 flex-col">

@@ -27,7 +27,7 @@ const ChooseDc: React.FC = () => {
         setDefaultValue(firstId);
         setLoading(false);
       } else {
-        router.push("/verifyUser")
+        router.push('/verifyUser');
       }
     } else {
       setLoading(true); // Keep showing loader if no userValue or diagnostic centers are found

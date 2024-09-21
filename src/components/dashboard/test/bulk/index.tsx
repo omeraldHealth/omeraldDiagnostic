@@ -15,10 +15,10 @@ const { Dragger } = Upload;
 const BulkUploadModal = ({ visible, onClose }) => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [selectedDc] = usePersistedDCState()
-  const updateDc = useUpdateDiagnostic({})
+  const [selectedDc] = usePersistedDCState();
+  const updateDc = useUpdateDiagnostic({});
   const profileData = useDCProfileValue();
-  const invalidateQuery = useInvalidateQuery()
+  const invalidateQuery = useInvalidateQuery();
 
   const props = {
     name: 'file',
@@ -52,22 +52,27 @@ const BulkUploadModal = ({ visible, onClose }) => {
 
       if (response.status === 201) {
         const insertedEntries = await response.data.text(); // Convert blob to text
-        const insertedIds = JSON.parse(insertedEntries).map((entry) => entry._id);
+        const insertedIds = JSON.parse(insertedEntries).map(
+          (entry) => entry._id,
+        );
         const existingIds = profileData?.tests.map((test) => test._id);
 
-        const updatedTest = [...existingIds, ...insertedIds]
+        const updatedTest = [...existingIds, ...insertedIds];
 
-        updateDc?.mutate({ data: { tests: updatedTest}, recordId: selectedDc  }, {
-          onSuccess: () => { 
-            successAlert('Bulk upload successful!');
-            invalidateQuery("diagnosticCenter")
+        updateDc?.mutate(
+          { data: { tests: updatedTest }, recordId: selectedDc },
+          {
+            onSuccess: () => {
+              successAlert('Bulk upload successful!');
+              invalidateQuery('diagnosticCenter');
+            },
+            onError: () => {
+              errorAlert('Bulk upload failed!');
+            },
           },
-          onError: () => { 
-            errorAlert('Bulk upload failed!');
-          }
-        })
-        
-        onClose();  
+        );
+
+        onClose();
       } else {
         const errorBlob = response.data;
         const errorUrl = window.URL.createObjectURL(new Blob([errorBlob]));
@@ -124,7 +129,9 @@ const BulkUploadModal = ({ visible, onClose }) => {
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
         </p>
-        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+        <p className="ant-upload-text">
+          Click or drag file to this area to upload
+        </p>
         <p className="ant-upload-hint">
           Ensure the file follows the correct template format.
         </p>

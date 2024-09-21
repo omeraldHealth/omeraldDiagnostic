@@ -1,23 +1,25 @@
-
 import { unSelectedDcState } from '@/utils/recoil';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { PageLoader } from '../pageLoader';
-import { usePersistedBranchState, usePersistedDCState } from '@/hooks/localstorage';
+import {
+  usePersistedBranchState,
+  usePersistedDCState,
+} from '@/hooks/localstorage';
 
 const SelectedDC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const setUnselectDc = useSetRecoilState(unSelectedDcState);
-  const [selectedDc, setSelectedDc] = usePersistedDCState() 
-  const [selectedBranch, setSelectedBranch] = usePersistedBranchState() 
+  const [selectedDc, setSelectedDc] = usePersistedDCState();
+  const [selectedBranch, setSelectedBranch] = usePersistedBranchState();
 
   const toggleModal = () => {
     setUnselectDc(true);
-    setSelectedDc(null)
+    setSelectedDc(null);
     setSelectedBranch(null);
-    setLoading(true)
+    setLoading(true);
     router.push('/chooseDc');
   };
 
@@ -48,7 +50,7 @@ const SelectedDC = () => {
           />
         </svg>
       </button>
-      {loading && <PageLoader/>}
+      {loading && <PageLoader />}
     </div>
   );
 };

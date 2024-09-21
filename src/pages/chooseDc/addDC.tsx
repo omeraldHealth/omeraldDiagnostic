@@ -1,13 +1,12 @@
-
 import { Button } from 'antd';
 import { FaPlusCircle } from 'react-icons/fa';
 
 const AddDC: React.FC<any> = ({ handleCardClick }) => (
   <div className=" my-10">
     <Button
-      type='default'  
+      type="default"
       onClick={handleCardClick}
-      className='w-[16vw] m-auto'
+      className="w-[16vw] m-auto"
     >
       Create New DC
       <FaPlusCircle

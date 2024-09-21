@@ -1,24 +1,28 @@
-import { usePersistedDCState } from "@/hooks/localstorage";
-import { useGetDcProfile, useInvalidateQuery } from "@/utils/query/getQueries";
-import { useUpdateDiagnostic } from "@/utils/query/updateQueries";
-import { branchState } from "@/utils/recoil";
-import { useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { usePersistedDCState } from '@/hooks/localstorage';
+import { useGetDcProfile, useInvalidateQuery } from '@/utils/query/getQueries';
+import { useUpdateDiagnostic } from '@/utils/query/updateQueries';
+import { branchState } from '@/utils/recoil';
+import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 
 export const ViewTest: React.FC = () => {
   const [showTest, setShowTest] = useState(false);
   const [selectedDc] = usePersistedDCState();
-  const updatedDc = useUpdateDiagnostic({})
+  const updatedDc = useUpdateDiagnostic({});
   const deleteTest = useDeleteTest({});
   const invalidateQuery = useInvalidateQuery();
-//   const setEditTestState = useSetRecoilState(editTestState);
+  //   const setEditTestState = useSetRecoilState(editTestState);
   const setCurrentBranch = useSetRecoilState(branchState);
-  const { data: currentProfile, refetch, isLoading } = useGetDcProfile({
+  const {
+    data: currentProfile,
+    refetch,
+    isLoading,
+  } = useGetDcProfile({
     selectedCenterId: selectedDc,
   });
   const [testDetail, setTestDetail] = useRecoilState(testDetailsState);
   const [testId, setTestId] = useRecoilState(editTestIdState);
-  const logActivity = useActivityLogger()
+  const logActivity = useActivityLogger();
 
   const [previewRecord, setPreviewRecord] = useState({});
   const [previewReportModalOpen, setPreviewReportModalOpen] = useState(false);
@@ -54,22 +58,24 @@ export const ViewTest: React.FC = () => {
                 ?.filter((test) => test?._id !== record?._id)
                 ?.map((test) => test._id);
               updatedDc.mutateAsync(
-                { data: {tests: updatedTestIds}, recordId: selectedDc },
+                { data: { tests: updatedTestIds }, recordId: selectedDc },
                 {
                   onSuccess: (resp) => {
-                    invalidateQuery("diagnosticCenter");
+                    invalidateQuery('diagnosticCenter');
                     setCurrentBranch(resp?.data);
                   },
                 },
               );
-              invalidateQuery("diagnosticCenter");
-              logActivity({ activity: "Deleted Test " + record?.testName || "" });
-              warningAlert2("Deleted Test Successfully");
+              invalidateQuery('diagnosticCenter');
+              logActivity({
+                activity: 'Deleted Test ' + record?.testName || '',
+              });
+              warningAlert2('Deleted Test Successfully');
               refetch();
             }
           },
           onError: (err) => {
-            errorAlert("Error deleting test");
+            errorAlert('Error deleting test');
           },
         },
       );
@@ -88,12 +94,12 @@ export const ViewTest: React.FC = () => {
   const columns = TEST_DETAILS_COLUMNS({
     handleEdit,
     handleDelete,
-    handlePreview
+    handlePreview,
   });
 
   return (
     <section>
-        <CommonSettingTable data={tests} columns={columns} />
+      <CommonSettingTable data={tests} columns={columns} />
     </section>
   );
 };

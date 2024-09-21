@@ -1,10 +1,9 @@
-
-import { CategoryScale } from "chart.js";
-import Chart from "chart.js/auto";
-import ReportSharedVsTime2 from "./home/reportShared";
-import DashActivity from "./home/dashActivity";
-import DashCard from "./home/dashCard";
-import DashBanner from "./home/dashBanner";
+import { CategoryScale } from 'chart.js';
+import Chart from 'chart.js/auto';
+import ReportSharedVsTime2 from './home/reportShared';
+import DashActivity from './home/dashActivity';
+import DashCard from './home/dashCard';
+import DashBanner from './home/dashBanner';
 
 Chart.register(CategoryScale);
 
@@ -20,4 +19,3 @@ export default function DashboardTab() {
     </div>
   );
 }
-
