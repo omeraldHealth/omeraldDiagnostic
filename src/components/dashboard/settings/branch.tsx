@@ -1,22 +1,33 @@
 //@ts-nocheck
 import { useActivityLogger } from "@/components/common/activity";
-import { successAlert } from "@/components/common/alerts";
+import { errorAlert, successAlert } from "@/components/common/alerts";
 import { usePersistedBranchState, usePersistedDCState } from "@/hooks/localstorage";
 import { BRANCH_DETAILS_COLUMNS } from "@/utils/forms/forms";
 import { useDeleteBranch } from "@/utils/query/deleteQueries";
 import { useInvalidateQuery } from "@/utils/query/getQueries";
-import { useUpdateDiagnostic, useUpdateUser } from "@/utils/query/updateQueries";
+import { useUpdateBranch, useUpdateDiagnostic, useUpdateUser } from "@/utils/query/updateQueries";
 import { profileState } from "@/utils/recoil";
 import { useCurrentBranch, useDCProfileValue } from "@/utils/recoil/values";
 import { CommonSettingTable } from "@/utils/table";
 import { Switch } from "antd";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
+import AddEntityForm from "./create";
+import { useCreateDiagnosticBranch } from "@/utils/query/createQueries";
+import UpdateEntityForm from "./update";
+
+const branchFormSchema = [
+  { label: "Branch Name", name: "branchName", type: "input", placeholder: "Enter branch name", required: true },
+  { label: "Branch Email", name: "branchEmail", type: "input", placeholder: "Enter branch email", required: true },
+  { label: "Branch Contact", name: "branchContact", type: "input", placeholder: "Enter contact number", required: true },
+  { label: "Branch Address", name: "branchAddress", type: "input", placeholder: "Enter branch address", required: true },
+];
 
 function BranchTab() {
   const [isAddBranchMode, setIsAddBranchMode] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [branchId, setBranchId] = useState("");
+  const [initialBranchData, setInitialBranch] = useState()
 
   const [selectedBranch] = usePersistedBranchState();
   const [selectedDc] = usePersistedDCState();
@@ -29,6 +40,7 @@ function BranchTab() {
   const invalidateQuery = useInvalidateQuery();
   const logActivity = useActivityLogger();
   const setProfileData = useSetRecoilState(profileState);
+  const updateBranch = useUpdateBranch({});
 
   useEffect(() => {
     invalidateQuery("diagnosticCenter");
@@ -43,6 +55,7 @@ function BranchTab() {
 
   const handleEditBranch = (record: any) => {
     setBranchId(record?._id);
+    setInitialBranch(record)
     setIsEditMode(true);
     setIsAddBranchMode(true);
   };
@@ -84,6 +97,81 @@ function BranchTab() {
     handleDelete: handleDeleteBranch,
   });
 
+  //Add Methods
+
+  const createBranch = useCreateDiagnosticBranch({
+    onSuccess: (resp) => {
+      //@ts-ignore
+      const branches = [...profileValue?.branches, resp?.data?._id];
+      updateProfile.mutate({ data: { branches }, recordId: selectedDc },
+        {
+          onSuccess: () => {
+            successAlert("Branch added successfully");
+            logActivity({ activity: "Created New Branch" });
+            setIsAddBranchMode(false)
+            setIsEditMode(false)
+            invalidateQuery("diagnosticCenter");
+          },
+          onError: (err) => errorAlert2("Error updating branch: " + err.message),
+      });
+    },
+    onError: (err) => errorAlert("Error creating branch: " + err.message),
+  });
+
+  const handleAddBranchSubmit = async (formData) => {
+    if (
+      !formData.branchName ||
+      !formData.branchEmail ||
+      !formData.branchContact ||
+      !formData.branchAddress
+    ) {
+      return errorAlert("Please fill in all required fields");
+    }
+
+    const branchExists = profileValue?.branches?.find(
+      (branch) => branch?.branchName == formData.branchName,
+    );
+    if (branchExists) {
+      errorAlert("Branch already exisits");
+      return;
+    }
+
+    createBranch.mutate({ ...formData });
+  };
+
+  const handleCancel = async () => {
+    setIsAddBranchMode(false)
+    setIsEditMode(false)
+  };
+
+  //Edit Methods
+  const handleUpdateSubmit = (formData) => { 
+    if (
+      !formData.branchName ||
+      !formData.branchEmail ||
+      !formData.branchContact ||
+      !formData.branchAddress
+    ) {
+      return errorAlert2("Please fill in all required fields");
+    }
+    updateBranch.mutate(
+      { recordId: branchId, data: { ...formData } },
+      {
+        onSuccess: (resp) => {
+          if (resp?.data) {
+            successAlert("Updated Branch");
+            logActivity({ activity: "Updated Branch" });
+            invalidateQuery("diagnosticCenter");
+            setIsAddBranchMode(false)
+            setIsEditMode(false)
+          }
+        },
+      },
+    );
+  }
+
+  //Delete Methods
+
   return (
     <div className="branch-tab">
       <section className="my-2 py-2 flex justify-end">
@@ -99,13 +187,20 @@ function BranchTab() {
       {!isAddBranchMode ? (
         <CommonSettingTable data={profileValue?.branches} columns={columns} />
       ) : isEditMode ? (
-        <></> 
-        // Uncomment the below component when needed
-        // <UpdateBranch handleEditBranch={handleEditBranchMode} branchId={branchId} />
+        <UpdateEntityForm
+          formSchema={branchFormSchema}
+          handleSubmit={handleUpdateSubmit}
+          handleCancel={handleCancel}
+          initialData={initialBranchData}
+          entityType="Branch"
+        />
       ) : (
-        <></> 
-        // Uncomment the below component when needed
-        // <AddBranch handleShowBranch={setIsAddBranchMode} />
+          <AddEntityForm
+            formSchema={branchFormSchema}
+            handleSubmit={handleAddBranchSubmit}
+            handleCancel={handleCancel}
+            entityType="Branch"
+          />
       )}
     </div>
   );
