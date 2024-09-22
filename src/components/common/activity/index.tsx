@@ -1,11 +1,11 @@
-import { usePersistedBranchState } from "@/hooks/localstorage";
-import { useGetDcBranch } from "@/utils/query/getQueries";
-import { useUpdateBranch } from "@/utils/query/updateQueries";
-import { useUserRecoilValue } from "@/utils/recoil/values";
-import { useEffect } from "react";
+import { usePersistedBranchState } from '@/hooks/localstorage';
+import { useGetDcBranch } from '@/utils/query/getQueries';
+import { useUpdateBranch } from '@/utils/query/updateQueries';
+import { useUserRecoilValue } from '@/utils/recoil/values';
+import { useEffect } from 'react';
 
 export function useActivityLogger() {
-  const user = useUserRecoilValue()
+  const user = useUserRecoilValue();
   const [selectedBranch] = usePersistedBranchState();
   const {
     data: branchData,
@@ -21,7 +21,7 @@ export function useActivityLogger() {
 
   const logActivity = async ({ activity }: any) => {
     if (isLoading) {
-      console.warn("Branch data is still loading. Please wait.");
+      console.warn('Branch data is still loading. Please wait.');
       return;
     }
 
@@ -34,7 +34,7 @@ export function useActivityLogger() {
         recordId: selectedBranch,
       });
     } catch (error) {
-      console.error("Error logging activity:", error);
+      console.error('Error logging activity:', error);
     }
   };
 

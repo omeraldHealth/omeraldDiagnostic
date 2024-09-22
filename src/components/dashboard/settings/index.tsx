@@ -32,9 +32,9 @@ const SettingsTabLayout = () => {
   const tabItems = [
     { key: '1', label: 'Billing', children: <Billing /> },
     { key: '2', label: 'Activity', children: <Activity /> },
-    { key: "3", label: "Employee Management", children: <EmployeesTab /> },
-    { key: "4", label: "Branch Management", children: <BranchTab /> },
-    { key: "5", label: "Pathologist Management", children: <PathologistTab /> },
+    { key: '3', label: 'Employee Management', children: <EmployeesTab /> },
+    { key: '4', label: 'Branch Management', children: <BranchTab /> },
+    { key: '5', label: 'Pathologist Management', children: <PathologistTab /> },
   ];
 
   return (

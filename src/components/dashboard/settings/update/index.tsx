@@ -1,8 +1,8 @@
-import { Button, Input, Select, Form, Upload, Image, message } from "antd";
-import { useState, useEffect } from "react";
-import { FaUpload } from "react-icons/fa";
-import axios from "axios";
-import { uploadPathSignature } from "@/utils/api";
+import { Button, Input, Select, Form, Upload, Image, message } from 'antd';
+import { useState, useEffect } from 'react';
+import { FaUpload } from 'react-icons/fa';
+import axios from 'axios';
+import { uploadPathSignature } from '@/utils/api';
 
 interface UpdateEntityFormProps {
   formSchema: FormField[]; // Array of form field configurations
@@ -15,7 +15,7 @@ interface UpdateEntityFormProps {
 interface FormField {
   label: string; // Label of the form field
   name: string; // Name of the form field
-  type: "input" | "select" | "upload"; // Add 'upload' type for image upload fields
+  type: 'input' | 'select' | 'upload'; // Add 'upload' type for image upload fields
   placeholder?: string; // Placeholder for input fields
   required?: boolean; // Whether the field is required
   options?: { label: string; value: string }[]; // Options for select fields
@@ -69,7 +69,9 @@ const UpdateEntityForm: React.FC<UpdateEntityFormProps> = ({
 
       // Update the fileList to show the uploaded file preview
       const updatedFileList = fileList.map((f) =>
-        f.uid === file.uid ? { ...f, url: file.response?.url, status: 'done' } : f
+        f.uid === file.uid
+          ? { ...f, url: file.response?.url, status: 'done' }
+          : f,
       );
 
       setFileList(updatedFileList);
@@ -83,12 +85,12 @@ const UpdateEntityForm: React.FC<UpdateEntityFormProps> = ({
       setLoading(true); // Start loading
 
       const formDataSend = new FormData();
-      formDataSend.append("file", file);
+      formDataSend.append('file', file);
 
       const response = await axios.post(uploadPathSignature, formDataSend);
 
       if (response?.status === 200) {
-        message.success("File uploaded successfully");
+        message.success('File uploaded successfully');
 
         // Call onSuccess to mark the upload as successful and set the file URL
         onSuccess(response.data, file);
@@ -100,7 +102,7 @@ const UpdateEntityForm: React.FC<UpdateEntityFormProps> = ({
         });
       }
     } catch (error) {
-      message.error("File upload failed.");
+      message.error('File upload failed.');
       onError(error); // Pass the error to the Upload component
     } finally {
       setLoading(false); // End loading
@@ -167,14 +169,19 @@ const UpdateEntityForm: React.FC<UpdateEntityFormProps> = ({
                     listType="picture"
                     fileList={fileList}
                     customRequest={(options) =>
-                      customRequest({ ...options, action: field.uploadOptions?.action })
+                      customRequest({
+                        ...options,
+                        action: field.uploadOptions?.action,
+                      })
                     }
                     onChange={(info) => handleFileChange(field.name, info)}
                     accept={field.uploadOptions?.accept || 'image/*'}
                     multiple={field.uploadOptions?.multiple || false}
                   >
                     <Button icon={<FaUpload />} loading={loading}>
-                      {field.uploadOptions?.multiple ? 'Upload Files' : 'Upload File'}
+                      {field.uploadOptions?.multiple
+                        ? 'Upload Files'
+                        : 'Upload File'}
                     </Button>
                   </Upload>
                 </>

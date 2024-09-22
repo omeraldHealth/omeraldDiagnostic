@@ -1,6 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
-import { updateDiagBranchApi, updateDiagnosticUserApi, updateDiagProfileApi } from '../api';
+import {
+  updateDiagBranchApi,
+  updateDiagnosticUserApi,
+  updateDiagProfileApi,
+} from '../api';
 
 interface UseMutationProps<TData, TVariables> {
   onSuccess?: (data: AxiosResponse<TData>) => void;

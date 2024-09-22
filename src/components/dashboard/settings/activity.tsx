@@ -8,10 +8,12 @@ export const Activity = () => {
   // @ts-ignore
   const activities = currentBranch && currentBranch?.activities;
 
-  const sortedActivities = activities && [...activities].sort(
-    // @ts-ignore
-    (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
-  );
+  const sortedActivities =
+    activities &&
+    [...activities].sort(
+      // @ts-ignore
+      (a, b) => new Date(b.updatedTime) - new Date(a.updatedTime),
+    );
 
   return (
     <div className="sdsa">

@@ -12,7 +12,7 @@ export const ProfileView: React.FC<any> = () => {
   const [selectedBranch, setSelectedBranch] = usePersistedBranchState();
   const [branch, setBranch] = useState({});
   const branches = profile?.branches || [];
-  console.log(branches)
+  console.log(branches);
   useEffect(() => {
     const currentBranch = branches?.filter(
       (branch) => branch?._id == selectedBranch,

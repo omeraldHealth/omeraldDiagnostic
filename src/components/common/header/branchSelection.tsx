@@ -38,10 +38,10 @@ export function BranchSelection() {
   const handleBranchChange = (value) => {
     setLoading(true);
     setSelectedBranch(value);
-    router.push("/verifyUser")
-    setTimeout(() => { 
+    router.push('/verifyUser');
+    setTimeout(() => {
       setLoading(false);
-    },300)
+    }, 300);
   };
 
   return (
