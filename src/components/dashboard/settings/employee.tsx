@@ -247,6 +247,11 @@ export const EmployeesTab = () => {
 
   const handleSwitch = (checked) => setAddBranch(checked);
 
+  const handleCancel = async () => {
+    setAddBranch(false)
+    setIsEdit(false)
+  };
+
   const columns = BRANCH_EMPLOYEE_COLUMNS({
     selectedBranch,
     handleEdit,
@@ -270,7 +275,7 @@ export const EmployeesTab = () => {
         <UpdateEntityForm
           formSchema={employeeFormSchema}
           handleSubmit={handleUpdateSubmit}
-          handleCancel={() => setAddBranch(false)}
+          handleCancel={handleCancel}
           initialData={initialEmployeeData}
           entityType="Employee"
         />
@@ -278,7 +283,7 @@ export const EmployeesTab = () => {
         <AddEntityForm
           formSchema={employeeFormSchema}
           handleSubmit={handleEmployeeSubmit}
-          handleCancel={() => setAddBranch(false)}
+          handleCancel={handleCancel}
           entityType="Employee"
         />
       )}

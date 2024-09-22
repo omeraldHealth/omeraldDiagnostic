@@ -12,13 +12,12 @@ export const ProfileView: React.FC<any> = () => {
   const [selectedBranch, setSelectedBranch] = usePersistedBranchState();
   const [branch, setBranch] = useState({});
   const branches = profile?.branches || [];
-
+  console.log(branches)
   useEffect(() => {
     const currentBranch = branches?.filter(
       (branch) => branch?._id == selectedBranch,
     )[0];
     setBranch(currentBranch);
-    console.log(branch);
   }, []);
 
   const handleBranchSelect = (branch: any) => {
@@ -115,13 +114,13 @@ export const ProfileView: React.FC<any> = () => {
             <List.Item>
               <Card
                 hoverable
-                className={`border ${selectedBranch?.branchId === branch.branchId ? 'border-green-500' : 'border-gray-200'}`}
+                className={`border ${selectedBranch === branch._id ? 'border-green-500' : 'border-gray-200'}`}
                 // onClick={() => handleBranchSelect(branch)}
               >
                 <Card.Meta
                   avatar={
                     <Avatar
-                      className={`${selectedBranch?.branchId === branch.branchId ? 'bg-green-500' : 'bg-gray-200'}`}
+                      className={`${selectedBranch === branch._id ? 'bg-green-500' : 'bg-gray-200'}`}
                       icon={<CheckCircleOutlined />}
                     />
                   }

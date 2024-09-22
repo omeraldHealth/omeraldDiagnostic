@@ -222,6 +222,12 @@ export const PATHOLOGIST_COLUMNS = ({ handleEdit, handleDelete }: any) => [
     sorter: (a: any, b: any) => a.designation.length - b.designation.length,
   },
   {
+    title: "Pathologist Description",
+    dataIndex: "description",
+    key: "description",
+    render: (text: any) => <a>{text}</a>,
+  },
+  {
     title: "Pathologist Signature",
     dataIndex: "signature",
     key: "signature",
@@ -244,12 +250,12 @@ export const PATHOLOGIST_COLUMNS = ({ handleEdit, handleDelete }: any) => [
     render: (_, record) => {
       return (
         <Space size="middle">
-          {/* <a href="#">
+          <a href="#">
             <FaEdit
               className="text-red-gray"
               onClick={() => handleEdit(record)}
             />
-          </a> */}
+          </a>
           <a href="#">
             <FaTrash
               className="text-red-500"

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useActivityLogger } from "@/components/common/activity";
-import { errorAlert, successAlert } from "@/components/common/alerts";
+import { errorAlert, successAlert, warningAlert } from "@/components/common/alerts";
 import { usePersistedBranchState, usePersistedDCState } from "@/hooks/localstorage";
 import { PATHOLOGIST_COLUMNS } from "@/utils/forms/forms";
 import { useInvalidateQuery } from "@/utils/query/getQueries";
@@ -11,11 +11,21 @@ import { CommonSettingTable } from "@/utils/table";
 import { Switch } from "antd";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
+import AddEntityForm from "./create";
+import UpdateEntityForm from "./update";
+
+const pathologistFormSchema = [
+  { label: "Name", name: "name", type: "input", placeholder: "Enter pathologist name", required: true },
+  { label: "Designation", name: "designation", type: "input", placeholder: "Enter pathologist designation", required: true },
+  { label: "Description", name: "description", type: "input", placeholder: "Enter description" },
+];
 
 function PathologistTab() {
   const [isAddingPathologist, setIsAddingPathologist] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [pathologistId, setPathologistId] = useState<string>("");
+  const [initialPathalogist, setInitialPathalogist] = useState();
+
 
   const [selectedBranch] = usePersistedBranchState();
   const [selectedDc] = usePersistedDCState();
@@ -44,6 +54,7 @@ function PathologistTab() {
   };
 
   const handleEdit = (record: any) => {
+    setInitialPathalogist(record)
     setPathologistId(record?._id);
     handleEditPathologist(true);
   };
@@ -69,10 +80,79 @@ function PathologistTab() {
     );
   };
 
+  const handleCancel = async () => {
+    setIsAddingPathologist(false)
+    setIsEditing(false)
+  };
+
   const columns = PATHOLOGIST_COLUMNS({
     handleEdit,
     handleDelete,
   });
+
+  // Add methods
+  const handlePathologistSubmit = async (formData) => {
+    if (!formData.name || !formData.designation) {
+      return errorAlert2("Please fill in all required fields");
+    }
+
+    const pathList = [...currentBranch?.pathologistDetail, formData];
+
+    updateBranch.mutate(
+      { data: { pathologistDetail: pathList }, recordId: selectedBranch },
+      {
+        onSuccess: (resp) => {
+          warningAlert("Path Added succesfully");
+          invalidateQuery("diagnosticBranch");
+          setCurrentBranch(resp?.data);
+          logActivity({ activity: "Added Pathologist" });
+          setIsAddingPathologist(false)
+          setIsEditing(false)
+        },
+        onError: (resp) => {
+          errorAlert2("Error adding Pathologist");
+        },
+      },
+    );
+  };
+  // ***********
+  const handleUpdateSubmit = (formData) => { 
+    if (!formData.name || !formData.designation) {
+      return errorAlert2("Please fill in all required fields");
+    }
+    const pathList = currentBranch?.pathologistDetail?.map((patho) => {
+      if (patho?._id === pathologistId) {
+        // Check if formData is different from the existing patho object
+        const isDifferent = JSON.stringify(formData) !== JSON.stringify(patho);
+    
+        if (isDifferent) {
+          return formData; // Replace with formData if there are changes
+        } else { 
+          return null
+        }
+      }
+      return patho; // Keep the existing pathologistDetail if no match or no changes
+    }); 
+
+    if (pathList !== null) { 
+      updateBranch.mutate(
+        { data: { pathologistDetail: pathList }, recordId: selectedBranch },
+        {
+          onSuccess: (resp) => {
+            warningAlert("Path updated succesfully");
+            invalidateQuery("diagnosticBranch");
+            setCurrentBranch(resp?.data);
+            logActivity({ activity: "Updted Pathologist" });
+            setIsAddingPathologist(false)
+            setIsEditing(false)
+          },
+          onError: (resp) => {
+            errorAlert2("Error updating Pathologist");
+          },
+        },
+      );
+    }
+  }
 
   return (
     <div className="pathologist-tab">
@@ -92,16 +172,20 @@ function PathologistTab() {
           columns={columns}
         />
       ) : isEditing ? (
-        // Uncomment and add the component for editing pathologist
-        // <UpdatePathologist
-        //   handleEditPathologist={handleEditPathologist}
-        //   pathologistId={pathologistId}
-        // />
-        <></>
+          <UpdateEntityForm
+            formSchema={pathologistFormSchema}
+            handleSubmit={handleUpdateSubmit}
+            handleCancel={handleCancel}
+            initialData={initialPathalogist}
+            entityType="Pathalogist"
+          />
       ) : (
-        // Uncomment and add the component for adding a new pathologist
-        // <AddPathologist handleShowPathologist={setIsAddingPathologist} />
-        <></>
+        <AddEntityForm
+          formSchema={pathologistFormSchema}
+          handleSubmit={handlePathologistSubmit}
+          handleCancel={handleCancel}
+          entityType="Pathalogist"
+        />
       )}
     </div>
   );
