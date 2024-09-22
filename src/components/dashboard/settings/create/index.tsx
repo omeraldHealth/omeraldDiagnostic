@@ -1,5 +1,17 @@
-import { Button, Input, Select, Form } from "antd";
+import { errorAlert, successAlert } from "@/components/common/alerts";
+import { uploadPathSignature } from "@/utils/api";
+import { Button, Input, Select, Form, Upload } from "antd";
+import axios from "axios";
 import { useState } from "react";
+import { FaUpload } from "react-icons/fa";
+
+interface AddEntityFormProps {
+  formSchema: FormField[]; // Array of form field configurations
+  handleSubmit: (formData: any) => void; // Method to handle form submission
+  handleCancel: () => void; // Method to handle form cancellation
+  initialData?: any; // Optional initial data for form pre-filling
+  entityType: string; // Entity type for dynamic headings
+}
 
 interface AddEntityFormProps {
   formSchema: FormField[]; // Array of form field configurations
@@ -12,10 +24,17 @@ interface AddEntityFormProps {
 interface FormField {
   label: string; // Label of the form field
   name: string; // Name of the form field
-  type: "input" | "select"; // Type of the form field
+  type: "input" | "select" | "upload"; // Type of the form field
   placeholder?: string; // Placeholder for input fields
   required?: boolean; // Whether the field is required
   options?: { label: string; value: string }[]; // Options for select fields
+  uploadOptions?: UploadOptions; // Options specific to file uploads
+}
+
+interface UploadOptions {
+  accept?: string; // Allowed file types (e.g., image/*, application/pdf, etc.)
+  multiple?: boolean; // Whether to allow multiple file uploads
+  action?: string; // Upload endpoint
 }
 
 const AddEntityForm: React.FC<AddEntityFormProps> = ({
@@ -26,12 +45,52 @@ const AddEntityForm: React.FC<AddEntityFormProps> = ({
   entityType,
 }) => {
   const [formData, setFormData] = useState(initialData);
+  const [fileList, setFileList] = useState<any[]>([]);
+  const [loading, setLoading]= useState(false)
 
   const handleChange = (name: string, value: any) => {
     setFormData({
       ...formData,
       [name]: value,
     });
+  };
+
+  const handleFileChange = (fileField: string, info: any) => {
+    const { file, fileList } = info;
+    if (file.status === "done") {
+      // Store the file URL or object in the formData
+      handleChange(fileField, file.response?.url || file.originFileObj);
+    }
+    setFileList(fileList);
+  };
+
+  const customRequest = async ({ action, file, onSuccess, onError }: any) => {
+    try {
+      setLoading(true); // Start loading
+
+      const formDataSend = new FormData();
+      formDataSend.append("file", file);
+
+      const response = await axios.post(uploadPathSignature, formDataSend);
+
+      if (response?.status === 200) {
+        successAlert("File uploaded successfully");
+
+        // Call onSuccess to mark the upload as successful and set the file URL
+        onSuccess(response.data, file);
+
+        // Set the uploaded file URL or file object into formData
+        setFormData({
+          ...formData,
+          signature: response.data?.url || file.originFileObj, // For example, update 'signature'
+        });
+      }
+    } catch (error) {
+      errorAlert("File upload failed.");
+      onError(error); // Pass the error to the Upload component
+    } finally {
+      setLoading(false); // End loading
+    }
   };
 
   const onSubmit = () => {
@@ -58,7 +117,7 @@ const AddEntityForm: React.FC<AddEntityFormProps> = ({
                   value={formData[field.name]}
                   onChange={(e) => handleChange(field.name, e.target.value)}
                 />
-              ) : (
+              ) : field.type === "select" ? (
                 <Select
                   placeholder={field.placeholder}
                   value={formData[field.name]}
@@ -70,7 +129,21 @@ const AddEntityForm: React.FC<AddEntityFormProps> = ({
                     </Select.Option>
                   ))}
                 </Select>
-              )}
+              ) : field.type === "upload" ? (
+                <Upload
+                  name={field.name}
+                  listType="picture"
+                  fileList={fileList}
+                  customRequest={(options) => customRequest({ ...options, action: field.uploadOptions?.action })}
+                  onChange={(info) => handleFileChange(field.name, info)}
+                  accept={field.uploadOptions?.accept || "image/*"}
+                  multiple={field.uploadOptions?.multiple || false}
+                >
+                  <Button icon={<FaUpload />}>
+                    {field.uploadOptions?.multiple ? "Upload Files" : "Upload File"}
+                  </Button>
+                </Upload>
+              ) : null}
             </Form.Item>
           ))}
 

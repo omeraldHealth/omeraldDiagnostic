@@ -13,11 +13,16 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import AddEntityForm from "./create";
 import UpdateEntityForm from "./update";
+import axios from 'axios';
+import { message } from 'antd';
+import { uploadPathSignature } from "@/utils/api";
+
 
 const pathologistFormSchema = [
   { label: "Name", name: "name", type: "input", placeholder: "Enter pathologist name", required: true },
   { label: "Designation", name: "designation", type: "input", placeholder: "Enter pathologist designation", required: true },
   { label: "Description", name: "description", type: "input", placeholder: "Enter description" },
+  { label: "Signature Image", name: "signatureImage", type: "upload", uploadOptions: { accept: "image/*", multiple: false, action: "/uploadSignature" } },
 ];
 
 function PathologistTab() {
@@ -25,6 +30,7 @@ function PathologistTab() {
   const [isEditing, setIsEditing] = useState(false);
   const [pathologistId, setPathologistId] = useState<string>("");
   const [initialPathalogist, setInitialPathalogist] = useState();
+  const [imageUrl, setImageUrl] = useState("")
 
 
   const [selectedBranch] = usePersistedBranchState();
@@ -41,6 +47,7 @@ function PathologistTab() {
   const logActivity = useActivityLogger();
   const setProfileData = useSetRecoilState(profileState);
   const setCurrentBranch = useSetRecoilState(branchState);
+  const [loading, setLoading] = useState(false)
 
   // useEffect(() => {
   //   invalidateQuery("diagnosticBranch");
@@ -95,7 +102,7 @@ function PathologistTab() {
     if (!formData.name || !formData.designation) {
       return errorAlert2("Please fill in all required fields");
     }
-
+    console.log(formData)
     const pathList = [...currentBranch?.pathologistDetail, formData];
 
     updateBranch.mutate(
@@ -154,6 +161,34 @@ function PathologistTab() {
     }
   }
 
+  const customRequest = async ({ action, file, headers, onSuccess, onError }: any) => {
+    try {
+      setLoading(true); // Start loading
+  
+      const formDataSend = new FormData();
+      formDataSend.append("file", file);
+  
+      const response = await axios.post(action, formDataSend, {
+        headers: {
+          ...headers, // Pass any additional headers if needed
+        },
+      });
+  
+      if (response?.status === 200) {
+        successAlert("File uploaded successfully");
+  
+        // Call onSuccess from Ant Design's Upload component to mark it as done
+        onSuccess(response.data, file);
+      }
+    } catch (error) {
+      message.error("File upload failed.");
+      onError(error); // Pass the error to Ant Design's onError callback
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
+  
+
   return (
     <div className="pathologist-tab">
       <section className="my-2 py-2 flex justify-end">
@@ -172,18 +207,19 @@ function PathologistTab() {
           columns={columns}
         />
       ) : isEditing ? (
-          <UpdateEntityForm
+            <UpdateEntityForm
             formSchema={pathologistFormSchema}
             handleSubmit={handleUpdateSubmit}
             handleCancel={handleCancel}
             initialData={initialPathalogist}
-            entityType="Pathalogist"
-          />
+            entityType="Employee"
+            />
       ) : (
         <AddEntityForm
           formSchema={pathologistFormSchema}
           handleSubmit={handlePathologistSubmit}
           handleCancel={handleCancel}
+          customRequest={customRequest}
           entityType="Pathalogist"
         />
       )}

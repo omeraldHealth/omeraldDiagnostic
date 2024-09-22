@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { EyeIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { Space } from "antd";
+import { Space, Image } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import moment from "moment";
@@ -236,7 +236,12 @@ export const PATHOLOGIST_COLUMNS = ({ handleEdit, handleDelete }: any) => [
       <span className="w-[20px] h-[20px]">
         {text ? (
           <span className="object-cover border rounded">
-            <Image alt="" width={150} height={40} src={text} />
+             <Image
+              src={text}
+              alt="Logo"
+              width={80} // Adjusted width for better alignment
+              height={40} // Adjusted height for better alignment
+            />
           </span>
         ) : (
           <p className="font-light text-sm text-red-600">Not found</p>
