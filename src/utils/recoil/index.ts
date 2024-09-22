@@ -1,5 +1,9 @@
 import { atom } from 'recoil';
-import { BranchDetailInterface, ProfileDetailsInterface, UserInfo } from '../interface/getData';
+import {
+  BranchDetailInterface,
+  ProfileDetailsInterface,
+  UserInfo,
+} from '../interface/getData';
 
 export const profileState = atom<ProfileDetailsInterface>({
   key: 'profileState',
@@ -27,8 +31,8 @@ export const userDataState = atom<UserInfo>({
     diagnosticCenters: [
       {
         diagnostic: {
-          centerName: "",
-          _id: ""
+          centerName: '',
+          _id: '',
         }, // Empty string as a placeholder for the diagnostic center ID
         branches: [
           {
@@ -43,18 +47,18 @@ export const userDataState = atom<UserInfo>({
 
 export const selectedDcState = atom<string>({
   key: 'selectedDcId',
-  default : ''
-})
+  default: '',
+});
 
 export const selectedBranchState = atom<string>({
   key: 'selectedBranchId',
-  default : ''
-})
+  default: '',
+});
 
 export const unSelectedDcState = atom<boolean>({
   key: 'unSelectedDc',
-  default : false
-})
+  default: false,
+});
 
 export const dashTabs = atom<string>({
   key: 'dashboardTab',
@@ -68,10 +72,10 @@ export const sidebarOpenState = atom<boolean>({
 
 export const settingTabState = atom<string>({
   key: 'settingTabState',
-  default: "1",
-})
+  default: '1',
+});
 
 export const createDC = atom<boolean>({
   key: 'createDC',
   default: false,
-})
+});

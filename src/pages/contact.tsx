@@ -6,7 +6,7 @@ import { initialContactFormData } from '@/utils/forms';
 import { errorAlert, successAlert } from '@/components/common/alerts';
 import { PageLoader } from '@/components/common/pageLoader';
 import { useRouter } from 'next/router';
-import emailjs from "@emailjs/browser"
+import emailjs from '@emailjs/browser';
 
 const { TextArea } = Input;
 interface ContactProps {}
@@ -14,7 +14,7 @@ interface ContactProps {}
 const Contact: React.FC<ContactProps> = () => {
   const [formData, setFormData] = useState(initialContactFormData);
   const [loading, setLoading] = useState(false); // Loader state
-  const router = useRouter()
+  const router = useRouter();
 
   const sendEmail = () => {
     setLoading(true); // Start loading
@@ -23,21 +23,23 @@ const Contact: React.FC<ContactProps> = () => {
         'service_xghg0ks', // Service ID from EmailJS
         'template_hlvw8pd', // Template ID from EmailJS
         formData,
-        'HH5sKm-xgC4Wc-VIY' // User ID from EmailJS dashboard
+        'HH5sKm-xgC4Wc-VIY', // User ID from EmailJS dashboard
       )
       .then(
         (result) => {
-          successAlert('Email sent successfully! Please wait for admin to reach out');
+          successAlert(
+            'Email sent successfully! Please wait for admin to reach out',
+          );
         },
         (error) => {
           errorAlert('Email sending failed!');
           console.error('Error sending email:', error);
-        }
+        },
       )
       .finally(() => {
-        setFormData(initialContactFormData)
+        setFormData(initialContactFormData);
         setLoading(false); // Stop loading after submission
-        router.push("/")
+        router.push('/');
       });
   };
 
@@ -129,9 +131,13 @@ const Contact: React.FC<ContactProps> = () => {
                           htmlType="submit"
                           block
                           disabled={loading} // Disable button when loading
-                          style={{ backgroundColor: 'green', borderColor: 'green' }}
+                          style={{
+                            backgroundColor: 'green',
+                            borderColor: 'green',
+                          }}
                         >
-                          {loading ? <Spin /> : 'Submit'} {/* Show loader or text */}
+                          {loading ? <Spin /> : 'Submit'}{' '}
+                          {/* Show loader or text */}
                         </Button>
                       </Form.Item>
                     </Form>

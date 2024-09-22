@@ -1,13 +1,13 @@
 // @ts-nocheck
-import { useUser } from "@clerk/clerk-react";
-import { PlusCircleIcon } from "@heroicons/react/20/solid";
-import { Button, Form, Input, Upload } from "antd";
-import axios from "axios";
-import { useState } from "react";
-import { LoaderIcon } from "react-hot-toast";
-import { errorAlert, successAlert } from "../common/alerts";
-import { PageLoader } from "../common/pageLoader";
-import { uploadDiagnosticLogoApi } from "@/utils/api";
+import { useUser } from '@clerk/clerk-react';
+import { PlusCircleIcon } from '@heroicons/react/20/solid';
+import { Button, Form, Input, Upload } from 'antd';
+import axios from 'axios';
+import { useState } from 'react';
+import { LoaderIcon } from 'react-hot-toast';
+import { errorAlert, successAlert } from '../common/alerts';
+import { PageLoader } from '../common/pageLoader';
+import { uploadDiagnosticLogoApi } from '@/utils/api';
 
 interface OnboardingFormProps {
   next: () => void;
@@ -24,7 +24,7 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { user, isLoaded } = useUser();
-  const userContact = user?.phoneNumbers?.[0]?.phoneNumber || "";
+  const userContact = user?.phoneNumbers?.[0]?.phoneNumber || '';
 
   const onFinish = (values: any) => {
     if (imageUrl) {
@@ -35,19 +35,19 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
   };
 
   const handleUpload = (info: any) => {
-    if (info.file.status === "uploading") {
+    if (info.file.status === 'uploading') {
       setLoading(true);
       return;
     }
-    if (info.file.status === "done") {
+    if (info.file.status === 'done') {
       const url = info.file.response.url;
       setImageUrl(url);
       setLoading(false);
       form.setFieldsValue({ brandLogo: imageUrl });
       successAlert(`${info.file.name} file uploaded successfully.`);
-    } else if (info.file.status === "error") {
+    } else if (info.file.status === 'error') {
       setLoading(false);
-      errorAlert("Error uploading file");
+      errorAlert('Error uploading file');
     }
   };
 
@@ -55,7 +55,7 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append('file', file);
       const response = await axios.post(uploadDiagnosticLogoApi, formData);
       if (response?.status === 201) {
         setImageUrl(response.data.url);
@@ -63,11 +63,11 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
         return response;
       } else {
         setLoading(false);
-        errorAlert("Error uploading file");
+        errorAlert('Error uploading file');
       }
     } catch (error) {
       setLoading(false);
-      errorAlert("File upload failed.");
+      errorAlert('File upload failed.');
     }
   };
 
@@ -125,7 +125,9 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
             <Form.Item
               name="phoneNumber"
               label="Phone Number"
-              rules={[{ required: true, message: "Please enter contact number!" }]}
+              rules={[
+                { required: true, message: 'Please enter contact number!' },
+              ]}
             >
               <Input
                 disabled={!!userContact}
@@ -136,7 +138,9 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
             <Form.Item
               name="centerName"
               label="Diagnostic Name"
-              rules={[{ required: true, message: "Please enter diagnostic name!" }]}
+              rules={[
+                { required: true, message: 'Please enter diagnostic name!' },
+              ]}
             >
               <Input
                 className="w-[100%] py-2 bg-gray-100"
@@ -146,7 +150,9 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
             <Form.Item
               name="email"
               label="Diagnostic Email"
-              rules={[{ required: true, message: "Please enter diagnostic email!" }]}
+              rules={[
+                { required: true, message: 'Please enter diagnostic email!' },
+              ]}
             >
               <Input
                 className="w-[100%] py-2 bg-gray-100"
@@ -163,7 +169,9 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
             <Form.Item
               name="branchContact"
               label="Branch Phone Number"
-              rules={[{ required: true, message: "Please enter branch contact!" }]}
+              rules={[
+                { required: true, message: 'Please enter branch contact!' },
+              ]}
             >
               <Input
                 className="w-[100%] py-2 bg-gray-100"
@@ -173,7 +181,9 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
             <Form.Item
               name="branchEmail"
               label="Branch Email"
-              rules={[{ required: true, message: "Please enter branch email!" }]}
+              rules={[
+                { required: true, message: 'Please enter branch email!' },
+              ]}
             >
               <Input
                 className="w-[100%] py-2 bg-gray-100"
@@ -183,7 +193,7 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
             <Form.Item
               name="branchName"
               label="Branch Name"
-              rules={[{ required: true, message: "Please enter branch name!" }]}
+              rules={[{ required: true, message: 'Please enter branch name!' }]}
             >
               <Input
                 className="w-[100%] py-2 bg-gray-100"
@@ -193,7 +203,9 @@ export const OnboardingForm: React.FC<OnboardingFormProps> = ({
             <Form.Item
               name="branchAddress"
               label="Branch Address"
-              rules={[{ required: true, message: "Please enter branch address!" }]}
+              rules={[
+                { required: true, message: 'Please enter branch address!' },
+              ]}
             >
               <Input
                 className="w-[100%] py-2 bg-gray-100"

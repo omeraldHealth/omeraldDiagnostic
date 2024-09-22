@@ -1,18 +1,24 @@
 //@ts-nocheck
-import React, { useState } from "react";
-import { usePersistedBranchState, usePersistedDCState } from "@/hooks/localstorage";
-import { useCreateDiagnostic, useCreateDiagnosticBranch } from "@/utils/query/createQueries";
-import { useGetUser, useInvalidateQuery } from "@/utils/query/getQueries";
-import { userDataState } from "@/utils/recoil";
-import { useUserRecoilValue } from "@/utils/recoil/values";
-import { useUser } from "@clerk/clerk-react";
-import { Button, Steps } from "antd";
-import { useRouter } from "next/router";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { errorAlert, successAlert, warningAlert } from "../common/alerts";
-import { useUpdateUser } from "@/utils/query/updateQueries";
-import { OnboardingForm } from "./onboardingForm";
-import { OnboardingSummary } from "./onboardSummary";
+import React, { useState } from 'react';
+import {
+  usePersistedBranchState,
+  usePersistedDCState,
+} from '@/hooks/localstorage';
+import {
+  useCreateDiagnostic,
+  useCreateDiagnosticBranch,
+} from '@/utils/query/createQueries';
+import { useGetUser, useInvalidateQuery } from '@/utils/query/getQueries';
+import { userDataState } from '@/utils/recoil';
+import { useUserRecoilValue } from '@/utils/recoil/values';
+import { useUser } from '@clerk/clerk-react';
+import { Button, Steps } from 'antd';
+import { useRouter } from 'next/router';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { errorAlert, successAlert, warningAlert } from '../common/alerts';
+import { useUpdateUser } from '@/utils/query/updateQueries';
+import { OnboardingForm } from './onboardingForm';
+import { OnboardingSummary } from './onboardSummary';
 
 interface FormData {
   branchName?: string;
@@ -30,7 +36,7 @@ const OnboardNewComponents: React.FC = () => {
   const [current, setCurrent] = useState<number>(0);
   const { user } = useUser();
   const router = useRouter();
-  const userPhoneNumber = user?.phoneNumbers?.[0]?.phoneNumber || "";
+  const userPhoneNumber = user?.phoneNumbers?.[0]?.phoneNumber || '';
 
   const {
     data: userData,
@@ -49,30 +55,30 @@ const OnboardNewComponents: React.FC = () => {
   const createDiagBranch = useCreateDiagnosticBranch({});
   const updateUser = useUpdateUser({
     onSuccess: (resp) => {
-      successAlert("User Updated Successfully");
+      successAlert('User Updated Successfully');
       refetch();
       if (!isLoading && resp?.data?._id) {
         setUserRecoil(resp?.data);
-        invalidateQuery("userData");
-        invalidateQuery("diagnosticCenter");
-        router.push("/chooseDc");
+        invalidateQuery('userData');
+        invalidateQuery('diagnosticCenter');
+        router.push('/chooseDc');
       }
     },
     onError: (err) => {
-      warningAlert("Error updating user: " + err);
+      warningAlert('Error updating user: ' + err);
     },
   });
 
   const createDiagProfile = useCreateDiagnostic({
     onSuccess: (data) => {
       if (data?.status === 201 && data?.data?._id) {
-        successAlert("Profile Created Successfully");
+        successAlert('Profile Created Successfully');
         const newDiagnosticCenters = {
           diagnostic: data?.data?._id,
           branches: [
             {
               branchId: data?.data?.branches[0]?._id,
-              roleName: "owner",
+              roleName: 'owner',
             },
           ],
         };
@@ -87,7 +93,7 @@ const OnboardNewComponents: React.FC = () => {
       }
     },
     onError: (err) => {
-      warningAlert("Error creating profile: " + err.message);
+      warningAlert('Error creating profile: ' + err.message);
     },
   });
 
@@ -121,17 +127,17 @@ const OnboardNewComponents: React.FC = () => {
               createDiagProfile.mutate({ ...centerDetails });
             }
           },
-          onError: (err) => { 
-            errorAlert("Error creating DC")
-          }
-        }
+          onError: (err) => {
+            errorAlert('Error creating DC');
+          },
+        },
       );
     }
   };
 
   const steps = [
     {
-      title: "Diagnostic Details",
+      title: 'Diagnostic Details',
       content: (
         <div className="min-h-[40vh] w-full">
           <OnboardingForm
@@ -143,7 +149,7 @@ const OnboardNewComponents: React.FC = () => {
       ),
     },
     {
-      title: "Summary",
+      title: 'Summary',
       content: (
         <div className="min-h-[40vh]">
           <OnboardingSummary formData={formData} />

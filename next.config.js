@@ -63,11 +63,12 @@ const nextConfig = {
   },
 };
 
-const withAntdLess = require('next-plugin-antd-less');({
+const withAntdLess = require('next-plugin-antd-less');
+({
   modifyVars: {
-    '@primary-color': 'green', 
+    '@primary-color': 'green',
   },
-  lessVarsFilePath: './src/styles/theme.less', 
+  lessVarsFilePath: './src/styles/theme.less',
   lessVarsFilePathAppendToEndOfContent: false,
 
   // Other Next.js config options here

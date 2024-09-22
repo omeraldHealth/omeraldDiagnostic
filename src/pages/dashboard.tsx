@@ -5,6 +5,8 @@ import { useRecoilValue } from 'recoil';
 import { dashTabs } from '@/utils/recoil';
 import DashboardTab from '@/components/dashboard';
 import SettingsTabLayout from '@/components/dashboard/settings';
+import TestTab from '@/components/dashboard/test';
+import { Profile } from '@/components/dashboard/profile/index.';
 
 const Dashboard: React.FC = () => {
   const dashboard = useRecoilValue(dashTabs);
@@ -13,18 +15,15 @@ const Dashboard: React.FC = () => {
     [key: string]: JSX.Element;
   } = {
     Dashboard: <DashboardTab />,
-    // "Tests Offered": <TestTab />,
+    'Tests Offered': <TestTab />,
     // "View Reports": <ReportsTab />,
-    // Profile: <ProfileTab />,
+    Profile: <Profile />,
     Settings: <SettingsTabLayout />,
   };
 
   return (
-    <DashboardLayout
-      tabName="Dashboard"
-      tabDescription= "Diagnostic Dashboard"
-    >
-      {/* {DashboardTabsMap[dashboard]} */}
+    <DashboardLayout tabName="Dashboard" tabDescription="Diagnostic Dashboard">
+      {DashboardTabsMap[dashboard]}
     </DashboardLayout>
   );
 };

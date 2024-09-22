@@ -19,7 +19,11 @@ const DiagnosticCard: React.FC<DiagnosticCardProps> = ({
   const [selectedValue, setSelectedValue] = useState(defaultValue);
 
   useEffect(() => {
-    if ((!defaultValue || defaultValue === "") &&  userValue?.diagnosticCenters && userValue?.diagnosticCenters?.length > 0) {
+    if (
+      (!defaultValue || defaultValue === '') &&
+      userValue?.diagnosticCenters &&
+      userValue?.diagnosticCenters?.length > 0
+    ) {
       const firstId = userValue.diagnosticCenters[0]?.diagnostic?._id;
       setSelectedValue(firstId);
     }

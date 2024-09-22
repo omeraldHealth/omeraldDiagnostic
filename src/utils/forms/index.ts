@@ -13,6 +13,5 @@ export const initialContactFormData = {
   subject: '',
   message: '',
   description: '',
-  email: ''
+  email: '',
 };
-

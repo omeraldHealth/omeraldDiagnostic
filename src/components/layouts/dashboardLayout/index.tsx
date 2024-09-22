@@ -1,7 +1,10 @@
 import { PageLoader } from '@/components/common/pageLoader';
 import { DashboardSideBar } from '@/components/common/sidebar';
 import { DashboardHeader } from '@/components/header/dashNavbar';
-import { usePersistedBranchState, usePersistedDCState } from '@/hooks/localstorage';
+import {
+  usePersistedBranchState,
+  usePersistedDCState,
+} from '@/hooks/localstorage';
 import { logoIcon } from '@/utils/constants/cloudinary';
 import { useGetDcBranch, useGetDcProfile } from '@/utils/query/getQueries';
 import { branchState, profileState } from '@/utils/recoil';
@@ -18,11 +21,7 @@ import { useSetRecoilState } from 'recoil';
  * @param {Object} children - The content to be rendered inside the dashboard layout.
  * @returns {JSX.Element} - The rendered dashboard layout component.
  */
-export function DashboardLayout({
-  tabName,
-  tabDescription,
-  children,
-}: any) {
+export function DashboardLayout({ tabName, tabDescription, children }: any) {
   const { session } = useSession();
   const [selectedDc] = usePersistedDCState();
   const [selectedBranch] = usePersistedBranchState();
@@ -40,17 +39,17 @@ export function DashboardLayout({
   const router = useRouter();
   const setProfileRecoil = useSetRecoilState(profileState);
   const setCurrentBranch = useSetRecoilState(branchState);
-  const user = useUserRecoilValue()
+  const user = useUserRecoilValue();
 
-  useEffect(() => { 
-    if (user?.phoneNumber == "") { 
-      router.push("/verifyUser")
+  useEffect(() => {
+    if (user?.phoneNumber == '') {
+      router.push('/verifyUser');
     }
-  },[user])
+  }, [user]);
 
   useEffect(() => {
     if (session?.status !== 'active') {
-      router.push('/signin');
+      router.push('/signIn');
     }
   }, []);
 
@@ -74,17 +73,17 @@ export function DashboardLayout({
     }
   }, [branchLoading, currentBranch]);
 
-  useEffect(() => {
-    if (selectedDc) {
-      refetch();
-    }
-  }, [selectedDc]);
+  // useEffect(() => {
+  //   if (selectedDc) {
+  //     refetch();
+  //   }
+  // }, [selectedDc]);
 
-  useEffect(() => {
-    if (selectedBranch) {
-      refBranch();
-    }
-  }, [selectedBranch]);
+  // useEffect(() => {
+  //   if (selectedBranch) {
+  //     refBranch();
+  //   }
+  // }, [selectedBranch]);
 
   //@ts-ignore
   const isValidProfile = profileData?.data?._id;
@@ -93,11 +92,11 @@ export function DashboardLayout({
     <>
       {isLoading && <PageLoader />}
       <div className="bg-gray-100 w-full min-h-[100vh] h-auto ">
-      <Head>
-        <title>{tabName}</title>
-        <meta name="description" content={tabDescription} />
-        <link rel="icon" href={logoIcon} />
-      </Head>
+        <Head>
+          <title>{tabName}</title>
+          <meta name="description" content={tabDescription} />
+          <link rel="icon" href={logoIcon} />
+        </Head>
         <DashboardSideBar />
         <div className="xl:pl-64 flex flex-col flex-1">
           {/*@ts-ignore */}
